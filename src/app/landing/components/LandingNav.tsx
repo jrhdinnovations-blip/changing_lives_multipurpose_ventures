@@ -180,7 +180,7 @@ export default function LandingNav() {
               )}
             </div>
 
-            {/* INVESTMENTS Dropdown */}
+            {/* INVEST Dropdown */}
             <div
               className="relative"
               onMouseEnter={() => handleMouseEnter(setInvestOpen, investTimeout)}
@@ -188,32 +188,75 @@ export default function LandingNav() {
             >
               <button
                 onClick={() => setInvestOpen(!investOpen)}
-                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
-                  scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 hover:bg-white/10 ${
+                  scrolled ? 'text-foreground hover:bg-muted' : 'text-white/95 hover:text-white'
                 }`}
                 aria-expanded={investOpen}
               >
-                <span>Investments</span>
+                <TrendingUp className="w-4 h-4 text-emerald-500" />
+                <span>Invest</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${investOpen ? 'rotate-180' : ''}`} />
               </button>
 
               {investOpen && (
-                <div className="absolute top-full left-0 mt-1.5 w-64 bg-card rounded-2xl shadow-xl border border-border p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                <div className="absolute top-full left-0 mt-1.5 w-72 bg-card rounded-2xl shadow-xl border border-border p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
                   <Link
                     href="/investment-products"
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/80 transition-colors group"
                     onClick={() => setInvestOpen(false)}
                   >
-                    <TrendingUp className="w-4 h-4 text-emerald-600" />
-                    Investment Products
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <TrendingUp className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-emerald-600 transition-colors">Investment Products</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Explore high-yield opportunities</div>
+                    </div>
                   </Link>
+
+                  <Link
+                    href="/invest/calculator"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/80 transition-colors group"
+                    onClick={() => setInvestOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <Calculator className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-blue-600 transition-colors">Investment Calculator</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Model projected returns & maturity</div>
+                    </div>
+                  </Link>
+
                   <Link
                     href="/investors-circle"
-                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/80 transition-colors group"
                     onClick={() => setInvestOpen(false)}
                   >
-                    <Sparkles className="w-4 h-4 text-amber-500" />
-                    Investors Circle
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-amber-600 group-hover:text-white transition-colors">
+                      <Sparkles className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-amber-600 transition-colors">CLIMPS Investors Circle</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Exclusive high-net-worth partnership</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/invest/now"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-500/10 transition-colors group border-t border-border mt-1 pt-2"
+                    onClick={() => setInvestOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-emerald-600 transition-colors flex items-center gap-1.5">
+                        Invest Now
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-md">Direct</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Subscribe to open opportunities</div>
+                    </div>
                   </Link>
                 </div>
               )}
@@ -322,9 +365,12 @@ export default function LandingNav() {
               </Link>
             </div>
 
-            {/* Mobile INVESTMENTS section */}
+            {/* Mobile INVEST section */}
             <div className="pt-2 border-t border-border">
-              <div className="px-2 py-1 text-xs font-bold text-muted-foreground uppercase tracking-wider">Investments</div>
+              <div className="px-2 py-1 text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
+                Invest Module
+              </div>
               <Link
                 href="/investment-products"
                 onClick={() => setMenuOpen(false)}
@@ -333,11 +379,25 @@ export default function LandingNav() {
                 Investment Products
               </Link>
               <Link
+                href="/invest/calculator"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Investment Calculator
+              </Link>
+              <Link
                 href="/investors-circle"
                 onClick={() => setMenuOpen(false)}
                 className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
-                Investors Circle
+                CLIMPS Investors Circle
+              </Link>
+              <Link
+                href="/invest/now"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-semibold text-emerald-600 hover:bg-emerald-50 transition-colors"
+              >
+                Invest Now →
               </Link>
             </div>
 

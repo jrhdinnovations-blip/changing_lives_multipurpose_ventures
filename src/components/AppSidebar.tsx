@@ -46,10 +46,12 @@ const memberNav: NavItem[] = [
     ]
   },
   {
-    id: 'nav-investments', label: 'Investments', icon: TrendingUp,
+    id: 'nav-investments', label: 'Invest', icon: TrendingUp,
     children: [
-      { id: 'nav-portfolio', label: 'My Portfolio', href: '/member-dashboard' },
-      { id: 'nav-invest-now', label: 'Invest Now', href: '/member-dashboard' },
+      { id: 'nav-investment-products', label: 'Investment Products', href: '/investment-products' },
+      { id: 'nav-portfolio', label: 'My Portfolio', href: '/invest/portfolio' },
+      { id: 'nav-invest-calculator', label: 'Investment Calculator', href: '/invest/calculator' },
+      { id: 'nav-invest-now', label: 'Invest Now', href: '/invest/now' },
       { id: 'nav-investors-circle', label: 'Investors Circle', href: '/investors-circle' },
       { id: 'nav-inv-dashboard', label: 'Circle Dashboard', href: '/investors-circle/dashboard' },
     ]
@@ -95,12 +97,9 @@ const adminNav: NavItem[] = [
   {
     id: 'anav-investments', label: 'Investments', icon: TrendingUp,
     children: [
-      { id: 'anav-inv-products', label: 'Products', href: '/admin-dashboard' },
-      { id: 'anav-inv-apps', label: 'Applications', href: '/admin-dashboard', badge: 3 },
-      { id: 'anav-inv-active', label: 'Active', href: '/admin-dashboard' },
-      { id: 'anav-inv-matured', label: 'Matured', href: '/admin-dashboard' },
-      { id: 'anav-inv-circle', label: 'Investor Circle', href: '/investors-circle' },
-      { id: 'anav-inv-circle-dash', label: 'Circle Dashboard', href: '/investors-circle/dashboard' },
+      { id: 'anav-inv-products', label: 'Products & Management', href: '/invest/admin' },
+      { id: 'anav-inv-apps', label: 'Subscriptions & Apps', href: '/admin-dashboard/applications', badge: 3 },
+      { id: 'anav-inv-calculator', label: 'Investment Calculator', href: '/invest/calculator' },
       { id: 'anav-inv-circle-admin', label: 'Circle Admin', href: '/admin-dashboard/investors-circle', badge: 3 },
     ]
   },
