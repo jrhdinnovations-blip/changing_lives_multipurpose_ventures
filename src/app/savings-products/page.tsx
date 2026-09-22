@@ -281,7 +281,7 @@ function ProductCard({ product }: { product: SavingsProduct }) {
 
       {/* CTA */}
       <Link
-        href="/"
+        href={`/save/start?product=${product.id}`}
         className="w-full inline-flex items-center justify-center gap-2 bg-primary text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 hover:bg-primary/90 active:scale-95 group-hover:shadow-md"
       >
         Start Saving
@@ -315,10 +315,10 @@ export default function SavingsProductsPage() {
               <span className="font-bold text-base text-primary tracking-tight">CLIMPS</span>
             </Link>
             <div className="flex items-center gap-3">
-              <Link href="/" className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors">
+              <Link href="/login" className="text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors">
                 Sign In
               </Link>
-              <Link href="/" className="btn-accent text-sm px-4 py-2">
+              <Link href="/register" className="btn-accent text-sm px-4 py-2">
                 Become a Member
               </Link>
             </div>
@@ -433,10 +433,10 @@ export default function SavingsProductsPage() {
             </p>
           </div>
           <div className="relative flex flex-col sm:flex-row gap-3 flex-shrink-0">
-            <Link href="/" className="inline-flex items-center justify-center gap-2 bg-accent text-white font-semibold rounded-xl px-6 py-3 text-sm hover:bg-accent/90 transition-all active:scale-95">
+            <Link href="/save/start" className="inline-flex items-center justify-center gap-2 bg-accent text-white font-semibold rounded-xl px-6 py-3 text-sm hover:bg-accent/90 transition-all active:scale-95">
               Start Saving Now
             </Link>
-            <Link href="/" className="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-semibold rounded-xl px-6 py-3 text-sm hover:bg-white/20 transition-all active:scale-95">
+            <Link href="/register" className="inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-semibold rounded-xl px-6 py-3 text-sm hover:bg-white/20 transition-all active:scale-95">
               Talk to an Advisor
             </Link>
           </div>
@@ -461,7 +461,7 @@ export default function SavingsProductsPage() {
           </p>
           <div className="flex items-center gap-4">
             <Link href="/landing" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Home</Link>
-            <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Sign In</Link>
+            <Link href="/login" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Sign In</Link>
           </div>
         </div>
       </footer>

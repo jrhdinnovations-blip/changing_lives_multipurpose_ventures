@@ -2,6 +2,20 @@
 // CLIMPS TypeScript Types — mirrors Supabase schema
 // ============================================================
 
+export type SavingsProductCategory =
+  | 'monthly_contribution'
+  | 'regular_savings'
+  | 'target_savings'
+  | 'emergency_savings'
+  | 'business_savings'
+  | 'education_savings'
+  | 'special_purpose'
+  | 'fixed_deposit'
+  | 'daily_thrift';
+
+export type SavingsAccountStatus = 'active' | 'closed' | 'suspended' | 'pending';
+export type SavingsEnrollmentStatus = 'pending' | 'active' | 'completed' | 'cancelled';
+
 export type UserRole = 'super_admin' | 'admin' | 'manager' | 'staff' | 'member' | 'borrower';
 export type MembershipStatus = 'pending' | 'under_review' | 'approved' | 'active' | 'suspended' | 'inactive';
 export type ContributionStatus = 'paid' | 'partially_paid' | 'unpaid' | 'overdue';
@@ -89,6 +103,52 @@ export interface SavingsGoal {
   goalStatus: SavingsGoalStatus;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface SavingsProduct {
+  id: string;
+  name: string;
+  category: SavingsProductCategory;
+  description?: string;
+  minContribution: number;
+  contributionFrequency?: string;
+  interestRate?: number;
+  duration?: string;
+  withdrawalRules?: string;
+  eligibility?: string;
+  benefits?: string[];
+  terms?: string;
+  isActive: boolean;
+  isMandatory: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SavingsAccount {
+  id: string;
+  memberId: string;
+  productId?: string;
+  accountNumber: string;
+  balance: number;
+  totalDeposited: number;
+  totalWithdrawn: number;
+  status: SavingsAccountStatus;
+  openedAt: string;
+  closedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  // joined
+  product?: SavingsProduct;
+}
+
+export interface SavingsEnrollment {
+  memberId: string;
+  productId: string;
+  amount: number;
+  frequency: string;
+  startDate: string;
+  termsAccepted: boolean;
 }
 
 export interface LoanProduct {

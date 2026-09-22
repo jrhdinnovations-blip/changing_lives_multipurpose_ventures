@@ -27,11 +27,13 @@ interface AppSidebarProps {
 const memberNav: NavItem[] = [
   { id: 'nav-dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/member-dashboard' },
   {
-    id: 'nav-savings', label: 'My Savings', icon: PiggyBank,
+    id: 'nav-savings', label: 'Save', icon: PiggyBank,
     children: [
-      { id: 'nav-contributions', label: 'Contributions', href: '/member-dashboard' },
-      { id: 'nav-savings-accs', label: 'Savings Accounts', href: '/member-dashboard' },
-      { id: 'nav-goals', label: 'Savings Goals', href: '/member-dashboard' },
+      { id: 'nav-savings-products', label: 'Savings Products', href: '/savings-products' },
+      { id: 'nav-contributions', label: 'My Contributions', href: '/save/contributions' },
+      { id: 'nav-savings-goals', label: 'Savings Goals', href: '/save/goals' },
+      { id: 'nav-calculator', label: 'Savings Calculator', href: '/save/calculator' },
+      { id: 'nav-start-saving', label: 'Start Saving', href: '/save/start' },
     ]
   },
   {
@@ -74,10 +76,10 @@ const adminNav: NavItem[] = [
   {
     id: 'anav-savings', label: 'Savings', icon: PiggyBank,
     children: [
-      { id: 'anav-contributions', label: 'Contributions', href: '/admin-dashboard' },
-      { id: 'anav-savings-accs', label: 'Savings Accounts', href: '/admin-dashboard' },
-      { id: 'anav-goals', label: 'Goals', href: '/admin-dashboard' },
-      { id: 'anav-products', label: 'Products', href: '/admin-dashboard' },
+      { id: 'anav-contributions', label: 'Contributions', href: '/save/admin/contributions' },
+      { id: 'anav-savings-goals', label: 'Member Goals', href: '/admin-dashboard' },
+      { id: 'anav-savings-products', label: 'Savings Products', href: '/savings-products' },
+      { id: 'anav-calculator', label: 'Calculator', href: '/save/calculator' },
     ]
   },
   {

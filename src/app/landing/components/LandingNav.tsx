@@ -1,11 +1,18 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ChevronDown, PiggyBank, Calculator, ArrowRight, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
 
 export default function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [saveOpen, setSaveOpen] = useState(false);
+  const [loansOpen, setLoansOpen] = useState(false);
+  const [investOpen, setInvestOpen] = useState(false);
+  const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+  const loansTimeout = useRef<NodeJS.Timeout | null>(null);
+  const investTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -13,17 +20,16 @@ export default function LandingNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = [
-    { label: 'Services', href: '#services' },
-    { label: 'How It Works', href: '#how-it-works' },
-    { label: 'Products', href: '#products' },
-    { label: 'Calculators', href: '#calculators' },
-    { label: 'Savings Products', href: '/savings-products' },
-    { label: 'Loan Products', href: '/loan-products' },
-    { label: 'Apply for Loan', href: '/loan-application' },
-    { label: 'Investment Products', href: '/investment-products' },
-    { label: 'Investors Circle', href: '/investors-circle' },
-  ];
+  const handleMouseEnter = (setter: (v: boolean) => void, timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>) => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setter(true);
+  };
+
+  const handleMouseLeave = (setter: (v: boolean) => void, timeoutRef: React.MutableRefObject<NodeJS.Timeout | null>) => {
+    timeoutRef.current = setTimeout(() => {
+      setter(false);
+    }, 150);
+  };
 
   return (
     <header
@@ -48,18 +54,170 @@ export default function LandingNav() {
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
-            {navLinks?.map((link) => (
-              <a
-                key={link?.label}
-                href={link?.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+          <nav className="hidden lg:flex items-center gap-1">
+            <a
+              href="#services"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+                scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              Services
+            </a>
+
+            <a
+              href="#how-it-works"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+                scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              How It Works
+            </a>
+
+            {/* SAVE Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(setSaveOpen, saveTimeout)}
+              onMouseLeave={() => handleMouseLeave(setSaveOpen, saveTimeout)}
+            >
+              <button
+                onClick={() => setSaveOpen(!saveOpen)}
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 hover:bg-white/10 ${
+                  scrolled ? 'text-foreground hover:bg-muted' : 'text-white/95 hover:text-white'
+                }`}
+                aria-expanded={saveOpen}
+              >
+                <PiggyBank className="w-4 h-4 text-accent" />
+                <span>Save</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${saveOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {saveOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-72 bg-card rounded-2xl shadow-xl border border-border p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <Link
+                    href="/savings-products"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/80 transition-colors group"
+                    onClick={() => setSaveOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-primary group-hover:text-white transition-colors">
+                      <PiggyBank className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors">Savings Products</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Explore structured & voluntary plans</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/save/calculator"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-muted/80 transition-colors group"
+                    onClick={() => setSaveOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                      <Calculator className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-emerald-600 transition-colors">Savings Calculator</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Simulate growth & compound interest</div>
+                    </div>
+                  </Link>
+
+                  <Link
+                    href="/save/start"
+                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent/10 transition-colors group border-t border-border mt-1 pt-2"
+                    onClick={() => setSaveOpen(false)}
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-accent/20 text-accent-foreground flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-accent group-hover:text-white transition-colors">
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-foreground group-hover:text-accent transition-colors flex items-center gap-1.5">
+                        Start Saving
+                        <span className="text-[10px] bg-accent/20 text-accent font-bold px-1.5 py-0.5 rounded-md">New</span>
+                      </div>
+                      <div className="text-xs text-muted-foreground mt-0.5">Enroll online in minutes</div>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* LOANS Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(setLoansOpen, loansTimeout)}
+              onMouseLeave={() => handleMouseLeave(setLoansOpen, loansTimeout)}
+            >
+              <button
+                onClick={() => setLoansOpen(!loansOpen)}
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
                   scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
                 }`}
+                aria-expanded={loansOpen}
               >
-                {link?.label}
-              </a>
-            ))}
+                <span>Loans</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${loansOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {loansOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-64 bg-card rounded-2xl shadow-xl border border-border p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <Link
+                    href="/loan-products"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    onClick={() => setLoansOpen(false)}
+                  >
+                    <CreditCard className="w-4 h-4 text-primary" />
+                    Loan Products
+                  </Link>
+                  <Link
+                    href="/loan-application"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    onClick={() => setLoansOpen(false)}
+                  >
+                    <ArrowRight className="w-4 h-4 text-accent" />
+                    Apply for Loan
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            {/* INVESTMENTS Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(setInvestOpen, investTimeout)}
+              onMouseLeave={() => handleMouseLeave(setInvestOpen, investTimeout)}
+            >
+              <button
+                onClick={() => setInvestOpen(!investOpen)}
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+                  scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+                }`}
+                aria-expanded={investOpen}
+              >
+                <span>Investments</span>
+                <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${investOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {investOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-64 bg-card rounded-2xl shadow-xl border border-border p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <Link
+                    href="/investment-products"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    onClick={() => setInvestOpen(false)}
+                  >
+                    <TrendingUp className="w-4 h-4 text-emerald-600" />
+                    Investment Products
+                  </Link>
+                  <Link
+                    href="/investors-circle"
+                    className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-muted/80 text-sm font-medium text-foreground transition-colors"
+                    onClick={() => setInvestOpen(false)}
+                  >
+                    <Sparkles className="w-4 h-4 text-amber-500" />
+                    Investors Circle
+                  </Link>
+                </div>
+              )}
+            </div>
           </nav>
 
           {/* Desktop CTAs */}
@@ -75,7 +233,7 @@ export default function LandingNav() {
             </Link>
             <Link
               href="/register"
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-accent text-white hover:bg-accent/90 transition-all duration-150 active:scale-95"
+              className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-accent text-white hover:bg-accent/90 transition-all duration-150 active:scale-95 shadow-sm"
             >
               Become a Member
             </Link>
@@ -84,7 +242,7 @@ export default function LandingNav() {
           {/* Mobile menu toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`md:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10'}`}
+            className={`lg:hidden p-2 rounded-lg transition-colors ${scrolled ? 'text-foreground hover:bg-muted' : 'text-white hover:bg-white/10'}`}
             aria-label="Toggle menu"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -99,20 +257,97 @@ export default function LandingNav() {
 
         {/* Mobile menu */}
         {menuOpen && (
-          <div className="md:hidden bg-white border-t border-border py-4 px-2 space-y-1">
-            {navLinks?.map((link) => (
-              <a
-                key={link?.label}
-                href={link?.href}
+          <div className="lg:hidden bg-card border-t border-border py-4 px-3 space-y-2 rounded-b-2xl shadow-xl max-h-[80vh] overflow-y-auto">
+            <div className="px-2 py-1 text-xs font-bold text-muted-foreground uppercase tracking-wider">Quick Links</div>
+            <a
+              href="#services"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              Services
+            </a>
+            <a
+              href="#how-it-works"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              How It Works
+            </a>
+
+            {/* Mobile SAVE section */}
+            <div className="pt-2 border-t border-border">
+              <div className="px-2 py-1 text-xs font-bold text-primary uppercase tracking-wider flex items-center gap-1.5">
+                <PiggyBank className="w-3.5 h-3.5 text-accent" />
+                Save Module
+              </div>
+              <Link
+                href="/savings-products"
                 onClick={() => setMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
-                {link?.label}
-              </a>
-            ))}
-            <div className="pt-3 flex flex-col gap-2 px-2">
-              <Link href="/login" className="btn-outline text-center">Sign In</Link>
-              <Link href="/register" className="btn-accent text-center">Become a Member</Link>
+                Savings Products
+              </Link>
+              <Link
+                href="/save/calculator"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Savings Calculator
+              </Link>
+              <Link
+                href="/save/start"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-semibold text-accent hover:bg-accent/10 transition-colors"
+              >
+                Start Saving →
+              </Link>
+            </div>
+
+            {/* Mobile LOANS section */}
+            <div className="pt-2 border-t border-border">
+              <div className="px-2 py-1 text-xs font-bold text-muted-foreground uppercase tracking-wider">Loans</div>
+              <Link
+                href="/loan-products"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Loan Products
+              </Link>
+              <Link
+                href="/loan-application"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Apply for Loan
+              </Link>
+            </div>
+
+            {/* Mobile INVESTMENTS section */}
+            <div className="pt-2 border-t border-border">
+              <div className="px-2 py-1 text-xs font-bold text-muted-foreground uppercase tracking-wider">Investments</div>
+              <Link
+                href="/investment-products"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Investment Products
+              </Link>
+              <Link
+                href="/investors-circle"
+                onClick={() => setMenuOpen(false)}
+                className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Investors Circle
+              </Link>
+            </div>
+
+            <div className="pt-3 flex flex-col gap-2 border-t border-border">
+              <Link href="/login" onClick={() => setMenuOpen(false)} className="btn-outline text-center py-2.5 text-sm">
+                Sign In
+              </Link>
+              <Link href="/register" onClick={() => setMenuOpen(false)} className="btn-accent text-center py-2.5 text-sm">
+                Become a Member
+              </Link>
             </div>
           </div>
         )}
