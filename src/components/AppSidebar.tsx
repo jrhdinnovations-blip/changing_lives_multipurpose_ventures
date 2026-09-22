@@ -67,7 +67,7 @@ const adminNav: NavItem[] = [
     children: [
       { id: 'anav-all-members', label: 'All Members', href: '/admin-dashboard' },
       { id: 'anav-add-member', label: 'Add Member', href: '/admin-dashboard' },
-      { id: 'anav-pending', label: 'Pending Approvals', href: '/admin-dashboard', badge: 4 },
+      { id: 'anav-pending', label: 'Pending Approvals', href: '/admin-dashboard/applications', badge: 4 },
     ]
   },
   { id: 'anav-applications', label: 'Applications', icon: FileText, href: '/admin-dashboard/applications' },

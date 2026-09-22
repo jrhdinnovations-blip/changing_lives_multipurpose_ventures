@@ -65,16 +65,16 @@ export default function LandingNav() {
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              href="/"
+              href="/login"
               className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
                 scrolled
-                  ? 'text-primary hover:bg-secondary' :'text-white hover:bg-white/10'
+                  ? 'text-primary hover:bg-secondary' : 'text-white hover:bg-white/10'
               }`}
             >
               Sign In
             </Link>
             <Link
-              href="/"
+              href="/register"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold bg-accent text-white hover:bg-accent/90 transition-all duration-150 active:scale-95"
             >
               Become a Member
@@ -111,8 +111,8 @@ export default function LandingNav() {
               </a>
             ))}
             <div className="pt-3 flex flex-col gap-2 px-2">
-              <Link href="/" className="btn-outline text-center">Sign In</Link>
-              <Link href="/" className="btn-accent text-center">Become a Member</Link>
+              <Link href="/login" className="btn-outline text-center">Sign In</Link>
+              <Link href="/register" className="btn-accent text-center">Become a Member</Link>
             </div>
           </div>
         )}

@@ -588,6 +588,14 @@ export default function FinancialStatementsPage() {
         });
       }
 
+      // ── Calculate Running Balance (Chronological order) ───────────────
+      allRows.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      let running = 0;
+      for (const r of allRows) {
+        running += (r.credit || 0) - (r.debit || 0);
+        r.balance_after = running;
+      }
+
       // ── Sort ──────────────────────────────────────────────────────────────
       allRows.sort((a, b) => {
         if (sortField === 'date') {
@@ -645,7 +653,7 @@ export default function FinancialStatementsPage() {
 
   function handleDownloadCSV() {
     if (!rows.length) return;
-    const headers = ['Date', 'Reference', 'Category', 'Description', 'Debit (NGN)', 'Credit (NGN)', 'Status'];
+    const headers = ['Date', 'Reference', 'Category', 'Description', 'Debit (NGN)', 'Credit (NGN)', 'Balance (NGN)', 'Status'];
     const csvRows = rows.map(r => [
       formatDate(r.date),
       r.ref,
@@ -653,6 +661,7 @@ export default function FinancialStatementsPage() {
       `"${r.description.replace(/"/g, '""')}"`,
       r.debit > 0 ? r.debit.toFixed(2) : '',
       r.credit > 0 ? r.credit.toFixed(2) : '',
+      r.balance_after != null ? r.balance_after.toFixed(2) : '',
       r.status,
     ].join(','));
     const csv = [headers.join(','), ...csvRows].join('\n');
@@ -948,6 +957,7 @@ export default function FinancialStatementsPage() {
                         <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide hidden md:table-cell">Description</th>
                         <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wide">Debit</th>
                         <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wide">Credit</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wide">Balance</th>
                         <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide">Status</th>
                       </tr>
                     </thead>
@@ -978,6 +988,11 @@ export default function FinancialStatementsPage() {
                               <span className="text-muted-foreground text-xs">—</span>
                             )}
                           </td>
+                          <td className="px-4 py-3 text-right">
+                            <span className="font-mono text-xs font-semibold text-foreground">
+                              {row.balance_after != null ? formatNGN(row.balance_after) : '—'}
+                            </span>
+                          </td>
                           <td className="px-4 py-3">
                             <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[row.status] || 'bg-gray-100 text-gray-600'}`}>
                               {row.status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -991,6 +1006,7 @@ export default function FinancialStatementsPage() {
                         <td colSpan={4} className="px-4 py-3 text-xs text-foreground">PERIOD TOTALS</td>
                         <td className="px-4 py-3 text-right text-xs text-red-600 font-bold">{formatNGN(summary.totalDebits)}</td>
                         <td className="px-4 py-3 text-right text-xs text-green-600 font-bold">{formatNGN(summary.totalCredits)}</td>
+                        <td className="px-4 py-3 text-right text-xs text-primary font-bold font-mono">{formatNGN(summary.closingBalance)}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">{summary.rowCount} records</td>
                       </tr>
                     </tfoot>

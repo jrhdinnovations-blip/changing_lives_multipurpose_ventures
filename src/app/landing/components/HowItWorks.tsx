@@ -76,7 +76,7 @@ export default function HowItWorks() {
               Joining CLIMPS is simple, fast, and fully digital. No branch visits required.
             </p>
             <Link
-              href="/"
+              href="/register"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-white font-semibold text-sm hover:bg-primary/90 transition-all duration-150 active:scale-95"
             >
               Become a Member

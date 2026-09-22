@@ -266,7 +266,7 @@ export default function FeaturedProducts() {
               </ul>
 
               <Link
-                href="/"
+                href="/register"
                 className={`w-full text-center py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-150 active:scale-95 ${product.badgeColor} hover:opacity-90`}
               >
                 Get Started →

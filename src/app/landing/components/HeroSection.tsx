@@ -74,7 +74,7 @@ export default function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-3 mb-16">
             <Link
-              href="/"
+              href="/register"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-900/30"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,7 +83,7 @@ export default function HeroSection() {
               Start Saving
             </Link>
             <Link
-              href="/"
+              href="/investment-products"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition-all duration-150 active:scale-95"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -92,7 +92,7 @@ export default function HeroSection() {
               Invest Now
             </Link>
             <Link
-              href="/"
+              href="/loan-application"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-semibold text-sm hover:bg-white/20 transition-all duration-150 active:scale-95"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@ export default function HeroSection() {
               Apply for Loan
             </Link>
             <Link
-              href="/"
+              href="/register"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white text-primary font-semibold text-sm hover:bg-white/90 transition-all duration-150 active:scale-95 shadow-lg"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

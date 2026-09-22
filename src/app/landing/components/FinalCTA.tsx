@@ -11,7 +11,7 @@ const ctaItems = [
     ),
     label: 'Start Saving',
     desc: 'Open a savings account today',
-    href: '/',
+    href: '/register',
     style: 'bg-blue-600 hover:bg-blue-700 text-white',
   },
   {
@@ -22,7 +22,7 @@ const ctaItems = [
     ),
     label: 'Invest Now',
     desc: 'Grow your wealth with us',
-    href: '/',
+    href: '/investment-products',
     style: 'bg-emerald-600 hover:bg-emerald-700 text-white',
   },
   {
@@ -33,7 +33,7 @@ const ctaItems = [
     ),
     label: 'Apply for Loan',
     desc: 'Get funds in 48 hours',
-    href: '/',
+    href: '/loan-application',
     style: 'bg-amber-600 hover:bg-amber-700 text-white',
   },
   {
@@ -44,7 +44,7 @@ const ctaItems = [
     ),
     label: 'Become a Member',
     desc: 'Join 12,400+ members',
-    href: '/',
+    href: '/register',
     style: 'bg-primary hover:bg-primary/90 text-white',
   },
 ];
