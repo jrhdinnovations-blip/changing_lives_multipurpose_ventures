@@ -8,8 +8,8 @@ interface DemoCredentialsProps {
 }
 
 const demoAccounts = [
+  { id: 'demo-admin', role: 'Super Admin', email: 'raymondlongdiem22@gmail.com', password: 'R@ymond22', description: 'Full Super Admin access' },
   { id: 'demo-member', role: 'Member', email: 'adaeze.okonkwo@climps.ng', password: 'Member@2026!', description: 'Regular cooperative member' },
-  { id: 'demo-admin', role: 'Administrator', email: 'admin@climps.ng', password: 'Admin@2026!', description: 'Full admin access' },
   { id: 'demo-manager', role: 'Manager', email: 'manager.ibrahim@climps.ng', password: 'Manager@2026!', description: 'Review & reporting access' },
   { id: 'demo-staff', role: 'Staff', email: 'staff.ngozi@climps.ng', password: 'Staff@2026!', description: 'Operational data entry' },
 ];
@@ -43,9 +43,9 @@ export default function DemoCredentials({ onFill }: DemoCredentialsProps) {
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
                 <span className={`text-2xs font-bold px-2 py-0.5 rounded-full ${
-                  account.role === 'Administrator' ?'bg-emerald-500/10 text-emerald-400'
-                    : account.role === 'Manager' ?'bg-purple-100 text-purple-700'
-                    : account.role === 'Staff' ?'bg-warning/10 text-warning' :'bg-blue-500/10 text-blue-400'
+                  account.role === 'Super Admin' || account.role === 'Administrator' ? 'bg-emerald-500/10 text-emerald-400'
+                    : account.role === 'Manager' ? 'bg-purple-100 text-purple-700'
+                    : account.role === 'Staff' ? 'bg-warning/10 text-warning' : 'bg-blue-500/10 text-blue-400'
                 }`}>
                   {account.role}
                 </span>
