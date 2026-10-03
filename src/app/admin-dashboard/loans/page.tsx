@@ -86,161 +86,13 @@ interface LoanApplication {
   user_id: string;
 }
 
-const SEED_APPLICATIONS: LoanApplication[] = [
-  {
-    id: 'loan-app-001',
-    application_number: 'LN/2026/00521',
-    applicant_name: 'Ngozi Obi',
-    applicant_phone: '+234 805 456 7890',
-    applicant_address: '15 Allen Avenue, Ikeja, Lagos',
-    applicant_gender: 'Female',
-    applicant_state: 'Lagos',
-    loan_purpose: 'Business Inventory & Wholesale Stocking',
-    requested_amount: 750000,
-    duration_months: 6,
-    processing_fee_amount: 15000,
-    interest_rate_percent: 5,
-    monthly_interest_amount: 37500,
-    total_interest_amount: 225000,
-    total_repayment_amount: 975000,
-    account_name: 'Ngozi Obi',
-    account_number: '0123456789',
-    bank_name: 'Access Bank',
-    app_status: 'submitted',
-    application_status: 'submitted',
-    terms_agreed: true,
-    full_terms_agreed: true,
-    collateral_terms_agreed: true,
-    interest_ack_agreed: true,
-    full_terms_agreed_at: '2026-09-21T08:42:00Z',
-    agreement_version: 'v2.1',
-    review_notes: 'Regular cooperative saver for 14 months. Credit risk score: A',
-    admin_notes: 'Guarantor document submitted and verified by Ikeja branch',
-    guarantor_verified: true,
-    collateral_verified: true,
-    processing_fee_paid: false,
-    created_at: '2026-09-21T08:42:00Z',
-    updated_at: '2026-09-21T08:42:00Z',
-    member_id: 'mem-003',
-    user_id: 'usr-003',
-  },
-  {
-    id: 'loan-app-002',
-    application_number: 'LN/2026/00519',
-    applicant_name: 'Chiamaka Nwosu',
-    applicant_phone: '+234 813 890 1234',
-    applicant_address: '5 Hospital Road, Port Harcourt',
-    applicant_gender: 'Female',
-    applicant_state: 'Rivers',
-    loan_purpose: 'Emergency Medical & Clinic Supplies',
-    requested_amount: 200000,
-    duration_months: 3,
-    processing_fee_amount: 5000,
-    interest_rate_percent: 4,
-    monthly_interest_amount: 8000,
-    total_interest_amount: 24000,
-    total_repayment_amount: 224000,
-    account_name: 'Chiamaka Nwosu',
-    account_number: '2045678901',
-    bank_name: 'Zenith Bank',
-    app_status: 'under_review',
-    application_status: 'under_review',
-    terms_agreed: true,
-    full_terms_agreed: true,
-    collateral_terms_agreed: true,
-    interest_ack_agreed: true,
-    full_terms_agreed_at: '2026-09-20T14:17:00Z',
-    agreement_version: 'v2.1',
-    review_notes: 'Urgent emergency loan application.',
-    admin_notes: '',
-    guarantor_verified: true,
-    collateral_verified: false,
-    processing_fee_paid: false,
-    created_at: '2026-09-20T14:17:00Z',
-    updated_at: '2026-09-20T14:17:00Z',
-    member_id: 'mem-007',
-    user_id: 'usr-007',
-  },
-  {
-    id: 'loan-app-003',
-    application_number: 'LN/2026/00515',
-    applicant_name: 'Emeka Eze',
-    applicant_phone: '+234 816 901 2345',
-    applicant_address: '19 Ikorodu Road, Maryland, Lagos',
-    applicant_gender: 'Male',
-    applicant_state: 'Lagos',
-    loan_purpose: 'Equipment Purchase & Tech Workstation Upgrade',
-    requested_amount: 1200000,
-    duration_months: 12,
-    processing_fee_amount: 24000,
-    interest_rate_percent: 5,
-    monthly_interest_amount: 60000,
-    total_interest_amount: 720000,
-    total_repayment_amount: 1920000,
-    account_name: 'Emeka Eze',
-    account_number: '0034567892',
-    bank_name: 'GTBank',
-    app_status: 'guarantor_verification',
-    application_status: 'under_review',
-    terms_agreed: true,
-    full_terms_agreed: true,
-    collateral_terms_agreed: true,
-    interest_ack_agreed: true,
-    full_terms_agreed_at: '2026-09-18T15:48:00Z',
-    agreement_version: 'v2.1',
-    review_notes: 'Guarantor verification in progress with Uche Eze.',
-    admin_notes: 'Requested signed guarantor form upload.',
-    guarantor_verified: false,
-    collateral_verified: true,
-    processing_fee_paid: false,
-    created_at: '2026-09-18T15:48:00Z',
-    updated_at: '2026-09-18T15:48:00Z',
-    member_id: 'mem-008',
-    user_id: 'usr-008',
-  },
-  {
-    id: 'loan-app-004',
-    application_number: 'LN/2026/00508',
-    applicant_name: 'Ibrahim Musa',
-    applicant_phone: '+234 811 789 0123',
-    applicant_address: '44 Constitution Avenue, Central Area, Abuja',
-    applicant_gender: 'Male',
-    applicant_state: 'Abuja (FCT)',
-    loan_purpose: 'Agricultural Machinery & Grain Storage Facility',
-    requested_amount: 2500000,
-    duration_months: 12,
-    processing_fee_amount: 50000,
-    interest_rate_percent: 5,
-    monthly_interest_amount: 125000,
-    total_interest_amount: 1500000,
-    total_repayment_amount: 4000000,
-    account_name: 'Ibrahim Garba Musa',
-    account_number: '1012345678',
-    bank_name: 'First Bank of Nigeria',
-    app_status: 'approved',
-    application_status: 'approved',
-    terms_agreed: true,
-    full_terms_agreed: true,
-    collateral_terms_agreed: true,
-    interest_ack_agreed: true,
-    full_terms_agreed_at: '2026-09-15T11:20:00Z',
-    agreement_version: 'v2.1',
-    review_notes: 'Approved by Credit Committee. Awaiting fee confirmation.',
-    admin_notes: 'Board approval granted.',
-    guarantor_verified: true,
-    collateral_verified: true,
-    processing_fee_paid: true,
-    created_at: '2026-09-15T11:20:00Z',
-    updated_at: '2026-09-16T14:30:00Z',
-    member_id: 'mem-006',
-    user_id: 'usr-006',
-  }
-];
 
 export default function AdminLoansPage() {
   const { user, isAdmin } = useAuth();
   const supabase = createClient();
 
+  const [adminName, setAdminName] = useState('Administrator');
+  const [adminId, setAdminId] = useState('');
   const [loading, setLoading] = useState(true);
   const [applications, setApplications] = useState<LoanApplication[]>([]);
   const [selected, setSelected] = useState<LoanApplication | null>(null);
@@ -265,6 +117,12 @@ export default function AdminLoansPage() {
   const [paymentPrincipal, setPaymentPrincipal] = useState('');
 
   useEffect(() => {
+    // Load admin name from auth
+    if (user) {
+      const meta = user.user_metadata;
+      setAdminName(meta?.full_name || user.email || 'Administrator');
+      setAdminId(meta?.member_number || '');
+    }
     // Check URL parameters on mount
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
@@ -511,7 +369,7 @@ export default function AdminLoansPage() {
   });
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout role="admin" memberName={adminName} memberId={adminId}>
       <div className="flex h-[calc(100vh-64px)] overflow-hidden">
         {/* Left Panel — Application List */}
         <div className="w-80 border-r border-gray-100 bg-white flex flex-col shrink-0">

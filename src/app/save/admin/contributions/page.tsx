@@ -18,17 +18,8 @@ const STATUS_CONFIG: Record<ContributionStatus, { label: string; classes: string
   overdue: { label: 'Overdue', classes: 'bg-red-500/15 text-red-400 border-red-500/25' },
 };
 
-// Extended demo data including multiple members
+// Contribution row with member info joined from profiles
 type ContributionRow = Contribution & { memberName: string; memberNumber: string };
-
-const DEMO_ROWS: ContributionRow[] = [
-  { id: '1', memberId: 'm1', memberName: 'Adaeze Okonkwo', memberNumber: 'CLMV/2026/0001', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-09-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-001', contributionStatus: 'paid', createdAt: '', updatedAt: '' },
-  { id: '2', memberId: 'm2', memberName: 'Emeka Nwosu', memberNumber: 'CLMV/2026/0002', contributionMonth: 9, contributionYear: 2026, expectedAmount: 15000, amountPaid: 10000, outstandingAmount: 5000, paymentDate: '2026-09-10', paymentMethod: 'Cash', transactionReference: 'TXN-002', contributionStatus: 'partially_paid', createdAt: '', updatedAt: '' },
-  { id: '3', memberId: 'm3', memberName: 'Ngozi Eze', memberNumber: 'CLMV/2026/0003', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, paymentDate: undefined, paymentMethod: undefined, transactionReference: undefined, contributionStatus: 'overdue', createdAt: '', updatedAt: '' },
-  { id: '4', memberId: 'm4', memberName: 'Chukwudi Obi', memberNumber: 'CLMV/2026/0004', contributionMonth: 9, contributionYear: 2026, expectedAmount: 20000, amountPaid: 20000, outstandingAmount: 0, paymentDate: '2026-09-03', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-004', contributionStatus: 'paid', createdAt: '', updatedAt: '' },
-  { id: '5', memberId: 'm5', memberName: 'Yetunde Alabi', memberNumber: 'CLMV/2026/0005', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, paymentDate: undefined, paymentMethod: undefined, transactionReference: undefined, contributionStatus: 'unpaid', createdAt: '', updatedAt: '' },
-  { id: '6', memberId: 'm6', memberName: 'Tunde Fashola', memberNumber: 'CLMV/2026/0006', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-09-07', paymentMethod: 'POS', transactionReference: 'TXN-006', contributionStatus: 'paid', createdAt: '', updatedAt: '' },
-];
 
 type SelectedMonth = { month: number; year: number };
 
@@ -55,7 +46,51 @@ export default function AdminContributionsPage() {
         setMemberId(meta?.member_number || '');
       }
     });
-    setTimeout(() => { setRows(DEMO_ROWS); setLoading(false); }, 500);
+
+    async function fetchContributions() {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from('contributions')
+          .select(`
+            *,
+            profiles:member_id (
+              full_name,
+              member_number
+            )
+          `)
+          .order('contribution_year', { ascending: false })
+          .order('contribution_month', { ascending: false });
+
+        if (error) {
+          console.error('Error fetching contributions:', error);
+          setRows([]);
+        } else {
+          const mapped: ContributionRow[] = (data || []).map((r: any) => ({
+            id: r.id,
+            memberId: r.member_id,
+            memberName: r.profiles?.full_name || 'Unknown Member',
+            memberNumber: r.profiles?.member_number || '—',
+            contributionMonth: r.contribution_month,
+            contributionYear: r.contribution_year,
+            expectedAmount: r.expected_amount ?? 0,
+            amountPaid: r.amount_paid ?? 0,
+            outstandingAmount: r.outstanding_amount ?? 0,
+            paymentDate: r.payment_date ?? undefined,
+            paymentMethod: r.payment_method ?? undefined,
+            transactionReference: r.transaction_reference ?? undefined,
+            contributionStatus: r.contribution_status ?? 'unpaid',
+            createdAt: r.created_at ?? '',
+            updatedAt: r.updated_at ?? '',
+          }));
+          setRows(mapped);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchContributions();
   }, []);
 
   const filtered = rows.filter((r) => {
@@ -74,26 +109,49 @@ export default function AdminContributionsPage() {
   const handleRecordPayment = async () => {
     if (!recordModal) return;
     setSaving(true);
-    await new Promise((r) => setTimeout(r, 800));
-    const paid = parseFloat(payAmount) || 0;
-    setRows((prev) => prev.map((r) => {
-      if (r.id !== recordModal.id) return r;
-      const newPaid = Math.min(r.amountPaid + paid, r.expectedAmount);
-      const outstanding = r.expectedAmount - newPaid;
-      return {
-        ...r,
-        amountPaid: newPaid,
-        outstandingAmount: outstanding,
-        paymentDate: new Date().toISOString().split('T')[0],
-        paymentMethod: payMethod,
-        transactionReference: payRef || `TXN-${Date.now()}`,
-        contributionStatus: outstanding <= 0 ? 'paid' : 'partially_paid',
-      };
-    }));
-    setSaving(false);
-    setRecordModal(null);
-    setPayAmount('');
-    setPayRef('');
+    try {
+      const supabase = createClient();
+      const paid = parseFloat(payAmount) || 0;
+      const newPaid = Math.min(recordModal.amountPaid + paid, recordModal.expectedAmount);
+      const outstanding = recordModal.expectedAmount - newPaid;
+      const newStatus: ContributionStatus = outstanding <= 0 ? 'paid' : 'partially_paid';
+
+      const { error } = await supabase
+        .from('contributions')
+        .update({
+          amount_paid: newPaid,
+          outstanding_amount: outstanding,
+          payment_date: new Date().toISOString().split('T')[0],
+          payment_method: payMethod,
+          transaction_reference: payRef || `TXN-${Date.now()}`,
+          contribution_status: newStatus,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', recordModal.id);
+
+      if (error) {
+        console.error('Failed to update contribution:', error);
+      }
+
+      // Update local state regardless (optimistic)
+      setRows((prev) => prev.map((r) => {
+        if (r.id !== recordModal.id) return r;
+        return {
+          ...r,
+          amountPaid: newPaid,
+          outstandingAmount: outstanding,
+          paymentDate: new Date().toISOString().split('T')[0],
+          paymentMethod: payMethod,
+          transactionReference: payRef || `TXN-${Date.now()}`,
+          contributionStatus: newStatus,
+        };
+      }));
+    } finally {
+      setSaving(false);
+      setRecordModal(null);
+      setPayAmount('');
+      setPayRef('');
+    }
   };
 
   const months = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, label: MONTH_NAMES[i] }));
@@ -269,6 +327,21 @@ export default function AdminContributionsPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/10">
+                  {filtered.length === 0 && (
+                    <tr>
+                      <td colSpan={10} className="px-4 py-14 text-center">
+                        <div className="flex flex-col items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center">
+                            <svg className="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                          </div>
+                          <p className="text-sm font-semibold text-white/50">No contribution records found</p>
+                          <p className="text-xs text-white/30">Records will appear here once members have contribution data in the system.</p>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
                   {filtered.map((r, i) => {
                     const pct = r.expectedAmount > 0 ? Math.round((r.amountPaid / r.expectedAmount) * 100) : 0;
                     const cfg = STATUS_CONFIG[r.contributionStatus];
