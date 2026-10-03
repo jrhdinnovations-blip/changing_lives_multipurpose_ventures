@@ -117,7 +117,7 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   investors_circle_coop_account_number: '2044406437',
   investors_circle_coop_bank_name: 'First Bank of Nigeria',
   cooperative_name: 'Changing Lives Multipurpose Cooperative Society Limited (CLIMPS)',
-  cooperative_address: 'Plot 14, Commercial Avenue, Victoria Island, Lagos State, Nigeria',
+  cooperative_address: 'Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State',
   cooperative_phone: '+234 803 123 4567',
   cooperative_email: 'admin@climps.org',
 };

@@ -10,7 +10,8 @@ import {
   CheckCircle2, 
   ArrowRight, 
   Eye, 
-  Target 
+  Target,
+  MapPin 
 } from 'lucide-react';
 
 const SERVICES = [
@@ -272,6 +273,33 @@ export default function AboutSection() {
             </div>
           </div>
 
+        </div>
+
+        {/* Office Address & Secretariat */}
+        <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-[#0d1527] border border-white/10 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0 mt-0.5">
+              <MapPin size={24} />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">
+                Our Office Address
+              </div>
+              <h4 className="text-lg sm:text-xl font-bold text-white leading-tight">
+                Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State
+              </h4>
+              <p className="text-xs text-white/50 mt-1">
+                Changing Lives Multipurpose Cooperative Society • Email: <a href="mailto:admin@climps.org" className="text-emerald-400 hover:underline">admin@climps.org</a>
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/apply"
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-all shrink-0 active:scale-95 shadow-lg shadow-emerald-500/20"
+          >
+            Become a Member
+            <ArrowRight size={14} />
+          </Link>
         </div>
 
       </div>
