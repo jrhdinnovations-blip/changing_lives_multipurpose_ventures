@@ -205,7 +205,7 @@ export default function MemberDashboardPage() {
         )}
 
         {/* KPI Bento */}
-        <MemberKPIBento />
+        <MemberKPIBento member={member} />
 
         {/* Quick Actions */}
         <MemberQuickActions />
@@ -213,13 +213,13 @@ export default function MemberDashboardPage() {
         {/* Main Grid */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <div className="xl:col-span-2 space-y-6">
-            <MemberSavingsSection />
-            <MemberLoanSection />
-            <MemberTransactionsTable />
+            <MemberSavingsSection member={member} />
+            <MemberLoanSection member={member} />
+            <MemberTransactionsTable member={member} />
           </div>
           <div className="space-y-6">
-            <MemberInvestmentSection />
-            <MemberUpcomingObligations />
+            <MemberInvestmentSection member={member} />
+            <MemberUpcomingObligations member={member} />
           </div>
         </div>
       </div>

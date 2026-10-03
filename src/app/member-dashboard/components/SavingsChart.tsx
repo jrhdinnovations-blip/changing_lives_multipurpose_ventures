@@ -5,37 +5,42 @@ import {
   ResponsiveContainer
 } from 'recharts';
 
-const data = [
-  { month: 'Oct 25', balance: 612000, contributions: 10000 },
-  { month: 'Nov 25', balance: 638500, contributions: 10000 },
-  { month: 'Dec 25', balance: 661000, contributions: 10000 },
-  { month: 'Jan 26', balance: 689000, contributions: 10000 },
-  { month: 'Feb 26', balance: 704500, contributions: 10000 },
-  { month: 'Mar 26', balance: 718000, contributions: 10000 },
-  { month: 'Apr 26', balance: 730500, contributions: 10000 },
-  { month: 'May 26', balance: 745000, contributions: 10000 },
-  { month: 'Jun 26', balance: 758000, contributions: 10000 },
-  { month: 'Jul 26', balance: 774500, contributions: 10000 },
-  { month: 'Aug 26', balance: 792000, contributions: 10000 },
-  { month: 'Sep 26', balance: 847250, contributions: 10000 },
-];
+import { TrendingUp } from 'lucide-react';
+
+interface SavingsChartProps {
+  data?: { month: string; balance: number; contributions: number }[];
+}
 
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-[#0d1527] border border-white/10 rounded-xl p-3 card-shadow-md text-xs">
         <p className="font-semibold text-white mb-1.5">{label}</p>
-        <p className="text-white/50">Balance: <span className="font-bold text-emerald-400 font-tabular">₦{payload[0]?.value?.toLocaleString()}</span></p>
+        <p className="text-white/50">Balance: <span className="font-bold text-emerald-400 font-tabular">₦{Number(payload[0]?.value || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</span></p>
       </div>
     );
   }
   return null;
 };
 
-export default function SavingsChart() {
+export default function SavingsChart({ data }: SavingsChartProps) {
+  if (!data || data.length === 0) {
+    return (
+      <div className="py-12 text-center flex flex-col items-center justify-center">
+        <div className="w-10 h-10 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-emerald-400 mb-3">
+          <TrendingUp size={18} />
+        </div>
+        <p className="text-sm font-bold text-white">No Savings History Yet</p>
+        <p className="text-xs text-white/50 max-w-xs mt-1">
+          Your savings balance and contribution growth trend will appear here as transactions are recorded.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <p className="text-xs text-white/50 mb-3">12-month savings balance trend</p>
+      <p className="text-xs text-white/50 mb-3">Savings balance trend</p>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
           <defs>

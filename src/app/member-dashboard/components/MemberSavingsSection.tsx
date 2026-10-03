@@ -1,22 +1,139 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import Badge from '@/components/ui/Badge';
 import {
   Wallet,
-  ArrowDownLeft,
-  ArrowUpRight,
   ChevronRight,
-  ShieldCheck,
   Calendar,
-  Sparkles,
 } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 const SavingsChart = dynamic(() => import('./SavingsChart'), { ssr: false });
 
-export default function MemberSavingsSection() {
+interface MemberSavingsSectionProps {
+  member?: any;
+}
+
+function fmt(n: number) {
+  return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+export default function MemberSavingsSection({ member: memberProp }: MemberSavingsSectionProps) {
   const [activeTab, setActiveTab] = useState<'accounts' | 'chart'>('accounts');
+  const [loading, setLoading] = useState(true);
+  const [savingsAccount, setSavingsAccount] = useState<any>(null);
+  const [contributions, setContributions] = useState<any[]>([]);
+  const [currentMonthStatus, setCurrentMonthStatus] = useState<string>('unpaid');
+  const [chartData, setChartData] = useState<{ month: string; balance: number; contributions: number }[]>([]);
+  const { user } = useAuth();
+  const supabase = createClient();
+
+  useEffect(() => {
+    if (!user) return;
+    loadSavingsData();
+  }, [user, memberProp]);
+
+  async function loadSavingsData() {
+    setLoading(true);
+    try {
+      let member = memberProp;
+      if (!member && user) {
+        const { data } = await supabase
+          .from('members')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        member = data;
+
+        if (!member && user.email) {
+          const { data: byEmail } = await supabase
+            .from('members')
+            .select('*')
+            .ilike('email', user.email)
+            .maybeSingle();
+          member = byEmail;
+        }
+      }
+
+      if (!member) {
+        setLoading(false);
+        return;
+      }
+
+      // Fetch regular savings account
+      const { data: acc } = await supabase
+        .from('savings_accounts')
+        .select('*')
+        .eq('member_id', member.id)
+        .maybeSingle();
+      setSavingsAccount(acc);
+
+      // Fetch contributions
+      const { data: contribs } = await supabase
+        .from('contributions')
+        .select('*')
+        .eq('member_id', member.id)
+        .order('contribution_year', { ascending: true })
+        .order('contribution_month', { ascending: true });
+
+      const contribList = contribs || [];
+      setContributions(contribList);
+
+      // Current month status
+      const now = new Date();
+      const current = contribList.find(
+        c => c.contribution_month === now.getMonth() + 1 && c.contribution_year === now.getFullYear()
+      );
+      if (current) {
+        setCurrentMonthStatus(current.contribution_status || 'unpaid');
+      } else {
+        const hasCommitment = Number(member.monthly_contribution_amount || member.monthly_contribution || 0) > 0;
+        setCurrentMonthStatus(hasCommitment ? 'unpaid' : 'none');
+      }
+
+      // Build chart data from paid contributions if any
+      const paidContribs = contribList.filter(c => c.contribution_status === 'paid' && Number(c.amount_paid) > 0);
+      if (paidContribs.length > 0) {
+        let runningTotal = 0;
+        const cData = paidContribs.map(c => {
+          runningTotal += Number(c.amount_paid || 0);
+          const date = new Date(c.contribution_year, c.contribution_month - 1, 1);
+          const monthStr = date.toLocaleString('default', { month: 'short', year: '2-digit' });
+          return {
+            month: monthStr,
+            balance: runningTotal,
+            contributions: Number(c.amount_paid || 0),
+          };
+        });
+        setChartData(cData);
+      } else {
+        setChartData([]);
+      }
+    } catch (e) {
+      console.error('Error loading savings section data:', e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Calculate real balances
+  const paidContributionsSum = contributions
+    .filter(c => c.contribution_status === 'paid')
+    .reduce((sum, c) => sum + (Number(c.amount_paid) || 0), 0);
+
+  const monthlyContribBalance = paidContributionsSum > 0
+    ? paidContributionsSum
+    : Number(memberProp?.total_contributions) || 0;
+
+  const regularSavingsBalance = Number(savingsAccount?.balance) || 0;
+  const accruedInterest = Number(savingsAccount?.accrued_interest) || 0;
+  const totalCooperativeSavings = Number(memberProp?.total_savings) || (monthlyContribBalance + regularSavingsBalance);
+  const loanCreditLimit = monthlyContribBalance * 2.5;
+
+  const now = new Date();
+  const currentMonthName = now.toLocaleString('default', { month: 'long' });
 
   return (
     <div className="card-base">
@@ -57,7 +174,7 @@ export default function MemberSavingsSection() {
                 : 'text-white/50 hover:text-white'
             }`}
           >
-            {tab === 'accounts' ? 'Savings Accounts (2)' : 'Growth Trend Chart'}
+            {tab === 'accounts' ? 'Savings Accounts' : 'Growth Trend Chart'}
           </button>
         ))}
       </div>
@@ -90,13 +207,21 @@ export default function MemberSavingsSection() {
               </div>
 
               <div className="text-right">
-                <p className="text-base font-bold text-white font-tabular">₦310,000.00</p>
-                <span className="text-[11px] text-emerald-600 font-semibold">September Paid</span>
+                <p className="text-base font-bold text-white font-tabular">{fmt(monthlyContribBalance)}</p>
+                <span className={`text-[11px] font-semibold ${
+                  currentMonthStatus === 'paid' ? 'text-emerald-400' :
+                  currentMonthStatus === 'partially_paid' ? 'text-amber-400' :
+                  currentMonthStatus === 'none' ? 'text-white/40' : 'text-red-400'
+                }`}>
+                  {currentMonthStatus === 'paid' ? `${currentMonthName} Paid` :
+                   currentMonthStatus === 'partially_paid' ? `${currentMonthName} Partial` :
+                   currentMonthStatus === 'none' ? 'No monthly plan set' : `${currentMonthName} Unpaid`}
+                </span>
               </div>
             </div>
 
             <div className="mt-3 pt-2.5 border-t border-blue-100/60 flex items-center justify-between text-xs text-white/50">
-              <span>Unlocks 2.5× Loan Multiplier (₦775,000 credit limit)</span>
+              <span>Unlocks 2.5× Loan Multiplier ({fmt(loanCreditLimit)} credit limit)</span>
               <span className="text-blue-600 font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 View Schedule <ChevronRight className="w-3.5 h-3.5" />
               </span>
@@ -129,13 +254,13 @@ export default function MemberSavingsSection() {
               </div>
 
               <div className="text-right">
-                <p className="text-base font-bold text-white font-tabular">₦285,750.00</p>
+                <p className="text-base font-bold text-white font-tabular">{fmt(regularSavingsBalance)}</p>
                 <span className="text-[11px] text-teal-600 font-semibold">Available Balance</span>
               </div>
             </div>
 
             <div className="mt-3 pt-2.5 border-t border-teal-100/60 flex items-center justify-between text-xs text-white/50">
-              <span>Accrued Interest: +₦10,750.00</span>
+              <span>Accrued Interest: +{fmt(accruedInterest)}</span>
               <span className="text-teal-600 font-medium inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 Deposit & Withdraw <ChevronRight className="w-3.5 h-3.5" />
               </span>
@@ -148,12 +273,12 @@ export default function MemberSavingsSection() {
               <p className="text-xs text-white/50 font-medium">Total Cooperative Savings</p>
               <p className="text-xs text-emerald-600 font-semibold">Insured by Changing Lives Multipurpose</p>
             </div>
-            <p className="text-lg font-extrabold text-emerald-400 font-tabular">₦595,750.00</p>
+            <p className="text-lg font-extrabold text-emerald-400 font-tabular">{fmt(totalCooperativeSavings)}</p>
           </div>
         </div>
       )}
 
-      {activeTab === 'chart' && <SavingsChart />}
+      {activeTab === 'chart' && <SavingsChart data={chartData} />}
     </div>
   );
 }

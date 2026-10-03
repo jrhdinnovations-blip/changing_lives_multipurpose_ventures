@@ -39,7 +39,11 @@ const typeBadgeVariant: Record<string, 'active' | 'pending' | 'paid' | 'partial'
   reversal: 'pending',
 };
 
-export default function MemberTransactionsTable() {
+interface MemberTransactionsTableProps {
+  member?: any;
+}
+
+export default function MemberTransactionsTable({ member: memberProp }: MemberTransactionsTableProps = {}) {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState<string>('all');
   const [transactions, setTransactions] = useState<any[]>([]);
@@ -50,23 +54,36 @@ export default function MemberTransactionsTable() {
   useEffect(() => {
     if (!user) return;
     loadTransactions();
-  }, [user]);
+  }, [user, memberProp]);
 
   async function loadTransactions() {
     setLoading(true);
     try {
-      const { data: member } = await supabase
-        .from('members')
-        .select('id')
-        .eq('user_id', user.id)
-        .single();
+      let memberId = memberProp?.id;
+      if (!memberId && user) {
+        let { data: m } = await supabase
+          .from('members')
+          .select('id')
+          .eq('user_id', user.id)
+          .maybeSingle();
 
-      if (!member) { setLoading(false); return; }
+        if (!m && user.email) {
+          const { data: byEmail } = await supabase
+            .from('members')
+            .select('id')
+            .ilike('email', user.email)
+            .maybeSingle();
+          m = byEmail;
+        }
+        memberId = m?.id;
+      }
+
+      if (!memberId) { setLoading(false); return; }
 
       const { data, error } = await supabase
         .from('transactions')
         .select('*')
-        .eq('member_id', member.id)
+        .eq('member_id', memberId)
         .order('created_at', { ascending: false })
         .limit(50);
 

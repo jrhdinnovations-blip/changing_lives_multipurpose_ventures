@@ -52,7 +52,11 @@ function fmt(n: number) {
   return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
-export default function MemberKPIBento() {
+interface MemberKPIBentoProps {
+  member?: any;
+}
+
+export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoProps) {
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [kpiCards, setKpiCards] = useState<KPICard[]>([]);
   const [loading, setLoading] = useState(true);
@@ -62,17 +66,30 @@ export default function MemberKPIBento() {
   useEffect(() => {
     if (!user) return;
     loadKPIs();
-  }, [user]);
+  }, [user, memberProp]);
 
   async function loadKPIs() {
     setLoading(true);
     try {
       // Get member record
-      const { data: member } = await supabase
-        .from('members')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
+      let member = memberProp;
+      if (!member && user) {
+        const { data } = await supabase
+          .from('members')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+        member = data;
+
+        if (!member && user.email) {
+          const { data: byEmail } = await supabase
+            .from('members')
+            .select('*')
+            .ilike('email', user.email)
+            .maybeSingle();
+          member = byEmail;
+        }
+      }
 
       if (!member) {
         setLoading(false);
@@ -103,7 +120,7 @@ export default function MemberKPIBento() {
         .from('loans')
         .select('*')
         .eq('member_id', member.id)
-        .eq('loan_status', 'active')
+        .in('loan_status', ['active', 'disbursed', 'overdue'])
         .order('created_at', { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -114,24 +131,25 @@ export default function MemberKPIBento() {
         .select('amount_invested, actual_return, investment_status')
         .eq('member_id', member.id);
 
-      const totalInvested = investments?.filter(i => i.investment_status === 'active').reduce((s, i) => s + i.amount_invested, 0) || 0;
-      const totalReturns = investments?.reduce((s, i) => s + (i.actual_return || 0), 0) || 0;
+      const totalInvested = investments?.filter(i => i.investment_status === 'active').reduce((s, i) => s + (Number(i.amount_invested) || 0), 0) || 0;
+      const totalReturns = investments?.reduce((s, i) => s + (Number(i.actual_return) || 0), 0) || 0;
 
-      const contribStatus = currentContrib?.contribution_status || 'unpaid';
+      const contribStatus = currentContrib?.contribution_status || (Number(member.monthly_contribution_amount || member.monthly_contribution || 0) > 0 ? 'unpaid' : 'none');
       const contribBadge = contribStatus === 'paid'
         ? { text: 'PAID', type: 'success' as const }
         : contribStatus === 'partially_paid'
         ? { text: 'PARTIAL', type: 'warning' as const }
-        : { text: 'UNPAID', type: 'danger' as const };
+        : contribStatus === 'unpaid'
+        ? { text: 'UNPAID', type: 'danger' as const }
+        : undefined;
 
       const cards: KPICard[] = [
         {
           id: 'kpi-total-savings',
           label: 'Total Savings Balance',
-          value: fmt(member.total_savings || 0),
-          subValue: fmt(member.monthly_contribution_amount || 0),
-          subLabel: 'Monthly contribution',
-          trend: { direction: 'up', value: '+₦42,500', label: 'this quarter' },
+          value: fmt(Number(member.total_savings) || 0),
+          subValue: fmt(Number(member.monthly_contribution_amount || member.monthly_contribution) || 0),
+          subLabel: 'Monthly contribution target',
           icon: PiggyBank,
           variant: 'savings',
           span: 'wide',
@@ -140,11 +158,13 @@ export default function MemberKPIBento() {
         {
           id: 'kpi-contribution',
           label: `${now.toLocaleString('default', { month: 'short' })} ${now.getFullYear()} Contribution`,
-          value: fmt(member.monthly_contribution_amount || 0),
+          value: fmt(Number(member.monthly_contribution_amount || member.monthly_contribution) || 0),
           badge: contribBadge,
           subLabel: currentContrib?.payment_date
             ? `Paid on ${new Date(currentContrib.payment_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}`
-            : 'Not yet paid',
+            : Number(member.monthly_contribution_amount || member.monthly_contribution || 0) > 0
+            ? 'Not yet paid this month'
+            : 'No monthly contribution set',
           icon: CheckCircle2,
           variant: contribStatus === 'paid' ? 'success' : 'alert',
           tooltip: 'Your monthly cooperative contribution status',
@@ -156,29 +176,26 @@ export default function MemberKPIBento() {
           subLabel: totalOutstanding === 0 ? 'No arrears — great standing!' : 'Please clear outstanding balance',
           icon: AlertTriangle,
           variant: totalOutstanding > 0 ? 'alert' : 'default',
-          trend: { direction: 'neutral', value: totalOutstanding > 0 ? 'Overdue' : '0 months', label: 'overdue' },
           tooltip: 'Total unpaid or overdue contributions',
         },
         {
           id: 'kpi-loan',
           label: 'Active Loan Balance',
-          value: fmt(activeLoan?.outstanding_balance || member.active_loan_balance || 0),
-          subValue: activeLoan ? fmt(activeLoan.repayment_amount) : undefined,
+          value: fmt(Number(activeLoan?.outstanding_balance ?? member.active_loan_balance) || 0),
+          subValue: activeLoan ? fmt(Number(activeLoan.repayment_amount) || 0) : undefined,
           subLabel: activeLoan?.next_repayment_date
             ? `Next instalment due ${new Date(activeLoan.next_repayment_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}`
             : 'No active loan',
-          trend: activeLoan ? { direction: 'down', value: fmt(activeLoan.repayment_amount), label: 'last payment' } : undefined,
           icon: CreditCard,
           variant: 'loan',
-          badge: activeLoan ? { text: 'ON TRACK', type: 'info' } : undefined,
+          badge: activeLoan ? { text: 'ACTIVE', type: 'info' } : undefined,
           tooltip: 'Outstanding principal on your active loan',
         },
         {
           id: 'kpi-investment',
           label: 'Investment Portfolio',
-          value: fmt(totalInvested || member.investment_portfolio_value || 0),
-          subLabel: 'Active investments',
-          trend: { direction: 'up', value: '+11.5%', label: 'projected return' },
+          value: fmt(totalInvested || Number(member.investment_portfolio_value) || 0),
+          subLabel: totalInvested > 0 ? `${investments?.filter(i => i.investment_status === 'active').length || 0} active investment(s)` : 'No active investments',
           icon: TrendingUp,
           variant: 'invest',
           tooltip: 'Total current value of active investments',
@@ -188,7 +205,6 @@ export default function MemberKPIBento() {
           label: 'Total Returns Earned',
           value: fmt(totalReturns),
           subLabel: `Across ${investments?.filter(i => i.investment_status === 'matured').length || 0} matured investments`,
-          trend: { direction: 'up', value: '+₦18,200', label: 'this year' },
           icon: Wallet,
           variant: 'success',
           tooltip: 'Actual returns received from matured investments',
