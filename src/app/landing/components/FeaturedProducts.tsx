@@ -29,10 +29,10 @@ interface ProductItem {
 }
 
 const products: Record<ProductCategory, ProductItem[]> = {
-  savings: [
+  savings:  [
     {
-      name: 'Monthly Cooperative Contribution',
-      tag: 'Core Savings',
+      name: 'Regular Savings',
+      tag: 'Regular Savings',
       tagColor: 'bg-blue-500/20 text-blue-300',
       rate: '4%',
       rateLabel: 'Monthly',
@@ -41,7 +41,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
       duration: '12+ months',
       durationLabel: 'Min. Tenure',
       description:
-        'Core cooperative thrift contribution. Earns 4% monthly when maintained for at least 1 year — early withdrawal forfeits interest.',
+        'Core cooperative thrift contribution. Earns 4% monthly interest when maintained for at least 1 year — early withdrawal forfeits ALL interest.',
       features: [
         '4% monthly interest on balance',
         'At least 1-year tenure to retain interest',
@@ -52,31 +52,32 @@ const products: Record<ProductCategory, ProductItem[]> = {
       href: '/save/start',
       viewHref: '/savings-products',
       requiresAuth: true,
-      ctaText: 'Start Contributing',
+      ctaText: 'Start Regular Savings',
       guestCtaText: 'Sign In to Subscribe',
     },
     {
-      name: 'Regular Savings Account',
-      tag: 'Voluntary Savings',
-      tagColor: 'bg-teal-500/20 text-teal-300',
-      rate: '4%',
-      rateLabel: 'Monthly',
-      minAmount: '₦5,000 – ₦200,000',
-      minLabel: 'Per Month',
-      duration: '12+ months',
-      durationLabel: 'Min. Tenure',
+      name: 'Lock Your Funds',
+      tag: 'Lock Your Funds',
+      tagColor: 'bg-amber-500/20 text-amber-300',
+      rate: '7%',
+      rateLabel: 'p.a. at Maturity',
+      minAmount: '₦10,000',
+      minLabel: 'Min. Deposit',
+      duration: '6–24 months',
+      durationLabel: 'Lock-up Period',
       description:
-        'Flexible cooperative savings. Deposits held for at least 1 full year earn 4% monthly interest. Simple. Structured. Rewarding.',
+        'Fixed-term locked savings. Lock for 6+ months and earn 7% p.a. interest at maturity. Withdraw early and ALL interest is forfeited — principal returned.',
       features: [
-        '4% monthly return on saved funds',
-        '1-year tenure rule applies',
-        'Up to ₦200,000 per month',
+        '7% p.a. interest credited at maturity only',
+        '⚠️ ALL interest forfeited on early withdrawal',
+        'Tenors: 6, 9, 12, 18, or 24 months',
       ],
-      accentColor: 'border-teal-500/30',
-      btnClass: 'bg-teal-600 hover:bg-teal-500',
-      href: '/savings-products',
+      accentColor: 'border-amber-500/30',
+      btnClass: 'bg-amber-600 hover:bg-amber-500',
+      href: '/save/regular',
+      viewHref: '/savings-products',
       requiresAuth: false,
-      ctaText: 'Explore Savings Products',
+      ctaText: 'Explore Lock Your Funds',
     },
   ],
   investment: [

@@ -179,7 +179,7 @@ export default function SavingsProductsPage() {
       {/* ── Product Cards Section ── */}
       <section className="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Our Two Core Savings Products</h2>
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Our Two Savings Products</h2>
           <p className="text-sm text-white/60 mt-2 max-w-xl mx-auto">
             Transparent terms, competitive returns, and member-first cooperative governance.
           </p>

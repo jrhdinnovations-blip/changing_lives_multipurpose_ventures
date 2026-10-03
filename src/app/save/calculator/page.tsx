@@ -137,7 +137,7 @@ export default function SavingsCalculatorPage() {
               Savings Growth Calculator
             </h1>
             <p className="text-white/70 text-base leading-relaxed">
-              Calculate projected returns and compound savings for Monthly Contribution (4% monthly) and Regular Voluntary Savings.
+              Calculate projected returns for Regular Savings (4% monthly contribution) and Lock Your Funds (7.0% p.a. fixed-term, credited at maturity).
             </p>
           </div>
         </div>
@@ -168,7 +168,7 @@ export default function SavingsCalculatorPage() {
                       : 'border-white/10 bg-white/[0.02] text-white/60 hover:text-white hover:border-white/20'
                   }`}
                 >
-                  <span className="block text-[11px] font-semibold text-emerald-400 uppercase">Core Thrift</span>
+                  <span className="block text-[11px] font-semibold text-emerald-400 uppercase">Regular Savings</span>
                   <span className="font-bold text-xs block mt-0.5 text-white">Monthly Contribution</span>
                   <span className="text-[10px] text-white/50">4% monthly · min 1 yr</span>
                 </button>
@@ -182,9 +182,9 @@ export default function SavingsCalculatorPage() {
                       : 'border-white/10 bg-white/[0.02] text-white/60 hover:text-white hover:border-white/20'
                   }`}
                 >
-                  <span className="block text-[11px] font-semibold text-teal-400 uppercase">Liquid</span>
-                  <span className="font-bold text-xs block mt-0.5 text-white">Regular Savings</span>
-                  <span className="text-[10px] text-white/50">7.0% p.a. Quarterly</span>
+                  <span className="block text-[11px] font-semibold text-amber-400 uppercase">Lock Your Funds</span>
+                  <span className="font-bold text-xs block mt-0.5 text-white">Lock Your Funds</span>
+                  <span className="text-[10px] text-white/50">7.0% p.a. at Maturity</span>
                 </button>
               </div>
 

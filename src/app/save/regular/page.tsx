@@ -195,7 +195,7 @@ export default function RegularSavingsPage() {
       channel: depositChannel === 'card' ? 'Debit Card' : depositChannel === 'ussd' ? 'USSD' : 'Bank Transfer',
       status: 'completed',
       balanceAfter: balance + parsed,
-      description: 'Voluntary Regular Savings Top-up',
+      description: 'Lock Your Funds — Deposit',
     };
 
     setBalance((prev) => prev + parsed);
@@ -239,7 +239,7 @@ export default function RegularSavingsPage() {
       channel: `Bank Payout (${bankName.split(' ')[0]})`,
       status: 'completed',
       balanceAfter: balance - parsed,
-      description: withdrawReason || 'Voluntary Regular Savings Withdrawal',
+      description: withdrawReason || 'Lock Your Funds — Early Withdrawal',
     };
 
     setBalance((prev) => prev - parsed);
@@ -483,7 +483,7 @@ export default function RegularSavingsPage() {
                   <span>Compound Growth Simulator</span>
                 </h3>
                 <p className="text-xs text-white/50">
-                  Simulate your Regular Savings balance with monthly top-ups at 7.0% annual interest.
+                  Simulate your Lock Your Funds balance with deposits at 7.0% annual interest credited at maturity.
                 </p>
               </div>
               <div className="text-right">
