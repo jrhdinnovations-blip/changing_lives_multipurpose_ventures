@@ -240,3 +240,11 @@
   30% { background-color: rgba(22,163,74,0.12); }
   100% { background-color: transparent; }
 }
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker 60s linear infinite;
+  will-change: transform;
+}
