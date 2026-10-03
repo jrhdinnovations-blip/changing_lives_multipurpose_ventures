@@ -17,9 +17,12 @@ import {
   AlertCircle,
   Calendar,
   Sparkles,
+  LogIn,
 } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 function InvestmentCalculatorInner() {
+  const { user } = useAuth();
   const searchParams = useSearchParams();
   const initialProductId = searchParams.get('product') || INVESTMENT_PRODUCTS[0].id;
   const initialAmountParam = Number(searchParams.get('amount')) || 100000;
@@ -296,13 +299,24 @@ function InvestmentCalculatorInner() {
               </div>
 
               {/* Action CTA */}
-              <Link
-                href={`/invest/now?product=${selectedProduct.id}&amount=${amount}`}
-                className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
-              >
-                Proceed to Invest with this Plan
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              {user ? (
+                <Link
+                  href={`/invest/now?product=${selectedProduct.id}&amount=${amount}`}
+                  className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
+                >
+                  <span>Proceed to Invest with this Plan</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : (
+                <Link
+                  href={`/login?redirect=${encodeURIComponent(`/invest/now?product=${selectedProduct.id}&amount=${amount}`)}`}
+                  className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500/80 to-teal-600/80 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-500 hover:to-teal-600 transition-all shadow-lg shadow-emerald-500/20"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign In to Invest with this Plan</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
             </div>
 
             {/* Mandatory Disclaimer */}

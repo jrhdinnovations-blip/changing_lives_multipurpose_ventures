@@ -98,13 +98,23 @@ export default function InvestmentProductDetailPage({
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 ) : product.productStatus === 'open' ? (
-                  <Link
-                    href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
-                    className="text-center py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-400 hover:to-teal-500 transition-all shadow-md flex items-center justify-center gap-1.5"
-                  >
-                    {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                  user ? (
+                    <Link
+                      href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
+                      className="text-center py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-400 hover:to-teal-500 transition-all shadow-md flex items-center justify-center gap-1.5"
+                    >
+                      {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Invest Now'}
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/login?redirect=${encodeURIComponent(product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`)}`}
+                      className="text-center py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-400 hover:to-teal-500 transition-all shadow-md flex items-center justify-center gap-1.5"
+                    >
+                      <LogIn className="w-3.5 h-3.5" />
+                      Sign In to Invest
+                    </Link>
+                  )
                 ) : (
                   <button disabled className="opacity-50 text-center py-2.5 text-xs font-bold text-white border border-white/20 rounded-xl cursor-not-allowed">
                     Subscription Closed
@@ -250,7 +260,7 @@ export default function InvestmentProductDetailPage({
                       href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
                       className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
                     >
-                      {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
+                      {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Invest Now'}
                       <ArrowRight className="w-4 h-4" />
                     </Link>
                   ) : (

@@ -349,17 +349,26 @@ export default function SavingsProductsPage() {
             Start your Monthly Contribution (4% monthly) to build cooperative equity, or lock your funds for 6+ months to earn premium interest at maturity.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
+            {user ? (
+              <Link
+                href="/save/start"
+                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/50 transition-all active:scale-95"
+              >
+                Open a Savings Account
+              </Link>
+            ) : (
+              <Link
+                href={`/login?redirect=${encodeURIComponent('/save/start')}`}
+                className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/50 transition-all active:scale-95"
+              >
+                Sign In to Start Saving
+              </Link>
+            )}
             <Link
-              href="/save/start"
-              className="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-lg shadow-emerald-950/50 transition-all active:scale-95"
-            >
-              Open an Account
-            </Link>
-            <Link
-              href="/login"
+              href="/save/calculator"
               className="px-6 py-3 rounded-xl border border-white/20 hover:border-white/40 bg-white/[0.04] text-white font-semibold text-sm transition-all"
             >
-              Member Login
+              Savings Calculator
             </Link>
           </div>
         </div>

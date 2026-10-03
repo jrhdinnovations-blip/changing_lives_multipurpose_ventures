@@ -94,7 +94,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function InvestorsDashboardPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const supabase = createClient();
 
   const [records, setRecords] = useState<InvestmentRecord[]>([]);
@@ -197,6 +197,44 @@ export default function InvestorsDashboardPage() {
     } finally {
       setLiqSubmitting(false);
     }
+  }
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4">
+        <div className="w-8 h-8 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4">
+        <div className="bg-[#0d1527] rounded-3xl shadow-2xl border border-white/10 p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+            <ShieldCheck className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
+          <p className="text-white/60 text-sm mb-6 leading-relaxed">
+            You must be signed in with your cooperative account to view your Wealth Circle dashboard.
+          </p>
+          <div className="space-y-3">
+            <Link
+              href="/login?redirect=/investors-circle/dashboard"
+              className="block w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-emerald-950/40"
+            >
+              Sign In to Continue
+            </Link>
+            <Link
+              href="/landing"
+              className="block w-full py-2.5 px-4 text-white/50 hover:text-white font-medium text-sm transition-colors"
+            >
+              Return to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

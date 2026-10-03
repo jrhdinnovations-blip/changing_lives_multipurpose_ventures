@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { ShieldCheck, ArrowRight, CheckCircle2, AlertCircle, ArrowLeft, Lock, TrendingUp, Briefcase } from 'lucide-react';
+import { ShieldCheck, ArrowRight, CheckCircle2, AlertCircle, ArrowLeft, Lock, TrendingUp, Briefcase, LogIn } from 'lucide-react';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface FormData {
@@ -957,24 +957,42 @@ export default function InvestorsCirclePage() {
               </div>
             )}
 
-            <div className="flex gap-3 mt-6">
-              <button onClick={handleBack} className="flex-1 border border-white/20 bg-white/[0.04] text-white py-3 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors">← Back</button>
-              <button
-                onClick={handleSubmit}
-                disabled={submitting}
-                className="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-emerald-500 transition-colors disabled:opacity-60 flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40"
-              >
-                {submitting ? (
-                  <>
-                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                    </svg>
-                    Submitting...
-                  </>
-                ) : 'Submit Application'}
-              </button>
-            </div>
+            {!user ? (
+              <div className="mt-6 bg-[#0a182f] border border-blue-500/30 rounded-2xl p-5 text-center space-y-3">
+                <p className="text-sm text-white/80">
+                  You must be signed in to submit your Wealth Circle application.
+                </p>
+                <div className="flex gap-3">
+                  <button onClick={handleBack} className="flex-1 border border-white/20 bg-white/[0.04] text-white py-3 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors">← Back</button>
+                  <Link
+                    href={`/login?redirect=${encodeURIComponent('/investors-circle')}`}
+                    className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white py-3 rounded-xl font-semibold text-sm transition-all shadow-lg shadow-emerald-500/20 text-center flex items-center justify-center gap-2"
+                  >
+                    <LogIn className="w-4 h-4" />
+                    <span>Sign In to Submit Application</span>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="flex gap-3 mt-6">
+                <button onClick={handleBack} className="flex-1 border border-white/20 bg-white/[0.04] text-white py-3 rounded-xl font-semibold text-sm hover:bg-white/10 transition-colors">← Back</button>
+                <button
+                  onClick={handleSubmit}
+                  disabled={submitting}
+                  className="flex-1 bg-emerald-600 text-white py-3 rounded-xl font-semibold text-sm hover:bg-emerald-500 transition-colors disabled:opacity-60 flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/40"
+                >
+                  {submitting ? (
+                    <>
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Submitting...
+                    </>
+                  ) : 'Submit Application'}
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

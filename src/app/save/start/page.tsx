@@ -10,7 +10,7 @@ const PRODUCTS = [
   {
     id: 'monthly-contribution',
     name: 'Monthly Cooperative Contribution',
-    badge: 'Core Savings',
+    badge: 'Regular Savings',
     badgeColor: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
     rate: '4% monthly (48% p.a.)',
     min: 5000,

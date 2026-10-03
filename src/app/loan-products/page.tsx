@@ -194,13 +194,23 @@ export default function LoanProductsPage() {
               Access responsible, structured personal loans with transparent terms, standard 10% monthly interest, and no hidden charges.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/loan-application"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
-              >
-                <span>Apply for a Loan</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              {user ? (
+                <Link
+                  href="/loan-application"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
+                >
+                  <span>Apply for a Loan</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              ) : (
+                <Link
+                  href={`/login?redirect=${encodeURIComponent('/loan-application')}`}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
+                >
+                  <LogIn className="w-4 h-4" />
+                  <span>Sign In to Apply</span>
+                </Link>
+              )}
               <Link
                 href="/landing#calculators"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-all"

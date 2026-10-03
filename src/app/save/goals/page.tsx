@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 import AppLayout from '@/components/AppLayout';
 import type { SavingsGoal, SavingsGoalStatus } from '@/lib/types/climps';
 
@@ -255,6 +256,7 @@ function NewGoalModal({ onClose, onCreate, memberId: internalId }: { onClose: ()
 }
 
 export default function SavingsGoalsPage() {
+  const { user, loading: authLoading } = useAuth();
   const [goals, setGoals] = useState<(SavingsGoal & { category: string })[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -337,6 +339,46 @@ export default function SavingsGoalsPage() {
   const activeGoals = goals.filter((g) => g.goalStatus === 'active');
   const completedGoals = goals.filter((g) => g.goalStatus === 'completed');
   const nearestDeadline = activeGoals.sort((a, b) => new Date(a.targetDate!).getTime() - new Date(b.targetDate!).getTime())[0];
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4">
+        <div className="w-8 h-8 border-3 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center p-4">
+        <div className="bg-[#0d1527] rounded-3xl shadow-2xl border border-white/10 p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-emerald-500/20">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
+          <p className="text-white/60 text-sm mb-6 leading-relaxed">
+            You must be signed in with your cooperative account to create and manage personal savings goals.
+          </p>
+          <div className="space-y-3">
+            <Link
+              href="/login?redirect=/save/goals"
+              className="block w-full py-3 px-4 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white rounded-xl font-semibold text-sm transition-all shadow-lg shadow-emerald-500/20"
+            >
+              Sign In to Continue
+            </Link>
+            <Link
+              href="/landing"
+              className="block w-full py-2.5 px-4 text-white/50 hover:text-white font-medium text-sm transition-colors"
+            >
+              Return to Home
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <AppLayout role={role} memberName={memberName} memberId={memberId}>

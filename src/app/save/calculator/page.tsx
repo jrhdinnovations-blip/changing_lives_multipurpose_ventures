@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import LandingNav from '@/app/landing/components/LandingNav';
 import LandingFooter from '@/app/landing/components/LandingFooter';
 
@@ -82,6 +84,7 @@ function calcProjection(
 }
 
 export default function SavingsCalculatorPage() {
+  const { user } = useAuth();
   const [selectedPreset, setSelectedPreset] = useState<'monthly' | 'regular'>('monthly');
   const [initialDeposit, setInitialDeposit] = useState(0);
   const [regularContrib, setRegularContrib] = useState(20000);
@@ -410,6 +413,35 @@ export default function SavingsCalculatorPage() {
                     </tr>
                   </tfoot>
                 </table>
+              </div>
+            </div>
+
+            {/* CTA to Open Plan */}
+            <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-6 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+              <div>
+                <h4 className="text-base font-bold text-white">Ready to activate this savings plan?</h4>
+                <p className="text-xs text-white/60 mt-0.5">
+                  Sign in to your member account to open your {isMonthly ? 'Monthly Contribution' : 'Regular Savings'} savings account.
+                </p>
+              </div>
+              <div className="shrink-0 w-full sm:w-auto">
+                {user ? (
+                  <Link
+                    href={`/save/start?product=${isMonthly ? 'monthly-contribution' : 'regular-savings'}`}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+                  >
+                    <span>Open Account Now</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/login?redirect=${encodeURIComponent(`/save/start?product=${isMonthly ? 'monthly-contribution' : 'regular-savings'}`)}`}
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 active:scale-95"
+                  >
+                    <span>Sign In to Start Saving</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                )}
               </div>
             </div>
 
