@@ -64,23 +64,32 @@ export default function LandingNav() {
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-1">
-            <a
+            <Link
               href="/landing#services"
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
                 scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
               }`}
             >
               Services
-            </a>
+            </Link>
 
-            <a
-              href="/landing#about"
+            <Link
+              href="/about"
               className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
                 scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
               }`}
             >
-              About Us
-            </a>
+              About CLIMPS
+            </Link>
+
+            <Link
+              href="/how-it-works"
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+                scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              How It Works
+            </Link>
 
             {/* SAVE Dropdown */}
             <div
@@ -319,27 +328,27 @@ export default function LandingNav() {
         {menuOpen && (
           <div className="lg:hidden bg-card border-t border-border py-4 px-3 space-y-2 rounded-b-2xl shadow-xl max-h-[80vh] overflow-y-auto">
             <div className="px-2 py-1 text-xs font-bold text-muted-foreground uppercase tracking-wider">Quick Links</div>
-            <a
+            <Link
               href="/landing#services"
               onClick={() => setMenuOpen(false)}
               className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               Services
-            </a>
-            <a
-              href="/landing#how-it-works"
+            </Link>
+            <Link
+              href="/about"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              About CLIMPS
+            </Link>
+            <Link
+              href="/how-it-works"
               onClick={() => setMenuOpen(false)}
               className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               How It Works
-            </a>
-            <a
-              href="/landing#about"
-              onClick={() => setMenuOpen(false)}
-              className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
-            >
-              About Us
-            </a>
+            </Link>
 
             {/* Mobile SAVE section */}
             <div className="pt-2 border-t border-border">

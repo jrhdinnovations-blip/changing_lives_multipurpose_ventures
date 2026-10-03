@@ -60,6 +60,9 @@ export default function LandingFooter() {
               <Link href="/about" className="hover:text-emerald-400 transition-colors">
                 About CLIMPS
               </Link>
+              <Link href="/how-it-works" className="hover:text-emerald-400 transition-colors">
+                How It Works
+              </Link>
               <Link href="/savings-products" className="hover:text-emerald-400 transition-colors">
                 Savings Products
               </Link>
