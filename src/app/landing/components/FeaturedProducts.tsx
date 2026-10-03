@@ -1,10 +1,34 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { LogIn, ArrowRight } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 type ProductCategory = 'savings' | 'investment' | 'loan';
 
-const products = {
+interface ProductItem {
+  name: string;
+  tag: string;
+  tagColor: string;
+  rate: string;
+  rateLabel: string;
+  minAmount: string;
+  minLabel: string;
+  duration: string;
+  durationLabel: string;
+  description: string;
+  features: string[];
+  accentColor: string;
+  btnClass: string;
+  href: string;
+  viewHref?: string;
+  requiresAuth?: boolean;
+  ctaText: string;
+  guestCtaText?: string;
+  comingSoon?: boolean;
+}
+
+const products: Record<ProductCategory, ProductItem[]> = {
   savings: [
     {
       name: 'Monthly Cooperative Contribution',
@@ -26,7 +50,10 @@ const products = {
       accentColor: 'border-blue-500/30',
       btnClass: 'bg-blue-600 hover:bg-blue-500',
       href: '/save/start',
+      viewHref: '/savings-products',
+      requiresAuth: true,
       ctaText: 'Start Contributing',
+      guestCtaText: 'Sign In to Subscribe',
     },
     {
       name: 'Regular Savings Account',
@@ -48,7 +75,8 @@ const products = {
       accentColor: 'border-teal-500/30',
       btnClass: 'bg-teal-600 hover:bg-teal-500',
       href: '/savings-products',
-      ctaText: 'Explore Savings',
+      requiresAuth: false,
+      ctaText: 'Explore Savings Products',
     },
   ],
   investment: [
@@ -72,7 +100,10 @@ const products = {
       accentColor: 'border-emerald-500/30',
       btnClass: 'bg-emerald-600 hover:bg-emerald-500',
       href: '/investors-circle',
+      viewHref: '/investment-products',
+      requiresAuth: true,
       ctaText: 'Join Wealth Circle',
+      guestCtaText: 'Sign In to Invest',
       comingSoon: false,
     },
     {
@@ -91,6 +122,7 @@ const products = {
       accentColor: 'border-amber-500/20',
       btnClass: 'bg-amber-600 hover:bg-amber-500',
       href: '/investment-products',
+      requiresAuth: false,
       ctaText: 'View Portfolio',
       comingSoon: true,
     },
@@ -112,7 +144,10 @@ const products = {
       accentColor: 'border-blue-500/30',
       btnClass: 'bg-blue-600 hover:bg-blue-500',
       href: '/loan-application',
+      viewHref: '/loan-products',
+      requiresAuth: true,
       ctaText: 'Apply for Personal Loan',
+      guestCtaText: 'Sign In to Apply',
     },
   ],
 };
@@ -125,6 +160,7 @@ const TABS: { id: ProductCategory; label: string }[] = [
 
 export default function FeaturedProducts() {
   const [activeTab, setActiveTab] = useState<ProductCategory>('savings');
+  const { user } = useAuth();
   const currentProducts = products[activeTab];
 
   return (
@@ -162,6 +198,8 @@ export default function FeaturedProducts() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {currentProducts.map((product) => {
             const isComingSoon = 'comingSoon' in product && product.comingSoon;
+            const needsAuth = product.requiresAuth && !user;
+
             return (
               <div
                 key={product.name}
@@ -181,10 +219,20 @@ export default function FeaturedProducts() {
                   </div>
                 )}
 
-                {/* Tag */}
-                <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold w-fit mb-5 ${product.tagColor}`}>
-                  {product.tag}
-                </span>
+                {/* Tag & View details link */}
+                <div className="flex items-center justify-between mb-5">
+                  <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.tagColor}`}>
+                    {product.tag}
+                  </span>
+                  {product.viewHref && (
+                    <Link
+                      href={product.viewHref}
+                      className="text-xs text-white/50 hover:text-emerald-400 transition-colors underline underline-offset-4"
+                    >
+                      View Details
+                    </Link>
+                  )}
+                </div>
 
                 <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
                 <p className="text-white/45 text-sm leading-relaxed mb-6">{product.description}</p>
@@ -219,12 +267,31 @@ export default function FeaturedProducts() {
                   <button disabled className="w-full text-center py-3 rounded-xl text-sm font-bold bg-white/10 text-white/30 cursor-not-allowed">
                     Coming Soon
                   </button>
+                ) : needsAuth ? (
+                  <div className="space-y-2 w-full">
+                    <Link
+                      href={`/login?redirect=${encodeURIComponent(product.href)}`}
+                      className={`w-full text-center py-3 px-4 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-2 ${product.btnClass}`}
+                    >
+                      <LogIn className="w-4 h-4" />
+                      <span>{product.guestCtaText || 'Sign In to Subscribe'}</span>
+                    </Link>
+                    {product.viewHref && (
+                      <Link
+                        href={product.viewHref}
+                        className="block text-center text-xs text-white/50 hover:text-emerald-400 py-1 transition-colors hover:underline"
+                      >
+                        Explore Product Catalog & Details →
+                      </Link>
+                    )}
+                  </div>
                 ) : (
                   <Link
                     href={product.href}
-                    className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 ${product.btnClass}`}
+                    className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-1.5 ${product.btnClass}`}
                   >
-                    {product.ctaText} →
+                    <span>{product.ctaText}</span>
+                    <ArrowRight className="w-4 h-4" />
                   </Link>
                 )}
               </div>
@@ -235,3 +302,4 @@ export default function FeaturedProducts() {
     </section>
   );
 }
+

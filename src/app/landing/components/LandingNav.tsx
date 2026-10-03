@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ChevronDown, PiggyBank, Calculator, ArrowRight, CreditCard, TrendingUp, Sparkles } from 'lucide-react';
+import { ChevronDown, PiggyBank, Calculator, ArrowRight, CreditCard, TrendingUp, Sparkles, LogIn } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -13,6 +14,7 @@ export default function LandingNav() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const loansTimeout = useRef<NodeJS.Timeout | null>(null);
   const investTimeout = useRef<NodeJS.Timeout | null>(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -194,19 +196,21 @@ export default function LandingNav() {
                   </Link>
 
                   <Link
-                    href="/invest/now"
+                    href={user ? '/invest/now' : `/login?redirect=${encodeURIComponent('/invest/now')}`}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-emerald-500/10 transition-colors group border-t border-border mt-1 pt-2"
                     onClick={() => setInvestOpen(false)}
                   >
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-700 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                      <ArrowRight className="w-4 h-4" />
+                      {user ? <ArrowRight className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
                     </div>
                     <div>
                       <div className="text-sm font-bold text-foreground group-hover:text-emerald-600 transition-colors flex items-center gap-1.5">
-                        Wealth Circle
-                        <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-md">Direct</span>
+                        {user ? 'Wealth Circle' : 'Sign In to Invest'}
+                        {user && <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.5 rounded-md">Direct</span>}
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Subscribe to open opportunities</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {user ? 'Subscribe to open opportunities' : 'Sign in to access investment portal'}
+                      </div>
                     </div>
                   </Link>
                 </div>
@@ -262,19 +266,21 @@ export default function LandingNav() {
                   </a>
 
                   <Link
-                    href="/loan-application"
+                    href={user ? '/loan-application' : `/login?redirect=${encodeURIComponent('/loan-application')}`}
                     className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-amber-500/10 transition-colors group border-t border-border mt-1 pt-2"
                     onClick={() => setLoansOpen(false)}
                   >
                     <div className="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-700 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-amber-600 group-hover:text-white transition-colors">
-                      <ArrowRight className="w-4 h-4" />
+                      {user ? <ArrowRight className="w-4 h-4" /> : <LogIn className="w-4 h-4" />}
                     </div>
                     <div>
                       <div className="text-sm font-bold text-foreground group-hover:text-amber-600 transition-colors flex items-center gap-1.5">
-                        Apply for Loan
-                        <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded-md">Fast</span>
+                        {user ? 'Apply for Loan' : 'Sign In to Apply'}
+                        {user && <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-1.5 py-0.5 rounded-md">Fast</span>}
                       </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Apply online in 5 minutes</div>
+                      <div className="text-xs text-muted-foreground mt-0.5">
+                        {user ? 'Apply online in 5 minutes' : 'Sign in to submit a loan request'}
+                      </div>
                     </div>
                   </Link>
                 </div>
@@ -385,11 +391,11 @@ export default function LandingNav() {
                 CLIMPS Wealth Circle
               </Link>
               <Link
-                href="/invest/now"
+                href={user ? '/invest/now' : `/login?redirect=${encodeURIComponent('/invest/now')}`}
                 onClick={() => setMenuOpen(false)}
                 className="block px-3 py-2 rounded-xl text-sm font-semibold text-emerald-600 hover:bg-emerald-50 transition-colors"
               >
-                Wealth Circle →
+                {user ? 'Wealth Circle →' : 'Sign In to Invest →'}
               </Link>
             </div>
 
@@ -414,11 +420,11 @@ export default function LandingNav() {
                 Loan Calculator
               </a>
               <Link
-                href="/loan-application"
+                href={user ? '/loan-application' : `/login?redirect=${encodeURIComponent('/loan-application')}`}
                 onClick={() => setMenuOpen(false)}
                 className="block px-3 py-2 rounded-xl text-sm font-semibold text-amber-600 hover:bg-amber-50 transition-colors"
               >
-                Apply for Loan →
+                {user ? 'Apply for Loan →' : 'Sign In to Apply →'}
               </Link>
             </div>
 
