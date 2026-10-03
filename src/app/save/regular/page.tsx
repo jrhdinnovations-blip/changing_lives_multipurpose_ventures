@@ -290,7 +290,7 @@ export default function RegularSavingsPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/70 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account before accessing or subscribing to a Regular Voluntary Savings account.
+            You must be signed in with your cooperative account before accessing or subscribing to the Lock Your Funds fixed-term savings plan.
           </p>
           <div className="space-y-3">
             <Link
@@ -322,16 +322,16 @@ export default function RegularSavingsPage() {
                 Savings Products
               </Link>
               <span>/</span>
-              <span className="text-white font-medium">Regular Savings</span>
+              <span className="text-white font-medium">Lock Your Funds</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-              <span>Regular Savings Account</span>
+              <span>Lock Your Funds — Fixed Term</span>
               <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-teal-100 text-teal-800 border border-teal-200">
                 Active • 7.0% p.a.
               </span>
             </h1>
             <p className="text-sm text-white/50 mt-1">
-              Your liquid voluntary savings wallet. Deposit anytime, earn quarterly interest, and withdraw with ease.
+              Fixed-term locked savings. Minimum 6-month lock-up. ALL interest forfeited if withdrawn before maturity date.
             </p>
           </div>
 
@@ -405,8 +405,8 @@ export default function RegularSavingsPage() {
             </div>
             <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{fmt(totalDeposited)}</div>
             <div className="mt-3 flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10/50">
-              <span>Voluntary additions</span>
-              <span className="text-blue-600 font-medium">No lock-in</span>
+              <span>Fixed deposit additions</span>
+              <span className="text-amber-500 font-medium">⚠️ Locked</span>
             </div>
           </div>
 
@@ -440,25 +440,25 @@ export default function RegularSavingsPage() {
                 <h3 className="font-semibold text-white text-base">Account Operating Rules</h3>
               </div>
               <p className="text-xs text-white/50 mb-4 leading-relaxed">
-                Regular Savings is governed by the Changing Lives Multipurpose Ventures thrift guidelines to preserve liquidity and high dividend yield.
+                Lock Your Funds is governed by the CLIMPS cooperative fixed-term savings rules. Withdrawing before maturity forfeits ALL interest.
               </p>
 
               <ul className="space-y-3 text-xs text-white/90">
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" />
-                  <span><strong>7.0% Annual Interest:</strong> Calculated on daily balances and credited directly every quarter.</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                  <span><strong>7.0% Annual Interest:</strong> Credited in full to your account only on the maturity date.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" />
-                  <span><strong>2 Withdrawals Per Month:</strong> Enjoy fee-free withdrawals twice monthly. Retain at least ₦500.</span>
+                  <CheckCircle2 className="w-4 h-4 text-red-500 mt-0.5 shrink-0" />
+                  <span><strong>⚠️ Early Withdrawal:</strong> Withdrawing before maturity date forfeits ALL accrued interest. Principal is returned in full.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" />
-                  <span><strong>Instant Settlement:</strong> Approved withdrawals credit your verified commercial bank account immediately.</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                  <span><strong>Minimum Lock Period:</strong> 6 months required. Available tenors: 6, 9, 12, 18, or 24 months.</span>
                 </li>
                 <li className="flex items-start gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-teal-600 mt-0.5 shrink-0" />
-                  <span><strong>No Monthly Penalty:</strong> Voluntary top-ups require no fixed monthly minimum if skipped.</span>
+                  <CheckCircle2 className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                  <span><strong>Maturity Alerts:</strong> Automatic SMS &amp; email reminder before your lock expires.</span>
                 </li>
               </ul>
             </div>

@@ -19,15 +19,15 @@ const PRODUCTS = [
     description: 'Core cooperative thrift contribution. Must be saved for at least 1 year or interest is forfeited. Min ₦5,000, Max ₦200,000 monthly.',
   },
   {
-    id: 'regular-savings',
-    name: 'Voluntary Regular Savings',
-    badge: 'Voluntary',
-    badgeColor: 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
-    rate: '4% monthly (48% p.a.)',
-    min: 5000,
-    max: 200000,
+    id: 'lock-your-funds',
+    name: 'Lock Your Funds',
+    badge: 'Fixed Term • Locked',
+    badgeColor: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+    rate: '7.0% p.a. (Credited at Maturity)',
+    min: 10000,
+    max: 5000000,
     isMandatory: false,
-    description: 'Supplemental cooperative savings. Held for at least 1 year to qualify for monthly interest. Min ₦5,000, Max ₦200,000 monthly.',
+    description: 'Fixed-term locked savings. Minimum 6-month lock-up. ALL interest is forfeited if withdrawn before maturity. Principal is returned in full on early exit. Tenors: 6, 9, 12, 18, or 24 months.',
   },
 ];
 

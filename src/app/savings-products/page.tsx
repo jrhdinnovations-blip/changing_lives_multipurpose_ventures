@@ -66,48 +66,54 @@ const savingsProducts: SavingsProduct[] = [
     actionLabel: 'Manage Contributions',
   },
   {
-    id: 'regular-savings',
-    name: 'Regular Savings Account',
+    id: 'lock-your-funds',
+    name: 'Lock Your Funds',
     category: 'regular_savings',
-    tagline: 'Flexible. Liquid. Save & withdraw on your terms.',
+    tagline: 'Commit. Lock. Earn More. Minimum 6 months.',
     description:
-      'A versatile, voluntary demand-deposit account tailored for surplus liquidity. Deposit whenever you have excess funds and withdraw without hassle, all while enjoying compound interest credited to your balance every quarter.',
-    minAmount: '₦1,000 opening balance',
-    interestRate: '7.0% p.a. (Compounded Quarterly)',
-    duration: 'No fixed tenor (Anytime liquid)',
-    withdrawalRules: 'Withdraw up to 2× per calendar month free of charge; minimum retained account balance is ₦500.',
+      'A disciplined fixed-term savings plan for members who want to maximise returns by committing funds for a set period. Lock your deposit for a minimum of six months and earn premium interest — withdraw before the maturity date and ALL accrued interest is forfeited.',
+    minAmount: '₦10,000 minimum deposit',
+    interestRate: '7.0% p.a. (Credited at Maturity)',
+    duration: 'Minimum 6 months (lock-up period)',
+    withdrawalRules: '⚠️ Withdrawing before the maturity date results in forfeiture of ALL accrued interest. Principal is returned but no interest is paid on early exit.',
     benefits: [
-      'Zero lock-in period — 100% voluntary and liquid',
-      'Quarterly interest payouts credited directly to balance',
-      'Instant top-up via dedicated virtual account or card',
-      'Up to 2 free monthly withdrawals with instant settlement',
-      'No monthly penalty fees for skipped voluntary top-ups',
+      'Minimum 6-month lock-up period for maximum returns',
+      'Premium 7.0% p.a. interest credited in full at maturity',
+      'ALL interest is forfeited on early withdrawal — no exceptions',
+      'Tenors available: 6, 9, 12, 18, or 24 months',
+      'Automatic maturity alert via SMS & email before expiry',
+      'Principal is fully secured and returned on early exit',
+      'Eligible as collateral backing for loan applications',
     ],
-    badge: 'Voluntary & Liquid',
-    badgeColor: 'bg-blue-500/15 text-blue-400 border-blue-500/30',
-    accentColor: 'text-blue-400',
+    badge: 'Fixed Term • Locked',
+    badgeColor: 'bg-amber-500/15 text-amber-400 border-amber-500/30',
+    accentColor: 'text-amber-400',
     isMandatory: false,
     actionUrl: '/save/regular',
-    actionLabel: 'Access Regular Savings',
+    actionLabel: 'Open Lock Savings',
   },
 ];
 
 const faqs = [
   {
-    q: 'What is the main difference between Monthly Contribution and Regular Savings?',
-    a: 'Monthly Contribution is the mandatory core cooperative thrift (minimum ₦5,000/mo, maximum ₦200,000/mo) that earns 4.0% monthly interest provided it is held for at least 1 year (early withdrawal forfeits the interest). Regular Savings is a voluntary, liquid wallet (starting at ₦1,000) allowing you to deposit and withdraw surplus funds on demand with 7% p.a. interest credited quarterly.',
+    q: 'What is the difference between Monthly Contribution and Lock Your Funds?',
+    a: 'Monthly Contribution is the mandatory core cooperative thrift (minimum ₦5,000/mo, maximum ₦200,000/mo) that earns 4.0% monthly interest provided it is held for at least 1 year — early withdrawal forfeits all interest. "Lock Your Funds" is a voluntary fixed-term savings plan with a minimum 6-month lock-up. It earns 7.0% p.a. interest credited in full at maturity; withdrawing before maturity forfeits ALL accrued interest.',
   },
   {
     q: 'What happens if I withdraw my Monthly Contribution before 1 year?',
-    a: 'As stipulated in the CLIMPS cooperative rules, savings must be maintained for at least 1 year. Early withdrawal prior to 1 year results in forfeiture of the accrued interest to ensure cooperative fund stability.',
+    a: 'As stipulated in the CLIMPS cooperative rules, savings must be maintained for at least 1 year. Early withdrawal prior to 1 year results in forfeiture of ALL accrued interest to ensure cooperative fund stability.',
   },
   {
-    q: 'Can I withdraw from my Regular Savings whenever I want?',
-    a: 'Yes! Regular Savings allows up to 2 penalty-free withdrawals each calendar month, provided you keep a minimum balance of ₦500 in the account. Withdrawals are processed instantly to your commercial bank.',
+    q: 'What happens if I withdraw from Lock Your Funds before the maturity date?',
+    a: '⚠️ Withdrawing from the Lock Your Funds plan before your chosen maturity date (minimum 6 months) results in the forfeiture of ALL accrued interest for that period. Your principal deposit is returned in full, but no interest is paid. There are no exceptions to this rule — it exists to protect the fund and incentivise long-term commitment.',
   },
   {
-    q: 'Can I use my Regular Savings balance to pay my Monthly Contribution?',
-    a: 'Absolutely. On the Monthly Contribution payment screen, you can select "Savings Wallet" as your payment source to clear your monthly dues with one click.',
+    q: 'What tenors are available for Lock Your Funds?',
+    a: 'You can lock your funds for 6, 9, 12, 18, or 24 months. The longer the lock-up period, the better the yield value. Interest is credited in full to your account only on the maturity date. You will receive an automatic maturity alert via SMS and email before expiry.',
+  },
+  {
+    q: 'Can I use my locked savings as collateral for a loan?',
+    a: 'Yes! Your locked savings balance can serve as collateral backing for a loan application, strengthening your creditworthiness within the cooperative system without breaking the lock-up.',
   },
 ];
 
@@ -138,7 +144,7 @@ export default function SavingsProductsPage() {
           </h1>
 
           <p className="mt-5 text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            We focus on two tailored pillars: <strong className="text-white">Monthly Contribution (4% monthly)</strong> to build your cooperative equity and credit eligibility, and <strong className="text-white">Regular Savings</strong> for flexible, day-to-day liquidity.
+            Two powerful pillars: <strong className="text-white">Monthly Contribution (4% monthly)</strong> to build your cooperative equity and credit, and <strong className="text-white">Lock Your Funds</strong> — a fixed-term plan with premium returns and zero early-withdrawal interest.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -258,39 +264,39 @@ export default function SavingsProductsPage() {
                   <tr className="border-b border-white/10 bg-white/[0.03] text-white/60 font-semibold">
                     <th className="py-4 px-6 w-1/3">Feature / Parameter</th>
                     <th className="py-4 px-6 w-1/3 text-emerald-400 font-bold">Monthly Cooperative Contribution</th>
-                    <th className="py-4 px-6 w-1/3 text-blue-400 font-bold">Regular Savings Account</th>
+                    <th className="py-4 px-6 w-1/3 text-amber-400 font-bold">Lock Your Funds (Fixed Term)</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/[0.06]">
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Membership Status</td>
                     <td className="py-3.5 px-6 text-white/80 font-medium">Mandatory for all active members</td>
-                    <td className="py-3.5 px-6 text-white/80 font-medium">Voluntary for any member/saver</td>
+                    <td className="py-3.5 px-6 text-white/80 font-medium">Voluntary fixed-term plan for any member</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Deposit Range</td>
                     <td className="py-3.5 px-6 text-white/80">₦5,000 – ₦200,000 monthly</td>
-                    <td className="py-3.5 px-6 text-white/80">₦1,000 opening; any amount thereafter</td>
+                    <td className="py-3.5 px-6 text-white/80">₦10,000 minimum deposit; any amount</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Interest / Return Rate</td>
                     <td className="py-3.5 px-6 text-emerald-400 font-bold">4.0% monthly (48% p.a.) + Surplus Dividends</td>
-                    <td className="py-3.5 px-6 text-blue-400 font-bold">7.0% p.a. Compounded Quarterly</td>
+                    <td className="py-3.5 px-6 text-amber-400 font-bold">7.0% p.a. — Credited at Maturity</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Minimum Tenure</td>
                     <td className="py-3.5 px-6 text-amber-300 font-semibold">At least 1 year (or forfeit interest)</td>
-                    <td className="py-3.5 px-6 text-emerald-400 font-semibold">Zero lock-in (Flexible demand account)</td>
+                    <td className="py-3.5 px-6 text-amber-300 font-semibold">Minimum 6 months (6, 9, 12, 18, or 24)</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Withdrawal Policy</td>
                     <td className="py-3.5 px-6 text-white/80">1 year minimum tenor requirement</td>
-                    <td className="py-3.5 px-6 text-white/80">Up to 2× per month free; min ₦500 balance</td>
+                    <td className="py-3.5 px-6 text-red-400 font-semibold">⚠️ ALL interest forfeited if withdrawn before maturity</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Loan Multiplier Eligibility</td>
                     <td className="py-3.5 px-6 text-emerald-400 font-bold">Eligible for up to 3× loan credit</td>
-                    <td className="py-3.5 px-6 text-white/60">Voluntary buffer / collateral backing</td>
+                    <td className="py-3.5 px-6 text-amber-400 font-semibold">✅ Eligible as loan collateral backing</td>
                   </tr>
                   <tr>
                     <td className="py-3.5 px-6 font-semibold text-white">Annual AGM Voting Rights</td>
@@ -340,7 +346,7 @@ export default function SavingsProductsPage() {
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Ready to Start Building Your Financial Freedom?</h3>
           <p className="text-white/75 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Set up your Monthly Contribution (4% monthly) or start growing your liquid Regular Savings account today.
+            Start your Monthly Contribution (4% monthly) to build cooperative equity, or lock your funds for 6+ months to earn premium interest at maturity.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
