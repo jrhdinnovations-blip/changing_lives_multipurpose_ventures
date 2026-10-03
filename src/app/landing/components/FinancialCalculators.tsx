@@ -1,5 +1,7 @@
 'use client';
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 type CalcTab = 'savings' | 'investment' | 'loan';
 
@@ -9,214 +11,283 @@ function formatNaira(val: number): string {
 
 function SavingsCalc() {
   const [monthly, setMonthly] = useState(20000);
-  const [rate, setRate] = useState(10);
   const [years, setYears] = useState(3);
 
   const months = years * 12;
-  const r = rate / 100 / 12;
-  const futureValue = r === 0 ? monthly * months : monthly * ((Math.pow(1 + r, months) - 1) / r);
+  const monthlyRate = 0.04;
+  const qualifiesForInterest = months >= 12;
   const totalContributed = monthly * months;
+  const futureValue = qualifiesForInterest
+    ? monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
+    : totalContributed;
   const interest = futureValue - totalContributed;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
+      {/* Monthly contribution slider */}
       <div>
-        <label className="label-base">Monthly Contribution</label>
-        <div className="flex items-center gap-3">
-          <input type="range" min={1000} max={500000} step={1000} value={monthly} onChange={e => setMonthly(+e.target.value)} className="flex-1 accent-primary" />
-          <span className="text-sm font-semibold text-primary w-28 text-right font-tabular">{formatNaira(monthly)}</span>
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Monthly contribution</label>
+          <span className="text-sm font-bold text-white">{formatNaira(monthly)}</span>
         </div>
+        <input
+          type="range"
+          min={5000}
+          max={200000}
+          step={5000}
+          value={monthly}
+          onChange={(e) => setMonthly(+e.target.value)}
+          className="w-full h-1 accent-blue-500 bg-white/10 rounded-full cursor-pointer"
+        />
       </div>
+
+      {/* Duration slider */}
       <div>
-        <label className="label-base">Annual Interest Rate: <span className="text-primary">{rate}%</span></label>
-        <input type="range" min={5} max={18} step={0.5} value={rate} onChange={e => setRate(+e.target.value)} className="w-full accent-primary" />
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Duration — {years} years</label>
+          <span className="text-sm font-bold text-blue-400">{years}y</span>
+        </div>
+        <input
+          type="range"
+          min={1}
+          max={10}
+          step={1}
+          value={years}
+          onChange={(e) => setYears(+e.target.value)}
+          className="w-full h-1 accent-blue-500 bg-white/10 rounded-full cursor-pointer"
+        />
       </div>
-      <div>
-        <label className="label-base">Duration: <span className="text-primary">{years} year{years > 1 ? 's' : ''}</span></label>
-        <input type="range" min={1} max={10} step={1} value={years} onChange={e => setYears(+e.target.value)} className="w-full accent-primary" />
-      </div>
+
+      {/* Results */}
       <div className="grid grid-cols-3 gap-3 pt-2">
-        <div className="bg-blue-50 rounded-xl p-4 text-center border border-blue-100">
-          <div className="text-xs text-blue-600 font-medium mb-1">Total Saved</div>
-          <div className="text-lg font-bold text-blue-700 font-tabular">{formatNaira(totalContributed)}</div>
-        </div>
-        <div className="bg-emerald-50 rounded-xl p-4 text-center border border-emerald-100">
-          <div className="text-xs text-emerald-600 font-medium mb-1">Interest Earned</div>
-          <div className="text-lg font-bold text-emerald-700 font-tabular">{formatNaira(interest)}</div>
-        </div>
-        <div className="bg-primary/5 rounded-xl p-4 text-center border border-primary/10">
-          <div className="text-xs text-primary font-medium mb-1">Future Value</div>
-          <div className="text-lg font-bold text-primary font-tabular">{formatNaira(futureValue)}</div>
-        </div>
+        {[
+          { label: 'Contributed', value: formatNaira(totalContributed) },
+          { label: 'Interest', value: formatNaira(interest) },
+          { label: 'Total', value: formatNaira(futureValue) },
+        ].map((r) => (
+          <div key={r.label} className="bg-white/[0.06] rounded-xl p-4 text-center">
+            <div className="text-xs text-white/40 font-medium mb-1.5">{r.label}</div>
+            <div className="text-base font-bold text-white font-tabular">{r.value}</div>
+          </div>
+        ))}
       </div>
+
+      {/* CTA */}
+      <Link
+        href="/save/start"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all duration-150 active:scale-95 group"
+      >
+        Start Saving
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+      </Link>
     </div>
   );
 }
 
 function InvestmentCalc() {
   const [principal, setPrincipal] = useState(500000);
-  const [rate, setRate] = useState(18);
-  const [years, setYears] = useState(5);
+  const [months, setMonths] = useState(12);
 
-  const futureValue = principal * Math.pow(1 + rate / 100, years);
-  const totalReturn = futureValue - principal;
-  const roi = ((totalReturn / principal) * 100).toFixed(1);
+  const monthlyRate = 0.035;
+  const monthlyReturn = principal * monthlyRate;
+  const totalReturn = monthlyReturn * months;
+  const futureValue = principal + totalReturn;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       <div>
-        <label className="label-base">Initial Investment</label>
-        <div className="flex items-center gap-3">
-          <input type="range" min={50000} max={10000000} step={50000} value={principal} onChange={e => setPrincipal(+e.target.value)} className="flex-1 accent-emerald-600" />
-          <span className="text-sm font-semibold text-emerald-700 w-28 text-right font-tabular">{formatNaira(principal)}</span>
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Subscribed Capital</label>
+          <span className="text-sm font-bold text-white">{formatNaira(principal)}</span>
+        </div>
+        <input
+          type="range"
+          min={50000}
+          max={10000000}
+          step={50000}
+          value={principal}
+          onChange={(e) => setPrincipal(+e.target.value)}
+          className="w-full h-1 accent-emerald-500 bg-white/10 rounded-full cursor-pointer"
+        />
+      </div>
+
+      <div>
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Tenure</label>
+          <span className="text-sm font-bold text-emerald-400">{months} months</span>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {[3, 6, 12, 24].map((m) => (
+            <button
+              key={m}
+              type="button"
+              onClick={() => setMonths(m)}
+              className={`py-2 rounded-xl text-xs font-bold border transition-all ${
+                months === m
+                  ? 'bg-emerald-600 text-white border-emerald-600'
+                  : 'bg-white/[0.06] text-white/50 border-white/10 hover:border-emerald-500/50'
+              }`}
+            >
+              {m}mo
+            </button>
+          ))}
         </div>
       </div>
-      <div>
-        <label className="label-base">Annual Return Rate: <span className="text-emerald-600">{rate}%</span></label>
-        <input type="range" min={10} max={30} step={0.5} value={rate} onChange={e => setRate(+e.target.value)} className="w-full accent-emerald-600" />
-      </div>
-      <div>
-        <label className="label-base">Investment Period: <span className="text-emerald-600">{years} year{years > 1 ? 's' : ''}</span></label>
-        <input type="range" min={1} max={15} step={1} value={years} onChange={e => setYears(+e.target.value)} className="w-full accent-emerald-600" />
-      </div>
+
       <div className="grid grid-cols-3 gap-3 pt-2">
-        <div className="bg-emerald-50 rounded-xl p-4 text-center border border-emerald-100">
-          <div className="text-xs text-emerald-600 font-medium mb-1">Principal</div>
-          <div className="text-lg font-bold text-emerald-700 font-tabular">{formatNaira(principal)}</div>
-        </div>
-        <div className="bg-blue-50 rounded-xl p-4 text-center border border-blue-100">
-          <div className="text-xs text-blue-600 font-medium mb-1">Total Return</div>
-          <div className="text-lg font-bold text-blue-700 font-tabular">{formatNaira(totalReturn)}</div>
-        </div>
-        <div className="bg-primary/5 rounded-xl p-4 text-center border border-primary/10">
-          <div className="text-xs text-primary font-medium mb-1">Portfolio Value</div>
-          <div className="text-lg font-bold text-primary font-tabular">{formatNaira(futureValue)}</div>
-        </div>
+        {[
+          { label: 'Principal', value: formatNaira(principal) },
+          { label: 'Total Return', value: formatNaira(totalReturn) },
+          { label: 'Maturity Value', value: formatNaira(futureValue) },
+        ].map((r) => (
+          <div key={r.label} className="bg-white/[0.06] rounded-xl p-4 text-center">
+            <div className="text-xs text-white/40 font-medium mb-1.5">{r.label}</div>
+            <div className="text-base font-bold text-white font-tabular">{r.value}</div>
+          </div>
+        ))}
       </div>
-      <div className="bg-emerald-600 rounded-xl p-3 text-center">
-        <span className="text-white text-sm font-semibold">ROI: {roi}% over {years} year{years > 1 ? 's' : ''}</span>
-      </div>
+
+      <Link
+        href="/investors-circle"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm transition-all duration-150 active:scale-95 group"
+      >
+        Join Wealth Circle
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+      </Link>
     </div>
   );
 }
 
 function LoanCalc() {
-  const [amount, setAmount] = useState(1000000);
-  const [rate, setRate] = useState(10);
-  const [months, setMonths] = useState(24);
+  const [amount, setAmount] = useState(500000);
+  const [months, setMonths] = useState(6);
 
-  const r = rate / 100 / 12;
-  const monthly = r === 0 ? amount / months : (amount * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
-  const totalRepayment = monthly * months;
-  const totalInterest = totalRepayment - amount;
+  const monthlyRate = 0.10;
+  const monthlyInterest = amount * monthlyRate;
+  const totalInterest = monthlyInterest * months;
+  const principalPerMonth = amount / months;
+  const monthlyPayment = principalPerMonth + monthlyInterest;
+  const totalRepayment = amount + totalInterest;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-7">
       <div>
-        <label className="label-base">Loan Amount</label>
-        <div className="flex items-center gap-3">
-          <input type="range" min={50000} max={5000000} step={50000} value={amount} onChange={e => setAmount(+e.target.value)} className="flex-1 accent-amber-600" />
-          <span className="text-sm font-semibold text-amber-700 w-28 text-right font-tabular">{formatNaira(amount)}</span>
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Loan Amount</label>
+          <span className="text-sm font-bold text-white">{formatNaira(amount)}</span>
         </div>
+        <input
+          type="range"
+          min={50000}
+          max={5000000}
+          step={50000}
+          value={amount}
+          onChange={(e) => setAmount(+e.target.value)}
+          className="w-full h-1 accent-orange-500 bg-white/10 rounded-full cursor-pointer"
+        />
       </div>
+
       <div>
-        <label className="label-base">Annual Interest Rate: <span className="text-amber-600">{rate}%</span></label>
-        <input type="range" min={6} max={24} step={0.5} value={rate} onChange={e => setRate(+e.target.value)} className="w-full accent-amber-600" />
+        <div className="flex justify-between items-center mb-3">
+          <label className="text-sm text-white/60 font-medium">Repayment Tenure</label>
+          <span className="text-sm font-bold text-orange-400">{months} months</span>
+        </div>
+        <input
+          type="range"
+          min={1}
+          max={24}
+          step={1}
+          value={months}
+          onChange={(e) => setMonths(+e.target.value)}
+          className="w-full h-1 accent-orange-500 bg-white/10 rounded-full cursor-pointer"
+        />
       </div>
-      <div>
-        <label className="label-base">Repayment Period: <span className="text-amber-600">{months} months</span></label>
-        <input type="range" min={3} max={60} step={3} value={months} onChange={e => setMonths(+e.target.value)} className="w-full accent-amber-600" />
-      </div>
+
       <div className="grid grid-cols-3 gap-3 pt-2">
-        <div className="bg-amber-50 rounded-xl p-4 text-center border border-amber-100">
-          <div className="text-xs text-amber-600 font-medium mb-1">Monthly Payment</div>
-          <div className="text-lg font-bold text-amber-700 font-tabular">{formatNaira(monthly)}</div>
-        </div>
-        <div className="bg-red-50 rounded-xl p-4 text-center border border-red-100">
-          <div className="text-xs text-red-500 font-medium mb-1">Total Interest</div>
-          <div className="text-lg font-bold text-red-600 font-tabular">{formatNaira(totalInterest)}</div>
-        </div>
-        <div className="bg-primary/5 rounded-xl p-4 text-center border border-primary/10">
-          <div className="text-xs text-primary font-medium mb-1">Total Repayment</div>
-          <div className="text-lg font-bold text-primary font-tabular">{formatNaira(totalRepayment)}</div>
-        </div>
+        {[
+          { label: 'Monthly Payment', value: formatNaira(monthlyPayment) },
+          { label: 'Total Interest', value: formatNaira(totalInterest) },
+          { label: 'Total Repayment', value: formatNaira(totalRepayment) },
+        ].map((r) => (
+          <div key={r.label} className="bg-white/[0.06] rounded-xl p-4 text-center">
+            <div className="text-xs text-white/40 font-medium mb-1.5">{r.label}</div>
+            <div className="text-base font-bold text-white font-tabular">{r.value}</div>
+          </div>
+        ))}
       </div>
+
+      <Link
+        href="/loan-application"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold text-sm transition-all duration-150 active:scale-95 group"
+      >
+        Apply for Loan
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+      </Link>
     </div>
   );
 }
 
-const TABS: { id: CalcTab; label: string; color: string; activeClass: string }[] = [
-  { id: 'savings', label: 'Savings', color: 'text-blue-600', activeClass: 'bg-blue-600 text-white' },
-  { id: 'investment', label: 'Investment', color: 'text-emerald-600', activeClass: 'bg-emerald-600 text-white' },
-  { id: 'loan', label: 'Loan', color: 'text-amber-600', activeClass: 'bg-amber-600 text-white' },
+const TABS: { id: CalcTab; label: string; activeClass: string }[] = [
+  { id: 'savings', label: 'Savings', activeClass: 'bg-blue-600 text-white' },
+  { id: 'investment', label: 'Wealth Circle', activeClass: 'bg-emerald-600 text-white' },
+  { id: 'loan', label: 'Loan', activeClass: 'bg-orange-600 text-white' },
 ];
 
 export default function FinancialCalculators() {
   const [activeTab, setActiveTab] = useState<CalcTab>('savings');
 
   return (
-    <section id="calculators" className="py-20 lg:py-28 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:flex-row gap-12 items-start">
-          {/* Left text */}
-          <div className="lg:w-80 flex-shrink-0">
-            <div className="inline-flex items-center gap-2 bg-secondary rounded-full px-4 py-1.5 mb-4">
-              <span className="text-primary text-xs font-semibold uppercase tracking-widest">Calculators</span>
+    <section id="calculators" className="py-20 lg:py-28 bg-[#0a0f1e]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+        <div className="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
+          {/* Left copy */}
+          <div className="lg:w-[340px] flex-shrink-0">
+            <div className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-5">
+              CALCULATORS
             </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground leading-tight mb-4">
-              Plan your<br />
-              <span className="text-primary">financial journey</span><br />
-              before you start.
+            <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight tracking-tight mb-5">
+              See your money<br />
+              grow before{' '}
+              <span className="text-emerald-400">you commit.</span>
             </h2>
-            <p className="text-muted-foreground text-base leading-relaxed mb-6">
-              Use our interactive calculators to estimate returns, plan contributions, and understand your loan obligations before committing.
+            <p className="text-white/45 text-base leading-relaxed">
+              Adjust the sliders. Watch the numbers. No surprises.
             </p>
-            <div className="space-y-3">
-              {[
-                { label: 'Savings Calculator', desc: 'Project your savings growth' },
-                { label: 'Investment Calculator', desc: 'Estimate portfolio returns' },
-                { label: 'Loan Calculator', desc: 'Plan your repayments' },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-3 p-3 rounded-xl bg-muted/60">
-                  <div className="w-2 h-2 rounded-full bg-accent flex-shrink-0" />
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">{item.label}</div>
-                    <div className="text-xs text-muted-foreground">{item.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* Calculator card */}
-          <div className="flex-1 bg-card rounded-3xl border border-border shadow-card-lg overflow-hidden">
-            {/* Tab bar */}
-            <div className="flex border-b border-border bg-muted/30 p-1.5 gap-1">
-              {TABS.map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                    activeTab === tab.id ? tab.activeClass : `${tab.color} hover:bg-muted`
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+          {/* Right calculator */}
+          <div className="flex-1 min-w-0">
+            <div className="bg-[#111827] rounded-2xl border border-white/10 overflow-hidden">
+              {/* Tabs */}
+              <div className="flex border-b border-white/10 bg-white/[0.03]">
+                {TABS.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 py-4 text-sm font-bold transition-all duration-200 ${
+                      activeTab === tab.id
+                        ? tab.activeClass
+                        : 'text-white/40 hover:text-white/70'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
 
-            {/* Calculator content */}
-            <div className="p-6 sm:p-8">
-              {activeTab === 'savings' && <SavingsCalc />}
-              {activeTab === 'investment' && <InvestmentCalc />}
-              {activeTab === 'loan' && <LoanCalc />}
-            </div>
+              {/* Content */}
+              <div className="p-7 sm:p-9">
+                {activeTab === 'savings' && <SavingsCalc />}
+                {activeTab === 'investment' && <InvestmentCalc />}
+                {activeTab === 'loan' && <LoanCalc />}
+              </div>
 
-            {/* Footer */}
-            <div className="px-6 sm:px-8 pb-6 pt-0">
-              <p className="text-xs text-muted-foreground text-center">
-                * Calculations are estimates for planning purposes. Actual returns may vary based on product terms.
-              </p>
+              {/* Disclaimer */}
+              <div className="px-7 sm:px-9 pb-5">
+                <p className="text-xs text-white/25 text-center">
+                  * Estimates for planning purposes only. Actual returns subject to product terms.
+                </p>
+              </div>
             </div>
           </div>
         </div>

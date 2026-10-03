@@ -1,9 +1,10 @@
 'use client';
 import React, { use } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { INVESTMENT_PRODUCTS, InvestmentProductDetail, formatNaira, formatNairaCompact } from '@/lib/investmentsData';
+import { INVESTMENT_PRODUCTS, formatNaira } from '@/lib/investmentsData';
+import LandingNav from '@/app/landing/components/LandingNav';
+import LandingFooter from '@/app/landing/components/LandingFooter';
 import {
   TrendingUp,
   ShieldCheck,
@@ -34,102 +35,83 @@ export default function InvestmentProductDetailPage({
 
   const capacityPct = Math.min(100, Math.round((product.totalSubscribed / product.totalCapacity) * 100));
   const remainingCapacity = Math.max(0, product.totalCapacity - product.totalSubscribed);
+  const isComingSoon = product.comingSoon || product.productStatus === 'coming_soon';
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/landing" className="flex items-center gap-2.5">
-              <Image
-                src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
-                alt="CLIMPS Cooperative Logo"
-                width={32}
-                height={32}
-                className="rounded-lg object-cover"
-              />
-              <span className="font-bold text-base text-primary tracking-tight">CLIMPS</span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <Link
-                href="/investment-products"
-                className="text-xs font-semibold text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                Back to All Opportunities
-              </Link>
-              <Link href="/login" className="text-xs font-semibold text-muted-foreground hover:text-foreground">
-                Sign In
-              </Link>
-              <Link href="/register" className="btn-accent text-xs px-3.5 py-1.5">
-                Join Cooperative
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#0a0f1e] text-white flex flex-col">
+      <LandingNav />
 
       {/* Hero / Header Breadcrumbs */}
-      <div className="gradient-primary py-10 lg:py-14 relative overflow-hidden">
+      <div className="relative py-12 lg:py-16 overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1e] via-[#0d1e38] to-[#08213b] pointer-events-none" />
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="flex items-center gap-2 text-xs text-white/70 mb-4">
-            <Link href="/landing" className="hover:text-white">Home</Link>
+          <div className="flex items-center gap-2 text-xs text-white/60 mb-4">
+            <Link href="/landing" className="hover:text-white transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/investment-products" className="hover:text-white">Investment Products</Link>
+            <Link href="/investment-products" className="hover:text-white transition-colors">Investment Products</Link>
             <span>/</span>
-            <span className="text-white font-medium">{product.name}</span>
+            <span className="text-emerald-400 font-medium">{product.name}</span>
           </div>
 
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-xs font-mono font-bold bg-white/15 text-white px-2.5 py-1 rounded-lg border border-white/20">
+                <span className="text-xs font-mono font-bold bg-white/10 text-white px-2.5 py-1 rounded-lg border border-white/15">
                   {product.code}
                 </span>
-                <span className="text-xs font-semibold text-accent bg-white/10 px-2.5 py-1 rounded-lg">
+                <span className="text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
                   {product.category}
                 </span>
-                <span className="text-xs font-semibold text-emerald-300 bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
+                <span className="text-xs font-semibold text-teal-300 bg-teal-500/10 border border-teal-500/20 px-2.5 py-1 rounded-lg">
                   {product.productStatus.replace('_', ' ').toUpperCase()}
                 </span>
               </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2 leading-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white mb-3 leading-tight tracking-tight">
                 {product.name}
               </h1>
-              <p className="text-white/80 text-base leading-relaxed">{product.tagline}</p>
+              <p className="text-white/70 text-base leading-relaxed">{product.tagline}</p>
             </div>
 
             {/* Quick Hero CTA Card */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 lg:w-72 shrink-0 flex flex-col gap-3">
+            <div className="bg-[#0d1527] border border-white/15 rounded-2xl p-5 lg:w-72 shrink-0 flex flex-col gap-3 shadow-xl">
               <div>
-                <div className="text-xs text-white/70">
-                  {product.isGuaranteed ? 'Contractual Return' : 'Projected Return'}
+                <div className="text-xs text-white/50">
+                  {product.isGuaranteed ? 'Agreed Return' : 'Projected Return'}
                 </div>
-                <div className="text-2xl font-extrabold text-accent font-tabular">
+                <div className="text-2xl font-extrabold text-emerald-400 font-tabular">
                   {product.projectedReturnLabel}
                 </div>
                 <div className="text-[11px] text-white/60 mt-0.5">{product.returnMethod}</div>
               </div>
-              <div className="pt-2 border-t border-white/15 flex flex-col gap-2">
-                {product.productStatus === 'open' ? (
-                  <Link
-                    href={`/invest/now?product=${product.id}`}
-                    className="btn-accent text-center py-2.5 text-xs font-bold shadow-md flex items-center justify-center gap-1.5"
+              <div className="pt-2 border-t border-white/10 flex flex-col gap-2">
+                {isComingSoon ? (
+                  <a
+                    href="mailto:admin@climps.org?subject=Investment Waitlist"
+                    className="text-center py-2.5 text-xs font-bold rounded-xl bg-white/10 text-white hover:bg-white/20 transition-all flex items-center justify-center gap-1.5"
                   >
-                    Invest Now
+                    Get Notified
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                ) : product.productStatus === 'open' ? (
+                  <Link
+                    href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
+                    className="text-center py-2.5 text-xs font-bold rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white hover:from-emerald-400 hover:to-teal-500 transition-all shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 ) : (
-                  <button disabled className="btn-outline opacity-60 text-center py-2.5 text-xs font-bold text-white border-white/30">
+                  <button disabled className="opacity-50 text-center py-2.5 text-xs font-bold text-white border border-white/20 rounded-xl cursor-not-allowed">
                     Subscription Closed
                   </button>
                 )}
                 <Link
                   href={`/invest/calculator?product=${product.id}`}
-                  className="bg-white/15 hover:bg-white/25 text-white text-center py-2 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                  className="bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white text-center py-2 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-1.5"
                 >
-                  <Calculator className="w-3.5 h-3.5" />
+                  <Calculator className="w-3.5 h-3.5 text-emerald-400" />
                   Calculate Potential Return
                 </Link>
               </div>
@@ -139,43 +121,43 @@ export default function InvestmentProductDetailPage({
       </div>
 
       {/* Main Details Body */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 flex-1 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column (2 Cols): Core Terms, Overview, Disclosures */}
           <div className="lg:col-span-2 space-y-8">
             {/* Overview & Full Description */}
-            <section className="bg-card rounded-3xl border border-border p-6 sm:p-8 shadow-sm">
-              <h2 className="text-lg font-bold text-foreground mb-3 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-primary" />
+            <section className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl">
+              <h2 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+                <FileText className="w-5 h-5 text-emerald-400" />
                 Investment Prospectus & Objective
               </h2>
-              <p className="text-sm text-foreground/80 leading-relaxed whitespace-pre-line mb-6">
+              <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line mb-6">
                 {product.fullDescription}
               </p>
 
               {/* Capacity Progress Box */}
-              <div className="bg-muted/40 rounded-2xl p-5 border border-border/60">
+              <div className="bg-white/[0.03] rounded-2xl p-5 border border-white/5">
                 <div className="flex items-center justify-between text-xs font-semibold mb-2">
-                  <span className="text-muted-foreground flex items-center gap-1.5">
-                    <Users className="w-4 h-4 text-primary" />
+                  <span className="text-white/60 flex items-center gap-1.5">
+                    <Users className="w-4 h-4 text-emerald-400" />
                     Subscription Capacity Progress
                   </span>
-                  <span className="text-foreground font-tabular font-bold">
+                  <span className="text-white font-tabular font-bold">
                     {capacityPct}% Filled
                   </span>
                 </div>
-                <div className="h-3 w-full bg-muted rounded-full overflow-hidden mb-2">
+                <div className="h-3 w-full bg-white/10 rounded-full overflow-hidden mb-2">
                   <div
-                    className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-700"
+                    className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-700"
                     style={{ width: `${capacityPct}%` }}
                   />
                 </div>
-                <div className="flex items-center justify-between text-xs text-muted-foreground font-tabular">
-                  <span>Subscribed: <strong className="text-foreground">{formatNaira(product.totalSubscribed)}</strong></span>
-                  <span>Total Target: <strong className="text-foreground">{formatNaira(product.totalCapacity)}</strong></span>
+                <div className="flex items-center justify-between text-xs text-white/50 font-tabular">
+                  <span>Subscribed: <strong className="text-white">{formatNaira(product.totalSubscribed)}</strong></span>
+                  <span>Total Target: <strong className="text-white">{formatNaira(product.totalCapacity)}</strong></span>
                 </div>
                 {remainingCapacity > 0 && (
-                  <p className="text-[11px] text-emerald-600 font-semibold mt-2">
+                  <p className="text-[11px] text-emerald-400 font-semibold mt-2">
                     ✓ {formatNaira(remainingCapacity)} remaining in this offering tranche.
                   </p>
                 )}
@@ -183,167 +165,94 @@ export default function InvestmentProductDetailPage({
             </section>
 
             {/* Key Financial Terms & Specifications */}
-            <section className="bg-card rounded-3xl border border-border p-6 sm:p-8 shadow-sm">
-              <h2 className="text-lg font-bold text-foreground mb-5 flex items-center gap-2">
-                <Banknote className="w-5 h-5 text-emerald-600" />
+            <section className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl">
+              <h2 className="text-lg font-bold text-white mb-5 flex items-center gap-2">
+                <Banknote className="w-5 h-5 text-emerald-400" />
                 Financial Term Sheet
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">Minimum Investment</span>
-                  <span className="text-lg font-extrabold text-foreground font-tabular">
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-xs text-white/50 block mb-1">Minimum Investment</span>
+                  <span className="text-lg font-extrabold text-white font-tabular">
                     {formatNaira(product.minimumInvestment)}
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">Maximum Investment</span>
-                  <span className="text-lg font-extrabold text-foreground font-tabular">
-                    {product.maximumInvestment ? formatNaira(product.maximumInvestment) : 'No Maximum Cap'}
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-xs text-white/50 block mb-1">Duration & Tenure</span>
+                  <span className="text-lg font-extrabold text-white">
+                    {product.durationMonths} Months ({Math.round((product.durationMonths / 12) * 10) / 10} Yrs)
                   </span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">Investment Duration</span>
-                  <span className="text-lg font-extrabold text-foreground font-tabular">
-                    {product.durationLabel}
-                  </span>
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">({product.durationMonths} Calendar Months)</span>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">
-                    {product.isGuaranteed ? 'Guaranteed Return' : 'Projected Return'}
-                  </span>
-                  <span className="text-lg font-extrabold text-emerald-600 font-tabular">
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-xs text-white/50 block mb-1">Return Model</span>
+                  <span className="text-lg font-extrabold text-emerald-400 font-tabular">
                     {product.projectedReturnLabel}
                   </span>
-                  <span className="text-[11px] text-muted-foreground block mt-0.5">{product.returnMethod}</span>
+                  <span className="text-2xs text-white/50 block mt-0.5">{product.returnMethod}</span>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">Calculation Basis</span>
-                  <span className="text-sm font-bold text-foreground">
-                    {product.returnMethod}
-                  </span>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-muted/40 border border-border/50">
-                  <span className="text-xs text-muted-foreground block mb-1">Investor Eligibility</span>
-                  <span className="text-sm font-semibold text-foreground">
-                    {product.eligibility}
+                <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-xs text-white/50 block mb-1">Risk Profile</span>
+                  <span className="text-lg font-extrabold text-amber-400 capitalize">
+                    {product.riskLevel} Risk
                   </span>
                 </div>
               </div>
             </section>
 
-            {/* Key Timeline Dates */}
-            <section className="bg-card rounded-3xl border border-border p-6 sm:p-8 shadow-sm">
-              <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <Clock className="w-5 h-5 text-blue-600" />
-                Schedule & Critical Dates
+            {/* Terms, Conditions & Liquidation Rules */}
+            <section className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl">
+              <h2 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                <ShieldCheck className="w-5 h-5 text-emerald-400" />
+                Terms & Liquidation Policy
               </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div className="p-4 rounded-2xl bg-muted/30 border border-border/60">
-                  <span className="text-xs text-muted-foreground block mb-1">Subscription Opens</span>
-                  <span className="text-sm font-bold text-foreground">
-                    {new Date(product.openingDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
-                </div>
-                <div className="p-4 rounded-2xl bg-muted/30 border border-border/60">
-                  <span className="text-xs text-muted-foreground block mb-1">Subscription Closes</span>
-                  <span className="text-sm font-bold text-amber-600">
-                    {new Date(product.closingDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
-                </div>
-                <div className="p-4 rounded-2xl bg-muted/30 border border-border/60">
-                  <span className="text-xs text-muted-foreground block mb-1">Target Maturity Date</span>
-                  <span className="text-sm font-bold text-emerald-600">
-                    {new Date(product.maturityDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' })}
-                  </span>
-                </div>
-              </div>
-            </section>
-
-            {/* Terms and Conditions */}
-            <section className="bg-card rounded-3xl border border-border p-6 sm:p-8 shadow-sm">
-              <h2 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                Terms & Conditions
-              </h2>
-              <ul className="space-y-3">
-                {product.terms.map((t, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-xs sm:text-sm text-foreground/80 leading-relaxed">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span>{t}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            {/* Mandatory Regulatory Risk Disclosures */}
-            <section className="bg-amber-50/70 border-2 border-amber-200/80 rounded-3xl p-6 sm:p-8">
-              <div className="flex items-start gap-3 mb-3">
-                <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-                <h3 className="text-base font-bold text-amber-900">
-                  Risk Factors & Important Disclosures
-                </h3>
-              </div>
-              <p className="text-xs text-amber-900/90 leading-relaxed mb-4">
-                {product.riskInformation}
-              </p>
-              <div className="space-y-2 border-t border-amber-200 pt-3">
-                {product.disclosures.map((d, i) => (
-                  <div key={i} className="text-xs text-amber-900/80 flex items-start gap-2">
-                    <span className="font-bold text-amber-700">•</span>
-                    <span>{d}</span>
-                  </div>
-                ))}
+              <div className="space-y-4 text-xs text-white/70 leading-relaxed">
+                <p>
+                  <strong>Agreed Returns:</strong> For the CLIMPS Wealth Circle (CWC), agreed return is <strong>3.5% monthly</strong>.
+                </p>
+                <p>
+                  <strong>Withdrawal & Liquidation:</strong> Requests for partial or full liquidation shall be subject to the applicable notice period and the terms contained in the Wealth Circle Agreement. Early liquidation may affect the return applicable and may attract an administrative charge where expressly provided for in the Agreement.
+                </p>
+                <p>
+                  <strong>Eligibility:</strong> Only verified and fully onboarded CLIMPS members in good standing are eligible to hold active investment shares.
+                </p>
               </div>
             </section>
           </div>
 
-          {/* Right Column (Sidebar CTA & Calculator Trigger) */}
-          <div className="space-y-6">
-            {/* Sticky Action Card */}
-            <div className="bg-card rounded-3xl border border-border p-6 shadow-md sticky top-24">
-              <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                Action Center
-              </div>
-              <h3 className="text-xl font-bold text-foreground mb-4">{product.name}</h3>
-
-              <div className="space-y-3 mb-6 text-sm">
-                <div className="flex justify-between py-1.5 border-b border-border text-xs">
-                  <span className="text-muted-foreground">Rate:</span>
-                  <span className="font-bold text-emerald-600 font-tabular">{product.projectedReturnLabel}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-border text-xs">
-                  <span className="text-muted-foreground">Min. Commitment:</span>
-                  <span className="font-bold font-tabular">{formatNaira(product.minimumInvestment)}</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-border text-xs">
-                  <span className="text-muted-foreground">Duration:</span>
-                  <span className="font-bold">{product.durationMonths} Months</span>
-                </div>
-                <div className="flex justify-between py-1.5 border-b border-border text-xs">
-                  <span className="text-muted-foreground">Risk Category:</span>
-                  <span className="font-bold text-primary">{product.riskLevel}</span>
-                </div>
+          {/* Right Column (1 Col): Investment Action Box */}
+          <div className="lg:col-span-1 space-y-6">
+            <div className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-7 shadow-xl sticky top-24 space-y-5">
+              <div className="pb-4 border-b border-white/10">
+                <span className="text-2xs uppercase tracking-wider font-bold text-white/50 block mb-1">
+                  Ready to Subscribe?
+                </span>
+                <h3 className="text-lg font-bold text-white">Join This Offering</h3>
               </div>
 
               <div className="space-y-3">
-                {product.productStatus === 'open' ? (
-                  <Link
-                    href={`/invest/now?product=${product.id}`}
-                    className="w-full btn-primary py-3 text-sm font-bold flex items-center justify-center gap-2 shadow-md"
+                {isComingSoon ? (
+                  <a
+                    href="mailto:admin@climps.org?subject=Investment Waitlist"
+                    className="w-full py-3.5 px-4 rounded-xl bg-white/10 text-white font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/20 transition-all shadow-md"
                   >
-                    Invest Now
+                    Get Notified
+                    <ArrowRight className="w-4 h-4" />
+                  </a>
+                ) : product.productStatus === 'open' ? (
+                  <Link
+                    href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
+                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
+                  >
+                    {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 ) : (
                   <button
                     disabled
-                    className="w-full btn-outline opacity-60 text-center py-3 text-sm font-bold cursor-not-allowed"
+                    className="w-full border border-white/20 text-white/50 text-center py-3 text-sm font-bold rounded-xl cursor-not-allowed"
                   >
                     Subscription Closed
                   </button>
@@ -351,28 +260,32 @@ export default function InvestmentProductDetailPage({
 
                 <Link
                   href={`/invest/calculator?product=${product.id}`}
-                  className="w-full btn-outline py-3 text-sm font-semibold flex items-center justify-center gap-2 hover:border-primary/50"
+                  className="w-full py-3 px-4 rounded-xl border border-white/15 bg-white/[0.04] text-white text-sm font-semibold flex items-center justify-center gap-2 hover:bg-white/[0.08] transition-all"
                 >
-                  <Calculator className="w-4 h-4 text-emerald-600" />
+                  <Calculator className="w-4 h-4 text-emerald-400" />
                   Simulate in Calculator
                 </Link>
 
-                <Link
-                  href="/investors-circle"
-                  className="w-full text-center block text-xs font-semibold text-primary hover:underline py-2"
-                >
-                  Learn about High-Net-Worth Circle →
-                </Link>
+                {product.id !== 'investors-circle' && (
+                  <Link
+                    href="/investors-circle"
+                    className="w-full text-center block text-xs font-semibold text-emerald-400 hover:underline py-2"
+                  >
+                    Explore Regular Wealth Circle →
+                  </Link>
+                )}
               </div>
 
               {/* Help & Support note */}
-              <div className="mt-6 pt-5 border-t border-border text-center text-xs text-muted-foreground">
-                Questions about this offering? Contact our investment desk at <strong>invest@climps.coop</strong> or visit any CLIMPS branch.
+              <div className="mt-6 pt-5 border-t border-white/10 text-center text-xs text-white/50">
+                Questions about this offering? Contact our investment desk at <strong className="text-white">invest@climps.coop</strong> or visit any CLIMPS branch.
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      <LandingFooter />
     </div>
   );
 }

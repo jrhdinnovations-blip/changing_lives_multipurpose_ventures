@@ -23,10 +23,10 @@ const data = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card border border-border rounded-xl p-2.5 card-shadow text-xs">
-        <p className="font-semibold text-foreground mb-1">{label}</p>
-        <p className="text-muted-foreground">
-          Total Savings: <span className="font-bold text-primary">₦{payload[0]?.value}M</span>
+      <div className="bg-[#0d1527] border border-white/10 rounded-xl p-2.5 card-shadow text-xs">
+        <p className="font-semibold text-white mb-1">{label}</p>
+        <p className="text-white/50">
+          Total Savings: <span className="font-bold text-emerald-400">₦{payload[0]?.value}M</span>
         </p>
       </div>
     );

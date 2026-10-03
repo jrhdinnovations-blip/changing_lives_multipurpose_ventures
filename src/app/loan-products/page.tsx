@@ -1,7 +1,9 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { CreditCard, CheckCircle2, ShieldCheck, ArrowRight, Calculator } from 'lucide-react';
+import LandingNav from '../landing/components/LandingNav';
+import LandingFooter from '../landing/components/LandingFooter';
 
 interface LoanProduct {
   id: string;
@@ -18,251 +20,118 @@ interface LoanProduct {
   badge: string;
   badgeColor: string;
   accentColor: string;
-  bgGradient: string;
-  borderColor: string;
-  icon: React.ReactNode;
   popular?: boolean;
 }
 
 const loanProducts: LoanProduct[] = [
   {
-    id: 'emergency-loan',
-    name: 'Emergency Loan',
-    tagline: 'Fast cash when it matters most.',
-    description: 'Instant disbursement for urgent needs — medical bills, repairs, or unexpected expenses. Minimal documentation, same-day approval for active members.',
-    minAmount: '₦10,000',
-    maxAmount: '₦200,000',
-    interestRate: '5% flat',
-    duration: '1 – 3 months',
-    repaymentFrequency: 'Monthly',
-    eligibility: ['Active member for 3+ months', 'No outstanding default', 'Valid ID + BVN'],
-    benefits: ['Same-day disbursement', 'No collateral required', 'Minimal documentation', 'Automatic approval for eligible members'],
-    badge: 'Instant Access',
-    badgeColor: 'bg-red-100 text-red-700',
-    accentColor: 'text-red-600',
-    bgGradient: 'from-red-50/80 to-white',
-    borderColor: 'border-red-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-    ),
-    popular: true,
-  },
-  {
     id: 'personal-loan',
     name: 'Personal Loan',
     tagline: 'Your goals, your terms.',
-    description: 'Flexible personal financing for home improvements, travel, weddings, or any personal project. Competitive rates with structured repayment plans.',
+    description: 'Flexible personal financing for home improvements, capital projects, or personal goals. Competitive cooperative rate of 10% monthly with structured, transparent repayment schedules.',
     minAmount: '₦50,000',
     maxAmount: '₦1,500,000',
-    interestRate: '8% p.a.',
+    interestRate: '10% monthly',
     duration: '3 – 24 months',
     repaymentFrequency: 'Monthly',
-    eligibility: ['Active member for 6+ months', 'Minimum savings balance ₦20,000', 'Guarantor required above ₦500k'],
-    benefits: ['No early repayment penalty', 'Flexible repayment schedule', 'Top-up facility available', 'Loan restructuring option'],
-    badge: 'Most Popular',
-    badgeColor: 'bg-blue-100 text-blue-700',
-    accentColor: 'text-blue-600',
-    bgGradient: 'from-blue-50/80 to-white',
-    borderColor: 'border-blue-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'business-loan',
-    name: 'Business Loan',
-    tagline: 'Capital to grow your enterprise.',
-    description: 'Purpose-built financing for SMEs and entrepreneurs. Fund inventory, equipment, expansion, or working capital with preferential rates for business savers.',
-    minAmount: '₦100,000',
-    maxAmount: '₦5,000,000',
-    interestRate: '10% p.a.',
-    duration: '6 – 36 months',
-    repaymentFrequency: 'Monthly / Quarterly',
-    eligibility: ['Business savings account holder', 'CAC registration (for ₦500k+)', 'Active member for 12+ months'],
-    benefits: ['Preferential rate for business savers', 'Quarterly repayment option', 'Dedicated relationship manager', 'Business advisory support'],
-    badge: 'SME Focused',
-    badgeColor: 'bg-amber-100 text-amber-700',
-    accentColor: 'text-amber-600',
-    bgGradient: 'from-amber-50/80 to-white',
-    borderColor: 'border-amber-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-      </svg>
-    ),
-  },
-  {
-    id: 'salary-loan',
-    name: 'Salary Loan',
-    tagline: 'Advance on your earnings.',
-    description: 'Salary-backed financing for employed members. Repayment is automatically deducted from monthly salary, making it stress-free and disciplined.',
-    minAmount: '₦30,000',
-    maxAmount: '₦3,000,000',
-    interestRate: '6% p.a.',
-    duration: '3 – 18 months',
-    repaymentFrequency: 'Monthly (salary deduction)',
-    eligibility: ['Confirmed employment letter', 'Salary domiciled with CLIMPS', 'Active member for 3+ months'],
-    benefits: ['Auto salary deduction', 'Up to 3× net monthly salary', 'No guarantor for amounts ≤₦500k', 'Instant approval for eligible staff'],
-    badge: 'Salary-Backed',
-    badgeColor: 'bg-teal-100 text-teal-700',
-    accentColor: 'text-teal-600',
-    bgGradient: 'from-teal-50/80 to-white',
-    borderColor: 'border-teal-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-      </svg>
-    ),
-  },
-  {
-    id: 'special-loan',
-    name: 'Special Loan',
-    tagline: 'Tailored for life\'s big moments.',
-    description: 'High-value financing for major life events — land purchase, housing, vehicle acquisition, or large-scale projects. Structured with extended tenure and flexible terms.',
-    minAmount: '₦500,000',
-    maxAmount: '₦10,000,000',
-    interestRate: '9% p.a.',
-    duration: '12 – 60 months',
-    repaymentFrequency: 'Monthly',
-    eligibility: ['Active member for 24+ months', 'Collateral or guarantor required', 'Minimum savings balance ₦100,000'],
-    benefits: ['Extended 5-year tenure', 'Collateral-backed security', 'Moratorium period available', 'Loan insurance included'],
-    badge: 'High Value',
-    badgeColor: 'bg-purple-100 text-purple-700',
-    accentColor: 'text-purple-600',
-    bgGradient: 'from-purple-50/80 to-white',
-    borderColor: 'border-purple-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'education-loan',
-    name: 'Education Loan',
-    tagline: 'Invest in knowledge, repay with growth.',
-    description: 'Finance school fees, university tuition, professional certifications, or study abroad programs. Disbursed directly to institutions with student-friendly repayment.',
-    minAmount: '₦20,000',
-    maxAmount: '₦2,000,000',
-    interestRate: '5% p.a.',
-    duration: '3 – 24 months',
-    repaymentFrequency: 'Monthly / Per Term',
-    eligibility: ['Active member or parent/guardian', 'Admission letter or fee invoice', 'Guarantor for amounts above ₦500k'],
-    benefits: ['Direct payment to institution', 'Per-term disbursement option', 'Grace period during studies', 'Reduced rate for returning borrowers'],
-    badge: 'Education',
-    badgeColor: 'bg-indigo-100 text-indigo-700',
-    accentColor: 'text-indigo-600',
-    bgGradient: 'from-indigo-50/80 to-white',
-    borderColor: 'border-indigo-200',
-    icon: (
-      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 14l9-5-9-5-9 5 9 5z" />
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-      </svg>
-    ),
+    eligibility: [
+      'Active CLIMPS member for 6+ months',
+      'Minimum savings balance ₦20,000',
+      'Guarantor endorsement required for amounts above ₦500,000',
+      'Consistent monthly contribution history',
+    ],
+    benefits: [
+      'Fast review & transparent approval within 24–48 hours',
+      'No early repayment penalties',
+      'Flexible repayment tenure from 3 to 24 months',
+      'Top-up facility available upon satisfactory repayment track',
+    ],
+    badge: 'Cooperative Loan',
+    badgeColor: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
+    accentColor: 'text-emerald-400',
+    popular: true,
   },
 ];
 
-type FilterType = 'all' | 'short-term' | 'long-term' | 'no-collateral';
+type FilterType = 'all';
 
 const filters: { id: FilterType; label: string }[] = [
   { id: 'all', label: 'All Loans' },
-  { id: 'short-term', label: 'Short Term (≤6 months)' },
-  { id: 'long-term', label: 'Long Term (12+ months)' },
-  { id: 'no-collateral', label: 'No Collateral' },
 ];
 
 const filterMap: Record<FilterType, string[]> = {
-  all: loanProducts.map((p) => p.id),
-  'short-term': ['emergency-loan', 'personal-loan', 'salary-loan'],
-  'long-term': ['business-loan', 'special-loan', 'personal-loan'],
-  'no-collateral': ['emergency-loan', 'personal-loan', 'salary-loan', 'education-loan'],
+  all: ['personal-loan'],
 };
 
 function LoanCard({ product }: { product: LoanProduct }) {
   return (
-    <div
-      className={`relative flex flex-col rounded-2xl border-2 ${product.borderColor} bg-gradient-to-br ${product.bgGradient} p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg group`}
-    >
+    <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#0d1527] p-8 lg:p-9 shadow-2xl transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 group overflow-hidden">
       {/* Top pick ribbon */}
       {product.popular && (
         <div className="absolute -top-px -right-px">
-          <div className="bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl rounded-tr-2xl tracking-wide">
-            ★ TOP PICK
+          <div className="bg-emerald-600 text-white text-[10px] font-extrabold px-3.5 py-1 rounded-bl-xl rounded-tr-3xl tracking-widest uppercase shadow-md">
+            ★ EXCLUSIVE PRODUCT
           </div>
         </div>
       )}
 
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
-        <div className={`w-11 h-11 rounded-xl bg-white border border-border flex items-center justify-center ${product.accentColor} shadow-sm`}>
-          {product.icon}
+        <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shadow-sm">
+          <CreditCard className="w-6 h-6" />
         </div>
-        <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.badgeColor}`}>
+        <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${product.badgeColor}`}>
           {product.badge}
         </span>
       </div>
 
       {/* Name & tagline */}
-      <h3 className="text-lg font-bold text-foreground mb-0.5">{product.name}</h3>
-      <p className={`text-xs font-semibold ${product.accentColor} mb-3`}>{product.tagline}</p>
-      <p className="text-muted-foreground text-sm leading-relaxed mb-5">{product.description}</p>
+      <h3 className="text-2xl font-bold text-white mb-1 tracking-tight">{product.name}</h3>
+      <p className="text-xs font-semibold text-emerald-400 mb-3">{product.tagline}</p>
+      <p className="text-white/70 text-sm leading-relaxed mb-6">{product.description}</p>
 
       {/* Key metrics grid */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        <div className="bg-white/80 rounded-xl p-3 text-center border border-white/90">
-          <div className={`text-sm font-bold ${product.accentColor}`}>{product.interestRate}</div>
-          <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Interest Rate</div>
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="bg-white/[0.03] rounded-2xl p-3.5 text-center border border-white/10">
+          <div className="text-base font-extrabold text-emerald-400 font-tabular">{product.interestRate}</div>
+          <div className="text-[11px] text-white/50 mt-0.5 leading-tight">Interest Rate</div>
         </div>
-        <div className="bg-white/80 rounded-xl p-3 text-center border border-white/90">
-          <div className="text-[11px] font-bold text-foreground leading-tight">{product.duration}</div>
-          <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Duration</div>
+        <div className="bg-white/[0.03] rounded-2xl p-3.5 text-center border border-white/10">
+          <div className="text-base font-bold text-white font-tabular">{product.duration}</div>
+          <div className="text-[11px] text-white/50 mt-0.5 leading-tight">Repayment Period</div>
         </div>
-      </div>
-      <div className="grid grid-cols-2 gap-2 mb-4">
-        <div className="bg-white/80 rounded-xl p-3 text-center border border-white/90">
-          <div className="text-[11px] font-bold text-foreground leading-tight">{product.minAmount}</div>
-          <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Min Amount</div>
+        <div className="bg-white/[0.03] rounded-2xl p-3.5 text-center border border-white/10">
+          <div className="text-sm font-bold text-white font-tabular">{product.minAmount}</div>
+          <div className="text-[11px] text-white/50 mt-0.5 leading-tight">Minimum Loan</div>
         </div>
-        <div className="bg-white/80 rounded-xl p-3 text-center border border-white/90">
-          <div className="text-[11px] font-bold text-foreground leading-tight">{product.maxAmount}</div>
-          <div className="text-[10px] text-muted-foreground mt-0.5 leading-tight">Max Amount</div>
+        <div className="bg-white/[0.03] rounded-2xl p-3.5 text-center border border-white/10">
+          <div className="text-sm font-bold text-white font-tabular">{product.maxAmount}</div>
+          <div className="text-[11px] text-white/50 mt-0.5 leading-tight">Maximum Loan</div>
         </div>
-      </div>
-
-      {/* Repayment frequency */}
-      <div className="flex items-center gap-2 mb-4 px-3 py-2 bg-white/60 rounded-xl border border-white/80">
-        <svg className={`w-4 h-4 flex-shrink-0 ${product.accentColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-        <span className="text-xs text-muted-foreground">Repayment: <span className="font-semibold text-foreground">{product.repaymentFrequency}</span></span>
       </div>
 
       {/* Eligibility */}
-      <div className="mb-4">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">Eligibility</p>
-        <ul className="space-y-1">
-          {product.eligibility.map((item, i) => (
-            <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground">
-              <svg className={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${product.accentColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4" />
-              </svg>
-              {item}
-            </li>
+      <div className="mb-6">
+        <p className="text-xs font-bold text-white/60 uppercase tracking-wider mb-2.5">Eligibility Requirements</p>
+        <div className="space-y-2">
+          {product.eligibility.map((e, i) => (
+            <div key={i} className="flex items-start gap-2.5 text-xs text-white/80">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+              <span>{e}</span>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
 
       {/* Benefits */}
-      <div className="mb-5">
-        <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wide mb-2">Key Benefits</p>
-        <div className="flex flex-wrap gap-1.5">
+      <div className="mb-8">
+        <p className="text-xs font-bold text-white/60 uppercase tracking-wider mb-2.5">Key Benefits</p>
+        <div className="flex flex-wrap gap-2">
           {product.benefits.map((b, i) => (
-            <span key={i} className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-medium bg-white/80 border border-border text-foreground`}>
+            <span
+              key={i}
+              className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-white/[0.04] border border-white/10 text-white/90"
+            >
               {b}
             </span>
           ))}
@@ -270,16 +139,13 @@ function LoanCard({ product }: { product: LoanProduct }) {
       </div>
 
       {/* CTA */}
-      <div className="mt-auto">
+      <div className="mt-auto pt-4 border-t border-white/10">
         <Link
-          href="/"
-          className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold text-white transition-all duration-150 active:scale-95 shadow-sm hover:shadow-md`}
-          style={{ background: 'var(--color-primary)' }}
+          href="/loan-application"
+          className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-950/40 transition-all duration-150 active:scale-95"
         >
-          Apply for Loan
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+          <span>Apply for Loan</span>
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </div>
@@ -293,66 +159,63 @@ export default function LoanProductsPage() {
   const visibleProducts = loanProducts.filter((p) => visibleIds.includes(p.id));
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Nav spacer */}
-      <div className="h-16 lg:h-20" />
+    <div className="min-h-screen bg-[#0a0f1e] text-white selection:bg-emerald-500/30 selection:text-emerald-200">
+      <LandingNav />
 
       {/* Hero Banner */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-accent/80 py-16 lg:py-20">
-        {/* Background decoration */}
+      <section className="relative overflow-hidden pt-28 pb-16 lg:pt-36 lg:pb-24 border-b border-white/10">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/3" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full translate-y-1/2 -translate-x-1/4" />
+          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px]" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/15 border border-white/20 text-white/90 text-xs font-semibold mb-5 backdrop-blur-sm">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              CLIMPS Loan Products
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-5 backdrop-blur-md">
+              <ShieldCheck className="w-4 h-4" />
+              <span>CLIMPS Cooperative Loan Products</span>
             </div>
-            <h1 className="text-3xl lg:text-4xl font-bold text-white mb-4 leading-tight">
-              Financing Built for<br />
-              <span className="text-accent/90">Every Need</span>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight tracking-tight">
+              Fair, Transparent Financing Built for <span className="text-emerald-400">Cooperative Members</span>
             </h1>
-            <p className="text-white/80 text-base lg:text-lg leading-relaxed mb-8">
-              From emergency cash to business capital — access fair, transparent loans with competitive rates and flexible repayment plans designed for cooperative members.
+            <p className="text-white/70 text-base lg:text-lg leading-relaxed mb-8 max-w-2xl">
+              Access responsible, structured personal loans with transparent terms, standard 10% monthly interest, and no hidden charges.
             </p>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-primary text-sm font-semibold hover:bg-white/90 transition-all active:scale-95 shadow-md"
+                href="/loan-application"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
               >
-                Apply for a Loan
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                <span>Apply for a Loan</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/landing"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white text-sm font-semibold hover:bg-white/20 transition-all active:scale-95 backdrop-blur-sm"
+                href="/landing#calculators"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/20 text-white text-sm font-semibold hover:bg-white/10 transition-all"
               >
-                Check Eligibility
+                <Calculator className="w-4 h-4 text-emerald-400" />
+                <span>Loan Calculator</span>
               </Link>
             </div>
           </div>
         </div>
 
         {/* Stats strip */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
             {[
-              { value: '₦10K', label: 'Minimum Loan', sub: 'Emergency Loan' },
-              { value: '5%', label: 'Lowest Rate', sub: 'p.a. flat' },
-              { value: '60 mo', label: 'Max Tenure', sub: 'Special Loan' },
-              { value: '24hrs', label: 'Avg Disbursement', sub: 'For eligible members' },
+              { value: '₦50,000', label: 'Minimum Loan', sub: 'Personal Loan' },
+              { value: '10% monthly', label: 'Cooperative Rate', sub: 'Transparent terms' },
+              { value: '3 – 24 mo', label: 'Flexible Tenure', sub: 'Structured repayment' },
+              { value: '24–48 hrs', label: 'Fast Review', sub: 'For verified members' },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl px-4 py-3 text-center">
-                <div className="text-xl font-bold text-white">{stat.value}</div>
-                <div className="text-white/80 text-xs font-semibold mt-0.5">{stat.label}</div>
-                <div className="text-white/50 text-[10px] mt-0.5">{stat.sub}</div>
+              <div
+                key={stat.label}
+                className="bg-[#0d1527] backdrop-blur-md border border-white/10 rounded-2xl px-5 py-4 text-center shadow-lg"
+              >
+                <div className="text-xl lg:text-2xl font-extrabold text-emerald-400 font-tabular">{stat.value}</div>
+                <div className="text-white text-xs font-semibold mt-1">{stat.label}</div>
+                <div className="text-white/40 text-[10px] mt-0.5">{stat.sub}</div>
               </div>
             ))}
           </div>
@@ -360,32 +223,32 @@ export default function LoanProductsPage() {
       </section>
 
       {/* Filter bar */}
-      <section className="sticky top-16 lg:top-20 z-30 bg-background/95 backdrop-blur-md border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-          <div className="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+      <section className="sticky top-16 lg:top-20 z-30 bg-[#0a0f1e]/90 backdrop-blur-md border-b border-white/10 shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+          <div className="flex items-center gap-2 overflow-x-auto">
             {filters.map((f) => (
               <button
                 key={f.id}
                 onClick={() => setActiveFilter(f.id)}
-                className={`flex-shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
+                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 ${
                   activeFilter === f.id
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
+                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950/40'
+                    : 'bg-white/[0.04] text-white/70 hover:bg-white/10 hover:text-white border border-white/10'
                 }`}
               >
                 {f.label}
               </button>
             ))}
-            <span className="flex-shrink-0 ml-auto text-xs text-muted-foreground whitespace-nowrap">
-              {visibleProducts.length} product{visibleProducts.length !== 1 ? 's' : ''}
+            <span className="flex-shrink-0 ml-auto text-xs text-white/50">
+              {visibleProducts.length} loan product available
             </span>
           </div>
         </div>
       </section>
 
       {/* Products grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleProducts.map((product) => (
             <LoanCard key={product.id} product={product} />
           ))}
@@ -393,56 +256,33 @@ export default function LoanProductsPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="bg-gradient-to-r from-primary/5 via-accent/5 to-primary/5 border-t border-border py-14">
+      <section className="bg-gradient-to-br from-[#0a0f1e] via-[#0d2040] to-[#062c22] border-t border-white/10 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
-            Not sure which loan is right for you?
+          <h2 className="text-2xl lg:text-4xl font-extrabold text-white mb-3 tracking-tight">
+            Ready to apply for your Personal Loan?
           </h2>
-          <p className="text-muted-foreground text-base mb-8 leading-relaxed">
-            Our loan advisors will assess your needs and recommend the best product with the most favourable terms for your situation.
+          <p className="text-white/70 text-sm sm:text-base mb-8 leading-relaxed max-w-xl mx-auto">
+            Complete your online application in under 5 minutes. Transparent terms, zero surprise fees.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center">
             <Link
-              href="/"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-all active:scale-95 shadow-md"
+              href="/loan-application"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-950/50"
             >
-              Apply for a Loan
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
+              <span>Apply for a Loan Now</span>
+              <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/landing"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border-2 border-primary text-primary text-sm font-semibold hover:bg-primary/5 transition-all active:scale-95"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/10 transition-all"
             >
-              Talk to an Advisor
+              Return to Home
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Footer nav */}
-      <footer className="border-t border-border bg-background py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2.5">
-            <Image
-              src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
-              alt="CLIMPS Cooperative Logo"
-              width={32}
-              height={32}
-              className="rounded-lg object-cover"
-            />
-            <span className="font-bold text-base text-primary">CLIMPS</span>
-          </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <Link href="/landing" className="hover:text-foreground transition-colors">Home</Link>
-            <Link href="/savings-products" className="hover:text-foreground transition-colors">Savings</Link>
-            <Link href="/loan-products" className="hover:text-foreground transition-colors font-semibold text-foreground">Loans</Link>
-            <Link href="/" className="hover:text-foreground transition-colors">Sign In</Link>
-          </div>
-          <p className="text-xs text-muted-foreground">© 2026 CLIMPS Cooperative. All rights reserved.</p>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

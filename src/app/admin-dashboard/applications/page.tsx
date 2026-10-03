@@ -71,8 +71,8 @@ const STATUS_CONFIG: Record<ApplicationStatus, { label: string; color: string; b
   pending: { label: 'Pending', color: 'text-amber-600', bg: 'bg-amber-50', icon: Clock },
   under_review: { label: 'Under Review', color: 'text-blue-600', bg: 'bg-blue-50', icon: Eye },
   approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: CheckCircle2 },
-  rejected: { label: 'Rejected', color: 'text-destructive', bg: 'bg-destructive/10', icon: XCircle },
-  cancelled: { label: 'Cancelled', color: 'text-muted-foreground', bg: 'bg-muted', icon: X },
+  rejected: { label: 'Rejected', color: 'text-red-400', bg: 'bg-red-500/10', icon: XCircle },
+  cancelled: { label: 'Cancelled', color: 'text-white/50', bg: 'bg-white/[0.06]', icon: X },
 };
 
 const MEMBER_STATUS_CONFIG: Record<MembershipStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
@@ -80,13 +80,13 @@ const MEMBER_STATUS_CONFIG: Record<MembershipStatus, { label: string; color: str
   under_review: { label: 'Under Review', color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-950/40', icon: Eye },
   approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950/40', icon: CheckCircle2 },
   active: { label: 'Active', color: 'text-teal-600', bg: 'bg-teal-50 dark:bg-teal-950/40', icon: ShieldCheck },
-  suspended: { label: 'Suspended', color: 'text-destructive', bg: 'bg-destructive/10', icon: XCircle },
+  suspended: { label: 'Suspended', color: 'text-red-400', bg: 'bg-red-500/10', icon: XCircle },
 };
 
 const PRODUCT_TYPE_CONFIG: Record<ProductType, { label: string; color: string; icon: React.ElementType }> = {
   savings: { label: 'Savings', color: 'bg-purple-100 text-purple-700', icon: PiggyBank },
   loan: { label: 'Loan', color: 'bg-orange-100 text-orange-700', icon: CreditCard },
-  investment: { label: 'Investment', color: 'bg-teal-100 text-teal-700', icon: TrendingUp },
+  investment: { label: 'Wealth Circle', color: 'bg-teal-100 text-teal-700', icon: TrendingUp },
 };
 
 const PAGE_SIZE = 15;
@@ -159,27 +159,27 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border">
+      <div className="bg-[#0d1527] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center overflow-hidden shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center overflow-hidden shrink-0">
               {member.profilePhotoUrl ? (
                 <img src={member.profilePhotoUrl} alt="Applicant" className="w-full h-full object-cover" />
               ) : (
-                <User size={22} className="text-primary" />
+                <User size={22} className="text-emerald-400" />
               )}
             </div>
             <div>
-              <h2 className="font-bold text-foreground text-base">
+              <h2 className="font-bold text-white text-base">
                 {[member.firstName, member.middleName, member.lastName].filter(Boolean).join(' ')}
               </h2>
-              <p className="text-xs text-muted-foreground font-mono">
+              <p className="text-xs text-white/50 font-mono">
                 {member.memberNumber || `Provisional ID: CLMV/2026/PENDING-${member.id.slice(0, 4).toUpperCase()}`}
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground">
+          <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/50">
             <X size={16} />
           </button>
         </div>
@@ -191,84 +191,84 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
               <StatusIcon size={14} />
               Status: {cfg.label}
             </div>
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-white/50">
               Submitted: {formatDate(member.createdAt)}
             </span>
           </div>
 
           {/* Contact & Personal */}
-          <div className="grid grid-cols-2 gap-3 bg-muted/40 rounded-2xl p-4 border border-border/50 text-xs">
+          <div className="grid grid-cols-2 gap-3 bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
             <div>
-              <span className="text-muted-foreground block mb-0.5">Email</span>
-              <span className="font-medium text-foreground">{member.email || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Email</span>
+              <span className="font-medium text-white">{member.email || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">Phone</span>
-              <span className="font-medium text-foreground">{member.phone || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Phone</span>
+              <span className="font-medium text-white">{member.phone || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">Gender / DOB</span>
-              <span className="font-medium text-foreground">{member.gender || '—'} · {member.dateOfBirth || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Gender / DOB</span>
+              <span className="font-medium text-white">{member.gender || '—'} · {member.dateOfBirth || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">Location</span>
-              <span className="font-medium text-foreground">{member.state ? `${member.state}${member.lga ? `, ${member.lga}` : ''}` : '—'}</span>
+              <span className="text-white/50 block mb-0.5">Location</span>
+              <span className="font-medium text-white">{member.state ? `${member.state}${member.lga ? `, ${member.lga}` : ''}` : '—'}</span>
             </div>
             <div className="col-span-2">
-              <span className="text-muted-foreground block mb-0.5">Residential Address</span>
-              <span className="font-medium text-foreground">{member.address || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Residential Address</span>
+              <span className="font-medium text-white">{member.address || '—'}</span>
             </div>
           </div>
 
           {/* Employment & Identity */}
-          <div className="grid grid-cols-2 gap-3 bg-muted/40 rounded-2xl p-4 border border-border/50 text-xs">
+          <div className="grid grid-cols-2 gap-3 bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
             <div>
-              <span className="text-muted-foreground block mb-0.5">Occupation</span>
-              <span className="font-medium text-foreground">{member.occupation || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Occupation</span>
+              <span className="font-medium text-white">{member.occupation || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">Employer / Business</span>
-              <span className="font-medium text-foreground">{member.employer || '—'}</span>
+              <span className="text-white/50 block mb-0.5">Employer / Business</span>
+              <span className="font-medium text-white">{member.employer || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">ID Type</span>
-              <span className="font-medium text-foreground">{member.idType || '—'}</span>
+              <span className="text-white/50 block mb-0.5">ID Type</span>
+              <span className="font-medium text-white">{member.idType || '—'}</span>
             </div>
             <div>
-              <span className="text-muted-foreground block mb-0.5">ID Number</span>
-              <span className="font-mono font-medium text-foreground">{member.idNumber || '—'}</span>
+              <span className="text-white/50 block mb-0.5">ID Number</span>
+              <span className="font-mono font-medium text-white">{member.idNumber || '—'}</span>
             </div>
           </div>
 
           {/* Next of Kin */}
-          <div className="bg-muted/40 rounded-2xl p-4 border border-border/50 text-xs">
-            <h4 className="font-semibold text-foreground mb-2 flex items-center gap-1.5">
-              <Users size={13} className="text-primary" />
+          <div className="bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
+            <h4 className="font-semibold text-white mb-2 flex items-center gap-1.5">
+              <Users size={13} className="text-emerald-400" />
               Next of Kin Information
             </h4>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <span className="text-muted-foreground block mb-0.5">Name</span>
-                <span className="font-medium text-foreground">{member.nokName || '—'}</span>
+                <span className="text-white/50 block mb-0.5">Name</span>
+                <span className="font-medium text-white">{member.nokName || '—'}</span>
               </div>
               <div>
-                <span className="text-muted-foreground block mb-0.5">Relationship</span>
-                <span className="font-medium text-foreground">{member.nokRelationship || '—'}</span>
+                <span className="text-white/50 block mb-0.5">Relationship</span>
+                <span className="font-medium text-white">{member.nokRelationship || '—'}</span>
               </div>
               <div>
-                <span className="text-muted-foreground block mb-0.5">Phone</span>
-                <span className="font-medium text-foreground">{member.nokPhone || '—'}</span>
+                <span className="text-white/50 block mb-0.5">Phone</span>
+                <span className="font-medium text-white">{member.nokPhone || '—'}</span>
               </div>
               <div>
-                <span className="text-muted-foreground block mb-0.5">Address</span>
-                <span className="font-medium text-foreground">{member.nokAddress || '—'}</span>
+                <span className="text-white/50 block mb-0.5">Address</span>
+                <span className="font-medium text-white">{member.nokAddress || '—'}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 p-6 border-t border-border bg-muted/30">
+        <div className="flex flex-wrap items-center gap-2.5 p-6 border-t border-white/10 bg-white/[0.06]/30">
           {member.membershipStatus !== 'under_review' && member.membershipStatus !== 'active' && member.membershipStatus !== 'approved' && (
             <button
               onClick={() => handleAction('under_review')}
@@ -306,14 +306,14 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
             <button
               onClick={() => handleAction('suspended')}
               disabled={saving !== null}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-destructive-foreground text-xs font-semibold hover:bg-destructive/90 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-red-400-foreground text-xs font-semibold hover:bg-red-500/90 transition-colors disabled:opacity-50"
             >
               {saving === 'suspended' ? <Loader2 size={13} className="animate-spin" /> : <XCircle size={13} />}
               Suspend
             </button>
           )}
 
-          <button onClick={onClose} className="ml-auto px-4 py-2 rounded-xl border border-border text-xs font-semibold text-muted-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="ml-auto px-4 py-2 rounded-xl border border-white/10 text-xs font-semibold text-white/50 hover:bg-white/[0.06] transition-colors">
             Close
           </button>
         </div>
@@ -350,19 +350,19 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-card rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-border">
+      <div className="bg-[#0d1527] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-xl ${PRODUCT_TYPE_CONFIG[application.productType].color}`}>
               <ProductIcon size={18} />
             </div>
             <div>
-              <h2 className="font-bold text-foreground text-base">Application Review</h2>
-              <p className="text-xs text-muted-foreground font-mono">{application.id.slice(0, 8).toUpperCase()}</p>
+              <h2 className="font-bold text-white text-base">Application Review</h2>
+              <p className="text-xs text-white/50 font-mono">{application.id.slice(0, 8).toUpperCase()}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-muted transition-colors text-muted-foreground">
+          <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/50">
             <X size={16} />
           </button>
         </div>
@@ -376,16 +376,16 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
 
           {/* Applicant info */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/50 rounded-xl p-4">
-              <p className="text-xs text-muted-foreground mb-1">Applicant</p>
-              <p className="font-semibold text-foreground text-sm">{application.memberName || 'Unknown Member'}</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-4">
+              <p className="text-xs text-white/50 mb-1">Applicant</p>
+              <p className="font-semibold text-white text-sm">{application.memberName || 'Unknown Member'}</p>
               {application.memberNumber && (
-                <p className="text-xs text-muted-foreground font-mono mt-0.5">{application.memberNumber}</p>
+                <p className="text-xs text-white/50 font-mono mt-0.5">{application.memberNumber}</p>
               )}
             </div>
-            <div className="bg-muted/50 rounded-xl p-4">
-              <p className="text-xs text-muted-foreground mb-1">Product</p>
-              <p className="font-semibold text-foreground text-sm">{application.productName}</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-4">
+              <p className="text-xs text-white/50 mb-1">Product</p>
+              <p className="font-semibold text-white text-sm">{application.productName}</p>
               <span className={`text-xs font-semibold px-2 py-0.5 rounded-lg mt-1 inline-block ${PRODUCT_TYPE_CONFIG[application.productType].color}`}>
                 {PRODUCT_TYPE_CONFIG[application.productType].label}
               </span>
@@ -394,25 +394,25 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
 
           {/* Financial details */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-muted/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-muted-foreground mb-1">Amount</p>
-              <p className="font-bold text-foreground text-sm font-tabular">{formatCurrency(application.amount)}</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">Amount</p>
+              <p className="font-bold text-white text-sm font-tabular">{formatCurrency(application.amount)}</p>
             </div>
-            <div className="bg-muted/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-muted-foreground mb-1">Duration</p>
-              <p className="font-bold text-foreground text-sm">{application.durationMonths} months</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">Duration</p>
+              <p className="font-bold text-white text-sm">{application.durationMonths} months</p>
             </div>
-            <div className="bg-muted/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-muted-foreground mb-1">Submitted</p>
-              <p className="font-bold text-foreground text-sm">{formatDate(application.submittedAt)}</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
+              <p className="text-xs text-white/50 mb-1">Submitted</p>
+              <p className="font-bold text-white text-sm">{formatDate(application.submittedAt)}</p>
             </div>
           </div>
 
           {/* Eligibility */}
-          <div className={`rounded-xl p-4 border ${application.isEligible ? 'bg-emerald-50 border-emerald-200' : 'bg-destructive/5 border-destructive/20'}`}>
+          <div className={`rounded-xl p-4 border ${application.isEligible ? 'bg-emerald-50 border-emerald-200' : 'bg-red-500/5 border-destructive/20'}`}>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-foreground">Eligibility Check</p>
-              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${application.isEligible ? 'bg-emerald-100 text-emerald-700' : 'bg-destructive/10 text-destructive'}`}>
+              <p className="text-sm font-semibold text-white">Eligibility Check</p>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${application.isEligible ? 'bg-emerald-100 text-emerald-700' : 'bg-red-500/10 text-red-400'}`}>
                 {application.isEligible ? 'Eligible' : 'Not Eligible'}
               </span>
             </div>
@@ -423,21 +423,21 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
                   style={{ width: `${application.eligibilityScore}%` }}
                 />
               </div>
-              <span className="text-sm font-bold text-foreground tabular-nums">{application.eligibilityScore}%</span>
+              <span className="text-sm font-bold text-white tabular-nums">{application.eligibilityScore}%</span>
             </div>
           </div>
 
           {/* Applicant notes */}
           {application.notes && (
-            <div className="bg-muted/50 rounded-xl p-4">
-              <p className="text-xs text-muted-foreground mb-1.5">Applicant Notes</p>
-              <p className="text-sm text-foreground">{application.notes}</p>
+            <div className="bg-white/[0.06]/50 rounded-xl p-4">
+              <p className="text-xs text-white/50 mb-1.5">Applicant Notes</p>
+              <p className="text-sm text-white">{application.notes}</p>
             </div>
           )}
 
           {/* Admin review notes */}
           <div>
-            <label className="text-sm font-semibold text-foreground block mb-2">
+            <label className="text-sm font-semibold text-white block mb-2">
               Admin Review Notes / Eligibility Notes
             </label>
             <textarea
@@ -445,13 +445,13 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
               onChange={e => setReviewNotes(e.target.value)}
               placeholder="Add eligibility notes, conditions, or reasons for decision..."
               rows={3}
-              className="w-full px-3 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+              className="w-full px-3 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 p-6 border-t border-border bg-muted/30">
+        <div className="flex items-center gap-3 p-6 border-t border-white/10 bg-white/[0.06]/30">
           {application.applicationStatus !== 'under_review' && (
             <button
               onClick={() => handleAction('review')}
@@ -473,12 +473,12 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
           <button
             onClick={() => handleAction('reject')}
             disabled={saving !== null || application.applicationStatus === 'rejected'}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-destructive text-destructive-foreground text-sm font-semibold hover:bg-destructive/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-destructive text-red-400-foreground text-sm font-semibold hover:bg-red-500/90 transition-colors disabled:opacity-50"
           >
             {saving === 'reject' ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
             Reject
           </button>
-          <button onClick={onClose} className="ml-auto px-4 py-2.5 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors">
+          <button onClick={onClose} className="ml-auto px-4 py-2.5 rounded-xl border border-white/10 text-sm font-semibold text-white/50 hover:bg-white/[0.06] transition-colors">
             Cancel
           </button>
         </div>
@@ -732,13 +732,13 @@ export default function AdminApplicationsPage() {
   };
 
   return (
-    <AppLayout role="admin" memberName="Chukwuemeka Adeyemi" memberId="ADM/2026/0003">
+    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
       <div className="p-6 xl:p-8 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Toast */}
         {toast && (
           <div className={`fixed top-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg text-sm font-semibold transition-all ${
-            toast.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-destructive text-destructive-foreground'
+            toast.type === 'success' ? 'bg-emerald-600 text-white' : 'bg-destructive text-red-400-foreground'
           }`}>
             {toast.type === 'success' ? <CheckCircle2 size={16} /> : <AlertCircle size={16} />}
             {toast.message}
@@ -748,8 +748,8 @@ export default function AdminApplicationsPage() {
         {/* Header & Main Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-foreground">Applications & Approvals</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
+            <h1 className="text-2xl font-bold text-white">Applications & Approvals</h1>
+            <p className="text-sm text-white/50 mt-0.5">
               Review member registrations, KYC submissions, and product applications
             </p>
           </div>
@@ -757,7 +757,7 @@ export default function AdminApplicationsPage() {
             <button
               onClick={() => activeTab === 'members' ? fetchMembers() : fetchApplications()}
               disabled={loadingMembers || loadingApps}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 text-sm font-semibold text-white/50 hover:bg-white/[0.06] transition-colors disabled:opacity-50"
             >
               <RefreshCw size={14} className={(loadingMembers || loadingApps) ? 'animate-spin' : ''} />
               Refresh
@@ -766,18 +766,18 @@ export default function AdminApplicationsPage() {
         </div>
 
         {/* Primary View Switcher: Member Applications vs Product Applications */}
-        <div className="flex items-center gap-2 p-1 bg-muted/60 rounded-2xl w-fit border border-border">
+        <div className="flex items-center gap-2 p-1 bg-white/[0.06]/60 rounded-2xl w-fit border border-white/10">
           <button
             onClick={() => setActiveTab('members')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeTab === 'members'
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-[#0d1527] text-white shadow-sm'
+                : 'text-white/50 hover:text-white'
             }`}
           >
             <Users size={16} />
             <span>Member Registrations</span>
-            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-primary/10 text-primary font-bold">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-emerald-500/10 text-emerald-400 font-bold">
               Workflow
             </span>
           </button>
@@ -785,13 +785,13 @@ export default function AdminApplicationsPage() {
             onClick={() => setActiveTab('products')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeTab === 'products'
-                ? 'bg-card text-foreground shadow-sm'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'bg-[#0d1527] text-white shadow-sm'
+                : 'text-white/50 hover:text-white'
             }`}
           >
             <FileText size={16} />
             <span>Product Applications</span>
-            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-muted text-muted-foreground font-medium">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-white/[0.06] text-white/50 font-medium">
               Savings · Loans · Inv
             </span>
           </button>
@@ -813,14 +813,14 @@ export default function AdminApplicationsPage() {
                     className={`p-4 rounded-xl border text-left transition-all hover:shadow-sm ${
                       memberStatusFilter === st
                         ? `${cfg.bg} border-current ${cfg.color} shadow-sm`
-                        : 'bg-card border-border hover:border-primary/30'
+                        : 'bg-[#0d1527] border-white/10 hover:border-primary/30'
                     }`}
                   >
-                    <div className={`flex items-center gap-2 mb-2 ${memberStatusFilter === st ? cfg.color : 'text-muted-foreground'}`}>
+                    <div className={`flex items-center gap-2 mb-2 ${memberStatusFilter === st ? cfg.color : 'text-white/50'}`}>
                       <Icon size={14} />
                       <span className="text-xs font-semibold">{cfg.label}</span>
                     </div>
-                    <p className={`text-xl font-bold ${memberStatusFilter === st ? cfg.color : 'text-foreground'}`}>
+                    <p className={`text-xl font-bold ${memberStatusFilter === st ? cfg.color : 'text-white'}`}>
                       {count}
                     </p>
                   </button>
@@ -832,13 +832,13 @@ export default function AdminApplicationsPage() {
             <div className="card-base">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
                   <input
                     type="text"
                     placeholder="Search applicant by name, email, phone, state, or member ID..."
                     value={membersSearchQuery}
                     onChange={e => { setMembersSearchQuery(e.target.value); setMembersPage(0); }}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 
@@ -846,7 +846,7 @@ export default function AdminApplicationsPage() {
                   <select
                     value={memberStatusFilter}
                     onChange={e => { setMemberStatusFilter(e.target.value as MembershipStatus | 'all'); setMembersPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
                   >
                     <option value="all">All Statuses</option>
                     <option value="pending">Pending</option>
@@ -855,13 +855,13 @@ export default function AdminApplicationsPage() {
                     <option value="active">Active</option>
                     <option value="suspended">Suspended</option>
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
                 </div>
 
                 {(memberStatusFilter !== 'all' || membersSearchQuery) && (
                   <button
                     onClick={() => { setMemberStatusFilter('all'); setMembersSearchQuery(''); setMembersPage(0); }}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-border text-sm text-muted-foreground hover:bg-muted transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 text-sm text-white/50 hover:bg-white/[0.06] transition-colors"
                   >
                     <X size={13} /> Clear
                   </button>
@@ -875,7 +875,7 @@ export default function AdminApplicationsPage() {
                 <div className="flex items-center gap-2">
                   <h2 className="section-header">Applicant Queue</h2>
                   {!loadingMembers && (
-                    <span className="bg-muted text-muted-foreground text-2xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-white/[0.06] text-white/50 text-2xs font-bold px-2 py-0.5 rounded-full">
                       {members.length} shown
                     </span>
                   )}
@@ -884,20 +884,20 @@ export default function AdminApplicationsPage() {
 
               {loadingMembers ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 size={24} className="animate-spin text-primary" />
-                  <span className="ml-3 text-sm text-muted-foreground">Loading member registrations...</span>
+                  <Loader2 size={24} className="animate-spin text-emerald-400" />
+                  <span className="ml-3 text-sm text-white/50">Loading member registrations...</span>
                 </div>
               ) : members.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <Users size={32} className="text-muted-foreground mb-3" />
-                  <p className="text-sm font-semibold text-foreground mb-1">No member applicants found</p>
-                  <p className="text-xs text-muted-foreground">New online registrations will appear here for review.</p>
+                  <Users size={32} className="text-white/50 mb-3" />
+                  <p className="text-sm font-semibold text-white mb-1">No member applicants found</p>
+                  <p className="text-xs text-white/50">New online registrations will appear here for review.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-border">
+                      <tr className="border-b border-white/10">
                         <th className="table-header">Applicant</th>
                         <th className="table-header">Contact</th>
                         <th className="table-header">Location</th>
@@ -914,52 +914,52 @@ export default function AdminApplicationsPage() {
                         const StatusIcon = cfg.icon;
 
                         return (
-                          <tr key={m.id} className="border-b border-border/60 table-row-hover">
+                          <tr key={m.id} className="border-b border-white/10/60 table-row-hover">
                             {/* Applicant */}
                             <td className="table-cell">
                               <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 overflow-hidden">
                                   {m.profilePhotoUrl ? (
                                     <img src={m.profilePhotoUrl} alt="" className="w-full h-full object-cover" />
                                   ) : (
-                                    <User size={13} className="text-primary" />
+                                    <User size={13} className="text-emerald-400" />
                                   )}
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold text-foreground">
+                                  <p className="text-xs font-semibold text-white">
                                     {[m.firstName, m.lastName].filter(Boolean).join(' ') || 'Applicant'}
                                   </p>
-                                  <p className="text-2xs text-muted-foreground">{m.occupation || 'Member'}</p>
+                                  <p className="text-2xs text-white/50">{m.occupation || 'Member'}</p>
                                 </div>
                               </div>
                             </td>
 
                             {/* Contact */}
                             <td className="table-cell">
-                              <p className="text-xs text-foreground font-medium">{m.phone || '—'}</p>
-                              <p className="text-2xs text-muted-foreground">{m.email || '—'}</p>
+                              <p className="text-xs text-white font-medium">{m.phone || '—'}</p>
+                              <p className="text-2xs text-white/50">{m.email || '—'}</p>
                             </td>
 
                             {/* Location */}
                             <td className="table-cell">
-                              <p className="text-xs text-foreground">{m.state || '—'}</p>
-                              <p className="text-2xs text-muted-foreground">{m.lga || ''}</p>
+                              <p className="text-xs text-white">{m.state || '—'}</p>
+                              <p className="text-2xs text-white/50">{m.lga || ''}</p>
                             </td>
 
                             {/* Next of Kin */}
                             <td className="table-cell">
-                              <p className="text-xs text-foreground font-medium">{m.nokName || '—'}</p>
-                              <p className="text-2xs text-muted-foreground">{m.nokRelationship || ''}</p>
+                              <p className="text-xs text-white font-medium">{m.nokName || '—'}</p>
+                              <p className="text-2xs text-white/50">{m.nokRelationship || ''}</p>
                             </td>
 
                             {/* Member Number */}
                             <td className="table-cell">
                               {m.memberNumber ? (
-                                <span className="font-mono text-xs font-bold text-primary px-2 py-0.5 rounded-lg bg-primary/10">
+                                <span className="font-mono text-xs font-bold text-emerald-400 px-2 py-0.5 rounded-lg bg-emerald-500/10">
                                   {m.memberNumber}
                                 </span>
                               ) : (
-                                <span className="text-2xs text-muted-foreground italic">
+                                <span className="text-2xs text-white/50 italic">
                                   Unassigned
                                 </span>
                               )}
@@ -975,7 +975,7 @@ export default function AdminApplicationsPage() {
 
                             {/* Registered */}
                             <td className="table-cell">
-                              <p className="text-xs text-foreground">{formatDate(m.createdAt)}</p>
+                              <p className="text-xs text-white">{formatDate(m.createdAt)}</p>
                             </td>
 
                             {/* Actions */}
@@ -983,7 +983,7 @@ export default function AdminApplicationsPage() {
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={() => setSelectedMember(m)}
-                                  className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/50 hover:text-white"
                                   title="View full application"
                                 >
                                   <Eye size={14} />
@@ -1047,14 +1047,14 @@ export default function AdminApplicationsPage() {
                     className={`p-4 rounded-xl border text-left transition-all hover:shadow-sm ${
                       statusFilter === status
                         ? `${cfg.bg} border-current ${cfg.color} shadow-sm`
-                        : 'bg-card border-border hover:border-primary/30'
+                        : 'bg-[#0d1527] border-white/10 hover:border-primary/30'
                     }`}
                   >
-                    <div className={`flex items-center gap-2 mb-2 ${statusFilter === status ? cfg.color : 'text-muted-foreground'}`}>
+                    <div className={`flex items-center gap-2 mb-2 ${statusFilter === status ? cfg.color : 'text-white/50'}`}>
                       <Icon size={14} />
                       <span className="text-xs font-semibold">{cfg.label}</span>
                     </div>
-                    <p className={`text-xl font-bold ${statusFilter === status ? cfg.color : 'text-foreground'}`}>—</p>
+                    <p className={`text-xl font-bold ${statusFilter === status ? cfg.color : 'text-white'}`}>—</p>
                   </button>
                 );
               })}
@@ -1064,13 +1064,13 @@ export default function AdminApplicationsPage() {
             <div className="card-base">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
                   <input
                     type="text"
                     placeholder="Search by member name, ID, or product..."
                     value={appsSearchQuery}
                     onChange={e => { setAppsSearchQuery(e.target.value); setAppsPage(0); }}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 
@@ -1078,34 +1078,34 @@ export default function AdminApplicationsPage() {
                   <select
                     value={statusFilter}
                     onChange={e => { setStatusFilter(e.target.value as ApplicationStatus | 'all'); setAppsPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
                   >
                     <option value="all">All Statuses</option>
                     {(Object.entries(STATUS_CONFIG) as [ApplicationStatus, typeof STATUS_CONFIG[ApplicationStatus]][]).map(([s, cfg]) => (
                       <option key={s} value={s}>{cfg.label}</option>
                     ))}
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
                 </div>
 
                 <div className="relative">
                   <select
                     value={typeFilter}
                     onChange={e => { setTypeFilter(e.target.value as ProductType | 'all'); setAppsPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-border bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
                   >
                     <option value="all">All Types</option>
                     {(Object.entries(PRODUCT_TYPE_CONFIG) as [ProductType, typeof PRODUCT_TYPE_CONFIG[ProductType]][]).map(([t, cfg]) => (
                       <option key={t} value={t}>{cfg.label}</option>
                     ))}
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
                 </div>
 
                 {(statusFilter !== 'all' || typeFilter !== 'all' || appsSearchQuery) && (
                   <button
                     onClick={() => { setStatusFilter('all'); setTypeFilter('all'); setAppsSearchQuery(''); setAppsPage(0); }}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-border text-sm text-muted-foreground hover:bg-muted transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 text-sm text-white/50 hover:bg-white/[0.06] transition-colors"
                   >
                     <X size={13} /> Clear
                   </button>
@@ -1119,7 +1119,7 @@ export default function AdminApplicationsPage() {
                 <div className="flex items-center gap-2">
                   <h2 className="section-header">Product Applications</h2>
                   {!loadingApps && (
-                    <span className="bg-muted text-muted-foreground text-2xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-white/[0.06] text-white/50 text-2xs font-bold px-2 py-0.5 rounded-full">
                       {applications.length} shown
                     </span>
                   )}
@@ -1128,20 +1128,20 @@ export default function AdminApplicationsPage() {
 
               {loadingApps ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 size={24} className="animate-spin text-primary" />
-                  <span className="ml-3 text-sm text-muted-foreground">Loading applications...</span>
+                  <Loader2 size={24} className="animate-spin text-emerald-400" />
+                  <span className="ml-3 text-sm text-white/50">Loading applications...</span>
                 </div>
               ) : applications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <FileText size={32} className="text-muted-foreground mb-3" />
-                  <p className="text-sm font-semibold text-foreground mb-1">No applications found</p>
-                  <p className="text-xs text-muted-foreground">Try adjusting your filters.</p>
+                  <FileText size={32} className="text-white/50 mb-3" />
+                  <p className="text-sm font-semibold text-white mb-1">No applications found</p>
+                  <p className="text-xs text-white/50">Try adjusting your filters.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-border">
+                      <tr className="border-b border-white/10">
                         <th className="table-header">Applicant</th>
                         <th className="table-header">Product</th>
                         <th className="table-header">Type</th>
@@ -1159,22 +1159,22 @@ export default function AdminApplicationsPage() {
                         const ProductIcon = PRODUCT_TYPE_CONFIG[app.productType].icon;
 
                         return (
-                          <tr key={app.id} className="border-b border-border/60 table-row-hover">
+                          <tr key={app.id} className="border-b border-white/10/60 table-row-hover">
                             <td className="table-cell">
                               <div className="flex items-center gap-2.5">
-                                <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                  <User size={12} className="text-primary" />
+                                <div className="w-7 h-7 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
+                                  <User size={12} className="text-emerald-400" />
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold text-foreground">{app.memberName || 'Unknown'}</p>
+                                  <p className="text-xs font-semibold text-white">{app.memberName || 'Unknown'}</p>
                                   {app.memberNumber && (
-                                    <p className="text-2xs text-muted-foreground font-mono">{app.memberNumber}</p>
+                                    <p className="text-2xs text-white/50 font-mono">{app.memberNumber}</p>
                                   )}
                                 </div>
                               </div>
                             </td>
                             <td className="table-cell">
-                              <p className="text-xs font-medium text-foreground max-w-[140px] truncate">{app.productName}</p>
+                              <p className="text-xs font-medium text-white max-w-[140px] truncate">{app.productName}</p>
                             </td>
                             <td className="table-cell">
                               <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold ${PRODUCT_TYPE_CONFIG[app.productType].color}`}>
@@ -1183,20 +1183,20 @@ export default function AdminApplicationsPage() {
                               </div>
                             </td>
                             <td className="table-cell">
-                              <span className="text-xs font-semibold text-foreground font-tabular">{formatCurrency(app.amount)}</span>
+                              <span className="text-xs font-semibold text-white font-tabular">{formatCurrency(app.amount)}</span>
                             </td>
                             <td className="table-cell">
-                              <span className="text-xs text-muted-foreground">{app.durationMonths}mo</span>
+                              <span className="text-xs text-white/50">{app.durationMonths}mo</span>
                             </td>
                             <td className="table-cell">
                               <div className="flex items-center gap-2">
-                                <div className="w-16 bg-muted rounded-full h-1.5">
+                                <div className="w-16 bg-white/[0.06] rounded-full h-1.5">
                                   <div
                                     className={`h-1.5 rounded-full ${app.eligibilityScore >= 70 ? 'bg-emerald-500' : app.eligibilityScore >= 40 ? 'bg-amber-500' : 'bg-destructive'}`}
                                     style={{ width: `${app.eligibilityScore}%` }}
                                   />
                                 </div>
-                                <span className={`text-xs font-bold tabular-nums ${app.isEligible ? 'text-emerald-600' : 'text-destructive'}`}>
+                                <span className={`text-xs font-bold tabular-nums ${app.isEligible ? 'text-emerald-600' : 'text-red-400'}`}>
                                   {app.eligibilityScore}%
                                 </span>
                               </div>
@@ -1208,14 +1208,14 @@ export default function AdminApplicationsPage() {
                               </div>
                             </td>
                             <td className="table-cell">
-                              <p className="text-xs text-foreground">{formatDate(app.submittedAt)}</p>
-                              <p className="text-2xs text-muted-foreground">{formatTime(app.submittedAt)}</p>
+                              <p className="text-xs text-white">{formatDate(app.submittedAt)}</p>
+                              <p className="text-2xs text-white/50">{formatTime(app.submittedAt)}</p>
                             </td>
                             <td className="table-cell">
                               <div className="flex items-center justify-end gap-1">
                                 <button
                                   onClick={() => setSelectedApp(app)}
-                                  className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+                                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/50 hover:text-white"
                                   title="View details & review"
                                 >
                                   <Eye size={13} />

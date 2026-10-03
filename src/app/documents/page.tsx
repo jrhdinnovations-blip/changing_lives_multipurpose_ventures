@@ -225,7 +225,7 @@ export default function DocumentsPage() {
               { label: 'Verified', value: stats.verified, color: 'text-green-600' },
               { label: 'Pending Review', value: stats.pending, color: 'text-amber-600' },
               { label: 'Loan Docs', value: stats.loan, color: 'text-blue-600' },
-              { label: 'Investment Docs', value: stats.investment, color: 'text-purple-600' },
+              { label: 'Wealth Circle Docs', value: stats.investment, color: 'text-purple-600' },
             ].map(s => (
               <div key={s.label} className="bg-card border border-border rounded-xl p-4">
                 <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
@@ -255,7 +255,7 @@ export default function DocumentsPage() {
                 >
                   <option value="all">All Types</option>
                   <option value="loan">Loan</option>
-                  <option value="investment">Investment</option>
+                  <option value="investment">Wealth Circle</option>
                 </select>
                 <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
               </div>

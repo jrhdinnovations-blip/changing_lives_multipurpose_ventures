@@ -4,179 +4,634 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
 import AppLayout from '@/components/AppLayout';
 import type { Contribution, ContributionStatus } from '@/lib/types/climps';
+import {
+  Calendar,
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+  ArrowDownLeft,
+  CreditCard,
+  Building2,
+  FileText,
+  TrendingUp,
+  ShieldCheck,
+  RefreshCw,
+  Download,
+  Info,
+  ChevronRight,
+  Wallet,
+} from 'lucide-react';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const CURRENT_YEAR = 2026;
 
 function fmt(n: number) {
   return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 const STATUS_CONFIG: Record<ContributionStatus, { label: string; classes: string }> = {
-  paid: { label: 'Paid', classes: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  partially_paid: { label: 'Partial', classes: 'bg-amber-100 text-amber-700 border-amber-200' },
-  unpaid: { label: 'Unpaid', classes: 'bg-gray-100 text-gray-600 border-gray-200' },
-  overdue: { label: 'Overdue', classes: 'bg-red-100 text-red-700 border-red-200' },
+  paid: { label: 'Paid', classes: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' },
+  partially_paid: { label: 'Partial', classes: 'bg-amber-500/15 text-amber-400 border-amber-500/25' },
+  unpaid: { label: 'Unpaid', classes: 'bg-white/10 text-white/60 border-white/15' },
+  overdue: { label: 'Overdue', classes: 'bg-red-500/15 text-red-400 border-red-500/25' },
 };
 
-// Demo data — in production this comes from Supabase `contributions` table
-const DEMO_CONTRIBUTIONS: Contribution[] = [
-  { id: '1', memberId: 'm1', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-09-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260905-001', contributionStatus: 'paid', createdAt: '2026-09-01', updatedAt: '2026-09-05' },
-  { id: '2', memberId: 'm1', contributionMonth: 8, contributionYear: 2026, expectedAmount: 10000, amountPaid: 7000, outstandingAmount: 3000, paymentDate: '2026-08-12', paymentMethod: 'Cash', transactionReference: 'TXN-20260812-002', contributionStatus: 'partially_paid', createdAt: '2026-08-01', updatedAt: '2026-08-12' },
+const INITIAL_CONTRIBUTIONS: Contribution[] = [
+  { id: '1', memberId: 'm1', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-09-04', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260904-001', contributionStatus: 'paid', createdAt: '2026-09-01', updatedAt: '2026-09-04' },
+  { id: '2', memberId: 'm1', contributionMonth: 8, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-08-05', paymentMethod: 'Regular Savings Wallet', transactionReference: 'TXN-20260805-002', contributionStatus: 'paid', createdAt: '2026-08-01', updatedAt: '2026-08-05' },
   { id: '3', memberId: 'm1', contributionMonth: 7, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-07-03', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260703-003', contributionStatus: 'paid', createdAt: '2026-07-01', updatedAt: '2026-07-03' },
-  { id: '4', memberId: 'm1', contributionMonth: 6, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, paymentDate: undefined, paymentMethod: undefined, transactionReference: undefined, contributionStatus: 'overdue', createdAt: '2026-06-01', updatedAt: '2026-06-30' },
-  { id: '5', memberId: 'm1', contributionMonth: 5, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-05-08', paymentMethod: 'POS', transactionReference: 'TXN-20260508-005', contributionStatus: 'paid', createdAt: '2026-05-01', updatedAt: '2026-05-08' },
+  { id: '4', memberId: 'm1', contributionMonth: 6, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-06-05', paymentMethod: 'Debit Card', transactionReference: 'TXN-20260605-004', contributionStatus: 'paid', createdAt: '2026-06-01', updatedAt: '2026-06-05' },
+  { id: '5', memberId: 'm1', contributionMonth: 5, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-05-04', paymentMethod: 'POS', transactionReference: 'TXN-20260504-005', contributionStatus: 'paid', createdAt: '2026-05-01', updatedAt: '2026-05-04' },
   { id: '6', memberId: 'm1', contributionMonth: 4, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-04-04', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260404-006', contributionStatus: 'paid', createdAt: '2026-04-01', updatedAt: '2026-04-04' },
-  { id: '7', memberId: 'm1', contributionMonth: 3, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-03-06', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260306-007', contributionStatus: 'paid', createdAt: '2026-03-01', updatedAt: '2026-03-06' },
-  { id: '8', memberId: 'm1', contributionMonth: 2, contributionYear: 2026, expectedAmount: 10000, amountPaid: 5000, outstandingAmount: 5000, paymentDate: '2026-02-14', paymentMethod: 'Cash', transactionReference: 'TXN-20260214-008', contributionStatus: 'partially_paid', createdAt: '2026-02-01', updatedAt: '2026-02-14' },
+  { id: '7', memberId: 'm1', contributionMonth: 3, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-03-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260305-007', contributionStatus: 'paid', createdAt: '2026-03-01', updatedAt: '2026-03-05' },
+  { id: '8', memberId: 'm1', contributionMonth: 2, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-02-05', paymentMethod: 'Debit Card', transactionReference: 'TXN-20260205-008', contributionStatus: 'paid', createdAt: '2026-02-01', updatedAt: '2026-02-05' },
+  { id: '9', memberId: 'm1', contributionMonth: 1, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-01-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260105-009', contributionStatus: 'paid', createdAt: '2026-01-01', updatedAt: '2026-01-05' },
+  { id: '10', memberId: 'm1', contributionMonth: 10, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-10-01', updatedAt: '2026-10-01' },
+  { id: '11', memberId: 'm1', contributionMonth: 11, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-11-01', updatedAt: '2026-11-01' },
+  { id: '12', memberId: 'm1', contributionMonth: 12, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-12-01', updatedAt: '2026-12-01' },
 ];
 
 type StatusFilter = 'all' | ContributionStatus;
 
-export default function ContributionsPage() {
-  const [contributions, setContributions] = useState<Contribution[]>([]);
+export default function MonthlyContributionsPage() {
+  const [contributions, setContributions] = useState<Contribution[]>(INITIAL_CONTRIBUTIONS);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [memberName, setMemberName] = useState('Member');
   const [memberId, setMemberId] = useState('');
-  const [role, setRole] = useState<'member' | 'admin' | 'staff' | 'manager'>('member');
+  const [monthlyCommitment, setMonthlyCommitment] = useState(10000);
+
+  // Pay Modal State
+  const [showPayModal, setShowPayModal] = useState(false);
+  const [payMonth, setPayMonth] = useState(10);
+  const [payAmount, setPayAmount] = useState('10000');
+  const [payMethod, setPayMethod] = useState<'wallet' | 'card' | 'transfer'>('transfer');
+  const [paying, setPaying] = useState(false);
+  const [paySuccess, setPaySuccess] = useState(false);
+  const [lastRef, setLastRef] = useState('');
+
+  // Receipt Modal State
+  const [selectedReceipt, setSelectedReceipt] = useState<Contribution | null>(null);
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
-        const meta = data.user.user_metadata;
-        setMemberName(meta?.full_name || meta?.name || 'Member');
-        setMemberId(meta?.member_number || '');
-        setRole((meta?.role as typeof role) || 'member');
-      }
-    });
-    // In production: fetch from supabase contributions table filtered by member_id
-    setTimeout(() => { setContributions(DEMO_CONTRIBUTIONS); setLoading(false); }, 600);
-  }, []);
+    async function loadUser() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const meta = user.user_metadata;
+          const { data: m } = await supabase
+            .from('members')
+            .select('id, first_name, last_name, member_number')
+            .eq('user_id', user.id)
+            .maybeSingle();
 
-  const filtered = statusFilter === 'all' ? contributions : contributions.filter((c) => c.contributionStatus === statusFilter);
+          if (m) {
+            setMemberName(`${m.first_name} ${m.last_name}`);
+            setMemberId(m.member_number || 'CLM-1002');
+          } else {
+            setMemberName(meta?.full_name || 'Cooperative Member');
+            setMemberId(meta?.member_number || 'CLM-1002');
+          }
+        }
+      } catch (e) {
+        console.error('Error loading member in contributions:', e);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadUser();
+  }, []);
 
   const totalExpected = contributions.reduce((s, c) => s + c.expectedAmount, 0);
   const totalPaid = contributions.reduce((s, c) => s + c.amountPaid, 0);
   const totalOutstanding = contributions.reduce((s, c) => s + c.outstandingAmount, 0);
-  const currentMonth = contributions[0];
+  const compliancePercentage = totalExpected > 0 ? Math.round((totalPaid / totalExpected) * 100) : 0;
+
+  const filtered = statusFilter === 'all' ? contributions : contributions.filter((c) => c.contributionStatus === statusFilter);
+
+  const handlePaySubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPaying(true);
+    await new Promise((r) => setTimeout(r, 1200));
+
+    const ref = `TXN-CTR-${Date.now().toString().slice(-8)}`;
+    setLastRef(ref);
+
+    const amountNum = parseFloat(payAmount.replace(/,/g, '')) || monthlyCommitment;
+
+    setContributions((prev) =>
+      prev.map((c) => {
+        if (c.contributionMonth === payMonth && c.contributionYear === CURRENT_YEAR) {
+          return {
+            ...c,
+            amountPaid: amountNum,
+            outstandingAmount: Math.max(0, c.expectedAmount - amountNum),
+            contributionStatus: amountNum >= c.expectedAmount ? 'paid' : 'partially_paid',
+            paymentDate: new Date().toISOString().split('T')[0],
+            paymentMethod:
+              payMethod === 'wallet'
+                ? 'Regular Savings Wallet'
+                : payMethod === 'card'
+                ? 'Debit Card'
+                : 'Direct Bank Transfer',
+            transactionReference: ref,
+          };
+        }
+        return c;
+      })
+    );
+
+    setPaying(false);
+    setPaySuccess(true);
+  };
 
   return (
-    <AppLayout role={role} memberName={memberName} memberId={memberId}>
-      <div className="p-6 xl:p-8 2xl:p-10 max-w-6xl mx-auto space-y-6">
-        {/* Page Header */}
-        <div className="mb-7">
-          <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-            <Link href="/member-dashboard" className="hover:text-foreground">Dashboard</Link>
-            <span>/</span>
-            <span className="text-foreground font-medium">My Contributions</span>
+    <AppLayout role="member" memberName={memberName} memberId={memberId}>
+      <div className="space-y-8 max-w-7xl mx-auto pb-16">
+        {/* Top Header */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 text-sm text-white/50 mb-1">
+              <Link href="/savings-products" className="hover:text-emerald-400 transition-colors">
+                Savings Products
+              </Link>
+              <span>/</span>
+              <span className="text-white font-medium">Monthly Contribution</span>
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+              <span>Monthly Cooperative Contribution</span>
+              <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800 border border-blue-200">
+                Mandatory • 9.0% p.a.
+              </span>
+            </h1>
+            <p className="text-sm text-white/50 mt-1">
+              Core cooperative thrift. Due by the 5th of every month. Unlocks loan multiplier and annual dividends.
+            </p>
           </div>
-          <h1 className="text-2xl font-extrabold text-foreground">Monthly Contributions</h1>
-          <p className="text-muted-foreground text-sm mt-1">Track your cooperative contribution history and outstanding balances.</p>
-        </div>
 
-        {/* Summary Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          {[
-            { label: 'Total Expected', value: fmt(totalExpected), icon: '📅', color: 'text-foreground' },
-            { label: 'Total Paid', value: fmt(totalPaid), icon: '✅', color: 'text-emerald-600' },
-            { label: 'Outstanding', value: fmt(totalOutstanding), icon: '⚠️', color: 'text-red-600' },
-            { label: 'This Month', value: currentMonth ? (STATUS_CONFIG[currentMonth.contributionStatus]?.label ?? '—') : '—', icon: '📌', color: 'text-primary' },
-          ].map((card) => (
-            <div key={card.label} className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <div className="text-xl mb-1.5">{card.icon}</div>
-              <p className="text-xs text-muted-foreground mb-0.5">{card.label}</p>
-              <p className={`text-base font-extrabold font-tabular ${card.color}`}>{card.value}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Filters */}
-        <div className="flex items-center gap-2 mb-5 flex-wrap">
-          {(['all', 'paid', 'partially_paid', 'unpaid', 'overdue'] as StatusFilter[]).map((f) => (
-            <button
-              key={f}
-              onClick={() => setStatusFilter(f)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
-                statusFilter === f ? 'bg-primary text-white border-primary shadow-sm' : 'bg-muted text-muted-foreground border-border hover:border-primary/40'
-              }`}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/save/regular"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-[#0d1527] hover:bg-white/[0.06] text-white font-medium text-sm shadow-sm transition-all"
             >
-              {f === 'all' ? 'All' : f === 'partially_paid' ? 'Partial' : f.charAt(0).toUpperCase() + f.slice(1)}
-              {f === 'all' && <span className="ml-1.5 text-[10px] opacity-70">{contributions.length}</span>}
+              <Wallet className="w-4 h-4 text-teal-600" />
+              <span>Regular Savings Wallet</span>
+            </Link>
+
+            <button
+              onClick={() => {
+                setPaySuccess(false);
+                setShowPayModal(true);
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm shadow-sm transition-all active:scale-95"
+            >
+              <ArrowDownLeft className="w-4 h-4" />
+              <span>Pay Contribution</span>
             </button>
-          ))}
+          </div>
         </div>
 
-        {/* Table */}
-        <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
-          {loading ? (
-            <div className="flex items-center justify-center h-40">
-              <div className="w-7 h-7 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+        {/* Bento Summary Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Card 1: Total Paid */}
+          <div className="rounded-2xl border border-blue-200/60 bg-gradient-to-br from-blue-500/10 via-card to-card p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-blue-700 uppercase tracking-wider">Total Contributed ({CURRENT_YEAR})</span>
+              <div className="p-2 rounded-lg bg-blue-100 text-blue-700">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
             </div>
-          ) : filtered.length === 0 ? (
-            <div className="py-16 text-center text-muted-foreground text-sm">No contributions found for this filter.</div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-muted/60 border-b border-border">
-                    {['Month', 'Expected', 'Paid', 'Outstanding', 'Progress', 'Status', 'Date', 'Method', 'Reference'].map((h) => (
-                      <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground whitespace-nowrap">{h}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {filtered.map((c, i) => {
-                    const pct = c.expectedAmount > 0 ? Math.round((c.amountPaid / c.expectedAmount) * 100) : 0;
-                    const cfg = STATUS_CONFIG[c.contributionStatus];
-                    return (
-                      <tr key={c.id} className={`hover:bg-muted/30 transition-colors ${i % 2 === 0 ? '' : 'bg-muted/10'}`}>
-                        <td className="px-4 py-3 font-semibold text-foreground whitespace-nowrap">
-                          {MONTH_NAMES[c.contributionMonth - 1]} {c.contributionYear}
-                        </td>
-                        <td className="px-4 py-3 font-tabular text-muted-foreground">{fmt(c.expectedAmount)}</td>
-                        <td className="px-4 py-3 font-tabular text-emerald-600 font-semibold">{fmt(c.amountPaid)}</td>
-                        <td className="px-4 py-3 font-tabular text-red-600 font-semibold">{fmt(c.outstandingAmount)}</td>
-                        <td className="px-4 py-3 w-28">
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all ${pct >= 100 ? 'bg-emerald-500' : pct > 0 ? 'bg-amber-400' : 'bg-muted-foreground/30'}`}
-                                style={{ width: `${pct}%` }}
-                              />
-                            </div>
-                            <span className="text-[10px] text-muted-foreground font-tabular w-7 text-right">{pct}%</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3">
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${cfg.classes}`}>
-                            {cfg.label}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground whitespace-nowrap text-xs">
-                          {c.paymentDate ? new Date(c.paymentDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground text-xs whitespace-nowrap">{c.paymentMethod || '—'}</td>
-                        <td className="px-4 py-3 text-muted-foreground text-xs font-mono">{c.transactionReference || '—'}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+            <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{fmt(totalPaid)}</div>
+            <div className="mt-3 flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10/50">
+              <span>Expected: {fmt(totalExpected)}</span>
+              <span className="text-emerald-600 font-semibold">{compliancePercentage}% Compliant</span>
             </div>
-          )}
+          </div>
+
+          {/* Card 2: Monthly Commitment */}
+          <div className="rounded-2xl border border-white/10 bg-[#0d1527] p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Monthly Commitment</span>
+              <div className="p-2 rounded-lg bg-indigo-100 text-indigo-700">
+                <Calendar className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{fmt(monthlyCommitment)}</div>
+            <div className="mt-3 flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10/50">
+              <span>Due Day: 5th Monthly</span>
+              <span className="text-indigo-600 font-medium">4.0% monthly (min. 1 yr)</span>
+            </div>
+          </div>
+
+          {/* Card 3: Loan Multiplier Eligibility */}
+          <div className="rounded-2xl border border-white/10 bg-[#0d1527] p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Credit Multiplier</span>
+              <div className="p-2 rounded-lg bg-emerald-100 text-emerald-700">
+                <TrendingUp className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-bold text-emerald-600 tracking-tight">{fmt(totalPaid * 2.5)}</div>
+            <div className="mt-3 flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10/50">
+              <span>2.5× Savings Multiplier</span>
+              <Link href="/loan-application" className="text-emerald-600 font-semibold hover:underline">
+                Apply Loan
+              </Link>
+            </div>
+          </div>
+
+          {/* Card 4: Outstanding & Next Due */}
+          <div className="rounded-2xl border border-white/10 bg-[#0d1527] p-5 shadow-sm">
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-xs font-semibold text-white/50 uppercase tracking-wider">Pending Dues</span>
+              <div className="p-2 rounded-lg bg-amber-100 text-amber-700">
+                <AlertCircle className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-bold text-white tracking-tight">{fmt(totalOutstanding)}</div>
+            <div className="mt-3 flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10/50">
+              <span>Next Due: Oct 5, 2026</span>
+              <span className="text-amber-600 font-medium">October Due</span>
+            </div>
+          </div>
         </div>
 
-        {/* Info box */}
-        <div className="mt-6 flex items-start gap-3 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3">
-          <svg className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-xs text-blue-800 leading-relaxed">
-            Your monthly cooperative contribution is <strong>₦10,000</strong> due by the <strong>5th of each month</strong>. Contributions overdue by more than 30 days may attract a late penalty. Contact your branch to make payments or arrange a payment plan.
-          </p>
+        {/* 12-Month Annual Contribution Calendar Grid */}
+        <div className="rounded-2xl border border-white/10 bg-[#0d1527] p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+            <div>
+              <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-blue-600" />
+                <span>Annual Schedule ({CURRENT_YEAR})</span>
+              </h2>
+              <p className="text-xs text-white/50">
+                Year-to-date monthly contribution compliance status.
+              </p>
+            </div>
+            <div className="flex items-center gap-4 text-xs">
+              <span className="flex items-center gap-1.5 text-emerald-600">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" /> Paid
+              </span>
+              <span className="flex items-center gap-1.5 text-amber-600">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500" /> Pending
+              </span>
+              <span className="flex items-center gap-1.5 text-red-600">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500" /> Overdue
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {contributions.map((c) => {
+              const isPaid = c.contributionStatus === 'paid';
+              const isPartial = c.contributionStatus === 'partially_paid';
+              return (
+                <div
+                  key={c.id}
+                  className={`p-3.5 rounded-xl border transition-all text-xs flex flex-col justify-between ${
+                    isPaid
+                      ? 'border-emerald-200 bg-emerald-50/40 text-emerald-900'
+                      : isPartial
+                      ? 'border-amber-200 bg-amber-50/40 text-amber-900'
+                      : 'border-white/10 bg-[#0d1527] text-white'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="font-bold text-sm">{MONTH_NAMES[c.contributionMonth - 1]}</span>
+                    {isPaid ? (
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                    ) : (
+                      <Clock className="w-4 h-4 text-white/50" />
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <span className="text-[11px] block opacity-80">
+                      Paid: <strong>{fmt(c.amountPaid)}</strong>
+                    </span>
+                    <span className="text-[10px] block opacity-70">
+                      {isPaid ? c.paymentDate : 'Due on 5th'}
+                    </span>
+                  </div>
+                  {!isPaid && (
+                    <button
+                      onClick={() => {
+                        setPayMonth(c.contributionMonth);
+                        setPayAmount(c.expectedAmount.toString());
+                        setPaySuccess(false);
+                        setShowPayModal(true);
+                      }}
+                      className="mt-3 w-full py-1 text-[11px] font-semibold rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                    >
+                      Pay Now
+                    </button>
+                  )}
+                  {isPaid && (
+                    <button
+                      onClick={() => setSelectedReceipt(c)}
+                      className="mt-3 w-full py-1 text-[11px] font-medium rounded-lg border border-emerald-300 bg-emerald-100/60 text-emerald-800 hover:bg-emerald-200 transition-colors"
+                    >
+                      Receipt
+                    </button>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Detailed Records Ledger */}
+        <div className="rounded-2xl border border-white/10 bg-[#0d1527] p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 className="text-lg font-bold text-white">Contribution Ledger</h2>
+              <p className="text-xs text-white/50">Historical records and verification references.</p>
+            </div>
+
+            <div className="flex items-center gap-2 flex-wrap">
+              {(['all', 'paid', 'partially_paid', 'unpaid'] as StatusFilter[]).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setStatusFilter(f)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                    statusFilter === f
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                      : 'bg-white/[0.06] text-white/50 border-white/10 hover:border-blue-300'
+                  }`}
+                >
+                  {f === 'all' ? 'All Records' : f === 'partially_paid' ? 'Partial' : f.charAt(0).toUpperCase() + f.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-white/10 text-white/50 font-semibold">
+                  <th className="pb-3 pr-4">Month</th>
+                  <th className="pb-3 px-4">Expected</th>
+                  <th className="pb-3 px-4">Amount Paid</th>
+                  <th className="pb-3 px-4">Outstanding</th>
+                  <th className="pb-3 px-4">Payment Date</th>
+                  <th className="pb-3 px-4">Method</th>
+                  <th className="pb-3 px-4">Reference</th>
+                  <th className="pb-3 px-4">Status</th>
+                  <th className="pb-3 pl-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10/60">
+                {filtered.map((c) => {
+                  const cfg = STATUS_CONFIG[c.contributionStatus];
+                  return (
+                    <tr key={c.id} className="hover:bg-white/[0.06]/30 transition-colors">
+                      <td className="py-3.5 pr-4 font-bold text-white whitespace-nowrap">
+                        {MONTH_NAMES[c.contributionMonth - 1]} {c.contributionYear}
+                      </td>
+                      <td className="py-3.5 px-4 font-medium text-white/50">{fmt(c.expectedAmount)}</td>
+                      <td className="py-3.5 px-4 font-bold text-emerald-600">{fmt(c.amountPaid)}</td>
+                      <td className="py-3.5 px-4 font-bold text-red-600">{fmt(c.outstandingAmount)}</td>
+                      <td className="py-3.5 px-4 text-white/50">{c.paymentDate || '—'}</td>
+                      <td className="py-3.5 px-4 text-white/50">{c.paymentMethod || '—'}</td>
+                      <td className="py-3.5 px-4 font-mono text-[11px] text-white/50">
+                        {c.transactionReference || '—'}
+                      </td>
+                      <td className="py-3.5 px-4">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold border ${cfg.classes}`}>
+                          {cfg.label}
+                        </span>
+                      </td>
+                      <td className="py-3.5 pl-4 text-right">
+                        {c.contributionStatus === 'paid' ? (
+                          <button
+                            onClick={() => setSelectedReceipt(c)}
+                            className="text-blue-600 hover:text-blue-700 font-semibold text-[11px] underline"
+                          >
+                            Receipt
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setPayMonth(c.contributionMonth);
+                              setPayAmount(c.expectedAmount.toString());
+                              setPaySuccess(false);
+                              setShowPayModal(true);
+                            }}
+                            className="text-white bg-blue-600 hover:bg-blue-700 px-2.5 py-1 rounded-lg text-[11px] font-semibold"
+                          >
+                            Pay
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
+
+      {/* ── MODAL: PAY CONTRIBUTION ── */}
+      {showPayModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+          <div className="bg-[#0d1527] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-xl relative animate-scale-up">
+            <h3 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
+              <ArrowDownLeft className="w-5 h-5 text-blue-600" />
+              <span>Pay Monthly Contribution</span>
+            </h3>
+            <p className="text-xs text-white/50 mb-4">
+              Clear your cooperative dues for {MONTH_NAMES[payMonth - 1]} {CURRENT_YEAR}.
+            </p>
+
+            {paySuccess ? (
+              <div className="text-center py-6 space-y-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
+                  <CheckCircle2 className="w-7 h-7" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-base">Payment Confirmed!</h4>
+                  <p className="text-xs text-white/50 mt-1">
+                    Your contribution of <strong>{fmt(parseFloat(payAmount) || 0)}</strong> for{' '}
+                    <strong>{MONTH_NAMES[payMonth - 1]} {CURRENT_YEAR}</strong> has been credited.
+                  </p>
+                  <p className="text-[11px] font-mono text-white/50 mt-2">Ref: {lastRef}</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowPayModal(false)}
+                  className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-xl"
+                >
+                  Done
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handlePaySubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-white mb-1">Target Month</label>
+                  <select
+                    value={payMonth}
+                    onChange={(e) => setPayMonth(Number(e.target.value))}
+                    className="w-full px-3 py-2 text-xs rounded-xl border border-white/10 bg-background font-semibold"
+                  >
+                    {contributions.map((c) => (
+                      <option key={c.id} value={c.contributionMonth}>
+                        {MONTH_NAMES[c.contributionMonth - 1]} {CURRENT_YEAR} (
+                        {c.contributionStatus === 'paid' ? 'Paid' : `Outstanding ${fmt(c.outstandingAmount)}`})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-white mb-1">Amount to Pay (₦)</label>
+                  <input
+                    type="number"
+                    min="1000"
+                    step="500"
+                    required
+                    value={payAmount}
+                    onChange={(e) => setPayAmount(e.target.value)}
+                    className="w-full px-3.5 py-2 text-sm rounded-xl border border-white/10 bg-background focus:outline-none focus:ring-2 focus:ring-blue-500 font-semibold"
+                  />
+                  <span className="text-[11px] text-white/50 mt-1 block">
+                    Standard monthly contribution is {fmt(monthlyCommitment)}.
+                  </span>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-white mb-2">Payment Source</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { id: 'transfer', label: 'Bank Transfer', icon: Building2 },
+                      { id: 'wallet', label: 'Savings Wallet', icon: Wallet },
+                      { id: 'card', label: 'Debit Card', icon: CreditCard },
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setPayMethod(opt.id as any)}
+                        className={`p-3 rounded-xl border text-left flex flex-col justify-between text-xs transition-all ${
+                          payMethod === opt.id
+                            ? 'border-blue-600 bg-blue-50/50 text-blue-800 font-semibold'
+                            : 'border-white/10 bg-[#0d1527] text-white/50 hover:text-white'
+                        }`}
+                      >
+                        <opt.icon className="w-4 h-4 mb-2" />
+                        <span>{opt.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {payMethod === 'transfer' && (
+                  <div className="p-3.5 rounded-xl bg-white/[0.06]/60 border border-white/10 text-xs space-y-1.5">
+                    <span className="font-semibold text-white block">Direct Bank Transfer Details</span>
+                    <div className="flex justify-between text-white/50">
+                      <span>Bank:</span>
+                      <span className="font-medium text-white">Wema Bank (Moniepoint)</span>
+                    </div>
+                    <div className="flex justify-between text-white/50">
+                      <span>Account Number:</span>
+                      <span className="font-mono font-bold text-white">9948201844</span>
+                    </div>
+                    <div className="flex justify-between text-white/50">
+                      <span>Account Name:</span>
+                      <span className="font-medium text-white">CLIMPS - {memberName}</span>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowPayModal(false)}
+                    className="flex-1 py-2.5 rounded-xl border border-white/10 text-xs font-medium hover:bg-white/[0.06]"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={paying}
+                    className="flex-1 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold shadow-sm transition-all flex items-center justify-center gap-2"
+                  >
+                    {paying ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Confirming...</span>
+                      </>
+                    ) : (
+                      <span>Complete Payment</span>
+                    )}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ── MODAL: RECEIPT PREVIEW ── */}
+      {selectedReceipt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in">
+          <div className="bg-[#0d1527] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-xl relative animate-scale-up">
+            <div className="border-b border-white/10 pb-4 mb-4 text-center">
+              <div className="text-xs uppercase tracking-widest text-emerald-400 font-bold">Changing Lives Multipurpose Ventures</div>
+              <h3 className="text-base font-extrabold text-white mt-1">Official Contribution Receipt</h3>
+              <p className="text-[11px] text-white/50">Reference: {selectedReceipt.transactionReference}</p>
+            </div>
+
+            <div className="space-y-2.5 text-xs py-2">
+              <div className="flex justify-between">
+                <span className="text-white/50">Member:</span>
+                <span className="font-semibold text-white">{memberName} ({memberId})</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-white/50">Contribution Period:</span>
+                <span className="font-semibold text-white">
+                  {MONTH_NAMES[selectedReceipt.contributionMonth - 1]} {selectedReceipt.contributionYear}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-white/50">Amount Paid:</span>
+                <span className="font-bold text-emerald-600">{fmt(selectedReceipt.amountPaid)}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-white/50">Payment Date:</span>
+                <span className="font-medium text-white">{selectedReceipt.paymentDate}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-white/50">Payment Channel:</span>
+                <span className="font-medium text-white">{selectedReceipt.paymentMethod}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-white/50">Status:</span>
+                <span className="font-semibold text-emerald-600 uppercase">Verified / Confirmed</span>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-4 border-t border-white/10 flex gap-2">
+              <button
+                type="button"
+                onClick={() => setSelectedReceipt(null)}
+                className="flex-1 py-2 text-xs rounded-xl border border-white/10 hover:bg-white/[0.06] font-medium"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  window.print();
+                }}
+                className="flex-1 py-2 text-xs rounded-xl bg-emerald-500 hover:bg-emerald-500/90 text-white font-medium flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Print / Save</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   );
 }

@@ -4,14 +4,7 @@
 
 export type SavingsProductCategory =
   | 'monthly_contribution'
-  | 'regular_savings'
-  | 'target_savings'
-  | 'emergency_savings'
-  | 'business_savings'
-  | 'education_savings'
-  | 'special_purpose'
-  | 'fixed_deposit'
-  | 'daily_thrift';
+  | 'regular_savings';
 
 export type SavingsAccountStatus = 'active' | 'closed' | 'suspended' | 'pending';
 export type SavingsEnrollmentStatus = 'pending' | 'active' | 'completed' | 'cancelled';

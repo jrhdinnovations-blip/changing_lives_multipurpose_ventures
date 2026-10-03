@@ -14,10 +14,10 @@ const data = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card border border-border rounded-xl p-2.5 card-shadow text-xs">
-        <p className="font-semibold text-foreground mb-1.5">{label}</p>
+      <div className="bg-[#0d1527] border border-white/10 rounded-xl p-2.5 card-shadow text-xs">
+        <p className="font-semibold text-white mb-1.5">{label}</p>
         {payload.map((p: any) => (
-          <p key={`loan-tt-${p.dataKey}`} className="text-muted-foreground">
+          <p key={`loan-tt-${p.dataKey}`} className="text-white/50">
             {p.name}: <span className="font-bold" style={{ color: p.stroke }}>₦{p.value}M</span>
           </p>
         ))}

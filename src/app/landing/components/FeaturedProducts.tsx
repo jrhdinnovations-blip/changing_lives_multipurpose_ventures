@@ -7,175 +7,120 @@ type ProductCategory = 'savings' | 'investment' | 'loan';
 const products = {
   savings: [
     {
-      name: 'Daily Thrift Savings',
-      tag: 'Most Popular',
-      tagColor: 'bg-blue-100 text-blue-700',
-      rate: '8% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: '₦500/day',
-      minLabel: 'Min. Contribution',
-      duration: 'Flexible',
-      durationLabel: 'Tenure',
-      description: 'Save small amounts daily and watch them compound. Perfect for salary earners and traders.',
-      features: ['Daily auto-debit available', 'Withdraw anytime after 90 days', 'Bonus interest at year-end'],
-      color: 'border-blue-200 bg-gradient-to-br from-blue-50 to-white',
-      badgeColor: 'bg-blue-600',
+      name: 'Monthly Cooperative Contribution',
+      tag: 'Core Savings',
+      tagColor: 'bg-blue-500/20 text-blue-300',
+      rate: '4%',
+      rateLabel: 'Monthly',
+      minAmount: '₦5,000 – ₦200,000',
+      minLabel: 'Per Month',
+      duration: '12+ months',
+      durationLabel: 'Min. Tenure',
+      description:
+        'Core cooperative thrift contribution. Earns 4% monthly when maintained for at least 1 year — early withdrawal forfeits interest.',
+      features: [
+        '4% monthly interest on balance',
+        'At least 1-year tenure to retain interest',
+        '₦5,000 – ₦200,000 monthly contribution',
+      ],
+      accentColor: 'border-blue-500/30',
+      btnClass: 'bg-blue-600 hover:bg-blue-500',
+      href: '/save/start',
+      ctaText: 'Start Contributing',
     },
     {
-      name: 'Fixed Deposit Plan',
-      tag: 'Highest Returns',
-      tagColor: 'bg-emerald-100 text-emerald-700',
-      rate: '12% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: '₦100,000',
-      minLabel: 'Min. Deposit',
-      duration: '6–24 months',
-      durationLabel: 'Lock-in Period',
-      description: 'Lock in your funds for guaranteed high returns. Ideal for lump-sum savings.',
-      features: ['Guaranteed fixed rate', 'Monthly interest payout option', 'Rollover on maturity'],
-      color: 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-white',
-      badgeColor: 'bg-emerald-600',
-    },
-    {
-      name: 'Target Savings Goal',
-      tag: 'Goal-Based',
-      tagColor: 'bg-purple-100 text-purple-700',
-      rate: '10% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: '₦2,000/month',
-      minLabel: 'Min. Contribution',
-      duration: '3–36 months',
-      durationLabel: 'Goal Period',
-      description: 'Set a savings target — school fees, rent, business capital — and we help you reach it.',
-      features: ['Visual progress tracker', 'Milestone notifications', 'Penalty-free early exit'],
-      color: 'border-purple-200 bg-gradient-to-br from-purple-50 to-white',
-      badgeColor: 'bg-purple-600',
+      name: 'Regular Savings Account',
+      tag: 'Voluntary Savings',
+      tagColor: 'bg-teal-500/20 text-teal-300',
+      rate: '4%',
+      rateLabel: 'Monthly',
+      minAmount: '₦5,000 – ₦200,000',
+      minLabel: 'Per Month',
+      duration: '12+ months',
+      durationLabel: 'Min. Tenure',
+      description:
+        'Flexible cooperative savings. Deposits held for at least 1 full year earn 4% monthly interest. Simple. Structured. Rewarding.',
+      features: [
+        '4% monthly return on saved funds',
+        '1-year tenure rule applies',
+        'Up to ₦200,000 per month',
+      ],
+      accentColor: 'border-teal-500/30',
+      btnClass: 'bg-teal-600 hover:bg-teal-500',
+      href: '/savings-products',
+      ctaText: 'Explore Savings',
     },
   ],
   investment: [
     {
-      name: 'Cooperative Shares',
-      tag: 'Member Exclusive',
-      tagColor: 'bg-emerald-100 text-emerald-700',
-      rate: '15–20% p.a.',
-      rateLabel: 'Annual Dividend',
+      name: 'CLIMPS Wealth Circle (CWC)',
+      tag: 'Open for Enrolment',
+      tagColor: 'bg-emerald-500/20 text-emerald-300',
+      rate: '3.5%',
+      rateLabel: 'Monthly Agreed Return',
       minAmount: '₦50,000',
-      minLabel: 'Min. Investment',
-      duration: 'Ongoing',
-      durationLabel: 'Tenure',
-      description: 'Own a stake in CLIMPS. Earn annual dividends proportional to your shareholding.',
-      features: ['Voting rights at AGM', 'Annual dividend payout', 'Share value appreciation'],
-      color: 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-white',
-      badgeColor: 'bg-emerald-600',
+      minLabel: 'Min. Capital',
+      duration: '3–24 months',
+      durationLabel: 'Structured Tenure',
+      description:
+        'A structured wealth-building Circle for eligible CLIMPS members, offering a 3.5% monthly agreed return under clearly defined terms.',
+      features: [
+        '3.5% monthly agreed return',
+        'Notice period for liquidation',
+        'Formal Wealth Circle Agreement',
+      ],
+      accentColor: 'border-emerald-500/30',
+      btnClass: 'bg-emerald-600 hover:bg-emerald-500',
+      href: '/investors-circle',
+      ctaText: 'Join Wealth Circle',
+      comingSoon: false,
     },
     {
       name: 'Real Estate Fund',
-      tag: 'High Growth',
-      tagColor: 'bg-amber-100 text-amber-700',
-      rate: '22% p.a.',
+      tag: 'Coming Soon',
+      tagColor: 'bg-amber-500/20 text-amber-300',
+      rate: 'TBD',
       rateLabel: 'Projected Return',
       minAmount: '₦500,000',
-      minLabel: 'Min. Investment',
+      minLabel: 'Est. Min. Investment',
       duration: '24–60 months',
       durationLabel: 'Investment Period',
-      description: 'Pool funds with other members to invest in prime Nigerian real estate projects.',
-      features: ['Quarterly progress reports', 'Exit option after 24 months', 'Insured portfolio'],
-      color: 'border-amber-200 bg-gradient-to-br from-amber-50 to-white',
-      badgeColor: 'bg-amber-600',
-    },
-    {
-      name: 'Agri-Business Fund',
-      tag: 'Impact Investing',
-      tagColor: 'bg-lime-100 text-lime-700',
-      rate: '18% p.a.',
-      rateLabel: 'Projected Return',
-      minAmount: '₦100,000',
-      minLabel: 'Min. Investment',
-      duration: '12–24 months',
-      durationLabel: 'Cycle',
-      description: 'Invest in verified agricultural projects across Nigeria. Earn returns while supporting food security.',
-      features: ['Seasonal harvest payouts', 'Government-backed projects', 'Impact report included'],
-      color: 'border-lime-200 bg-gradient-to-br from-lime-50 to-white',
-      badgeColor: 'bg-lime-600',
+      description:
+        'Pool funds with other members to invest in verified prime Nigerian real estate — housing estates to commercial builds.',
+      features: ['Quarterly progress reports', 'Exit option after 24 months', 'Insured & titled portfolio'],
+      accentColor: 'border-amber-500/20',
+      btnClass: 'bg-amber-600 hover:bg-amber-500',
+      href: '/investment-products',
+      ctaText: 'View Portfolio',
+      comingSoon: true,
     },
   ],
   loan: [
     {
-      name: 'Emergency Loan',
-      tag: 'Fast Approval',
-      tagColor: 'bg-red-100 text-red-700',
-      rate: '8% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: 'Up to ₦500,000',
+      name: 'Personal Loan',
+      tag: 'Most Popular',
+      tagColor: 'bg-blue-500/20 text-blue-300',
+      rate: '10%',
+      rateLabel: 'Monthly Interest',
+      minAmount: 'Up to ₦1,500,000',
       minLabel: 'Loan Limit',
-      duration: '3–12 months',
+      duration: '3–24 months',
       durationLabel: 'Repayment',
-      description: 'Access funds within 24 hours for medical, family, or urgent personal needs.',
-      features: ['No collateral required', 'Approval in 24 hours', 'Flexible repayment schedule'],
-      color: 'border-red-200 bg-gradient-to-br from-red-50 to-white',
-      badgeColor: 'bg-red-500',
-    },
-    {
-      name: 'Business Capital Loan',
-      tag: 'SME Focused',
-      tagColor: 'bg-blue-100 text-blue-700',
-      rate: '10% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: 'Up to ₦5,000,000',
-      minLabel: 'Loan Limit',
-      duration: '6–36 months',
-      durationLabel: 'Repayment',
-      description: 'Grow your business with affordable capital. Designed for SMEs and entrepreneurs.',
-      features: ['Business plan review support', 'Grace period available', 'Repeat borrower discounts'],
-      color: 'border-blue-200 bg-gradient-to-br from-blue-50 to-white',
-      badgeColor: 'bg-blue-600',
-    },
-    {
-      name: 'Education Loan',
-      tag: 'Zero Collateral',
-      tagColor: 'bg-purple-100 text-purple-700',
-      rate: '6% p.a.',
-      rateLabel: 'Interest Rate',
-      minAmount: 'Up to ₦2,000,000',
-      minLabel: 'Loan Limit',
-      duration: '12–48 months',
-      durationLabel: 'Repayment',
-      description: 'Fund school fees, professional certifications, or overseas education with our lowest-rate loan.',
-      features: ['Disbursed directly to institution', 'Repayment starts after graduation', 'Subsidized for members 5+ years'],
-      color: 'border-purple-200 bg-gradient-to-br from-purple-50 to-white',
-      badgeColor: 'bg-purple-600',
+      description:
+        'Flexible personal financing for home improvements, travel, weddings, or any personal project at 10% monthly cooperative interest.',
+      features: ['10% monthly cooperative interest', 'Flexible tenure up to 24 months', 'No early repayment penalty'],
+      accentColor: 'border-blue-500/30',
+      btnClass: 'bg-blue-600 hover:bg-blue-500',
+      href: '/loan-application',
+      ctaText: 'Apply for Personal Loan',
     },
   ],
 };
 
-const TABS: { id: ProductCategory; label: string; icon: React.ReactNode }[] = [
-  {
-    id: 'savings',
-    label: 'Savings Products',
-    icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    ),
-  },
-  {
-    id: 'investment',
-    label: 'Investment Products',
-    icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-      </svg>
-    ),
-  },
-  {
-    id: 'loan',
-    label: 'Loan Products',
-    icon: (
-      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-      </svg>
-    ),
-  },
+const TABS: { id: ProductCategory; label: string }[] = [
+  { id: 'savings', label: 'Savings' },
+  { id: 'investment', label: 'Wealth Circle' },
+  { id: 'loan', label: 'Loans' },
 ];
 
 export default function FeaturedProducts() {
@@ -183,96 +128,108 @@ export default function FeaturedProducts() {
   const currentProducts = products[activeTab];
 
   return (
-    <section id="products" className="py-20 lg:py-28 bg-muted/40">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="products" className="py-20 lg:py-28 bg-[#0d1117]">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-white border border-border rounded-full px-4 py-1.5 mb-4">
-            <span className="text-primary text-xs font-semibold uppercase tracking-widest">Featured Products</span>
+        <div className="mb-12">
+          <div className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-4">
+            OUR PRODUCTS
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
+          <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
             Products built for<br />
-            <span className="text-primary">every financial goal.</span>
+            <span className="text-emerald-400">every financial goal.</span>
           </h2>
-          <p className="text-muted-foreground text-base max-w-xl mx-auto">
-            From daily savings to long-term investments and accessible loans — find the right product for where you are today.
-          </p>
         </div>
 
-        {/* Tab switcher */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
+        {/* Tabs */}
+        <div className="flex gap-1 mb-10 bg-white/[0.05] p-1 rounded-xl w-fit">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
+              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'bg-primary text-white shadow-md'
-                  : 'bg-white border border-border text-muted-foreground hover:text-foreground hover:border-primary/30'
+                  ? 'bg-white text-[#0a0f1e] shadow-sm'
+                  : 'text-white/40 hover:text-white/70'
               }`}
             >
-              {tab.icon}
               {tab.label}
             </button>
           ))}
         </div>
 
         {/* Product cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {currentProducts.map((product, idx) => (
-            <div
-              key={product.name}
-              className={`relative rounded-2xl border-2 p-6 flex flex-col ${product.color} transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
-            >
-              {/* Tag */}
-              <div className="flex items-start justify-between mb-4">
-                <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.tagColor}`}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {currentProducts.map((product) => {
+            const isComingSoon = 'comingSoon' in product && product.comingSoon;
+            return (
+              <div
+                key={product.name}
+                className={`relative rounded-2xl border p-7 flex flex-col bg-white/[0.04] ${product.accentColor} transition-all duration-200 ${
+                  isComingSoon ? 'opacity-60' : 'hover:bg-white/[0.07] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/20'
+                }`}
+              >
+                {/* Coming soon overlay */}
+                {isComingSoon && (
+                  <div className="absolute inset-0 rounded-2xl bg-black/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
+                    <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-center">
+                      <p className="text-white font-bold mb-1">Coming Soon</p>
+                      <a href="mailto:admin@climps.org" className="text-emerald-400 text-xs hover:underline">
+                        Join waitlist →
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {/* Tag */}
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold w-fit mb-5 ${product.tagColor}`}>
                   {product.tag}
                 </span>
-                {idx === 0 && (
-                  <div className={`w-2 h-2 rounded-full ${product.badgeColor} animate-pulse`} />
+
+                <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
+                <p className="text-white/45 text-sm leading-relaxed mb-6">{product.description}</p>
+
+                {/* Key metrics */}
+                <div className="grid grid-cols-3 gap-3 mb-6">
+                  {[
+                    { val: product.rate, label: product.rateLabel },
+                    { val: product.minAmount, label: product.minLabel },
+                    { val: product.duration, label: product.durationLabel },
+                  ].map((m) => (
+                    <div key={m.label} className="bg-white/[0.06] rounded-xl p-3 text-center">
+                      <div className="text-sm font-bold text-white font-tabular">{m.val}</div>
+                      <div className="text-[11px] text-white/35 mt-0.5">{m.label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Features */}
+                <ul className="space-y-2 mb-7 flex-1">
+                  {product.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-sm text-white/55">
+                      <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                {isComingSoon ? (
+                  <button disabled className="w-full text-center py-3 rounded-xl text-sm font-bold bg-white/10 text-white/30 cursor-not-allowed">
+                    Coming Soon
+                  </button>
+                ) : (
+                  <Link
+                    href={product.href}
+                    className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 ${product.btnClass}`}
+                  >
+                    {product.ctaText} →
+                  </Link>
                 )}
               </div>
-
-              <h3 className="text-lg font-bold text-foreground mb-2">{product.name}</h3>
-              <p className="text-muted-foreground text-sm leading-relaxed mb-5">{product.description}</p>
-
-              {/* Key metrics */}
-              <div className="grid grid-cols-3 gap-2 mb-5">
-                <div className="bg-white/70 rounded-xl p-3 text-center border border-white">
-                  <div className="text-base font-bold text-foreground font-tabular">{product.rate}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{product.rateLabel}</div>
-                </div>
-                <div className="bg-white/70 rounded-xl p-3 text-center border border-white">
-                  <div className="text-xs font-bold text-foreground font-tabular leading-tight">{product.minAmount}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{product.minLabel}</div>
-                </div>
-                <div className="bg-white/70 rounded-xl p-3 text-center border border-white">
-                  <div className="text-xs font-bold text-foreground font-tabular leading-tight">{product.duration}</div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{product.durationLabel}</div>
-                </div>
-              </div>
-
-              {/* Features */}
-              <ul className="space-y-1.5 mb-6 flex-1">
-                {product.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 text-sm text-foreground">
-                    <svg className="w-3.5 h-3.5 text-accent flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-
-              <Link
-                href="/register"
-                className={`w-full text-center py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-150 active:scale-95 ${product.badgeColor} hover:opacity-90`}
-              >
-                Get Started →
-              </Link>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

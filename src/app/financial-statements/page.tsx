@@ -800,7 +800,7 @@ export default function FinancialStatementsPage() {
                     <option value="transactions">Transactions Only</option>
                     <option value="savings">Savings & Contributions</option>
                     <option value="loans">Loans & Repayments</option>
-                    <option value="investments">Investments</option>
+                    <option value="investments">Wealth Circle</option>
                   </select>
                 </div>
                 <div>
@@ -866,7 +866,7 @@ export default function FinancialStatementsPage() {
               {[
                 { icon: PiggyBank, label: 'Savings & Contributions', color: 'text-teal-600 bg-teal-50' },
                 { icon: CreditCard, label: 'Loans & Repayments', color: 'text-purple-600 bg-purple-50' },
-                { icon: TrendingUp, label: 'Investments', color: 'text-emerald-600 bg-emerald-50' },
+                { icon: TrendingUp, label: 'Wealth Circle', color: 'text-emerald-600 bg-emerald-50' },
                 { icon: Wallet, label: 'All Transactions', color: 'text-blue-600 bg-blue-50' },
               ].map(item => (
                 <div key={item.label} className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-medium ${item.color}`}>

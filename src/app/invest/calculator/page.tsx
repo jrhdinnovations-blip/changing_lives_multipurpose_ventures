@@ -1,8 +1,9 @@
 'use client';
 import React, { useState, useMemo, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import LandingNav from '@/app/landing/components/LandingNav';
+import LandingFooter from '@/app/landing/components/LandingFooter';
 import {
   INVESTMENT_PRODUCTS,
   calculateInvestmentReturn,
@@ -13,13 +14,9 @@ import {
   Calculator,
   ArrowRight,
   TrendingUp,
-  ShieldCheck,
   AlertCircle,
   Calendar,
   Sparkles,
-  PieChart,
-  Banknote,
-  ArrowLeft,
 } from 'lucide-react';
 
 function InvestmentCalculatorInner() {
@@ -64,101 +61,76 @@ function InvestmentCalculatorInner() {
   const returnPct = 100 - principalPct;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/landing" className="flex items-center gap-2.5">
-              <Image
-                src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
-                alt="CLIMPS Cooperative Logo"
-                width={32}
-                height={32}
-                className="rounded-lg object-cover"
-              />
-              <span className="font-bold text-base text-primary tracking-tight">CLIMPS</span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <Link
-                href="/investment-products"
-                className="text-xs font-semibold text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors"
-              >
-                <ArrowLeft className="w-3.5 h-3.5" />
-                View Investment Products
-              </Link>
-              <Link href="/login" className="text-xs font-semibold text-muted-foreground hover:text-foreground">
-                Sign In
-              </Link>
-              <Link href="/register" className="btn-accent text-xs px-3.5 py-1.5">
-                Join Cooperative
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#0a0f1e] text-white flex flex-col">
+      <LandingNav />
 
       {/* Hero */}
-      <div className="gradient-primary py-10 lg:py-14 text-white relative overflow-hidden">
+      <div className="relative py-12 lg:py-16 overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1e] via-[#0d1e38] to-[#08213b] pointer-events-none" />
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3.5 py-1 mb-4 text-xs font-semibold uppercase tracking-wider text-white">
-            <Calculator className="w-3.5 h-3.5 text-accent" />
+          <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-3.5 py-1 mb-4 text-xs font-semibold uppercase tracking-wider text-emerald-300">
+            <Calculator className="w-3.5 h-3.5 text-emerald-400" />
             Financial Projection Engine
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold mb-2">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3">
             Investment Return Calculator
           </h1>
-          <p className="text-white/80 text-sm sm:text-base max-w-xl">
-            Simulate potential earnings, compound growth, and maturity dates across CLIMPS cooperative investment vehicles.
+          <p className="text-white/70 text-base max-w-xl">
+            Simulate potential earnings, agreed returns (3.5% monthly on Wealth Circle), and maturity dates across CLIMPS vehicles.
           </p>
         </div>
       </div>
 
       {/* Calculator Grid */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14 flex-1 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Input Controls (7 cols) */}
-          <div className="lg:col-span-7 bg-card rounded-3xl border border-border p-6 sm:p-8 shadow-sm space-y-6">
+          <div className="lg:col-span-7 bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl space-y-6">
             <div>
-              <label className="block text-sm font-bold text-foreground mb-2">
+              <label className="block text-sm font-bold text-white mb-2">
                 1. Select Investment Vehicle
               </label>
               <select
                 value={selectedProductId}
                 onChange={(e) => handleProductChange(e.target.value)}
-                className="w-full rounded-xl border border-input bg-card px-4 py-3 text-sm font-semibold text-foreground focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"
+                className="w-full rounded-xl border border-white/15 bg-white/[0.04] px-4 py-3 text-sm font-semibold text-white focus:outline-none focus:border-emerald-500 shadow-sm"
               >
-                {INVESTMENT_PRODUCTS.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name} ({p.projectedReturnLabel} · {p.durationMonths} Mo)
-                  </option>
-                ))}
+                {INVESTMENT_PRODUCTS.map((p) => {
+                  const isComingSoon = p.comingSoon || p.productStatus === 'coming_soon';
+                  return (
+                    <option key={p.id} value={p.id} className="bg-[#0d1527] text-white">
+                      {p.name} {isComingSoon ? '⏳ [Coming Soon]' : ''} ({p.projectedReturnLabel} · {p.durationMonths} Mo)
+                    </option>
+                  );
+                })}
               </select>
-              <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-                <span>Min: <strong>{formatNaira(selectedProduct.minimumInvestment)}</strong></span>
-                <span>Type: <strong className="text-emerald-600">{selectedProduct.category}</strong></span>
+              <div className="mt-2.5 flex items-center justify-between text-xs text-white/50">
+                <span>Min: <strong className="text-white">{formatNaira(selectedProduct.minimumInvestment)}</strong></span>
+                <span>Category: <strong className="text-emerald-400">{selectedProduct.category}</strong></span>
               </div>
             </div>
 
             {/* Principal Amount */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-bold text-foreground">
+                <label className="text-sm font-bold text-white">
                   2. Investment Principal Amount (₦)
                 </label>
-                <span className="text-xs font-bold text-primary font-tabular">
+                <span className="text-xs font-bold text-emerald-400 font-tabular">
                   {formatNaira(amount)}
                 </span>
               </div>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">₦</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/50 font-bold">₦</span>
                 <input
                   type="number"
                   min={selectedProduct.minimumInvestment}
                   step={5000}
                   value={amount || ''}
                   onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
-                  className="w-full rounded-xl border border-input bg-card pl-9 pr-4 py-3 text-lg font-bold font-tabular text-foreground focus:outline-none focus:ring-2 focus:ring-primary shadow-xs"
+                  className="w-full rounded-xl border border-white/15 bg-white/[0.04] pl-9 pr-4 py-3 text-lg font-bold font-tabular text-white focus:outline-none focus:border-emerald-500 shadow-sm"
                 />
               </div>
 
@@ -171,8 +143,8 @@ function InvestmentCalculatorInner() {
                     onClick={() => setAmount(amt)}
                     className={`px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
                       amount === amt
-                        ? 'bg-primary text-white border-primary shadow-xs'
-                        : 'bg-muted/60 text-muted-foreground border-border hover:border-primary/40'
+                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-xs'
+                        : 'bg-white/[0.03] text-white/60 border-white/10 hover:border-white/20'
                     }`}
                   >
                     {formatNairaCompact(amt)}
@@ -181,7 +153,7 @@ function InvestmentCalculatorInner() {
               </div>
 
               {amount < selectedProduct.minimumInvestment && (
-                <p className="text-xs text-amber-600 font-semibold mt-2 flex items-center gap-1">
+                <p className="text-xs text-amber-400 font-semibold mt-2 flex items-center gap-1">
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                   Amount is below the product minimum of {formatNaira(selectedProduct.minimumInvestment)}.
                 </p>
@@ -191,10 +163,10 @@ function InvestmentCalculatorInner() {
             {/* Duration Slider */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-bold text-foreground">
+                <label className="text-sm font-bold text-white">
                   3. Investment Duration
                 </label>
-                <span className="text-xs font-bold text-primary font-tabular">
+                <span className="text-xs font-bold text-emerald-400 font-tabular">
                   {durationMonths} Months ({Math.round((durationMonths / 12) * 10) / 10} Yrs)
                 </span>
               </div>
@@ -205,9 +177,9 @@ function InvestmentCalculatorInner() {
                 step={3}
                 value={durationMonths}
                 onChange={(e) => setDurationMonths(Number(e.target.value))}
-                className="w-full accent-primary h-2 bg-muted rounded-lg cursor-pointer"
+                className="w-full accent-emerald-500 h-2 bg-white/10 rounded-lg cursor-pointer"
               />
-              <div className="flex justify-between text-[11px] text-muted-foreground mt-1 font-tabular">
+              <div className="flex justify-between text-[11px] text-white/40 mt-1 font-tabular">
                 <span>3 Months</span>
                 <span>12 Months</span>
                 <span>24 Months</span>
@@ -218,118 +190,107 @@ function InvestmentCalculatorInner() {
             {/* Projected Rate Adjustment */}
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="text-sm font-bold text-foreground">
+                <label className="text-sm font-bold text-white">
                   4. Projected Rate (% per annum)
                 </label>
-                <span className="text-xs font-bold text-emerald-600 font-tabular">
+                <span className="text-xs font-bold text-emerald-400 font-tabular">
                   {customRate}% p.a.
                 </span>
               </div>
               <input
                 type="range"
                 min={5}
-                max={30}
+                max={50}
                 step={0.5}
                 value={customRate}
                 onChange={(e) => setCustomRate(Number(e.target.value))}
-                className="w-full accent-emerald-600 h-2 bg-muted rounded-lg cursor-pointer"
+                className="w-full accent-emerald-500 h-2 bg-white/10 rounded-lg cursor-pointer"
               />
-              <div className="flex justify-between text-[11px] text-muted-foreground mt-1 font-tabular">
+              <div className="flex justify-between text-[11px] text-white/40 mt-1 font-tabular">
                 <span>5%</span>
-                <span>15%</span>
                 <span>20%</span>
-                <span>30%</span>
+                <span>35%</span>
+                <span>50%</span>
               </div>
             </div>
 
-            {/* Method Toggle */}
-            <div className="pt-2 border-t border-border">
-              <label className="text-xs font-bold text-muted-foreground uppercase tracking-wider block mb-2">
-                Interest Method
+            {/* Calculation Method Toggle */}
+            <div className="pt-2 border-t border-white/10">
+              <label className="block text-xs font-bold uppercase tracking-wider text-white/50 mb-2">
+                Yield Accrual Method
               </label>
               <div className="grid grid-cols-2 gap-3">
                 <button
                   type="button"
                   onClick={() => setCalcMethod('simple')}
-                  className={`py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
+                  className={`p-3 rounded-xl border text-left text-xs transition-all ${
                     calcMethod === 'simple'
-                      ? 'bg-primary text-white border-primary shadow-xs'
-                      : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'
+                      ? 'border-emerald-500 bg-emerald-500/15 text-emerald-300 font-bold shadow-sm'
+                      : 'border-white/10 bg-white/[0.02] text-white/60 hover:text-white'
                   }`}
                 >
-                  Simple Annual Return
+                  <span className="font-bold text-white block">Simple Periodic Return</span>
+                  <span className="text-[10px] text-white/50">Return paid out at maturity</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setCalcMethod('compound')}
-                  className={`py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${
+                  className={`p-3 rounded-xl border text-left text-xs transition-all ${
                     calcMethod === 'compound'
-                      ? 'bg-primary text-white border-primary shadow-xs'
-                      : 'bg-muted/40 text-muted-foreground border-border hover:bg-muted'
+                      ? 'border-emerald-500 bg-emerald-500/15 text-emerald-300 font-bold shadow-sm'
+                      : 'border-white/10 bg-white/[0.02] text-white/60 hover:text-white'
                   }`}
                 >
-                  Compound Growth (Rollover)
+                  <span className="font-bold text-white block">Compounding Growth</span>
+                  <span className="text-[10px] text-white/50">Returns reinvested annually</span>
                 </button>
               </div>
             </div>
           </div>
 
-          {/* Output Results Panel (5 cols) */}
+          {/* Results Summary & Breakdown (5 cols) */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-slate-700 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/20 rounded-full blur-3xl pointer-events-none" />
-
-              <div className="flex items-center justify-between mb-5">
-                <span className="text-xs font-bold uppercase tracking-widest text-white/70">
-                  Estimated Summary
+            <div className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 sm:p-8 shadow-xl space-y-6">
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/50">
+                  Projection Breakdown
                 </span>
-                <span className="text-[11px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
-                  {selectedProduct.isGuaranteed ? 'Guaranteed Rate' : 'Projected Rate'}
+                <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <Sparkles className="w-3 h-3" />
+                  Estimated Yield
                 </span>
               </div>
 
               {/* Total Maturity Value */}
-              <div className="mb-6">
-                <span className="text-xs text-white/70 block mb-1">Estimated Maturity Value</span>
-                <div className="text-3xl sm:text-4xl font-extrabold text-accent font-tabular tracking-tight">
+              <div>
+                <p className="text-xs font-semibold text-white/50 mb-1">
+                  Estimated Total Maturity Value
+                </p>
+                <div className="text-3xl sm:text-4xl font-extrabold text-emerald-400 font-tabular tracking-tight">
                   {formatNaira(results.maturityValue)}
                 </div>
-                <div className="text-xs text-white/60 mt-1">
-                  Includes principal + projected returns
+              </div>
+
+              {/* Split Breakdown */}
+              <div className="grid grid-cols-2 gap-3 p-4 rounded-2xl bg-white/[0.03] border border-white/5 font-tabular">
+                <div>
+                  <span className="text-2xs uppercase font-semibold text-white/50 block">Initial Principal</span>
+                  <span className="text-sm sm:text-base font-bold text-white">{formatNaira(results.principal)}</span>
+                </div>
+                <div>
+                  <span className="text-2xs uppercase font-semibold text-white/50 block">Estimated Profit</span>
+                  <span className="text-sm sm:text-base font-bold text-amber-400">+{formatNaira(results.projectedReturn)}</span>
                 </div>
               </div>
 
-              {/* Breakdown Grid */}
-              <div className="space-y-3 py-4 border-y border-white/10 text-xs">
-                <div className="flex justify-between py-1">
-                  <span className="text-white/70">Investment Principal:</span>
-                  <span className="font-bold text-white font-tabular">{formatNaira(results.principal)}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-white/70">Estimated Total Return:</span>
-                  <span className="font-bold text-emerald-400 font-tabular">+{formatNaira(results.projectedReturn)}</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-white/70">Estimated Monthly Average:</span>
-                  <span className="font-bold text-white font-tabular">+{formatNaira(results.monthlyReturn)}/mo</span>
-                </div>
-                <div className="flex justify-between py-1">
-                  <span className="text-white/70">Projected Maturity Date:</span>
-                  <span className="font-bold text-white flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-accent" />
-                    {results.maturityDate}
-                  </span>
-                </div>
-              </div>
-
-              {/* Visual Breakdown Bar */}
-              <div className="mt-5 mb-6">
-                <div className="flex justify-between text-[11px] text-white/80 mb-1.5 font-tabular">
+              {/* Progress Visualizer */}
+              <div className="space-y-1.5">
+                <div className="flex justify-between text-2xs font-bold text-white/60">
                   <span>Principal: {principalPct}%</span>
-                  <span>Gain: {returnPct}%</span>
+                  <span className="text-emerald-400">Profit: {returnPct}%</span>
                 </div>
                 <div className="h-2.5 w-full bg-white/10 rounded-full overflow-hidden flex">
-                  <div className="bg-white h-full" style={{ width: `${principalPct}%` }} />
+                  <div className="bg-white/40 h-full" style={{ width: `${principalPct}%` }} />
                   <div className="bg-emerald-400 h-full" style={{ width: `${returnPct}%` }} />
                 </div>
               </div>
@@ -337,7 +298,7 @@ function InvestmentCalculatorInner() {
               {/* Action CTA */}
               <Link
                 href={`/invest/now?product=${selectedProduct.id}&amount=${amount}`}
-                className="w-full btn-accent text-center py-3.5 text-sm font-bold flex items-center justify-center gap-2 shadow-lg"
+                className="w-full px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
               >
                 Proceed to Invest with this Plan
                 <ArrowRight className="w-4 h-4" />
@@ -345,17 +306,15 @@ function InvestmentCalculatorInner() {
             </div>
 
             {/* Mandatory Disclaimer */}
-            <div className="bg-amber-50/90 border border-amber-200 rounded-2xl p-5 text-amber-950">
+            <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-5 text-white/70">
               <div className="flex items-start gap-2.5">
-                <AlertCircle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                <AlertCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-amber-900 mb-1">
+                  <h4 className="text-xs font-bold text-white mb-1">
                     Calculation Estimate Disclaimer
                   </h4>
-                  <p className="text-[11px] leading-relaxed text-amber-900/90">
-                    This calculation is an estimate based on configured product parameters and target historical yields. 
-                    Unless explicitly provided under a contractual fixed income instrument, 
-                    <strong> projected returns are not guaranteed</strong>. Actual payout amounts may vary depending on business cycle performance and agricultural or trading surplus.
+                  <p className="text-[11px] leading-relaxed text-white/60">
+                    This calculation is an estimate based on configured product parameters. For the CLIMPS Wealth Circle, the agreed return is 3.5% monthly with early liquidation subject to notice periods and administrative terms.
                   </p>
                 </div>
               </div>
@@ -363,6 +322,8 @@ function InvestmentCalculatorInner() {
           </div>
         </div>
       </main>
+
+      <LandingFooter />
     </div>
   );
 }
@@ -371,8 +332,8 @@ export default function InvestmentCalculatorPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background">
-          <div className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+        <div className="min-h-screen flex items-center justify-center bg-[#0a0f1e]">
+          <div className="w-8 h-8 rounded-full border-3 border-emerald-400 border-t-transparent animate-spin" />
         </div>
       }
     >

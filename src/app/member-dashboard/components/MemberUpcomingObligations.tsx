@@ -44,10 +44,10 @@ const obligations = [
 ];
 
 const urgencyConfig = {
-  overdue: { color: 'text-destructive', bg: 'bg-destructive/10', icon: AlertTriangle, border: 'border-destructive/20' },
+  overdue: { color: 'text-red-400', bg: 'bg-red-500/10', icon: AlertTriangle, border: 'border-destructive/20' },
   soon: { color: 'text-warning', bg: 'bg-warning/10', icon: Clock, border: 'border-warning/20' },
-  upcoming: { color: 'text-muted-foreground', bg: 'bg-muted', icon: Calendar, border: 'border-border' },
-  done: { color: 'text-accent', bg: 'bg-accent/10', icon: CheckCircle2, border: 'border-accent/20' },
+  upcoming: { color: 'text-white/50', bg: 'bg-white/[0.06]', icon: Calendar, border: 'border-white/10' },
+  done: { color: 'text-blue-400', bg: 'bg-blue-500/10', icon: CheckCircle2, border: 'border-accent/20' },
 };
 
 const typeLabel: Record<string, string> = {
@@ -75,11 +75,11 @@ export default function MemberUpcomingObligations() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="text-xs font-semibold text-foreground truncate">{obl.title}</p>
-                  <p className="text-xs font-bold text-foreground font-tabular shrink-0">{obl.amount}</p>
+                  <p className="text-xs font-semibold text-white truncate">{obl.title}</p>
+                  <p className="text-xs font-bold text-white font-tabular shrink-0">{obl.amount}</p>
                 </div>
                 <div className="flex items-center justify-between mt-0.5">
-                  <p className="text-2xs text-muted-foreground">{typeLabel[obl.type]} · {obl.dueDate}</p>
+                  <p className="text-2xs text-white/50">{typeLabel[obl.type]} · {obl.dueDate}</p>
                   <p className={`text-2xs font-semibold ${cfg.color}`}>
                     {obl.daysUntil <= 7 ? `${obl.daysUntil}d left` : `in ${obl.daysUntil}d`}
                   </p>

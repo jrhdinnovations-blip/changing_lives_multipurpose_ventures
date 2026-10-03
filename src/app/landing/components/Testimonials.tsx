@@ -51,10 +51,10 @@ const testimonials = [
     role: 'Nurse, Kano',
     initials: 'FB',
     avatarColor: 'bg-rose-600',
-    quote: 'I set a target savings goal for my wedding — ₦1.2M in 18 months. CLIMPS helped me hit it with ₦50,000 to spare. The dashboard made tracking so easy.',
+    quote: 'I used my Regular Savings account to set aside money for my wedding — ₦1.2M in 18 months. The quarterly compound interest and instant access made saving effortless.',
     rating: 5,
     highlight: 'Goal achieved',
-    product: 'Target Savings Goal',
+    product: 'Regular Savings Account',
     featured: false,
   },
 ];

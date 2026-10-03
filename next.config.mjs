@@ -23,6 +23,10 @@ const nextConfig = {
     remotePatterns: imageHosts,
     minimumCacheTTL: 60,
     qualities: [75, 85, 100],
+    // Cloudflare Pages does not support Next.js Image Optimization.
+    // Use unoptimized images or a custom loader.
+    unoptimized: true,
   }
 };
+
 export default nextConfig;

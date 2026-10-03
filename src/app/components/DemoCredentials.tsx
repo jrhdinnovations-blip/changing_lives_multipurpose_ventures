@@ -25,16 +25,16 @@ export default function DemoCredentials({ onFill }: DemoCredentialsProps) {
   };
 
   return (
-    <div className="mt-6 border border-border rounded-2xl overflow-hidden">
-      <div className="flex items-center gap-2 px-4 py-2.5 bg-secondary/50 border-b border-border">
-        <Info size={14} className="text-primary shrink-0" />
-        <span className="text-xs font-semibold text-primary">Demo Accounts — Click any row to autofill</span>
+    <div className="mt-6 border border-white/10 rounded-2xl overflow-hidden">
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-white/[0.04]/50 border-b border-white/10">
+        <Info size={14} className="text-emerald-400 shrink-0" />
+        <span className="text-xs font-semibold text-emerald-400">Demo Accounts — Click any row to autofill</span>
       </div>
-      <div className="divide-y divide-border">
+      <div className="divide-y divide-white/10">
         {demoAccounts.map(account => (
           <div
             key={account.id}
-            className="px-4 py-3 hover:bg-muted/50 transition-colors cursor-pointer group"
+            className="px-4 py-3 hover:bg-white/[0.06]/50 transition-colors cursor-pointer group"
             onClick={() => {
               onFill(account.email, account.password);
               toast.info(`${account.role} credentials autofilled`);
@@ -43,48 +43,48 @@ export default function DemoCredentials({ onFill }: DemoCredentialsProps) {
             <div className="flex items-center justify-between mb-1.5">
               <div className="flex items-center gap-2">
                 <span className={`text-2xs font-bold px-2 py-0.5 rounded-full ${
-                  account.role === 'Administrator' ?'bg-primary/10 text-primary'
+                  account.role === 'Administrator' ?'bg-emerald-500/10 text-emerald-400'
                     : account.role === 'Manager' ?'bg-purple-100 text-purple-700'
-                    : account.role === 'Staff' ?'bg-warning/10 text-warning' :'bg-accent/10 text-accent'
+                    : account.role === 'Staff' ?'bg-warning/10 text-warning' :'bg-blue-500/10 text-blue-400'
                 }`}>
                   {account.role}
                 </span>
-                <span className="text-xs text-muted-foreground">{account.description}</span>
+                <span className="text-xs text-white/50">{account.description}</span>
               </div>
-              <span className="text-2xs text-primary font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+              <span className="text-2xs text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
                 Click to use →
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div className="flex items-center gap-1.5">
-                <span className="text-2xs text-muted-foreground font-medium w-14">Email:</span>
-                <span className="text-2xs text-foreground font-mono truncate flex-1">{account.email}</span>
+                <span className="text-2xs text-white/50 font-medium w-14">Email:</span>
+                <span className="text-2xs text-white font-mono truncate flex-1">{account.email}</span>
                 <button
                   type="button"
                   onClick={e => { e.stopPropagation(); handleCopy(account.email, `${account.id}-email`); }}
-                  className="p-0.5 rounded hover:bg-muted transition-colors shrink-0"
+                  className="p-0.5 rounded hover:bg-white/[0.06] transition-colors shrink-0"
                   aria-label="Copy email"
                 >
                   {copiedField === `${account.id}-email` ? (
-                    <Check size={11} className="text-accent" />
+                    <Check size={11} className="text-blue-400" />
                   ) : (
-                    <Copy size={11} className="text-muted-foreground" />
+                    <Copy size={11} className="text-white/50" />
                   )}
                 </button>
               </div>
               <div className="flex items-center gap-1.5">
-                <span className="text-2xs text-muted-foreground font-medium w-16">Password:</span>
-                <span className="text-2xs text-foreground font-mono truncate flex-1">{account.password}</span>
+                <span className="text-2xs text-white/50 font-medium w-16">Password:</span>
+                <span className="text-2xs text-white font-mono truncate flex-1">{account.password}</span>
                 <button
                   type="button"
                   onClick={e => { e.stopPropagation(); handleCopy(account.password, `${account.id}-pass`); }}
-                  className="p-0.5 rounded hover:bg-muted transition-colors shrink-0"
+                  className="p-0.5 rounded hover:bg-white/[0.06] transition-colors shrink-0"
                   aria-label="Copy password"
                 >
                   {copiedField === `${account.id}-pass` ? (
-                    <Check size={11} className="text-accent" />
+                    <Check size={11} className="text-blue-400" />
                   ) : (
-                    <Copy size={11} className="text-muted-foreground" />
+                    <Copy size={11} className="text-white/50" />
                   )}
                 </button>
               </div>

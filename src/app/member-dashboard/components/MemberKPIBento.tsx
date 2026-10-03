@@ -24,27 +24,27 @@ interface KPICard {
 }
 
 const variantStyles: Record<string, string> = {
-  default: 'bg-card border-border',
+  default: 'bg-[#0d1527] border-white/10',
   savings: 'gradient-card-savings border-blue-100',
   loan: 'gradient-card-loan border-orange-100',
   invest: 'gradient-card-invest border-green-100',
   alert: 'gradient-card-alert border-red-100',
-  success: 'bg-card border-border',
+  success: 'bg-[#0d1527] border-white/10',
 };
 
 const iconBg: Record<string, string> = {
-  default: 'bg-muted text-muted-foreground',
+  default: 'bg-white/[0.06] text-white/50',
   savings: 'bg-blue-100 text-blue-600',
   loan: 'bg-orange-100 text-orange-600',
-  invest: 'bg-accent/10 text-accent',
-  alert: 'bg-destructive/10 text-destructive',
-  success: 'bg-accent/10 text-accent',
+  invest: 'bg-blue-500/10 text-blue-400',
+  alert: 'bg-red-500/10 text-red-400',
+  success: 'bg-blue-500/10 text-blue-400',
 };
 
 const badgeStyle: Record<string, string> = {
-  success: 'bg-accent/10 text-accent',
+  success: 'bg-blue-500/10 text-blue-400',
   warning: 'bg-warning/10 text-warning',
-  danger: 'bg-destructive/10 text-destructive',
+  danger: 'bg-red-500/10 text-red-400',
   info: 'bg-blue-50 text-blue-700',
 };
 
@@ -207,7 +207,7 @@ export default function MemberKPIBento() {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1,2,3,4,5,6].map(i => (
-          <div key={i} className={`card-base border rounded-2xl bg-muted animate-pulse h-32 ${i === 1 ? 'sm:col-span-2' : ''}`} />
+          <div key={i} className={`card-base border rounded-2xl bg-white/[0.06] animate-pulse h-32 ${i === 1 ? 'sm:col-span-2' : ''}`} />
         ))}
       </div>
     );
@@ -231,7 +231,7 @@ export default function MemberKPIBento() {
                   <button
                     onMouseEnter={() => setTooltip(card.id)}
                     onMouseLeave={() => setTooltip(null)}
-                    className="text-muted-foreground hover:text-foreground transition-colors"
+                    className="text-white/50 hover:text-white transition-colors"
                     aria-label="More info"
                   >
                     <Info size={12} />
@@ -258,29 +258,29 @@ export default function MemberKPIBento() {
                   </span>
                 )}
                 {card.subLabel && !card.badge && (
-                  <p className="text-xs text-muted-foreground mt-1">{card.subLabel}</p>
+                  <p className="text-xs text-white/50 mt-1">{card.subLabel}</p>
                 )}
                 {card.badge && card.subLabel && (
-                  <p className="text-xs text-muted-foreground mt-1">{card.subLabel}</p>
+                  <p className="text-xs text-white/50 mt-1">{card.subLabel}</p>
                 )}
               </div>
               {card.subValue && (
                 <div className="text-right">
-                  <p className="text-xs font-semibold text-foreground font-tabular">{card.subValue}</p>
-                  <p className="text-2xs text-muted-foreground">{card.subLabel}</p>
+                  <p className="text-xs font-semibold text-white font-tabular">{card.subValue}</p>
+                  <p className="text-2xs text-white/50">{card.subLabel}</p>
                 </div>
               )}
             </div>
 
             {card.trend && (
-              <div className={`flex items-center gap-1 mt-2.5 pt-2.5 border-t border-border/60 ${
+              <div className={`flex items-center gap-1 mt-2.5 pt-2.5 border-t border-white/10/60 ${
                 card.trend.direction === 'up' ? 'stat-card-positive' :
-                card.trend.direction === 'down' ? 'stat-card-negative' : 'text-xs font-semibold text-muted-foreground'
+                card.trend.direction === 'down' ? 'stat-card-negative' : 'text-xs font-semibold text-white/50'
               }`}>
                 {card.trend.direction === 'up' && <ArrowUpRight size={13} />}
                 {card.trend.direction === 'down' && <ArrowDownRight size={13} />}
                 <span>{card.trend.value}</span>
-                <span className="font-normal text-muted-foreground">{card.trend.label}</span>
+                <span className="font-normal text-white/50">{card.trend.label}</span>
               </div>
             )}
           </div>

@@ -18,7 +18,7 @@ export default function Toggle({ checked, onChange, label, disabled }: TogglePro
         disabled={disabled}
         onClick={() => !disabled && onChange(!checked)}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${
-          checked ? 'bg-accent' : 'bg-muted-foreground/30'
+          checked ? 'bg-accent' : 'bg-white/[0.06]-foreground/30'
         } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         <span
@@ -27,7 +27,7 @@ export default function Toggle({ checked, onChange, label, disabled }: TogglePro
           }`}
         />
       </button>
-      {label && <span className="text-sm font-medium text-foreground">{label}</span>}
+      {label && <span className="text-sm font-medium text-white">{label}</span>}
     </label>
   );
 }

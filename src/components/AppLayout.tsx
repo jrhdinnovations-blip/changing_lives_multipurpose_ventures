@@ -19,7 +19,7 @@ export default function AppLayout({
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-[#070c18] flex">
       <AppSidebar
         role={role}
         collapsed={sidebarCollapsed}

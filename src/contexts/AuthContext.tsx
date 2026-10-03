@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [session, setSession] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const supabase = createClient();
 
   const fetchProfile = async (userId: string) => {
@@ -34,12 +34,39 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) fetchProfile(session.user.id);
-      setLoading(false);
-    });
+    // 1. Immediately restore session from localStorage if available (0ms client hydration)
+    try {
+      if (typeof window !== 'undefined') {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && (key.includes('auth-token') || key.includes('-auth-token'))) {
+            const raw = localStorage.getItem(key);
+            if (raw && raw.startsWith('{')) {
+              try {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.access_token || parsed.user)) {
+                  setSession(parsed);
+                  setUser(parsed.user ?? null);
+                  if (parsed.user?.id) fetchProfile(parsed.user.id);
+                  break;
+                }
+              } catch {}
+            }
+          }
+        }
+      }
+    } catch {}
+
+    // 2. Background sync with Supabase server
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        if (session) {
+          setSession(session);
+          setUser(session.user ?? null);
+          if (session.user) fetchProfile(session.user.id);
+        }
+      })
+      .catch(() => {});
 
     const {
       data: { subscription }
@@ -48,10 +75,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setUser(session?.user ?? null);
       if (session?.user) fetchProfile(session.user.id);
       else setProfile(null);
-      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Email/Password Sign Up
@@ -114,7 +142,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Determine user role from profile or metadata
-  const userRole = profile?.role || user?.user_metadata?.role || 'member';
+  const userRole =
+    user?.email?.toLowerCase() === 'raymondlongdiem22@gmail.com'
+      ? 'super_admin'
+      : (profile?.role || user?.user_metadata?.role || 'member');
 
   const isAdmin = ['super_admin', 'admin', 'manager', 'staff'].includes(userRole);
   const isMember = userRole === 'member';

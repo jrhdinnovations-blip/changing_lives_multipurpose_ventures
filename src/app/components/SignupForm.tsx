@@ -72,12 +72,12 @@ function PasswordStrength({ password }: { password: string }) {
           <div
             key={`strength-bar-${i}`}
             className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-              i <= strength ? colors[strength] : 'bg-muted'
+              i <= strength ? colors[strength] : 'bg-white/[0.06]'
             }`}
           />
         ))}
       </div>
-      <p className={`text-xs font-medium ${strength <= 1 ? 'text-destructive' : strength === 2 ? 'text-warning' : strength === 3 ? 'text-blue-600' : 'text-accent'}`}>
+      <p className={`text-xs font-medium ${strength <= 1 ? 'text-red-400' : strength === 2 ? 'text-warning' : strength === 3 ? 'text-blue-600' : 'text-blue-400'}`}>
         {labels[strength]} password
       </p>
     </div>
@@ -135,20 +135,20 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
   if (submitted) {
     return (
       <div className="text-center py-8 slide-up">
-        <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
-          <CheckCircle2 size={32} className="text-accent" />
+        <div className="w-16 h-16 rounded-full bg-blue-500/10 flex items-center justify-center mx-auto mb-4">
+          <CheckCircle2 size={32} className="text-blue-400" />
         </div>
-        <h3 className="text-xl font-bold text-foreground mb-2">Application Submitted!</h3>
-        <p className="text-sm text-muted-foreground mb-1">
+        <h3 className="text-xl font-bold text-white mb-2">Application Submitted!</h3>
+        <p className="text-sm text-white/50 mb-1">
           Your membership application has been received and is under review.
         </p>
-        <p className="text-sm text-muted-foreground mb-6">
+        <p className="text-sm text-white/50 mb-6">
           You will receive a notification once approved. Your Member ID will be issued upon approval.
         </p>
-        <div className="bg-secondary/50 rounded-2xl p-4 mb-6 text-left">
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">Application Reference</p>
-          <p className="text-base font-bold text-primary font-tabular">{appRef}</p>
-          <p className="text-xs text-muted-foreground mt-1">Save this reference for follow-up enquiries</p>
+        <div className="bg-white/[0.04]/50 rounded-2xl p-4 mb-6 text-left">
+          <p className="text-xs font-semibold text-white/50 uppercase tracking-wide mb-2">Application Reference</p>
+          <p className="text-base font-bold text-emerald-400 font-tabular">{appRef}</p>
+          <p className="text-xs text-white/50 mt-1">Save this reference for follow-up enquiries</p>
         </div>
         <button onClick={onSwitchToLogin} className="btn-primary w-full">
           Back to Sign In
@@ -160,8 +160,8 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
   return (
     <div className="slide-up">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Create Account</h2>
-        <p className="text-sm text-muted-foreground mt-1">Join CLIMPS cooperative today</p>
+        <h2 className="text-2xl font-bold text-white">Create Account</h2>
+        <p className="text-sm text-white/50 mt-1">Join CLIMPS cooperative today</p>
       </div>
 
       {/* Step indicator */}
@@ -173,19 +173,19 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
                 step > s.id
                   ? 'bg-accent text-white'
                   : step === s.id
-                  ? 'bg-primary text-white' :'bg-muted text-muted-foreground'
+                  ? 'bg-emerald-500 text-white' :'bg-white/[0.06] text-white/50'
               }`}>
                 {step > s.id ? <CheckCircle2 size={14} /> : s.id}
               </div>
               <span className={`text-2xs font-medium whitespace-nowrap hidden sm:block ${
-                step === s.id ? 'text-primary' : 'text-muted-foreground'
+                step === s.id ? 'text-emerald-400' : 'text-white/50'
               }`}>
                 {s.label}
               </span>
             </div>
             {idx < steps.length - 1 && (
               <div className={`flex-1 h-0.5 mb-4 transition-all duration-300 ${
-                step > s.id ? 'bg-accent' : 'bg-muted'
+                step > s.id ? 'bg-accent' : 'bg-white/[0.06]'
               }`} />
             )}
           </React.Fragment>
@@ -336,8 +336,8 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
         {/* Step 3 — Next of Kin */}
         {step === 3 && (
           <div className="space-y-4 slide-up">
-            <div className="bg-secondary/40 rounded-2xl p-3.5 mb-1">
-              <p className="text-xs text-muted-foreground">
+            <div className="bg-white/[0.04]/40 rounded-2xl p-3.5 mb-1">
+              <p className="text-xs text-white/50">
                 Your next of kin will be contacted in case of emergency or if your account requires succession processing.
               </p>
             </div>
@@ -403,7 +403,7 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
                     pattern: { value: /(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])/, message: 'Include uppercase, number, and special character' },
                   })}
                 />
-                <button type="button" onClick={() => setShowPassword(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Toggle password visibility">
+                <button type="button" onClick={() => setShowPassword(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="Toggle password visibility">
                   {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -423,7 +423,7 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
                     validate: v => v === password || 'Passwords do not match',
                   })}
                 />
-                <button type="button" onClick={() => setShowConfirm(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Toggle confirm password visibility">
+                <button type="button" onClick={() => setShowConfirm(s => !s)} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors" aria-label="Toggle confirm password visibility">
                   {showConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               </div>
@@ -455,23 +455,23 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
                 {errors.idNumber && <p className="error-text">{errors.idNumber.message}</p>}
               </div>
             </div>
-            <div className="border-2 border-dashed border-border rounded-xl p-4 text-center hover:border-primary/40 transition-colors cursor-pointer">
-              <Upload size={20} className="text-muted-foreground mx-auto mb-1.5" />
-              <p className="text-sm font-medium text-foreground">Upload Supporting Documents</p>
-              <p className="text-xs text-muted-foreground mt-0.5">Profile photo, ID scan, utility bill (max 5MB each)</p>
+            <div className="border-2 border-dashed border-white/10 rounded-xl p-4 text-center hover:border-primary/40 transition-colors cursor-pointer">
+              <Upload size={20} className="text-white/50 mx-auto mb-1.5" />
+              <p className="text-sm font-medium text-white">Upload Supporting Documents</p>
+              <p className="text-xs text-white/50 mt-0.5">Profile photo, ID scan, utility bill (max 5MB each)</p>
             </div>
             <div className="flex items-start gap-2.5">
               <input
                 id="agreeTerms"
                 type="checkbox"
-                className="w-4 h-4 mt-0.5 rounded border-border text-primary cursor-pointer"
+                className="w-4 h-4 mt-0.5 rounded border-white/10 text-emerald-400 cursor-pointer"
                 {...register('agreeTerms', { required: 'You must accept the terms to continue' })}
               />
-              <label htmlFor="agreeTerms" className="text-sm text-muted-foreground cursor-pointer leading-relaxed">
+              <label htmlFor="agreeTerms" className="text-sm text-white/50 cursor-pointer leading-relaxed">
                 I agree to the{' '}
-                <span className="font-semibold text-primary">Terms & Conditions</span>,{' '}
-                <span className="font-semibold text-primary">Privacy Policy</span>, and{' '}
-                <span className="font-semibold text-primary">Membership Agreement</span> of CLIMPS.
+                <span className="font-semibold text-emerald-400">Terms & Conditions</span>,{' '}
+                <span className="font-semibold text-emerald-400">Privacy Policy</span>, and{' '}
+                <span className="font-semibold text-emerald-400">Membership Agreement</span> of CLIMPS.
               </label>
             </div>
             {errors.agreeTerms && <p className="error-text">{errors.agreeTerms.message}</p>}

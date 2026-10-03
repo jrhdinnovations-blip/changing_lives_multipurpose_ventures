@@ -1,7 +1,7 @@
 import React from 'react';
 
 type BadgeVariant =
-  | 'active' |'paid' |'pending' |'overdue' |'unpaid' |'partial' |'approved' |'rejected' |'completed' |'paused' |'draft' |'open' |'closed' |'matured' |'disbursed' |'review' |'suspended' |'default';
+  | 'active' |'paid' |'pending' |'overdue' |'unpaid' |'partial' |'approved' |'rejected' |'completed' |'paused' |'draft' |'open' |'closed' |'matured' |'disbursed' |'review' |'suspended' |'coming_soon' |'default';
 
 interface BadgeProps {
   variant?: BadgeVariant;
@@ -28,6 +28,7 @@ const variantMap: Record<BadgeVariant, string> = {
   closed: 'bg-muted text-muted-foreground',
   matured: 'bg-purple-50 text-purple-700',
   suspended: 'bg-destructive/10 text-destructive',
+  coming_soon: 'bg-amber-100 text-amber-800 border border-amber-200',
 };
 
 export default function Badge({ variant = 'default', children, className = '' }: BadgeProps) {

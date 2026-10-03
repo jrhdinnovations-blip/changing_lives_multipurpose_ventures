@@ -3,27 +3,27 @@
 @tailwind utilities;
 
 :root {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
-  --primary: #1E3A5F;
-  --primary-foreground: #FFFFFF;
-  --secondary: #E8F0FB;
-  --secondary-foreground: #1E3A5F;
-  --accent: #16A34A;
-  --accent-foreground: #FFFFFF;
-  --destructive: #DC2626;
-  --destructive-foreground: #FFFFFF;
-  --warning: #D97706;
-  --warning-foreground: #FFFFFF;
-  --muted: #F1F5F9;
-  --muted-foreground: #64748B;
-  --card: #FFFFFF;
-  --card-foreground: #0F172A;
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: #1E3A5F;
-  --radius: 0.75rem;
-  --font-sans: var(--font-plus-jakarta-sans), sans-serif;
+  --background: #0a0f1e;
+  --foreground: #ffffff;
+  --primary: #10b981;
+  --primary-foreground: #060913;
+  --secondary: #111a2e;
+  --secondary-foreground: #f1f5f9;
+  --accent: #00a86b;
+  --accent-foreground: #ffffff;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #0a0f1e;
+  --muted: #111a2e;
+  --muted-foreground: #94a3b8;
+  --card: #0d1527;
+  --card-foreground: #ffffff;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.12);
+  --ring: #10b981;
+  --radius: 0.875rem;
+  --font-sans: var(--font-plus-jakarta-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
   --sidebar-width: 260px;
   --sidebar-collapsed-width: 68px;
@@ -44,6 +44,8 @@
   }
   html {
     scroll-behavior: smooth;
+    background-color: #0a0f1e;
+    color: #ffffff;
   }
   h1, h2, h3, h4, h5, h6, p {
     margin: 0;
@@ -78,7 +80,7 @@
   }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
   }
   .scrollbar-thin::-webkit-scrollbar {
     width: 4px;
@@ -88,68 +90,68 @@
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: var(--border);
+    background-color: rgba(255, 255, 255, 0.15);
     border-radius: 2px;
   }
   .gradient-primary {
-    background: linear-gradient(135deg, #1E3A5F 0%, #2D5F9E 50%, #1B4F72 100%);
+    background: linear-gradient(135deg, #0a0f1e 0%, #0d1e38 50%, #08213b 100%);
   }
   .gradient-accent {
-    background: linear-gradient(135deg, #16A34A 0%, #22C55E 100%);
+    background: linear-gradient(135deg, #00a86b 0%, #10b981 100%);
   }
   .gradient-card-savings {
-    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(13, 21, 39, 0.95) 100%);
   }
   .gradient-card-loan {
-    background: linear-gradient(135deg, #FFF7ED 0%, #FED7AA 100%);
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(13, 21, 39, 0.95) 100%);
   }
   .gradient-card-invest {
-    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(13, 21, 39, 0.95) 100%);
   }
   .gradient-card-alert {
-    background: linear-gradient(135deg, #FEF2F2 0%, #FECACA 100%);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(13, 21, 39, 0.95) 100%);
   }
   .card-shadow {
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.07), 0 1px 2px -1px rgba(0,0,0,0.07);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
   }
   .card-shadow-md {
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.07);
+    box-shadow: 0 14px 35px -8px rgba(0, 0, 0, 0.5), 0 10px 12px -7px rgba(0, 0, 0, 0.3);
   }
   .card-shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.08);
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 12px 16px -8px rgba(0, 0, 0, 0.4);
   }
   .blob-primary {
-    background: radial-gradient(ellipse at center, rgba(30,58,95,0.15) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
     filter: blur(40px);
   }
 }
 
 @layer components {
-.btn-primary  {
-    @apply bg-primary text-primary-foreground font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2;
+  .btn-primary {
+    @apply bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-lg shadow-emerald-950/40;
   }
-.btn-accent  {
-    @apply bg-accent text-accent-foreground font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  .btn-accent {
+    @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-emerald-500/20;
   }
   .btn-outline {
-    @apply border border-border bg-card text-foreground font-semibold rounded-xl px-5 py-2.5 text-sm
-      transition-all duration-150 hover:bg-muted active:scale-95 disabled:opacity-50
+    @apply border border-white/20 bg-white/[0.04] text-white hover:bg-white/10 hover:border-white/30 font-semibold rounded-xl px-5 py-2.5 text-sm
+      transition-all duration-150 active:scale-95 disabled:opacity-50
       disabled:cursor-not-allowed;
   }
   .btn-ghost {
-    @apply bg-transparent text-foreground font-medium rounded-xl px-4 py-2 text-sm
-      transition-all duration-150 hover:bg-muted active:scale-95;
+    @apply bg-transparent text-white/80 hover:text-white hover:bg-white/10 font-medium rounded-xl px-4 py-2 text-sm
+      transition-all duration-150 active:scale-95;
   }
-.btn-destructive  {
-    @apply bg-destructive text-destructive-foreground font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95;
+  .btn-destructive {
+    @apply bg-destructive text-destructive-foreground font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 shadow-md shadow-red-950/40;
   }
   .input-base {
-    @apply w-full rounded-xl border border-input bg-card px-4 py-2.5 text-sm text-foreground
-      placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring
-      focus:border-transparent transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply w-full rounded-xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-sm text-white
+      placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50
+      focus:border-emerald-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .label-base {
-    @apply block text-sm font-medium text-foreground mb-1.5;
+    @apply block text-sm font-medium text-white/90 mb-1.5;
   }
   .helper-text {
     @apply text-xs text-muted-foreground mt-1;
@@ -158,7 +160,7 @@
     @apply text-xs text-destructive mt-1;
   }
   .card-base {
-    @apply bg-card rounded-2xl border border-border card-shadow p-5;
+    @apply bg-[#0d1527] rounded-2xl border border-white/10 card-shadow p-5;
   }
   .section-header {
     @apply text-lg font-semibold text-foreground;
@@ -169,55 +171,55 @@
   .metric-value {
     @apply text-3xl font-bold text-foreground font-tabular;
   }
-.badge-active  {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold text-accent;
+  .badge-active {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30;
   }
-.badge-pending  {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold text-warning;
+  .badge-pending {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30;
   }
-.badge-overdue  {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold text-destructive;
+  .badge-overdue {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/30;
   }
-.badge-paid  {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold text-accent;
+  .badge-paid {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30;
   }
   .badge-unpaid {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-muted text-muted-foreground;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/10 text-white/70 border border-white/15;
   }
   .badge-partial {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-600;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-400 border border-blue-500/30;
   }
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-muted-foreground
-      hover:bg-muted hover:text-foreground transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400
+      hover:bg-white/[0.06] hover:text-white transition-all duration-150 cursor-pointer;
   }
   .nav-item-active {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
-      bg-secondary text-primary transition-all duration-150 cursor-pointer;
+      bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 transition-all duration-150 cursor-pointer;
   }
   .progress-bar-bg {
-    @apply w-full bg-muted rounded-full overflow-hidden;
+    @apply w-full bg-white/10 rounded-full overflow-hidden;
   }
   .progress-bar-fill {
     @apply h-full rounded-full transition-all duration-500;
   }
   .table-header {
-    @apply px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wide;
+    @apply px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider bg-white/[0.02] border-b border-white/10;
   }
   .table-cell {
-    @apply px-4 py-3.5 text-sm text-foreground;
+    @apply px-4 py-3.5 text-sm text-white/90 border-b border-white/[0.06];
   }
-.table-row-hover  {
-    @apply transition-colors duration-100;
+  .table-row-hover {
+    @apply hover:bg-white/[0.03] transition-colors duration-100;
   }
   .stat-card-positive {
-    @apply flex items-center gap-1 text-xs font-semibold text-accent;
+    @apply flex items-center gap-1 text-xs font-semibold text-emerald-400;
   }
   .stat-card-negative {
-    @apply flex items-center gap-1 text-xs font-semibold text-destructive;
+    @apply flex items-center gap-1 text-xs font-semibold text-red-400;
   }
   .sidebar-section-label {
-    @apply px-3 pt-4 pb-1 text-xs font-semibold text-muted-foreground uppercase tracking-widest;
+    @apply px-3 pt-4 pb-1 text-xs font-semibold text-slate-500 uppercase tracking-widest;
   }
 }
 

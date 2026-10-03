@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface LoginFormData {
@@ -41,7 +40,62 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
     setLoading(true);
     setLoginError('');
     try {
-      const result = await signIn(data.email, data.password);
+      let loginEmail = data.email.trim();
+
+      // If user typed a phone number instead of an email, look up their email from members
+      if (!loginEmail.includes('@')) {
+        try {
+          const { createClient } = await import('@/lib/supabase/client');
+          const supabase = createClient();
+          const cleanPhone = loginEmail.replace(/[\s+-]/g, '');
+          const phoneVariants = [
+            cleanPhone,
+            cleanPhone.startsWith('234') ? '0' + cleanPhone.slice(3) : null,
+            cleanPhone.startsWith('0') ? cleanPhone.slice(1) : '0' + cleanPhone,
+          ].filter(Boolean) as string[];
+
+          const { data: foundMember } = await supabase
+            .from('members')
+            .select('email')
+            .or(phoneVariants.map(p => `phone.ilike.%${p}%`).join(','))
+            .maybeSingle();
+
+          if (foundMember?.email) {
+            loginEmail = foundMember.email;
+          }
+        } catch {
+          // continue with input
+        }
+      }
+
+      // Try signing in; if password fails, try phone password variations
+      let result;
+      try {
+        result = await signIn(loginEmail.toLowerCase(), data.password.trim());
+      } catch (firstErr: any) {
+        const rawPwd = data.password.trim();
+        const altPwds: string[] = [];
+        if (rawPwd.startsWith('+234')) {
+          altPwds.push(rawPwd.slice(4), '0' + rawPwd.slice(4));
+        } else if (rawPwd.startsWith('234') && rawPwd.length > 10) {
+          altPwds.push(rawPwd.slice(3), '0' + rawPwd.slice(3));
+        } else if (rawPwd.startsWith('0') && rawPwd.length === 11) {
+          altPwds.push(rawPwd.slice(1));
+        } else if (!rawPwd.startsWith('0') && (rawPwd.length === 10 || rawPwd.length === 9)) {
+          altPwds.push('0' + rawPwd);
+        }
+
+        let signedIn = false;
+        for (const alt of altPwds) {
+          try {
+            result = await signIn(loginEmail.toLowerCase(), alt);
+            signedIn = true;
+            break;
+          } catch {}
+        }
+        if (!signedIn) throw firstErr;
+      }
+
       const role = result?.user?.user_metadata?.role || 'member';
       toast.success('Welcome back! Redirecting…');
 
@@ -79,29 +133,28 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
   return (
     <div className="slide-up">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-foreground">Welcome back</h2>
-        <p className="text-sm text-muted-foreground mt-1">Sign in to your CLIMPS account</p>
+        <h2 className="text-2xl font-bold text-white">Welcome back</h2>
+        <p className="text-sm text-white/50 mt-1">Sign in to your CLIMPS account</p>
       </div>
 
       {loginError && (
-        <div className="flex items-start gap-2.5 p-3.5 bg-destructive/8 border border-destructive/20 rounded-xl mb-5">
-          <AlertCircle size={15} className="text-destructive mt-0.5 shrink-0" />
-          <p className="text-sm text-destructive">{loginError}</p>
+        <div className="flex items-start gap-2.5 p-3.5 bg-red-500/8 border border-destructive/20 rounded-xl mb-5">
+          <AlertCircle size={15} className="text-red-400 mt-0.5 shrink-0" />
+          <p className="text-sm text-red-400">{loginError}</p>
         </div>
       )}
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label htmlFor="login-email" className="label-base">Email Address</label>
+          <label htmlFor="login-email" className="label-base">Email Address or Phone Number</label>
           <input
             id="login-email"
-            type="email"
-            autoComplete="email"
-            placeholder="you@example.com"
+            type="text"
+            autoComplete="username"
+            placeholder="name@example.com or 080..."
             className={`input-base ${errors.email ? 'border-destructive focus:ring-destructive' : ''}`}
             {...register('email', {
-              required: 'Email address is required',
-              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: 'Enter a valid email address' },
+              required: 'Email address or phone number is required',
             })}
           />
           {errors.email && <p className="error-text">{errors.email.message}</p>}
@@ -110,7 +163,7 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
         <div>
           <div className="flex items-center justify-between mb-1.5">
             <label htmlFor="login-password" className="label-base mb-0">Password</label>
-            <button type="button" className="text-xs font-medium text-primary hover:text-primary/80 transition-colors">
+            <button type="button" className="text-xs font-medium text-emerald-400 hover:text-emerald-400/80 transition-colors">
               Forgot password?
             </button>
           </div>
@@ -129,7 +182,7 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
             <button
               type="button"
               onClick={() => setShowPassword(s => !s)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
@@ -142,10 +195,10 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
           <input
             id="remember-me"
             type="checkbox"
-            className="w-4 h-4 rounded border-border text-primary focus:ring-ring cursor-pointer"
+            className="w-4 h-4 rounded border-white/10 text-emerald-400 focus:ring-ring cursor-pointer"
             {...register('rememberMe')}
           />
-          <label htmlFor="remember-me" className="text-sm text-muted-foreground cursor-pointer select-none">
+          <label htmlFor="remember-me" className="text-sm text-white/50 cursor-pointer select-none">
             Keep me signed in for 30 days
           </label>
         </div>
@@ -168,7 +221,7 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
 
       <div className="flex items-center gap-3 my-5">
         <div className="flex-1 h-px bg-border" />
-        <span className="text-xs text-muted-foreground">or continue with</span>
+        <span className="text-xs text-white/50">or continue with</span>
         <div className="flex-1 h-px bg-border" />
       </div>
 
@@ -188,11 +241,11 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
         ))}
       </div>
 
-      <p className="text-center text-sm text-muted-foreground mt-5">
-        Not a member yet?{' '}
-        <Link href="/sign-up-login-screen" className="font-semibold text-primary hover:text-primary/80 transition-colors">
-          Register here
-        </Link>
+      <p className="text-center text-sm text-white/50 mt-5">
+        Member accounts are managed by administrators.{' '}
+        <a href="mailto:admin@climps.org" className="font-semibold text-emerald-400 hover:text-emerald-400/80 transition-colors">
+          Contact admin for access
+        </a>
       </p>
     </div>
   );

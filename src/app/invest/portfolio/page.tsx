@@ -16,7 +16,7 @@ import {
   FileText,
   PlusCircle,
   PieChart,
-  DollarSign,
+
   Download,
 } from 'lucide-react';
 
@@ -115,10 +115,10 @@ const DEMO_HOLDINGS: PortfolioHolding[] = [
 ];
 
 const STATUS_CONFIG: Record<InvestmentStatus, { label: string; classes: string }> = {
-  active: { label: 'Active', classes: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  pending: { label: 'Pending Verification', classes: 'bg-amber-100 text-amber-800 border-amber-200' },
-  matured: { label: 'Matured', classes: 'bg-blue-100 text-blue-700 border-blue-200' },
-  cancelled: { label: 'Cancelled', classes: 'bg-gray-100 text-gray-600 border-gray-200' },
+  active: { label: 'Active', classes: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/25' },
+  pending: { label: 'Pending Verification', classes: 'bg-amber-500/15 text-amber-400 border-amber-500/25' },
+  matured: { label: 'Matured', classes: 'bg-blue-500/15 text-blue-400 border-blue-500/25' },
+  cancelled: { label: 'Cancelled', classes: 'bg-white/10 text-white/50 border-white/15' },
 };
 
 export default function MemberInvestmentPortfolioPage() {
@@ -169,13 +169,13 @@ export default function MemberInvestmentPortfolioPage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1.5">
-              <Link href="/member-dashboard" className="hover:text-foreground">Dashboard</Link>
+            <div className="flex items-center gap-2 text-xs text-white/50 mb-1.5">
+              <Link href="/member-dashboard" className="hover:text-white">Dashboard</Link>
               <span>/</span>
-              <span className="text-foreground font-medium">Investment Portfolio</span>
+              <span className="text-white font-medium">Investment Portfolio</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-foreground">My Investment Portfolio</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <h1 className="text-2xl font-extrabold text-white">My Investment Portfolio</h1>
+            <p className="text-xs text-white/50 mt-0.5">
               Track portfolio valuation, projected vs. realized yields, and maturity schedules.
             </p>
           </div>
@@ -199,17 +199,17 @@ export default function MemberInvestmentPortfolioPage() {
 
         {/* Top Summary Bento */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-            <div className="text-xs text-muted-foreground mb-1">Total Capital Invested</div>
-            <div className="text-xl font-extrabold text-foreground font-tabular">
+          <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-4 shadow-sm">
+            <div className="text-xs text-white/50 mb-1">Total Capital Invested</div>
+            <div className="text-xl font-extrabold text-white font-tabular">
               {formatNaira(totalInvested)}
             </div>
-            <div className="text-[11px] text-muted-foreground mt-0.5">Across {holdings.length} subscriptions</div>
+            <div className="text-[11px] text-white/50 mt-0.5">Across {holdings.length} subscriptions</div>
           </div>
 
-          <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-            <div className="text-xs text-muted-foreground mb-1">Current Portfolio Value</div>
-            <div className="text-xl font-extrabold text-primary font-tabular">
+          <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-4 shadow-sm">
+            <div className="text-xs text-white/50 mb-1">Current Portfolio Value</div>
+            <div className="text-xl font-extrabold text-emerald-400 font-tabular">
               {formatNaira(totalCurrentValue)}
             </div>
             <div className="text-[11px] text-emerald-600 font-semibold mt-0.5">
@@ -217,17 +217,17 @@ export default function MemberInvestmentPortfolioPage() {
             </div>
           </div>
 
-          <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-            <div className="text-xs text-muted-foreground mb-1">Realized Cash Returns</div>
+          <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-4 shadow-sm">
+            <div className="text-xs text-white/50 mb-1">Realized Cash Returns</div>
             <div className="text-xl font-extrabold text-emerald-600 font-tabular">
               {formatNaira(totalActualReturns)}
             </div>
-            <div className="text-[11px] text-muted-foreground mt-0.5">Paid into savings wallet</div>
+            <div className="text-[11px] text-white/50 mt-0.5">Paid into savings wallet</div>
           </div>
 
-          <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-            <div className="text-xs text-muted-foreground mb-1">Next Upcoming Maturity</div>
-            <div className="text-base font-extrabold text-foreground">
+          <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-4 shadow-sm">
+            <div className="text-xs text-white/50 mb-1">Next Upcoming Maturity</div>
+            <div className="text-base font-extrabold text-white">
               {upcomingMaturity ? new Date(upcomingMaturity.maturityDate).toLocaleDateString('en-NG', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
             </div>
             <div className="text-[11px] text-amber-600 font-semibold mt-0.5">
@@ -238,16 +238,16 @@ export default function MemberInvestmentPortfolioPage() {
 
         {/* Secondary KPIs */}
         <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
-          <div className="bg-muted/40 rounded-xl p-3 border border-border/60 text-center">
-            <span className="text-[11px] text-muted-foreground block">Active Plans</span>
+          <div className="bg-white/[0.06]/40 rounded-xl p-3 border border-white/10/60 text-center">
+            <span className="text-[11px] text-white/50 block">Active Plans</span>
             <span className="text-lg font-bold text-emerald-600 font-tabular">{activeCount}</span>
           </div>
-          <div className="bg-muted/40 rounded-xl p-3 border border-border/60 text-center">
-            <span className="text-[11px] text-muted-foreground block">Matured Plans</span>
+          <div className="bg-white/[0.06]/40 rounded-xl p-3 border border-white/10/60 text-center">
+            <span className="text-[11px] text-white/50 block">Matured Plans</span>
             <span className="text-lg font-bold text-blue-600 font-tabular">{maturedCount}</span>
           </div>
-          <div className="bg-muted/40 rounded-xl p-3 border border-border/60 text-center">
-            <span className="text-[11px] text-muted-foreground block">Pending Verification</span>
+          <div className="bg-white/[0.06]/40 rounded-xl p-3 border border-white/10/60 text-center">
+            <span className="text-[11px] text-white/50 block">Pending Verification</span>
             <span className="text-lg font-bold text-amber-600 font-tabular">{pendingCount}</span>
           </div>
         </div>
@@ -260,8 +260,8 @@ export default function MemberInvestmentPortfolioPage() {
               onClick={() => setFilter(f)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
                 filter === f
-                  ? 'bg-primary text-white border-primary shadow-xs'
-                  : 'bg-muted/50 text-muted-foreground border-border hover:border-primary/40'
+                  ? 'bg-emerald-500 text-white border-primary shadow-xs'
+                  : 'bg-white/[0.06]/50 text-white/50 border-white/10 hover:border-primary/40'
               }`}
             >
               {f === 'all' ? 'All Holdings' : STATUS_CONFIG[f]?.label || f}
@@ -273,10 +273,10 @@ export default function MemberInvestmentPortfolioPage() {
         </div>
 
         {/* Holdings Table */}
-        <div className="bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
+        <div className="bg-[#0d1527] rounded-2xl border border-white/10 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-muted/60 border-b border-border text-muted-foreground font-semibold">
+              <thead className="bg-white/[0.06]/60 border-b border-white/10 text-white/50 font-semibold">
                 <tr>
                   <th className="px-4 py-3">Investment Plan</th>
                   <th className="px-4 py-3">Principal</th>
@@ -288,29 +288,29 @@ export default function MemberInvestmentPortfolioPage() {
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody className="divide-y divide-white/10">
                 {filteredHoldings.map((h) => {
                   const cfg = STATUS_CONFIG[h.status] || STATUS_CONFIG.active;
                   return (
-                    <tr key={h.id} className="hover:bg-muted/30 transition-colors font-tabular">
+                    <tr key={h.id} className="hover:bg-white/[0.06]/30 transition-colors font-tabular">
                       <td className="px-4 py-3.5 font-sans">
-                        <div className="font-bold text-foreground text-sm leading-snug">{h.name}</div>
-                        <div className="text-[11px] text-muted-foreground font-mono">{h.investmentNumber} · {h.category}</div>
+                        <div className="font-bold text-white text-sm leading-snug">{h.name}</div>
+                        <div className="text-[11px] text-white/50 font-mono">{h.investmentNumber} · {h.category}</div>
                       </td>
-                      <td className="px-4 py-3.5 font-bold text-foreground">
+                      <td className="px-4 py-3.5 font-bold text-white">
                         {formatNaira(h.amountInvested)}
                       </td>
                       <td className="px-4 py-3.5 text-emerald-600 font-semibold">
                         {h.projectedReturnRate}% p.a.
-                        <div className="text-[10px] text-muted-foreground">+{formatNaira(h.projectedReturn)}</div>
+                        <div className="text-[10px] text-white/50">+{formatNaira(h.projectedReturn)}</div>
                       </td>
-                      <td className="px-4 py-3.5 font-bold text-primary">
+                      <td className="px-4 py-3.5 font-bold text-emerald-400">
                         {formatNaira(h.currentValue)}
                       </td>
-                      <td className="px-4 py-3.5 text-muted-foreground">
+                      <td className="px-4 py-3.5 text-white/50">
                         {new Date(h.investmentDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </td>
-                      <td className="px-4 py-3.5 text-muted-foreground">
+                      <td className="px-4 py-3.5 text-white/50">
                         {new Date(h.maturityDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </td>
                       <td className="px-4 py-3.5 font-sans">
@@ -323,7 +323,7 @@ export default function MemberInvestmentPortfolioPage() {
                           <button
                             title="Download Certificate"
                             onClick={() => alert(`Certificate downloaded for ${h.investmentNumber}`)}
-                            className="p-1.5 rounded-lg border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                            className="p-1.5 rounded-lg border border-white/10 hover:bg-white/[0.06] text-white/50 hover:text-white transition-colors"
                           >
                             <Download className="w-3.5 h-3.5" />
                           </button>
@@ -346,8 +346,8 @@ export default function MemberInvestmentPortfolioPage() {
         </div>
 
         {/* Risk & Performance Notice */}
-        <div className="bg-muted/30 border border-border rounded-2xl p-4 text-xs text-muted-foreground flex items-start gap-2.5">
-          <AlertCircle className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+        <div className="bg-white/[0.06]/30 border border-white/10 rounded-2xl p-4 text-xs text-white/50 flex items-start gap-2.5">
+          <AlertCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
           <p className="leading-relaxed">
             Current valuations are updated in accordance with quarterly audited accounts and declared AGM surplus dividends. 
             Returns marked as projected are subject to business cycle returns. Need an official signed portfolio statement for visa or banking purposes? Contact the operations desk.

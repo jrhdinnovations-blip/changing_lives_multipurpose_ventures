@@ -23,9 +23,9 @@ const data = [
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-card border border-border rounded-xl p-3 card-shadow-md text-xs">
-        <p className="font-semibold text-foreground mb-1.5">{label}</p>
-        <p className="text-muted-foreground">Balance: <span className="font-bold text-primary font-tabular">₦{payload[0]?.value?.toLocaleString()}</span></p>
+      <div className="bg-[#0d1527] border border-white/10 rounded-xl p-3 card-shadow-md text-xs">
+        <p className="font-semibold text-white mb-1.5">{label}</p>
+        <p className="text-white/50">Balance: <span className="font-bold text-emerald-400 font-tabular">₦{payload[0]?.value?.toLocaleString()}</span></p>
       </div>
     );
   }
@@ -35,7 +35,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 export default function SavingsChart() {
   return (
     <div>
-      <p className="text-xs text-muted-foreground mb-3">12-month savings balance trend</p>
+      <p className="text-xs text-white/50 mb-3">12-month savings balance trend</p>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
           <defs>

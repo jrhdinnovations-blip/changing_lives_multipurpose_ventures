@@ -30,13 +30,13 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={plusJakartaSans.variable}>
-      <body className={plusJakartaSans.className}>
+    <html lang="en" className={`${plusJakartaSans.variable} dark`}>
+      <body className={`${plusJakartaSans.className} bg-[#0a0f1e] text-white min-h-screen antialiased selection:bg-emerald-500/30 selection:text-emerald-200`}>
         <AuthProvider>
           {children}
         </AuthProvider>
-        <Toaster position="bottom-right" richColors closeButton />
-</body>
+        <Toaster position="bottom-right" richColors closeButton theme="dark" />
+      </body>
     </html>
   );
 }

@@ -40,16 +40,16 @@ export default function Modal({ open, onClose, title, children, size = 'md' }: M
         className="absolute inset-0 bg-foreground/40 backdrop-blur-sm fade-in"
         onClick={onClose}
       />
-      <div className={`relative bg-card rounded-2xl card-shadow-lg w-full ${sizeMap[size]} scale-enter`}>
+      <div className={`relative bg-[#0d1527] rounded-2xl card-shadow-lg w-full ${sizeMap[size]} scale-enter`}>
         {title && (
-          <div className="flex items-center justify-between p-5 border-b border-border">
-            <h3 id="modal-title" className="text-base font-semibold text-foreground">{title}</h3>
+          <div className="flex items-center justify-between p-5 border-b border-white/10">
+            <h3 id="modal-title" className="text-base font-semibold text-white">{title}</h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg hover:bg-muted transition-colors duration-150"
+              className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors duration-150"
               aria-label="Close modal"
             >
-              <X size={16} className="text-muted-foreground" />
+              <X size={16} className="text-white/50" />
             </button>
           </div>
         )}

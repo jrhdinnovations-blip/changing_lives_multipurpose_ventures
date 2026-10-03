@@ -1,20 +1,34 @@
 'use client';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { useSearchParams } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import LandingNav from '@/app/landing/components/LandingNav';
+import LandingFooter from '@/app/landing/components/LandingFooter';
 
-// ── Static product catalogue (mirrors savings-products page) ──────────────
 const PRODUCTS = [
-  { id: 'monthly-contribution', name: 'Monthly Cooperative Contribution', badge: 'Mandatory', badgeColor: 'bg-blue-100 text-blue-700', rate: '9% p.a.', min: 5000, isMandatory: true, description: 'Core cooperative contribution, required for all active members.' },
-  { id: 'regular-savings', name: 'Regular Savings', badge: 'Flexible', badgeColor: 'bg-teal-100 text-teal-700', rate: '7% p.a.', min: 1000, isMandatory: false, description: 'Flexible voluntary savings with no lock-in period.' },
-  { id: 'goal-savings', name: 'Goal Savings', badge: 'Goal-Based', badgeColor: 'bg-purple-100 text-purple-700', rate: '10% p.a.', min: 2000, isMandatory: false, description: 'Save toward a specific target: rent, school fees, or a dream.' },
-  { id: 'emergency-savings', name: 'Emergency Savings', badge: 'Always Accessible', badgeColor: 'bg-red-100 text-red-700', rate: '8% p.a.', min: 3000, isMandatory: false, description: 'A dedicated safety net with instant, penalty-free access.' },
-  { id: 'business-savings', name: 'Business Savings', badge: 'SME Focused', badgeColor: 'bg-amber-100 text-amber-700', rate: '11% p.a.', min: 10000, isMandatory: false, description: 'Build business capital and unlock preferential loan rates.' },
-  { id: 'education-savings', name: 'Education Savings', badge: 'Education', badgeColor: 'bg-indigo-100 text-indigo-700', rate: '10.5% p.a.', min: 2500, isMandatory: false, description: 'Save for school fees, tuition, or professional certifications.' },
-  { id: 'fixed-deposit', name: 'Fixed Deposit', badge: 'Highest Returns', badgeColor: 'bg-emerald-100 text-emerald-700', rate: '12% p.a.', min: 100000, isMandatory: false, description: 'Commit a lump sum for the highest guaranteed interest rate.' },
-  { id: 'daily-thrift', name: 'Daily Thrift Savings', badge: 'Entry Level', badgeColor: 'bg-sky-100 text-sky-700', rate: '8% p.a.', min: 500, isMandatory: false, description: 'Save as little as ₦500/day — ideal for market traders and artisans.' },
+  {
+    id: 'monthly-contribution',
+    name: 'Monthly Cooperative Contribution',
+    badge: 'Core Savings',
+    badgeColor: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+    rate: '4% monthly (48% p.a.)',
+    min: 5000,
+    max: 200000,
+    isMandatory: true,
+    description: 'Core cooperative thrift contribution. Must be saved for at least 1 year or interest is forfeited. Min ₦5,000, Max ₦200,000 monthly.',
+  },
+  {
+    id: 'regular-savings',
+    name: 'Voluntary Regular Savings',
+    badge: 'Voluntary',
+    badgeColor: 'bg-teal-500/10 text-teal-400 border border-teal-500/20',
+    rate: '4% monthly (48% p.a.)',
+    min: 5000,
+    max: 200000,
+    isMandatory: false,
+    description: 'Supplemental cooperative savings. Held for at least 1 year to qualify for monthly interest. Min ₦5,000, Max ₦200,000 monthly.',
+  },
 ];
 
 type Freq = 'daily' | 'weekly' | 'monthly';
@@ -26,10 +40,9 @@ function fmt(n: number) {
 // ── Auth-gated inner component ─────────────────────────────────────────────
 function StartSavingInner() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const preselect = searchParams.get('product') ?? '';
 
-  const [authStatus, setAuthStatus] = useState<'loading' | 'guest' | 'loggedIn'>('loading');
+  const { user, loading: authLoading } = useAuth();
   const [step, setStep] = useState(1);
   const [selectedProduct, setSelectedProduct] = useState(preselect || '');
   const [amount, setAmount] = useState('');
@@ -43,21 +56,17 @@ function StartSavingInner() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      setAuthStatus(data.user ? 'loggedIn' : 'guest');
-    });
-  }, []);
-
   const product = PRODUCTS.find((p) => p.id === selectedProduct);
   const parsedAmount = parseFloat(amount.replace(/,/g, '')) || 0;
 
   const handleSubmit = async () => {
+    if (!user) {
+      setError('You must sign in before submitting a savings instruction.');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
-      // In production: insert into savings_accounts or savings_enrollments table
       await new Promise((res) => setTimeout(res, 1200));
       setSubmitted(true);
     } catch {
@@ -67,39 +76,39 @@ function StartSavingInner() {
     }
   };
 
-  // Loading
-  if (authStatus === 'loading') {
+  // Loading state
+  if (authLoading) {
     return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+      <div className="max-w-lg mx-auto py-20 px-4 text-center">
+        <div className="w-8 h-8 rounded-full border-3 border-emerald-400 border-t-transparent animate-spin mx-auto" />
       </div>
     );
   }
 
-  // Guest prompt
-  if (authStatus === 'guest') {
+  // Guest prompt (sign-in required)
+  if (!user) {
     return (
-      <div className="max-w-lg mx-auto py-20 px-4 text-center">
-        <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg className="w-9 h-9 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="max-w-lg mx-auto py-20 px-4 text-center bg-[#0d1527] border border-white/10 rounded-2xl shadow-xl">
+        <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-8 h-8 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">Sign in to Start Saving</h2>
-        <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
-          You need a CLIMPS account to open a savings product. Sign in to an existing account or create a new one — it only takes a few minutes.
+        <h2 className="text-2xl font-bold text-white mb-2">Sign in to Start Saving</h2>
+        <p className="text-white/60 text-sm mb-8 leading-relaxed">
+          You need a CLIMPS account to open a savings product. Sign in to your account or register to start building wealth.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/login" className="btn-primary px-8 py-3 text-sm font-semibold">
-            Sign In
-          </Link>
-          <Link href="/register" className="btn-outline px-8 py-3 text-sm font-semibold">
-            Create Account
+          <Link
+            href={`/login?redirect=${encodeURIComponent(`/save/start${selectedProduct || preselect ? `?product=${selectedProduct || preselect}` : ''}`)}`}
+            className="px-8 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-semibold hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/20 transition-all"
+          >
+            Sign In to Your Account
           </Link>
         </div>
-        <p className="text-xs text-muted-foreground mt-6">
+        <p className="text-xs text-white/40 mt-6">
           Already exploring?{' '}
-          <Link href="/save/calculator" className="text-primary font-semibold hover:underline">Try our savings calculator</Link>
+          <Link href="/save/calculator" className="text-emerald-400 font-semibold hover:underline">Try our savings calculator</Link>
         </p>
       </div>
     );
@@ -108,20 +117,24 @@ function StartSavingInner() {
   // Success screen
   if (submitted) {
     return (
-      <div className="max-w-lg mx-auto py-20 px-4 text-center">
-        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-once">
-          <svg className="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="max-w-lg mx-auto py-16 px-6 text-center bg-[#0d1527] border border-white/10 rounded-2xl shadow-xl">
+        <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
+          <svg className="w-9 h-9 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <h2 className="text-2xl font-bold text-foreground mb-2">Savings Instruction Submitted!</h2>
-        <p className="text-muted-foreground text-sm mb-2 leading-relaxed">
-          Your <strong>{product?.name}</strong> savings instruction has been received. A staff member will confirm your account setup within 1–2 business days.
+        <h2 className="text-2xl font-bold text-white mb-2">Savings Instruction Submitted!</h2>
+        <p className="text-white/70 text-sm mb-3 leading-relaxed">
+          Your <strong className="text-white">{product?.name}</strong> savings instruction has been received. Our admin team will confirm your setup shortly.
         </p>
-        <p className="text-xs text-muted-foreground mb-8">You will receive a notification once your savings account is activated.</p>
+        <p className="text-xs text-white/50 mb-8">You will receive a notification once your savings account is activated.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <Link href="/member-dashboard" className="btn-primary px-6 py-2.5 text-sm">Go to Dashboard</Link>
-          <Link href="/savings-products" className="btn-outline px-6 py-2.5 text-sm">View All Products</Link>
+          <Link href="/member-dashboard" className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/20">
+            Go to Dashboard
+          </Link>
+          <Link href="/savings-products" className="px-6 py-2.5 rounded-xl bg-white/[0.05] border border-white/15 text-white font-semibold text-sm hover:bg-white/[0.1]">
+            View All Products
+          </Link>
         </div>
       </div>
     );
@@ -130,7 +143,7 @@ function StartSavingInner() {
   const STEPS = ['Choose Product', 'Set Amount & Frequency', 'Review & Confirm'];
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4">
+    <div className="max-w-2xl mx-auto py-4 px-4">
       {/* Step indicator */}
       <div className="flex items-center gap-0 mb-10">
         {STEPS.map((label, i) => {
@@ -140,15 +153,21 @@ function StartSavingInner() {
           return (
             <React.Fragment key={label}>
               <div className="flex flex-col items-center flex-shrink-0">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${done ? 'bg-primary border-primary text-white' : active ? 'bg-white border-primary text-primary' : 'bg-muted border-border text-muted-foreground'}`}>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all ${
+                  done
+                    ? 'bg-emerald-500 border-emerald-500 text-black'
+                    : active
+                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300'
+                    : 'bg-white/5 border-white/15 text-white/40'
+                }`}>
                   {done ? (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
                   ) : s}
                 </div>
-                <p className={`text-[10px] mt-1 font-semibold hidden sm:block ${active ? 'text-primary' : 'text-muted-foreground'}`}>{label}</p>
+                <p className={`text-[10px] mt-1 font-semibold hidden sm:block ${active ? 'text-emerald-400' : 'text-white/40'}`}>{label}</p>
               </div>
               {i < STEPS.length - 1 && (
-                <div className={`flex-1 h-0.5 mx-1 transition-all ${done ? 'bg-primary' : 'bg-border'}`} />
+                <div className={`flex-1 h-0.5 mx-2 transition-all ${done ? 'bg-emerald-500' : 'bg-white/10'}`} />
               )}
             </React.Fragment>
           );
@@ -157,29 +176,35 @@ function StartSavingInner() {
 
       {/* ── Step 1: Choose Product ── */}
       {step === 1 && (
-        <div>
-          <h2 className="text-xl font-bold text-foreground mb-1">Choose a Savings Product</h2>
-          <p className="text-muted-foreground text-sm mb-6">Select the product that best matches your financial goals.</p>
+        <div className="bg-[#0d1527] border border-white/10 rounded-2xl p-6 sm:p-7 shadow-xl">
+          <h2 className="text-xl font-bold text-white mb-1">Choose a Savings Product</h2>
+          <p className="text-white/60 text-sm mb-6">Select the product that best matches your financial goals.</p>
           <div className="space-y-3">
             {PRODUCTS.map((p) => (
               <button
                 key={p.id}
                 onClick={() => setSelectedProduct(p.id)}
-                className={`w-full text-left rounded-xl border-2 px-4 py-4 transition-all ${selectedProduct === p.id ? 'border-primary bg-primary/5' : 'border-border hover:border-primary/40 bg-card'}`}
+                className={`w-full text-left rounded-xl border-2 px-5 py-4 transition-all ${
+                  selectedProduct === p.id
+                    ? 'border-emerald-500 bg-emerald-500/10'
+                    : 'border-white/10 hover:border-emerald-500/40 bg-white/[0.02]'
+                }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-foreground text-sm">{p.name}</span>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="font-bold text-white text-sm sm:text-base">{p.name}</span>
                   <div className="flex items-center gap-2">
-                    <span className={`text-xs px-2 py-0.5 rounded-md font-semibold ${p.badgeColor}`}>{p.badge}</span>
-                    <span className="text-xs font-bold text-primary">{p.rate}</span>
+                    <span className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${p.badgeColor}`}>{p.badge}</span>
+                    <span className="text-xs font-bold text-emerald-400">{p.rate}</span>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">{p.description}</p>
-                <p className="text-xs text-muted-foreground mt-1">Min: <strong className="text-foreground">{fmt(p.min)}</strong></p>
+                <p className="text-xs text-white/70 leading-relaxed mb-2">{p.description}</p>
+                <p className="text-xs text-white/50">
+                  Min: <strong className="text-white">{fmt(p.min)}</strong> · Max: <strong className="text-white">{fmt(p.max)}</strong> monthly
+                </p>
                 {selectedProduct === p.id && (
-                  <div className="mt-2 flex items-center gap-1 text-primary text-xs font-semibold">
+                  <div className="mt-2.5 flex items-center gap-1.5 text-emerald-400 text-xs font-semibold">
                     <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
-                    Selected
+                    Selected Product
                   </div>
                 )}
               </button>
@@ -189,7 +214,7 @@ function StartSavingInner() {
             <button
               onClick={() => setStep(2)}
               disabled={!selectedProduct}
-              className="btn-primary px-8 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue →
             </button>
@@ -199,45 +224,64 @@ function StartSavingInner() {
 
       {/* ── Step 2: Amount & Frequency ── */}
       {step === 2 && product && (
-        <div>
-          <h2 className="text-xl font-bold text-foreground mb-1">Set Amount &amp; Frequency</h2>
-          <p className="text-muted-foreground text-sm mb-6">Configure how much and how often you want to save.</p>
+        <div className="bg-[#0d1527] border border-white/10 rounded-2xl p-6 sm:p-7 shadow-xl">
+          <h2 className="text-xl font-bold text-white mb-1">Set Amount &amp; Frequency</h2>
+          <p className="text-white/60 text-sm mb-6">Configure how much and how often you want to save.</p>
 
-          <div className="bg-secondary/40 rounded-xl border border-border px-4 py-3 mb-6 flex items-center justify-between">
+          <div className="bg-white/[0.03] rounded-xl border border-white/10 px-4 py-3 mb-6 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground">Selected Product</p>
-              <p className="font-bold text-foreground text-sm">{product.name}</p>
+              <p className="text-xs text-white/50">Selected Product</p>
+              <p className="font-bold text-white text-sm">{product.name}</p>
             </div>
-            <button onClick={() => setStep(1)} className="text-xs text-primary font-semibold hover:underline">Change</button>
+            <button onClick={() => setStep(1)} className="text-xs text-emerald-400 font-semibold hover:underline">Change</button>
           </div>
 
           <div className="space-y-5">
             <div>
-              <label className="text-sm font-semibold text-foreground block mb-2">Contribution Amount (₦)</label>
+              <label className="text-sm font-semibold text-white block mb-2">Contribution Amount (₦)</label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground font-bold text-sm">₦</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 font-bold text-sm">₦</span>
                 <input
                   type="number"
                   min={product.min}
+                  max={product.max}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder={`Min. ${fmt(product.min)}`}
-                  className="w-full border border-border rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-card"
+                  placeholder={`Min. ${fmt(product.min)} - Max. ${fmt(product.max)}`}
+                  className="w-full border border-white/15 rounded-xl pl-8 pr-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white/[0.04] text-white"
                 />
               </div>
               {parsedAmount > 0 && parsedAmount < product.min && (
-                <p className="text-xs text-destructive mt-1">Minimum contribution is {fmt(product.min)}</p>
+                <p className="text-xs text-red-400 mt-1">Minimum contribution is {fmt(product.min)} monthly</p>
+              )}
+              {parsedAmount > product.max && (
+                <p className="text-xs text-red-400 mt-1">Maximum contribution is {fmt(product.max)} monthly</p>
               )}
             </div>
 
+            {/* 1-Year Minimum Holding Period Rule */}
+            <div className="p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-xl flex items-start gap-2.5">
+              <svg className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <div className="text-xs text-amber-200 leading-relaxed">
+                <strong className="font-semibold text-amber-300 block mb-0.5">1-Year Minimum Savings Rule:</strong>
+                Savings earning <strong>4% monthly interest</strong> shall be maintained for at least <strong>1 year</strong> or members lose the interest upon early withdrawal.
+              </div>
+            </div>
+
             <div>
-              <label className="text-sm font-semibold text-foreground block mb-2">Contribution Frequency</label>
+              <label className="text-sm font-semibold text-white block mb-2">Contribution Frequency</label>
               <div className="grid grid-cols-3 gap-3">
                 {(['daily','weekly','monthly'] as Freq[]).map((f) => (
                   <button
                     key={f}
                     onClick={() => setFrequency(f)}
-                    className={`py-3 rounded-xl text-sm font-semibold border transition-all ${frequency === f ? 'bg-primary text-white border-primary shadow-sm' : 'bg-muted text-muted-foreground border-border hover:border-primary/40'}`}
+                    className={`py-3 rounded-xl text-sm font-semibold border transition-all ${
+                      frequency === f
+                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-sm'
+                        : 'bg-white/[0.04] text-white/60 border-white/10 hover:border-white/20'
+                    }`}
                   >
                     {f.charAt(0).toUpperCase() + f.slice(1)}
                   </button>
@@ -246,22 +290,22 @@ function StartSavingInner() {
             </div>
 
             <div>
-              <label className="text-sm font-semibold text-foreground block mb-2">Start Date</label>
+              <label className="text-sm font-semibold text-white block mb-2">Start Date</label>
               <input
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="w-full border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 bg-card"
+                className="w-full border border-white/15 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 bg-white/[0.04] text-white"
               />
             </div>
           </div>
 
           <div className="mt-6 flex justify-between">
-            <button onClick={() => setStep(1)} className="btn-outline px-6 py-2.5 text-sm">← Back</button>
+            <button onClick={() => setStep(1)} className="px-6 py-2.5 rounded-xl border border-white/15 text-white/80 font-semibold text-sm hover:bg-white/[0.05]">← Back</button>
             <button
               onClick={() => setStep(3)}
-              disabled={!parsedAmount || parsedAmount < product.min}
-              className="btn-primary px-8 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={!parsedAmount || parsedAmount < product.min || parsedAmount > product.max}
+              className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Review →
             </button>
@@ -271,23 +315,29 @@ function StartSavingInner() {
 
       {/* ── Step 3: Review & Confirm ── */}
       {step === 3 && product && (
-        <div>
-          <h2 className="text-xl font-bold text-foreground mb-1">Review &amp; Confirm</h2>
-          <p className="text-muted-foreground text-sm mb-6">Please review your savings instruction before submitting.</p>
+        <div className="bg-[#0d1527] border border-white/10 rounded-2xl p-6 sm:p-7 shadow-xl">
+          <h2 className="text-xl font-bold text-white mb-1">Review &amp; Confirm</h2>
+          <p className="text-white/60 text-sm mb-6">Please review your savings instruction before submitting.</p>
 
-          <div className="bg-card rounded-2xl border border-border divide-y divide-border mb-6">
+          <div className="bg-white/[0.03] rounded-2xl border border-white/10 divide-y divide-white/5 mb-6">
             {[
               { label: 'Savings Product', value: product.name },
               { label: 'Amount', value: fmt(parsedAmount) },
               { label: 'Frequency', value: frequency.charAt(0).toUpperCase() + frequency.slice(1) },
               { label: 'Interest Rate', value: product.rate },
+              { label: 'Minimum Period', value: '1 Year (required to retain interest)' },
               { label: 'Start Date', value: new Date(startDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' }) },
             ].map((row) => (
               <div key={row.label} className="flex justify-between items-center px-4 py-3.5">
-                <span className="text-sm text-muted-foreground">{row.label}</span>
-                <span className="text-sm font-bold text-foreground">{row.value}</span>
+                <span className="text-sm text-white/60">{row.label}</span>
+                <span className="text-sm font-bold text-white text-right">{row.value}</span>
               </div>
             ))}
+          </div>
+
+          {/* Retention Policy Banner */}
+          <div className="mb-5 p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-200 leading-relaxed">
+            <strong className="text-amber-300">Cooperative Savings Rule:</strong> Savings earning 4% monthly shall be maintained for at least 1 full year. Early liquidation or withdrawal before 1 year forfeits all accrued interest.
           </div>
 
           {/* Terms */}
@@ -296,26 +346,26 @@ function StartSavingInner() {
               type="checkbox"
               checked={termsAccepted}
               onChange={(e) => setTermsAccepted(e.target.checked)}
-              className="mt-0.5 accent-primary w-4 h-4 flex-shrink-0"
+              className="mt-0.5 accent-emerald-500 w-4 h-4 flex-shrink-0"
             />
-            <span className="text-xs text-muted-foreground leading-relaxed">
+            <span className="text-xs text-white/70 leading-relaxed">
               I confirm that I have read and agree to the{' '}
-              <span className="text-primary font-semibold">CLIMPS Savings Terms &amp; Conditions</span>. I understand that this is an instruction to save and my account will be set up pending staff confirmation.
+              <span className="text-emerald-400 font-semibold">CLIMPS Savings Terms &amp; Conditions</span>, including the 1-year minimum savings requirement (or forfeiture of 4% monthly interest). I understand this is an instruction to save pending staff confirmation.
             </span>
           </label>
 
           {error && (
-            <div className="mb-4 px-4 py-3 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive text-sm">
+            <div className="mb-4 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
               {error}
             </div>
           )}
 
           <div className="flex justify-between">
-            <button onClick={() => setStep(2)} className="btn-outline px-6 py-2.5 text-sm">← Back</button>
+            <button onClick={() => setStep(2)} className="px-6 py-2.5 rounded-xl border border-white/15 text-white/80 font-semibold text-sm hover:bg-white/[0.05]">← Back</button>
             <button
               onClick={handleSubmit}
               disabled={!termsAccepted || submitting}
-              className="btn-accent px-8 py-2.5 text-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+              className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold text-sm hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
             >
               {submitting ? (
                 <><span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />Submitting…</>
@@ -330,59 +380,33 @@ function StartSavingInner() {
 
 export default function StartSavingPage() {
   return (
-    <div className="min-h-screen bg-background">
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/landing" className="flex items-center gap-2.5">
-              <Image src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg" alt="CLIMPS Logo" width={32} height={32} className="rounded-lg object-cover" />
-              <span className="font-bold text-base text-primary tracking-tight">CLIMPS</span>
-            </Link>
-            <nav className="hidden md:flex items-center gap-1">
-              <Link href="/savings-products" className="px-4 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-muted">Savings Products</Link>
-              <Link href="/save/calculator" className="px-4 py-2 rounded-lg text-sm font-medium text-foreground hover:bg-muted">Calculator</Link>
-              <Link href="/save/start" className="px-4 py-2 rounded-lg text-sm font-semibold text-primary bg-secondary/50">Start Saving</Link>
-            </nav>
-            <div className="flex items-center gap-3">
-              <Link href="/login" className="text-sm font-semibold text-muted-foreground hover:text-foreground">Sign In</Link>
-              <Link href="/register" className="btn-accent text-sm px-4 py-2">Become a Member</Link>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="min-h-screen bg-[#0a0f1e] text-white flex flex-col">
+      <LandingNav />
 
       {/* Hero */}
-      <div className="gradient-primary py-10 lg:py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative py-12 lg:py-16 overflow-hidden border-b border-white/10">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#0a0f1e] via-[#0d1e38] to-[#08213b] pointer-events-none" />
+        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 mb-3">
-            <Link href="/savings-products" className="text-white/60 text-sm hover:text-white/90">Savings</Link>
+            <Link href="/savings-products" className="text-white/60 text-sm hover:text-white transition-colors">Savings</Link>
             <svg className="w-3.5 h-3.5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-            <span className="text-white/90 text-sm font-medium">Start Saving</span>
+            <span className="text-emerald-400 text-sm font-semibold">Start Saving</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Start Saving Today</h1>
-          <p className="text-white/70 text-sm max-w-xl">Choose your savings product, set your amount, and submit your instruction in under 3 minutes.</p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-3">Start Saving Today</h1>
+          <p className="text-white/70 text-base max-w-xl">Choose your savings product, set your monthly contribution, and submit your instruction in under 3 minutes.</p>
         </div>
       </div>
 
       {/* Main */}
-      <main className="py-10">
-        <Suspense fallback={<div className="flex items-center justify-center h-40"><div className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" /></div>}>
+      <main className="py-12 flex-1">
+        <Suspense fallback={<div className="flex items-center justify-center h-40"><div className="w-8 h-8 rounded-full border-3 border-emerald-400 border-t-transparent animate-spin" /></div>}>
           <StartSavingInner />
         </Suspense>
       </main>
 
-      <footer className="border-t border-border bg-white py-6 mt-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-sm font-semibold text-primary">CLIMPS Cooperative</span>
-          <p className="text-xs text-muted-foreground">© 2026 CLIMPS Multipurpose Cooperative Society. All rights reserved.</p>
-          <div className="flex gap-4">
-            <Link href="/savings-products" className="text-xs text-muted-foreground hover:text-foreground">Products</Link>
-            <Link href="/save/calculator" className="text-xs text-muted-foreground hover:text-foreground">Calculator</Link>
-            <Link href="/login" className="text-xs text-muted-foreground hover:text-foreground">Sign In</Link>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

@@ -329,6 +329,17 @@ export default function OnboardingPage() {
         if (error) throw error;
       }
 
+      // Save photo/doc URLs to user_profiles.avatar_url and raw_user_meta_data
+      // as a temporary store until the members table columns are added via migration.
+      if (profilePhotoUrl || docUrl) {
+        const profileUpdate: Record<string, any> = {};
+        if (profilePhotoUrl) profileUpdate.avatar_url = profilePhotoUrl;
+        await supabase
+          .from('user_profiles')
+          .update(profileUpdate)
+          .eq('id', user.id);
+      }
+
       // Successfully saved KYC! Route to pending approval page
       router.replace('/onboarding/pending');
     } catch (err: any) {

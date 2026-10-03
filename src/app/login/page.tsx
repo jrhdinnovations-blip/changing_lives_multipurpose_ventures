@@ -1,15 +1,16 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase/client';
 
-export default function LoginPage() {
+function LoginContent() {
   const { signIn, user, loading, userRole } = useAuth();
   const router = useRouter();
-  const supabase = createClient();
+  const searchParams = useSearchParams();
+  const redirectTarget = searchParams.get('redirect') || searchParams.get('redirectTo');
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
@@ -18,41 +19,24 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  function routeByRole(role: string) {
+    if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {
+      router.replace('/admin-dashboard');
+      return;
+    }
+    if (redirectTarget && redirectTarget.startsWith('/') && !redirectTarget.startsWith('//')) {
+      router.replace(redirectTarget);
+      return;
+    }
+    router.replace('/member-dashboard');
+  }
+
   // Redirect already-authenticated users
   useEffect(() => {
     if (!loading && user) {
       routeByRole(userRole);
     }
   }, [user, loading, userRole]);
-
-  function routeByRole(role: string) {
-    if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {
-      router.replace('/admin-dashboard');
-    } else {
-      // Check if KYC is complete first
-      redirectMember();
-    }
-  }
-
-  async function redirectMember() {
-    try {
-      const { data: member } = await supabase
-        .from('members')
-        .select('kyc_completed, membership_status')
-        .eq('user_id', user?.id)
-        .maybeSingle();
-
-      if (!member || !member.kyc_completed) {
-        router.replace('/onboarding');
-      } else if (['pending', 'under_review'].includes(member.membership_status)) {
-        router.replace('/onboarding/pending');
-      } else {
-        router.replace('/member-dashboard');
-      }
-    } catch {
-      router.replace('/member-dashboard');
-    }
-  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,7 +53,18 @@ export default function LoginPage() {
       routeByRole(role);
     } catch (err: any) {
       const msg = err?.message || '';
-      if (msg.includes('Invalid login credentials')) {
+      if (
+        msg.includes('Failed to fetch') ||
+        msg.includes('NetworkError') ||
+        msg.includes('fetch') ||
+        msg.includes('ENOTFOUND') ||
+        msg.includes('network') ||
+        err?.name === 'TypeError'
+      ) {
+        setError(
+          'Unable to connect to the server. This usually means the service is temporarily unavailable or your internet connection dropped. Please try again in a moment.'
+        );
+      } else if (msg.includes('Invalid login credentials')) {
         setError('Incorrect email or password. Please try again.');
       } else if (msg.includes('Email not confirmed')) {
         setError('Please check your inbox and verify your email address before logging in.');
@@ -81,6 +76,7 @@ export default function LoginPage() {
     } finally {
       setSubmitting(false);
     }
+
   }
 
   if (loading) {
@@ -111,15 +107,6 @@ export default function LoginPage() {
           />
           <span className="font-bold text-lg text-white tracking-tight">CLIMPS</span>
         </Link>
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-slate-400">New member?</span>
-          <Link
-            href="/register"
-            className="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm font-semibold transition-all border border-white/10"
-          >
-            Register
-          </Link>
-        </div>
       </header>
 
       {/* Main */}
@@ -131,11 +118,23 @@ export default function LoginPage() {
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-2 bg-accent/20 text-accent text-xs font-semibold px-4 py-1.5 rounded-full mb-4 border border-accent/30">
                 <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                Secure Member Portal
+                Secure Sign In
               </div>
               <h1 className="text-2xl font-bold text-white mb-1">Welcome Back</h1>
-              <p className="text-sm text-slate-400">Sign in to your CLIMPS account</p>
+              <p className="text-sm text-slate-400">
+                {redirectTarget ? 'Sign in to access your requested service' : 'Sign in to your CLIMPS account'}
+              </p>
             </div>
+
+            {/* Redirection banner if present */}
+            {redirectTarget && (
+              <div className="mb-5 bg-blue-500/10 border border-blue-500/30 rounded-xl p-3.5 text-xs text-blue-300 flex items-center gap-2.5">
+                <svg className="w-4 h-4 flex-shrink-0 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Please sign in to proceed with your service subscription.</span>
+              </div>
+            )}
 
             {/* Success message */}
             {successMsg && (
@@ -283,12 +282,11 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Footer */}
             <p className="text-center text-xs text-slate-500 mt-6">
-              Don&apos;t have an account?{' '}
-              <Link href="/register" className="text-primary hover:text-primary/80 font-semibold transition-colors">
-                Register as a Member
-              </Link>
+              Member accounts are managed by administrators.{' '}
+              <a href="mailto:admin@climps.org" className="text-primary hover:text-primary/80 font-semibold transition-colors">
+                Contact admin for access
+              </a>
             </p>
           </div>
 
@@ -308,5 +306,17 @@ export default function LoginPage() {
         </p>
       </footer>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

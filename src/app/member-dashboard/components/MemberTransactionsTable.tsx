@@ -108,7 +108,7 @@ export default function MemberTransactionsTable() {
 
       <div className="flex gap-2 mb-4">
         <div className="relative flex-1">
-          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
           <input
             type="text"
             placeholder="Search transactions…"
@@ -133,13 +133,13 @@ export default function MemberTransactionsTable() {
 
       {loading ? (
         <div className="space-y-2">
-          {[1,2,3,4].map(i => <div key={i} className="h-10 bg-muted rounded-lg animate-pulse" />)}
+          {[1,2,3,4].map(i => <div key={i} className="h-10 bg-white/[0.06] rounded-lg animate-pulse" />)}
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border">
+              <tr className="border-b border-white/10">
                 <th className="table-header text-left">Reference</th>
                 <th className="table-header text-left">Date</th>
                 <th className="table-header text-left">Description</th>
@@ -151,19 +151,19 @@ export default function MemberTransactionsTable() {
             </thead>
             <tbody>
               {filtered.map(txn => (
-                <tr key={txn.id} className="border-b border-border/60 table-row-hover">
+                <tr key={txn.id} className="border-b border-white/10/60 table-row-hover">
                   <td className="table-cell">
-                    <span className="font-mono text-xs text-muted-foreground">{txn.transaction_ref}</span>
+                    <span className="font-mono text-xs text-white/50">{txn.transaction_ref}</span>
                   </td>
                   <td className="table-cell whitespace-nowrap text-xs">{formatDate(txn.created_at)}</td>
                   <td className="table-cell">
                     <div className="flex items-center gap-1.5">
                       {txn.is_debit ? (
-                        <ArrowUpRight size={13} className="text-destructive shrink-0" />
+                        <ArrowUpRight size={13} className="text-red-400 shrink-0" />
                       ) : (
-                        <ArrowDownLeft size={13} className="text-accent shrink-0" />
+                        <ArrowDownLeft size={13} className="text-blue-400 shrink-0" />
                       )}
-                      <span className="text-xs font-medium text-foreground truncate max-w-[180px]">{txn.description}</span>
+                      <span className="text-xs font-medium text-white truncate max-w-[180px]">{txn.description}</span>
                     </div>
                   </td>
                   <td className="table-cell">
@@ -171,10 +171,10 @@ export default function MemberTransactionsTable() {
                       {typeLabel[txn.transaction_type as TransactionType] || txn.transaction_type}
                     </Badge>
                   </td>
-                  <td className="table-cell text-right font-tabular text-xs text-destructive font-medium">
+                  <td className="table-cell text-right font-tabular text-xs text-red-400 font-medium">
                     {txn.is_debit ? Number(txn.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) : '—'}
                   </td>
-                  <td className="table-cell text-right font-tabular text-xs text-accent font-medium">
+                  <td className="table-cell text-right font-tabular text-xs text-blue-400 font-medium">
                     {!txn.is_debit ? Number(txn.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) : '—'}
                   </td>
                   <td className="table-cell">
@@ -188,7 +188,7 @@ export default function MemberTransactionsTable() {
           </table>
           {filtered.length === 0 && (
             <div className="text-center py-10">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-white/50">
                 {transactions.length === 0 ? 'No transactions found.' : 'No transactions match your search.'}
               </p>
             </div>
@@ -196,11 +196,11 @@ export default function MemberTransactionsTable() {
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-        <p className="text-xs text-muted-foreground">Showing {filtered.length} of {transactions.length} transactions</p>
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
+        <p className="text-xs text-white/50">Showing {filtered.length} of {transactions.length} transactions</p>
         <button
           onClick={() => toast.info('Full transaction history — coming soon')}
-          className="text-xs font-semibold text-primary hover:text-primary/80 transition-colors"
+          className="text-xs font-semibold text-emerald-400 hover:text-emerald-400/80 transition-colors"
         >
           View All Transactions →
         </button>
