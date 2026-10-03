@@ -17,7 +17,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [session, setSession] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
+  // Start as TRUE so every page waits for the real session check before
+  // deciding to redirect. The old `false` default caused the login page to
+  // fire its redirect effect with stale localStorage data before the form
+  // even rendered.
+  const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   const fetchProfile = async (userId: string) => {
@@ -34,30 +38,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    // 1. Immediately restore session from localStorage if available (0ms client hydration)
-    try {
-      if (typeof window !== 'undefined') {
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key && (key.includes('auth-token') || key.includes('-auth-token'))) {
-            const raw = localStorage.getItem(key);
-            if (raw && raw.startsWith('{')) {
-              try {
-                const parsed = JSON.parse(raw);
-                if (parsed && (parsed.access_token || parsed.user)) {
-                  setSession(parsed);
-                  setUser(parsed.user ?? null);
-                  if (parsed.user?.id) fetchProfile(parsed.user.id);
-                  break;
-                }
-              } catch {}
-            }
-          }
-        }
-      }
-    } catch {}
-
-    // 2. Background sync with Supabase server
+    // 1. Get the real session from Supabase (hits localStorage internally via
+    //    the Supabase JS client — no need for a manual scan).
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
         if (session) {
@@ -66,8 +48,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (session.user) fetchProfile(session.user.id);
         }
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => {
+        // Mark auth check complete regardless of success/failure so
+        // the login page (and all other pages) can safely show their UI.
+        setLoading(false);
+      });
 
+    // 2. Keep state in sync with any subsequent auth changes.
     const {
       data: { subscription }
     } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -112,9 +100,24 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Sign Out
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    try {
+      await supabase.auth.signOut();
+    } catch (e) {
+      console.warn('Sign out error:', e);
+    }
+    setUser(null);
+    setSession(null);
     setProfile(null);
+    if (typeof window !== 'undefined') {
+      try {
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const key = localStorage.key(i);
+          if (key && (key.includes('supabase') || key.includes('auth-token') || key.startsWith('sb-'))) {
+            localStorage.removeItem(key);
+          }
+        }
+      } catch {}
+    }
   };
 
   // Get Current User

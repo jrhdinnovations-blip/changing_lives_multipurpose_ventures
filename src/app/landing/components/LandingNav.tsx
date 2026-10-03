@@ -14,7 +14,7 @@ export default function LandingNav() {
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
   const loansTimeout = useRef<NodeJS.Timeout | null>(null);
   const investTimeout = useRef<NodeJS.Timeout | null>(null);
-  const { user } = useAuth();
+  const { user, userRole, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -299,13 +299,34 @@ export default function LandingNav() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Link
-              href="/login"
-              className="px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all duration-150 shadow-md shadow-emerald-500/20 active:scale-95 flex items-center gap-1.5"
-            >
-              <span>Sign In</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+                  className="px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all duration-150 shadow-md shadow-emerald-500/20 active:scale-95 flex items-center gap-1.5"
+                >
+                  <span>Dashboard</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await signOut();
+                  }}
+                  className="px-3.5 py-2.5 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/20 text-white transition-all duration-150 border border-white/10"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all duration-150 shadow-md shadow-emerald-500/20 active:scale-95 flex items-center gap-1.5"
+              >
+                <span>Sign In</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu toggle */}
@@ -438,14 +459,37 @@ export default function LandingNav() {
             </div>
 
             <div className="pt-3 flex flex-col gap-2 border-t border-border">
-              <Link
-                href="/login"
-                onClick={() => setMenuOpen(false)}
-                className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm flex items-center justify-center gap-1.5"
-              >
-                <span>Sign In to Your Account</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              {user ? (
+                <>
+                  <Link
+                    href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+                    onClick={() => setMenuOpen(false)}
+                    className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm flex items-center justify-center gap-1.5"
+                  >
+                    <span>Go to Dashboard</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      setMenuOpen(false);
+                      await signOut();
+                    }}
+                    className="w-full text-center py-2 px-4 rounded-xl text-xs font-semibold bg-white/10 text-white border border-white/10 hover:bg-white/20 transition-colors"
+                  >
+                    Sign Out ({user.email})
+                  </button>
+                </>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm flex items-center justify-center gap-1.5"
+                >
+                  <span>Sign In to Your Account</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              )}
             </div>
           </div>
         )}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { useAuth } from '@/contexts/AuthContext';
 
 function formatFundStat(amount: number): string {
   if (amount >= 1_000_000_000) {
@@ -21,6 +22,7 @@ const DEFAULT_STATS = [
 ];
 
 export default function HeroSection() {
+  const { user, userRole } = useAuth();
   const [stats, setStats] = useState(DEFAULT_STATS);
 
   useEffect(() => {
@@ -171,13 +173,23 @@ export default function HeroSection() {
 
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-3">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25 group"
-            >
-              Sign In
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+            {user ? (
+              <Link
+                href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25 group"
+              >
+                Go to Dashboard
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25 group"
+              >
+                Sign In
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            )}
             <Link
               href="#products"
               className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-transparent border border-white/20 hover:border-white/40 text-white font-semibold text-sm transition-all duration-150 active:scale-95"

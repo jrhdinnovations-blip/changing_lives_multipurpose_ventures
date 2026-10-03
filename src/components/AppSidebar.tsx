@@ -177,7 +177,7 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
     } catch (e) {
       console.warn('Sign out error:', e);
     } finally {
-      router.push('/login');
+      router.push('/login?logout=1');
     }
   };
 

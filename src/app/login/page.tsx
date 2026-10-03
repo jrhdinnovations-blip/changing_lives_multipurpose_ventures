@@ -7,7 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase/client';
 
 function LoginContent() {
-  const { signIn, user, loading, userRole } = useAuth();
+  const { signIn, signOut, user, loading, userRole } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirectTarget = searchParams.get('redirect') || searchParams.get('redirectTo');
@@ -31,12 +31,12 @@ function LoginContent() {
     router.replace('/member-dashboard');
   }
 
-  // Redirect already-authenticated users
+  // Display sign out confirmation message if coming from logout
   useEffect(() => {
-    if (!loading && user) {
-      routeByRole(userRole);
+    if (searchParams.get('logout') === '1' || searchParams.get('signout') === '1') {
+      setSuccessMsg('You have been signed out successfully.');
     }
-  }, [user, loading, userRole]);
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -153,6 +153,37 @@ function LoginContent() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <p className="text-sm text-red-400">{error}</p>
+              </div>
+            )}
+
+            {/* Already authenticated banner with choices */}
+            {user && (
+              <div className="mb-6 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl p-4 text-center">
+                <p className="text-xs text-slate-300 mb-1">
+                  You are currently signed in as
+                </p>
+                <p className="text-sm font-bold text-emerald-400 mb-3 break-all">
+                  {user.email}
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => routeByRole(userRole)}
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-all shadow-md active:scale-95"
+                  >
+                    Continue to Dashboard →
+                  </button>
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      await signOut();
+                      setSuccessMsg('Signed out. Please enter your credentials below.');
+                    }}
+                    className="w-full sm:w-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-all border border-white/10 active:scale-95"
+                  >
+                    Sign In with Different Account
+                  </button>
+                </div>
               </div>
             )}
 

@@ -37,7 +37,7 @@ export default function AppTopbar({ memberName, memberId, role, sidebarCollapsed
     } catch (e) {
       console.warn('Sign out error:', e);
     } finally {
-      router.push('/login');
+      router.push('/login?logout=1');
     }
   };
 

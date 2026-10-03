@@ -2,8 +2,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function FinalCTA() {
+  const { user, userRole } = useAuth();
   return (
     <section className="py-24 lg:py-36 bg-gradient-to-b from-[#0a0f1e] via-[#0d2040] to-[#0a2a35] relative overflow-hidden">
       {/* Radial glow */}
@@ -32,13 +34,23 @@ export default function FinalCTA() {
         </p>
 
         <div className="flex items-center justify-center">
-          <Link
-            href="/login"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-xl shadow-emerald-500/20 group"
-          >
-            Sign In to Your Account
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+          {user ? (
+            <Link
+              href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-xl shadow-emerald-500/20 group"
+            >
+              Go to Dashboard
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-xl shadow-emerald-500/20 group"
+            >
+              Sign In to Your Account
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          )}
         </div>
       </div>
     </section>
