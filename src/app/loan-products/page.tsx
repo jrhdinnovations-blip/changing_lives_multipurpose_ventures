@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { CreditCard, CheckCircle2, ShieldCheck, ArrowRight, Calculator } from 'lucide-react';
+import { CreditCard, CheckCircle2, ShieldCheck, ArrowRight, Calculator, LogIn } from 'lucide-react';
 import LandingNav from '../landing/components/LandingNav';
 import LandingFooter from '../landing/components/LandingFooter';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface LoanProduct {
   id: string;
@@ -63,7 +64,7 @@ const filterMap: Record<FilterType, string[]> = {
   all: ['personal-loan'],
 };
 
-function LoanCard({ product }: { product: LoanProduct }) {
+function LoanCard({ product, isAuthenticated }: { product: LoanProduct; isAuthenticated: boolean }) {
   return (
     <div className="relative flex flex-col rounded-3xl border border-white/10 bg-[#0d1527] p-8 lg:p-9 shadow-2xl transition-all duration-200 hover:-translate-y-1 hover:border-emerald-500/40 group overflow-hidden">
       {/* Top pick ribbon */}
@@ -140,13 +141,23 @@ function LoanCard({ product }: { product: LoanProduct }) {
 
       {/* CTA */}
       <div className="mt-auto pt-4 border-t border-white/10">
-        <Link
-          href="/loan-application"
-          className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-950/40 transition-all duration-150 active:scale-95"
-        >
-          <span>Apply for Loan</span>
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        {isAuthenticated ? (
+          <Link
+            href="/loan-application"
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-lg shadow-emerald-950/40 transition-all duration-150 active:scale-95"
+          >
+            <span>Apply for Loan</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        ) : (
+          <Link
+            href={`/login?redirect=${encodeURIComponent('/loan-application')}`}
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold text-white bg-emerald-600/70 hover:bg-emerald-600 shadow-lg shadow-emerald-950/40 transition-all duration-150 active:scale-95"
+          >
+            <LogIn className="w-4 h-4" />
+            <span>Sign In to Apply</span>
+          </Link>
+        )}
       </div>
     </div>
   );
@@ -154,6 +165,7 @@ function LoanCard({ product }: { product: LoanProduct }) {
 
 export default function LoanProductsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const { user } = useAuth();
 
   const visibleIds = filterMap[activeFilter];
   const visibleProducts = loanProducts.filter((p) => visibleIds.includes(p.id));
@@ -250,7 +262,7 @@ export default function LoanProductsPage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {visibleProducts.map((product) => (
-            <LoanCard key={product.id} product={product} />
+            <LoanCard key={product.id} product={product} isAuthenticated={!!user} />
           ))}
         </div>
       </section>
@@ -265,13 +277,23 @@ export default function LoanProductsPage() {
             Complete your online application in under 5 minutes. Transparent terms, zero surprise fees.
           </p>
           <div className="flex flex-wrap gap-3 justify-center">
-            <Link
-              href="/loan-application"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-950/50"
-            >
-              <span>Apply for a Loan Now</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {user ? (
+              <Link
+                href="/loan-application"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 text-white text-sm font-bold hover:bg-emerald-500 transition-all active:scale-95 shadow-lg shadow-emerald-950/50"
+              >
+                <span>Apply for a Loan Now</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <Link
+                href={`/login?redirect=${encodeURIComponent('/loan-application')}`}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-emerald-600/70 text-white text-sm font-bold hover:bg-emerald-600 transition-all active:scale-95 shadow-lg shadow-emerald-950/50"
+              >
+                <LogIn className="w-4 h-4" />
+                <span>Sign In to Apply</span>
+              </Link>
+            )}
             <Link
               href="/landing"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/[0.04] text-white text-sm font-semibold hover:bg-white/10 transition-all"

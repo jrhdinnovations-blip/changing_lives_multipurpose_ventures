@@ -31,19 +31,13 @@ export default function FinalCTA() {
           CAC Registered · NDIC Insured · Nigerian Owned
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link
-            href="/save/start"
-            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-xl shadow-emerald-500/20 group"
-          >
-            Apply for Membership
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
+        <div className="flex items-center justify-center">
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl bg-transparent border border-white/20 hover:border-white/40 text-white font-semibold text-sm transition-all duration-150 active:scale-95"
+            className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-xl shadow-emerald-500/20 group"
           >
-            Sign In
+            Sign In to Your Account
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const CURRENT_YEAR = 2026;
+const CURRENT_YEAR = new Date().getFullYear();
 
 function fmt(n: number) {
   return '₦' + n.toLocaleString('en-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -36,34 +36,42 @@ const STATUS_CONFIG: Record<ContributionStatus, { label: string; classes: string
   overdue: { label: 'Overdue', classes: 'bg-red-500/15 text-red-400 border-red-500/25' },
 };
 
-const INITIAL_CONTRIBUTIONS: Contribution[] = [
-  { id: '1', memberId: 'm1', contributionMonth: 9, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-09-04', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260904-001', contributionStatus: 'paid', createdAt: '2026-09-01', updatedAt: '2026-09-04' },
-  { id: '2', memberId: 'm1', contributionMonth: 8, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-08-05', paymentMethod: 'Regular Savings Wallet', transactionReference: 'TXN-20260805-002', contributionStatus: 'paid', createdAt: '2026-08-01', updatedAt: '2026-08-05' },
-  { id: '3', memberId: 'm1', contributionMonth: 7, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-07-03', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260703-003', contributionStatus: 'paid', createdAt: '2026-07-01', updatedAt: '2026-07-03' },
-  { id: '4', memberId: 'm1', contributionMonth: 6, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-06-05', paymentMethod: 'Debit Card', transactionReference: 'TXN-20260605-004', contributionStatus: 'paid', createdAt: '2026-06-01', updatedAt: '2026-06-05' },
-  { id: '5', memberId: 'm1', contributionMonth: 5, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-05-04', paymentMethod: 'POS', transactionReference: 'TXN-20260504-005', contributionStatus: 'paid', createdAt: '2026-05-01', updatedAt: '2026-05-04' },
-  { id: '6', memberId: 'm1', contributionMonth: 4, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-04-04', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260404-006', contributionStatus: 'paid', createdAt: '2026-04-01', updatedAt: '2026-04-04' },
-  { id: '7', memberId: 'm1', contributionMonth: 3, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-03-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260305-007', contributionStatus: 'paid', createdAt: '2026-03-01', updatedAt: '2026-03-05' },
-  { id: '8', memberId: 'm1', contributionMonth: 2, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-02-05', paymentMethod: 'Debit Card', transactionReference: 'TXN-20260205-008', contributionStatus: 'paid', createdAt: '2026-02-01', updatedAt: '2026-02-05' },
-  { id: '9', memberId: 'm1', contributionMonth: 1, contributionYear: 2026, expectedAmount: 10000, amountPaid: 10000, outstandingAmount: 0, paymentDate: '2026-01-05', paymentMethod: 'Bank Transfer', transactionReference: 'TXN-20260105-009', contributionStatus: 'paid', createdAt: '2026-01-01', updatedAt: '2026-01-05' },
-  { id: '10', memberId: 'm1', contributionMonth: 10, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-10-01', updatedAt: '2026-10-01' },
-  { id: '11', memberId: 'm1', contributionMonth: 11, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-11-01', updatedAt: '2026-11-01' },
-  { id: '12', memberId: 'm1', contributionMonth: 12, contributionYear: 2026, expectedAmount: 10000, amountPaid: 0, outstandingAmount: 10000, contributionStatus: 'unpaid', createdAt: '2026-12-01', updatedAt: '2026-12-01' },
-];
+/** Build a clean 12-month schedule with no payment data for the current year */
+function buildEmptyYearSchedule(memberId: string, commitment: number): Contribution[] {
+  const now = new Date();
+  const currentMonth = now.getMonth() + 1;
+  return Array.from({ length: 12 }, (_, i) => {
+    const month = i + 1;
+    const isPast = month < currentMonth;
+    return {
+      id: `gen-${month}`,
+      memberId,
+      contributionMonth: month,
+      contributionYear: CURRENT_YEAR,
+      expectedAmount: commitment,
+      amountPaid: 0,
+      outstandingAmount: commitment,
+      contributionStatus: isPast ? 'overdue' : 'unpaid',
+      createdAt: `${CURRENT_YEAR}-${String(month).padStart(2, '0')}-01`,
+      updatedAt: `${CURRENT_YEAR}-${String(month).padStart(2, '0')}-01`,
+    } as Contribution;
+  });
+}
 
 type StatusFilter = 'all' | ContributionStatus;
 
 export default function MonthlyContributionsPage() {
-  const [contributions, setContributions] = useState<Contribution[]>(INITIAL_CONTRIBUTIONS);
+  const [contributions, setContributions] = useState<Contribution[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [memberName, setMemberName] = useState('Member');
   const [memberId, setMemberId] = useState('');
+  const [internalMemberId, setInternalMemberId] = useState('');
   const [monthlyCommitment, setMonthlyCommitment] = useState(10000);
 
   // Pay Modal State
   const [showPayModal, setShowPayModal] = useState(false);
-  const [payMonth, setPayMonth] = useState(10);
+  const [payMonth, setPayMonth] = useState(new Date().getMonth() + 1);
   const [payAmount, setPayAmount] = useState('10000');
   const [payMethod, setPayMethod] = useState<'wallet' | 'card' | 'transfer'>('transfer');
   const [paying, setPaying] = useState(false);
@@ -74,33 +82,79 @@ export default function MonthlyContributionsPage() {
   const [selectedReceipt, setSelectedReceipt] = useState<Contribution | null>(null);
 
   useEffect(() => {
-    async function loadUser() {
+    async function loadData() {
       try {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-          const meta = user.user_metadata;
-          const { data: m } = await supabase
-            .from('members')
-            .select('id, first_name, last_name, member_number')
-            .eq('user_id', user.id)
-            .maybeSingle();
+        if (!user) { setLoading(false); return; }
 
-          if (m) {
-            setMemberName(`${m.first_name} ${m.last_name}`);
-            setMemberId(m.member_number || 'CLM-1002');
+        const meta = user.user_metadata;
+
+        // Fetch member record
+        const { data: m } = await supabase
+          .from('members')
+          .select('id, first_name, last_name, member_number, monthly_contribution')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        let resolvedMemberId = '';
+        let commitment = 10000;
+
+        if (m) {
+          const fullName = `${m.first_name} ${m.last_name}`;
+          setMemberName(fullName);
+          setMemberId(m.member_number || 'CLM-0000');
+          setInternalMemberId(m.id);
+          resolvedMemberId = m.id;
+          if (m.monthly_contribution) commitment = Number(m.monthly_contribution);
+        } else {
+          setMemberName(meta?.full_name || 'Cooperative Member');
+          setMemberId(meta?.member_number || 'CLM-0000');
+        }
+        setMonthlyCommitment(commitment);
+        setPayAmount(String(commitment));
+
+        // Fetch real contributions for the current year
+        if (resolvedMemberId) {
+          const { data: dbContribs, error } = await supabase
+            .from('contributions')
+            .select('*')
+            .eq('member_id', resolvedMemberId)
+            .eq('contribution_year', CURRENT_YEAR)
+            .order('contribution_month', { ascending: true });
+
+          if (!error && dbContribs && dbContribs.length > 0) {
+            // Map DB columns to our Contribution type
+            const mapped: Contribution[] = dbContribs.map((c: any) => ({
+              id: c.id,
+              memberId: c.member_id,
+              contributionMonth: c.contribution_month,
+              contributionYear: c.contribution_year,
+              expectedAmount: Number(c.expected_amount) || commitment,
+              amountPaid: Number(c.amount_paid) || 0,
+              outstandingAmount: Number(c.outstanding_amount) || 0,
+              paymentDate: c.payment_date || undefined,
+              paymentMethod: c.payment_method || undefined,
+              transactionReference: c.transaction_reference || undefined,
+              contributionStatus: c.contribution_status || 'unpaid',
+              createdAt: c.created_at,
+              updatedAt: c.updated_at,
+            }));
+            setContributions(mapped);
           } else {
-            setMemberName(meta?.full_name || 'Cooperative Member');
-            setMemberId(meta?.member_number || 'CLM-1002');
+            // No DB records yet — show a clean unpaid schedule
+            setContributions(buildEmptyYearSchedule(resolvedMemberId, commitment));
           }
+        } else {
+          setContributions(buildEmptyYearSchedule('', commitment));
         }
       } catch (e) {
-        console.error('Error loading member in contributions:', e);
+        console.error('Error loading contributions:', e);
       } finally {
         setLoading(false);
       }
     }
-    loadUser();
+    loadData();
   }, []);
 
   const totalExpected = contributions.reduce((s, c) => s + c.expectedAmount, 0);

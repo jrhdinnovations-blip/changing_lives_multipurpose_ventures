@@ -6,8 +6,8 @@ import { ArrowRight } from 'lucide-react';
 const steps = [
   {
     num: '01',
-    title: 'Register',
-    desc: 'BVN · NIN · ID — under 5 mins',
+    title: 'Sign In',
+    desc: 'Access your portal with assigned credentials',
   },
   {
     num: '02',
@@ -83,10 +83,10 @@ export default function HowItWorks() {
 
         {/* CTA */}
         <Link
-          href="/save/start"
+          href="/login"
           className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-white text-emerald-700 font-bold text-sm hover:bg-white/90 transition-all duration-150 active:scale-95 shadow-lg group"
         >
-          Start your journey
+          Sign In
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
         </Link>
       </div>

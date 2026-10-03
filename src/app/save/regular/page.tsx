@@ -50,71 +50,15 @@ export default function RegularSavingsPage() {
   });
 
   // Account stats state
-  const [accountNumber, setAccountNumber] = useState('CLM-RS-883019');
-  const [balance, setBalance] = useState(285750.00);
-  const [totalDeposited, setTotalDeposited] = useState(380000.00);
-  const [totalWithdrawn, setTotalWithdrawn] = useState(105000.00);
-  const [interestAccrued, setInterestAccrued] = useState(10750.00);
+  const [accountNumber, setAccountNumber] = useState('');
+  const [balance, setBalance] = useState(0);
+  const [totalDeposited, setTotalDeposited] = useState(0);
+  const [totalWithdrawn, setTotalWithdrawn] = useState(0);
+  const [interestAccrued, setInterestAccrued] = useState(0);
   const [withdrawalsThisMonth, setWithdrawalsThisMonth] = useState(0);
 
   // Transactions list
-  const [transactions, setTransactions] = useState<RegularTransaction[]>([
-    {
-      id: 'tx-101',
-      type: 'deposit',
-      amount: 50000,
-      date: '2026-09-18 14:22',
-      reference: 'TXN-DEP-20260918-091',
-      channel: 'Instant Bank Transfer',
-      status: 'completed',
-      balanceAfter: 285750,
-      description: 'Voluntary top-up via Moniepoint NUBAN',
-    },
-    {
-      id: 'tx-102',
-      type: 'interest',
-      amount: 4980.50,
-      date: '2026-08-31 23:59',
-      reference: 'INT-Q3-2026-8830',
-      channel: 'System Credit',
-      status: 'completed',
-      balanceAfter: 235750,
-      description: 'Q3 Quarterly Interest Payout (7.0% p.a.)',
-    },
-    {
-      id: 'tx-103',
-      type: 'withdrawal',
-      amount: 25000,
-      date: '2026-08-14 10:15',
-      reference: 'TXN-WTH-20260814-114',
-      channel: 'Bank Payout (GTBank)',
-      status: 'completed',
-      balanceAfter: 230769.50,
-      description: 'Emergency household withdrawal',
-    },
-    {
-      id: 'tx-104',
-      type: 'deposit',
-      amount: 70000,
-      date: '2026-07-28 09:40',
-      reference: 'TXN-DEP-20260728-402',
-      channel: 'Debit Card (Paystack)',
-      status: 'completed',
-      balanceAfter: 255769.50,
-      description: 'Personal savings allocation',
-    },
-    {
-      id: 'tx-105',
-      type: 'withdrawal',
-      amount: 30000,
-      date: '2026-06-20 16:05',
-      reference: 'TXN-WTH-20260620-771',
-      channel: 'Bank Payout (Access Bank)',
-      status: 'completed',
-      balanceAfter: 185769.50,
-      description: 'Mid-year supplies purchase',
-    },
-  ]);
+  const [transactions, setTransactions] = useState<RegularTransaction[]>([]);
 
   const [activeFilter, setActiveFilter] = useState<'all' | 'deposit' | 'withdrawal' | 'interest'>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -165,7 +109,7 @@ export default function RegularSavingsPage() {
           });
           setAccountNameInput(`${memberData.first_name.toUpperCase()} ${memberData.last_name.toUpperCase()}`);
 
-          // Fetch real savings account if available
+          // Fetch real savings account
           const { data: acc } = await supabase
             .from('savings_accounts')
             .select('*')
@@ -173,15 +117,48 @@ export default function RegularSavingsPage() {
             .maybeSingle();
 
           if (acc) {
-            setAccountNumber(acc.account_number || `CLM-RS-${memberData.member_number.replace(/\D/g, '')}`);
-            setBalance(Number(acc.balance) || balance);
-            setTotalDeposited(Number(acc.total_deposited) || totalDeposited);
-            setTotalWithdrawn(Number(acc.total_withdrawn) || totalWithdrawn);
+            setAccountNumber(acc.account_number || `CLM-RS-${(memberData.member_number || '').replace(/\D/g, '')}`);
+            setBalance(Number(acc.balance) || 0);
+            setTotalDeposited(Number(acc.total_deposited) || 0);
+            setTotalWithdrawn(Number(acc.total_withdrawn) || 0);
+            if (acc.interest_accrued) setInterestAccrued(Number(acc.interest_accrued));
+          } else {
+            setAccountNumber(`CLM-RS-${(memberData.member_number || '0000').replace(/\D/g, '')}`);
+          }
+
+          // Fetch real transactions
+          const { data: txData } = await supabase
+            .from('savings_transactions')
+            .select('*')
+            .eq('member_id', memberData.id)
+            .order('created_at', { ascending: false })
+            .limit(50);
+
+          if (txData && txData.length > 0) {
+            const mapped: RegularTransaction[] = txData.map((t: any) => ({
+              id: t.id,
+              type: t.transaction_type || t.type || 'deposit',
+              amount: Number(t.amount) || 0,
+              date: (t.created_at || '').replace('T', ' ').slice(0, 16),
+              reference: t.reference || t.transaction_reference || '',
+              channel: t.channel || t.payment_method || 'Bank Transfer',
+              status: t.status || 'completed',
+              balanceAfter: Number(t.balance_after) || 0,
+              description: t.description || t.notes || '',
+            }));
+            setTransactions(mapped);
+
+            // Count this month's withdrawals
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            const monthlyWithdrawals = mapped.filter(
+              (t) => t.type === 'withdrawal' && t.date.startsWith(thisMonth)
+            ).length;
+            setWithdrawalsThisMonth(monthlyWithdrawals);
           }
         } else {
           setMember({
             name: meta?.full_name || 'Cooperative Member',
-            memberNumber: meta?.member_number || 'CLM-1002',
+            memberNumber: meta?.member_number || 'CLM-0000',
             email: user.email || '',
           });
         }

@@ -45,7 +45,7 @@ const SERVICES = [
     badge: 'Enterprise Growth',
     desc: 'Strategic business advisory, merchant support facilities, working capital solutions, and financial tools to foster enterprise scalability.',
     color: 'bg-purple-500/10 text-purple-400 border border-purple-500/20 group-hover:bg-purple-500/20',
-    href: '/apply',
+    href: '/about',
   },
   {
     icon: Users,
@@ -53,7 +53,7 @@ const SERVICES = [
     badge: 'Cooperative Welfare',
     desc: 'Comprehensive member welfare initiatives, dividend distributions, asset acquisition schemes, and empowerment programs authorized by CLIMPS.',
     color: 'bg-rose-500/10 text-rose-400 border border-rose-500/20 group-hover:bg-rose-500/20',
-    href: '/apply',
+    href: '/about',
   },
 ];
 
@@ -191,19 +191,13 @@ export default function AboutSection() {
               </div>
             </div>
 
-            <div className="relative z-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/apply"
-                className="flex-1 text-center inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/20"
-              >
-                Apply for Membership
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+            <div className="relative z-10 pt-6 border-t border-white/10 flex">
               <Link
                 href="/login"
-                className="text-center inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm transition-all duration-150 active:scale-95"
+                className="w-full text-center inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/20"
               >
-                Member Login
+                Sign In to Member Portal
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
@@ -294,10 +288,10 @@ export default function AboutSection() {
             </div>
           </div>
           <Link
-            href="/apply"
+            href="/login"
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs transition-all shrink-0 active:scale-95 shadow-lg shadow-emerald-500/20"
           >
-            Become a Member
+            Sign In
             <ArrowRight size={14} />
           </Link>
         </div>

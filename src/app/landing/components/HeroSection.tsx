@@ -41,10 +41,10 @@ export default function HeroSection() {
           {/* CTAs */}
           <div className="flex flex-wrap items-center gap-3">
             <Link
-              href="/save/start"
+              href="/login"
               className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25 group"
             >
-              Apply for Membership
+              Sign In
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </Link>
             <Link

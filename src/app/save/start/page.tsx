@@ -96,7 +96,7 @@ function StartSavingInner() {
         </div>
         <h2 className="text-2xl font-bold text-white mb-2">Sign in to Start Saving</h2>
         <p className="text-white/60 text-sm mb-8 leading-relaxed">
-          You need a CLIMPS account to open a savings product. Sign in to your account or register to start building wealth.
+          You need a CLIMPS account to open a savings product. Sign in to your account to start building wealth.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link

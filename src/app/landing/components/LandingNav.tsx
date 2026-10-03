@@ -127,23 +127,6 @@ export default function LandingNav() {
                       <div className="text-xs text-muted-foreground mt-0.5">Simulate growth & compound interest</div>
                     </div>
                   </Link>
-
-                  <Link
-                    href="/save/start"
-                    className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-blue-500/10 transition-colors group border-t border-border mt-1 pt-2"
-                    onClick={() => setSaveOpen(false)}
-                  >
-                    <div className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-700 flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-blue-600 group-hover:text-white transition-colors">
-                      <ArrowRight className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-bold text-foreground group-hover:text-blue-600 transition-colors flex items-center gap-1.5">
-                        Start Saving
-                        <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.5 rounded-md">New</span>
-                      </div>
-                      <div className="text-xs text-muted-foreground mt-0.5">Enroll online in minutes</div>
-                    </div>
-                  </Link>
                 </div>
               )}
             </div>
@@ -303,19 +286,9 @@ export default function LandingNav() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               href="/login"
-              className={`px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 ${
-                scrolled
-                  ? 'text-foreground hover:bg-muted'
-                  : 'text-white/90 hover:text-white hover:bg-white/10'
-              }`}
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/save/start"
               className="px-5 py-2.5 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 transition-all duration-150 shadow-md shadow-emerald-500/20 active:scale-95 flex items-center gap-1.5"
             >
-              <span>Start Saving</span>
+              <span>Sign In</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -381,13 +354,6 @@ export default function LandingNav() {
                 className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
               >
                 Savings Calculator
-              </Link>
-              <Link
-                href="/save/start"
-                onClick={() => setMenuOpen(false)}
-                className="block px-3 py-2 rounded-xl text-sm font-semibold text-blue-600 hover:bg-blue-50 transition-colors"
-              >
-                Start Saving →
               </Link>
             </div>
 
@@ -458,18 +424,12 @@ export default function LandingNav() {
 
             <div className="pt-3 flex flex-col gap-2 border-t border-border">
               <Link
-                href="/save/start"
-                onClick={() => setMenuOpen(false)}
-                className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm"
-              >
-                Start Saving Today
-              </Link>
-              <Link
                 href="/login"
                 onClick={() => setMenuOpen(false)}
-                className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-semibold border border-border bg-card text-foreground hover:bg-muted"
+                className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-sm flex items-center justify-center gap-1.5"
               >
-                Sign In to Your Account
+                <span>Sign In to Your Account</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>

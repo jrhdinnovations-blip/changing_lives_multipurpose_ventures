@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import LandingNav from '../landing/components/LandingNav';
 import LandingFooter from '../landing/components/LandingFooter';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface SavingsProduct {
   id: string;
@@ -111,6 +112,7 @@ const faqs = [
 ];
 
 export default function SavingsProductsPage() {
+  const { user } = useAuth();
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
@@ -140,13 +142,23 @@ export default function SavingsProductsPage() {
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Link
-              href="/save/start"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
-            >
-              <span>Start Saving Today</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            {user ? (
+              <Link
+                href="/save/contributions"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
+              >
+                <span>My Savings Portal</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            ) : (
+              <Link
+                href="/login?redirect=/savings-products"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm shadow-lg shadow-emerald-950/40 transition-all active:scale-95"
+              >
+                <span>Sign In to Subscribe</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            )}
             <Link
               href="/save/calculator"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 bg-white/[0.04] hover:bg-white/10 text-white font-semibold text-sm transition-all"
@@ -217,10 +229,10 @@ export default function SavingsProductsPage() {
 
               <div className="pt-4 border-t border-white/10 flex items-center justify-between gap-4">
                 <Link
-                  href={p.actionUrl}
+                  href={user ? p.actionUrl : `/login?redirect=${encodeURIComponent(p.actionUrl)}`}
                   className="w-full text-center py-3 rounded-xl font-semibold text-sm transition-all shadow-lg flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/40 active:scale-95"
                 >
-                  <span>{p.actionLabel}</span>
+                  <span>{user ? p.actionLabel : 'Sign In to Subscribe'}</span>
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>

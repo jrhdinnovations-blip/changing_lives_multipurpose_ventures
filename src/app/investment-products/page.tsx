@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { INVESTMENT_PRODUCTS, InvestmentProductDetail, formatNairaCompact } from '@/lib/investmentsData';
-import { TrendingUp, ShieldCheck, Calendar, ArrowRight, Calculator, Sparkles, Filter, AlertCircle } from 'lucide-react';
+import { TrendingUp, ShieldCheck, Calendar, ArrowRight, Calculator, Sparkles, Filter, AlertCircle, LogIn } from 'lucide-react';
 import LandingNav from '../landing/components/LandingNav';
 import LandingFooter from '../landing/components/LandingFooter';
+import { useAuth } from '@/contexts/AuthContext';
 
 type FilterType = 'all' | 'regular' | 'coming-soon';
 
@@ -30,7 +31,7 @@ const STATUS_BADGES: Record<string, { label: string; color: string; bg: string; 
   draft: { label: 'Draft', color: 'text-white/40', bg: 'bg-white/5 border-white/10', dot: 'bg-white/30' },
 };
 
-function ProductCard({ product }: { product: InvestmentProductDetail }) {
+function ProductCard({ product, isAuthenticated }: { product: InvestmentProductDetail; isAuthenticated: boolean }) {
   const isComingSoon = product.comingSoon || product.productStatus === 'coming_soon';
   const isRegular = product.category === 'Regular Investment' || product.id === 'investors-circle';
   const statusCfg = STATUS_BADGES[product.productStatus] || (isComingSoon ? STATUS_BADGES.coming_soon : STATUS_BADGES.open);
@@ -197,13 +198,23 @@ function ProductCard({ product }: { product: InvestmentProductDetail }) {
             <ArrowRight className="w-3.5 h-3.5" />
           </a>
         ) : product.productStatus === 'open' ? (
-          <Link
-            href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 text-center py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
-          >
-            {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          isAuthenticated ? (
+            <Link
+              href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 text-center py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+            >
+              {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          ) : (
+            <Link
+              href={`/login?redirect=${encodeURIComponent(product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`)}`}
+              className="bg-emerald-600/70 hover:bg-emerald-600 text-white shadow-md shadow-emerald-950/40 text-center py-2.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              Sign In to Invest
+            </Link>
+          )
         ) : (
           <button
             disabled
@@ -219,6 +230,7 @@ function ProductCard({ product }: { product: InvestmentProductDetail }) {
 
 export default function InvestmentProductsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
+  const { user } = useAuth();
   const visibleProducts = INVESTMENT_PRODUCTS.filter(filterMap[activeFilter]);
 
   return (
@@ -280,7 +292,7 @@ export default function InvestmentProductsPage() {
               CLIMPS Wealth Circle (3.5%/mo)
             </Link>
             <Link
-              href="/invest/now"
+              href={user ? '/invest/now' : `/login?redirect=${encodeURIComponent('/invest/now')}`}
               className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs px-4 py-2.5 rounded-xl shadow-lg shadow-emerald-950/40 transition-colors"
             >
               Wealth Circle Direct
@@ -339,7 +351,7 @@ export default function InvestmentProductsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {visibleProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} isAuthenticated={!!user} />
           ))}
         </div>
 

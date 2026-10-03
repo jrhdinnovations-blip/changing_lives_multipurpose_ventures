@@ -34,8 +34,8 @@ const memberNav: NavItem[] = [
       { id: 'nav-savings-products', label: 'Savings Overview', href: '/savings-products' },
       { id: 'nav-contributions', label: 'Monthly Contribution', href: '/save/contributions' },
       { id: 'nav-regular-savings', label: 'Regular Savings', href: '/save/regular' },
+      { id: 'nav-savings-goals', label: 'Savings Goals', href: '/save/goals' },
       { id: 'nav-calculator', label: 'Savings Calculator', href: '/save/calculator' },
-      { id: 'nav-start-saving', label: 'Start Saving', href: '/save/start' },
     ]
   },
   {

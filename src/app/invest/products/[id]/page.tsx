@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { INVESTMENT_PRODUCTS, formatNaira } from '@/lib/investmentsData';
 import LandingNav from '@/app/landing/components/LandingNav';
 import LandingFooter from '@/app/landing/components/LandingFooter';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   TrendingUp,
   ShieldCheck,
@@ -19,6 +20,7 @@ import {
   CheckCircle2,
   Users,
   Building,
+  LogIn,
 } from 'lucide-react';
 
 export default function InvestmentProductDetailPage({
@@ -28,6 +30,7 @@ export default function InvestmentProductDetailPage({
 }) {
   const resolvedParams = use(params);
   const product = INVESTMENT_PRODUCTS.find((p) => p.id === resolvedParams.id);
+  const { user } = useAuth();
 
   if (!product) {
     notFound();
@@ -242,13 +245,23 @@ export default function InvestmentProductDetailPage({
                     <ArrowRight className="w-4 h-4" />
                   </a>
                 ) : product.productStatus === 'open' ? (
-                  <Link
-                    href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
-                    className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
-                  >
-                    {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
+                  user ? (
+                    <Link
+                      href={product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`}
+                      className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-400 hover:to-teal-500 transition-all shadow-lg shadow-emerald-500/20"
+                    >
+                      {product.id === 'investors-circle' ? 'Join Wealth Circle' : 'Wealth Circle'}
+                      <ArrowRight className="w-4 h-4" />
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/login?redirect=${encodeURIComponent(product.id === 'investors-circle' ? '/investors-circle' : `/invest/now?product=${product.id}`)}`}
+                      className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-emerald-500/70 to-teal-600/70 text-white font-bold text-sm flex items-center justify-center gap-2 hover:from-emerald-500 hover:to-teal-600 transition-all shadow-lg shadow-emerald-500/20"
+                    >
+                      <LogIn className="w-4 h-4" />
+                      Sign In to Invest
+                    </Link>
+                  )
                 ) : (
                   <button
                     disabled

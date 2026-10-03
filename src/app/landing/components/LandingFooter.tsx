@@ -69,8 +69,8 @@ export default function LandingFooter() {
               <Link href="/loan-products" className="hover:text-emerald-400 transition-colors">
                 Loan Products
               </Link>
-              <Link href="/apply" className="hover:text-emerald-400 transition-colors">
-                Apply for Membership
+              <Link href="/login" className="hover:text-emerald-400 transition-colors">
+                Sign In
               </Link>
             </div>
           </div>

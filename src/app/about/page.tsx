@@ -41,10 +41,10 @@ export default function AboutPage() {
 
           <div className="flex flex-wrap items-center gap-3">
             <Link
-              href="/apply"
+              href="/login"
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25"
             >
-              Join CLIMPS Today
+              Sign In
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link

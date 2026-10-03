@@ -30,13 +30,7 @@ const STATUS_CONFIG: Record<SavingsGoalStatus, { label: string; classes: string;
   cancelled: { label: 'Cancelled', classes: 'bg-white/10 text-white/50 border-white/15', dot: 'bg-white/40' },
 };
 
-// Demo data
-const DEMO_GOALS: (SavingsGoal & { category: string })[] = [
-  { id: '1', memberId: 'm1', goalName: 'Rent Payment', targetAmount: 360000, currentAmount: 210000, targetDate: '2026-12-31', frequency: 'monthly', goalStatus: 'active', category: 'Rent', createdAt: '2026-01-01', updatedAt: '2026-09-01' },
-  { id: '2', memberId: 'm1', goalName: 'Business Capital', targetAmount: 1000000, currentAmount: 340000, targetDate: '2027-06-30', frequency: 'monthly', goalStatus: 'active', category: 'Business Capital', createdAt: '2026-03-01', updatedAt: '2026-09-01' },
-  { id: '3', memberId: 'm1', goalName: 'Son\'s University Fees', targetAmount: 500000, currentAmount: 500000, targetDate: '2026-09-01', frequency: 'monthly', goalStatus: 'completed', category: 'School Fees', createdAt: '2025-09-01', updatedAt: '2026-08-30' },
-  { id: '4', memberId: 'm1', goalName: 'Emergency Fund', targetAmount: 200000, currentAmount: 45000, targetDate: '2027-03-31', frequency: 'monthly', goalStatus: 'active', category: 'Emergency Fund', createdAt: '2026-06-01', updatedAt: '2026-09-01' },
-];
+// No more demo goals — data is fetched from the database
 
 function GoalCard({
   goal, onStatusChange,
@@ -126,29 +120,77 @@ function GoalCard({
 }
 
 // ── New Goal Modal ────────────────────────────────────────────────────────
-function NewGoalModal({ onClose, onCreate }: { onClose: () => void; onCreate: (g: any) => void }) {
+function NewGoalModal({ onClose, onCreate, memberId: internalId }: { onClose: () => void; onCreate: (g: any) => void; memberId: string }) {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('Custom');
   const [targetAmount, setTargetAmount] = useState('');
   const [targetDate, setTargetDate] = useState('');
   const [frequency, setFrequency] = useState('monthly');
+  const [saving, setSaving] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    onCreate({
-      id: String(Date.now()),
-      memberId: 'm1',
-      goalName: name,
-      category,
-      targetAmount: parseFloat(targetAmount) || 0,
-      currentAmount: 0,
-      targetDate,
-      frequency,
-      goalStatus: 'active',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-    onClose();
+    setSaving(true);
+    try {
+      const supabase = createClient();
+      const newGoal = {
+        member_id: internalId,
+        goal_name: name,
+        category,
+        target_amount: parseFloat(targetAmount) || 0,
+        current_amount: 0,
+        target_date: targetDate || null,
+        frequency,
+        goal_status: 'active',
+      };
+
+      // Try to insert into DB if we have a real member ID
+      if (internalId) {
+        const { data: inserted, error } = await supabase
+          .from('savings_goals')
+          .insert(newGoal)
+          .select()
+          .single();
+
+        if (!error && inserted) {
+          onCreate({
+            id: inserted.id,
+            memberId: inserted.member_id,
+            goalName: inserted.goal_name,
+            category: inserted.category || 'Custom',
+            targetAmount: Number(inserted.target_amount),
+            currentAmount: 0,
+            targetDate: inserted.target_date || '',
+            frequency: inserted.frequency,
+            goalStatus: 'active',
+            createdAt: inserted.created_at,
+            updatedAt: inserted.updated_at,
+          });
+          onClose();
+          return;
+        }
+      }
+
+      // Fallback: optimistic local state only
+      onCreate({
+        id: String(Date.now()),
+        memberId: internalId || '',
+        goalName: name,
+        category,
+        targetAmount: parseFloat(targetAmount) || 0,
+        currentAmount: 0,
+        targetDate,
+        frequency,
+        goalStatus: 'active',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+      onClose();
+    } catch (err) {
+      console.error('Error creating goal:', err);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -201,7 +243,10 @@ function NewGoalModal({ onClose, onCreate }: { onClose: () => void; onCreate: (g
           </div>
           <div className="flex gap-3 pt-2">
             <button type="button" onClick={onClose} className="flex-1 btn-outline py-2.5 text-sm">Cancel</button>
-            <button type="submit" className="flex-1 btn-accent py-2.5 text-sm">Create Goal</button>
+            <button type="submit" disabled={saving} className="flex-1 btn-accent py-2.5 text-sm flex items-center justify-center gap-2">
+              {saving ? <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : null}
+              {saving ? 'Saving...' : 'Create Goal'}
+            </button>
           </div>
         </form>
       </div>
@@ -215,20 +260,71 @@ export default function SavingsGoalsPage() {
   const [showModal, setShowModal] = useState(false);
   const [memberName, setMemberName] = useState('Member');
   const [memberId, setMemberId] = useState('');
+  const [internalMemberId, setInternalMemberId] = useState('');
   const [role, setRole] = useState<'member' | 'admin' | 'staff' | 'manager'>('member');
   const [statusFilter, setStatusFilter] = useState<SavingsGoalStatus | 'all'>('all');
 
   useEffect(() => {
-    const supabase = createClient();
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
-        const meta = data.user.user_metadata;
-        setMemberName(meta?.full_name || 'Member');
-        setMemberId(meta?.member_number || '');
-        setRole((meta?.role as typeof role) || 'member');
+    async function loadData() {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) { setLoading(false); return; }
+
+        const meta = user.user_metadata;
+
+        // Fetch member record
+        const { data: m } = await supabase
+          .from('members')
+          .select('id, first_name, last_name, member_number')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        let resolvedMemberId = '';
+        if (m) {
+          setMemberName(`${m.first_name} ${m.last_name}`);
+          setMemberId(m.member_number || '');
+          setRole((m as any).role || 'member');
+          resolvedMemberId = m.id;
+          setInternalMemberId(m.id);
+        } else {
+          setMemberName(meta?.full_name || 'Member');
+          setMemberId(meta?.member_number || '');
+          setRole((meta?.role as typeof role) || 'member');
+        }
+
+        // Fetch real savings goals
+        if (resolvedMemberId) {
+          const { data: dbGoals, error } = await supabase
+            .from('savings_goals')
+            .select('*')
+            .eq('member_id', resolvedMemberId)
+            .order('created_at', { ascending: false });
+
+          if (!error && dbGoals) {
+            const mapped = dbGoals.map((g: any) => ({
+              id: g.id,
+              memberId: g.member_id,
+              goalName: g.goal_name,
+              targetAmount: Number(g.target_amount) || 0,
+              currentAmount: Number(g.current_amount) || 0,
+              targetDate: g.target_date || '',
+              frequency: g.frequency || 'monthly',
+              goalStatus: g.goal_status || 'active',
+              category: g.category || 'Custom',
+              createdAt: g.created_at,
+              updatedAt: g.updated_at,
+            }));
+            setGoals(mapped);
+          }
+        }
+      } catch (e) {
+        console.error('Error loading goals:', e);
+      } finally {
+        setLoading(false);
       }
-    });
-    setTimeout(() => { setGoals(DEMO_GOALS); setLoading(false); }, 500);
+    }
+    loadData();
   }, []);
 
   const handleStatusChange = (id: string, status: SavingsGoalStatus) => {
@@ -244,7 +340,7 @@ export default function SavingsGoalsPage() {
 
   return (
     <AppLayout role={role} memberName={memberName} memberId={memberId}>
-      {showModal && <NewGoalModal onClose={() => setShowModal(false)} onCreate={(g) => setGoals((prev) => [g, ...prev])} />}
+      {showModal && <NewGoalModal onClose={() => setShowModal(false)} onCreate={(g) => setGoals((prev) => [g, ...prev])} memberId={internalMemberId} />}
 
       <div className="p-6 xl:p-8 2xl:p-10 max-w-6xl mx-auto space-y-6">
         {/* Header */}
