@@ -1,16 +1,147 @@
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
-const stats = [
-  { value: '5,000+', label: 'MEMBERS' },
-  { value: '₦2.4B', label: 'MANAGED' },
+function formatFundStat(amount: number): string {
+  if (amount >= 1_000_000_000) {
+    const billions = amount / 1_000_000_000;
+    return `₦${billions % 1 === 0 ? billions.toFixed(0) : billions.toFixed(1)}B`;
+  }
+  const millions = amount / 1_000_000;
+  return `₦${millions % 1 === 0 ? millions.toFixed(0) : millions.toFixed(1)}M`;
+}
+
+const DEFAULT_STATS = [
+  { value: '500+', label: 'MEMBERS' },
+  { value: '₦500M', label: 'MANAGED' },
   { value: '9–25%', label: 'RETURNS P.A.' },
   { value: '48hrs', label: 'LOAN APPROVAL' },
 ];
 
 export default function HeroSection() {
+  const [stats, setStats] = useState(DEFAULT_STATS);
+
+  useEffect(() => {
+    const supabase = createClient();
+    const BASELINE_MEMBERS = 500;
+    const BASELINE_FUNDS = 500_000_000; // 500 Million
+
+    async function loadLiveStats() {
+      try {
+        // 1. Calculate automated member count
+        let additionalMembers = 0;
+
+        // Check Supabase members table
+        const { count: memberCount, error: memberErr } = await supabase
+          .from('members')
+          .select('*', { count: 'exact', head: true });
+
+        if (!memberErr && typeof memberCount === 'number') {
+          additionalMembers = Math.max(additionalMembers, memberCount);
+        }
+
+        // Check user_profiles table
+        const { count: profileCount, error: profileErr } = await supabase
+          .from('user_profiles')
+          .select('*', { count: 'exact', head: true });
+
+        if (!profileErr && typeof profileCount === 'number') {
+          additionalMembers = Math.max(additionalMembers, profileCount);
+        }
+
+        // Also inspect locally provisioned members (localStorage fallback)
+        let localFunds = 0;
+        try {
+          const stored = localStorage.getItem('climps_admin_members_v1');
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+              additionalMembers = Math.max(additionalMembers, parsed.length);
+              localFunds = parsed.reduce(
+                (sum: number, m: any) =>
+                  sum +
+                  (Number(m.total_savings) || 0) +
+                  (Number(m.total_contributions) || 0) +
+                  (Number(m.investment_portfolio_value) || 0),
+                0
+              );
+            }
+          }
+        } catch {}
+
+        const totalMembers = BASELINE_MEMBERS + additionalMembers;
+
+        // 2. Calculate automated managed fund total
+        let liveFundAdditions = localFunds;
+
+        // Fetch savings accounts balances
+        const { data: savings } = await supabase
+          .from('savings_accounts')
+          .select('balance');
+        if (savings && savings.length > 0) {
+          const sumSavings = savings.reduce((acc, row) => acc + (Number(row.balance) || 0), 0);
+          liveFundAdditions = Math.max(liveFundAdditions, sumSavings);
+        }
+
+        // Fetch savings contributions
+        const { data: contributions } = await supabase
+          .from('contributions')
+          .select('amount');
+        if (contributions && contributions.length > 0) {
+          const sumContributions = contributions.reduce((acc, row) => acc + (Number(row.amount) || 0), 0);
+          liveFundAdditions += sumContributions;
+        }
+
+        // Fetch investments
+        const { data: investments } = await supabase
+          .from('investments')
+          .select('amount');
+        if (investments && investments.length > 0) {
+          const sumInvestments = investments.reduce((acc, row) => acc + (Number(row.amount) || 0), 0);
+          liveFundAdditions += sumInvestments;
+        }
+
+        const totalFunds = BASELINE_FUNDS + liveFundAdditions;
+
+        setStats([
+          { value: `${totalMembers.toLocaleString()}+`, label: 'MEMBERS' },
+          { value: formatFundStat(totalFunds), label: 'MANAGED' },
+          { value: '9–25%', label: 'RETURNS P.A.' },
+          { value: '48hrs', label: 'LOAN APPROVAL' },
+        ]);
+      } catch (err) {
+        console.warn('Live stats fallback to baseline 500 / ₦500M:', err);
+      }
+    }
+
+    loadLiveStats();
+
+    // Real-time listener: re-calculate when new members or funds are added
+    const channel = supabase
+      .channel('public-hero-stats')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'members' }, () => loadLiveStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'user_profiles' }, () => loadLiveStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'contributions' }, () => loadLiveStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'investments' }, () => loadLiveStats())
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'savings_accounts' }, () => loadLiveStats())
+      .subscribe();
+
+    // Listen for storage events (e.g. member added via admin panel in another tab)
+    const onStorageChange = (e: StorageEvent) => {
+      if (e.key === 'climps_admin_members_v1') {
+        loadLiveStats();
+      }
+    };
+    window.addEventListener('storage', onStorageChange);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener('storage', onStorageChange);
+    };
+  }, []);
+
   return (
     <>
       {/* ── HERO ── */}
