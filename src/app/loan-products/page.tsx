@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { CreditCard, CheckCircle2, ShieldCheck, ArrowRight, Calculator, LogIn } from 'lucide-react';
 import LandingNav from '../landing/components/LandingNav';
@@ -165,7 +166,22 @@ function LoanCard({ product, isAuthenticated }: { product: LoanProduct; isAuthen
 
 export default function LoanProductsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/login?redirect=' + encodeURIComponent('/loan-products'));
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
 
   const visibleIds = filterMap[activeFilter];
   const visibleProducts = loanProducts.filter((p) => visibleIds.includes(p.id));

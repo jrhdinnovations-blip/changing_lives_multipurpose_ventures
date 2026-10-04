@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { INVESTMENT_PRODUCTS, InvestmentProductDetail, formatNairaCompact } from '@/lib/investmentsData';
 import { TrendingUp, ShieldCheck, Calendar, ArrowRight, Calculator, Sparkles, Filter, AlertCircle, LogIn } from 'lucide-react';
@@ -230,8 +231,23 @@ function ProductCard({ product, isAuthenticated }: { product: InvestmentProductD
 
 export default function InvestmentProductsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all');
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
   const visibleProducts = INVESTMENT_PRODUCTS.filter(filterMap[activeFilter]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/login?redirect=' + encodeURIComponent('/investment-products'));
+    }
+  }, [user, loading, router]);
+
+  if (loading || !user) {
+    return (
+      <div className="min-h-screen bg-[#0a0f1e] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-emerald-400 border-t-transparent animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#0a0f1e] text-white selection:bg-emerald-500/30 selection:text-emerald-200">

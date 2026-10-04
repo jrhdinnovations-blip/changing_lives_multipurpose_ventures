@@ -14,13 +14,13 @@ function formatFundStat(amount: number): string {
   return `₦${millions % 1 === 0 ? millions.toFixed(0) : millions.toFixed(1)}M`;
 }
 
-function useCountUp(target: string, duration = 1800) {
-  const [display, setDisplay] = useState('0');
-  const started = useRef(false);
+function useCountUp(target: string, triggered: boolean, duration = 1800) {
+  const [display, setDisplay] = useState('–');
+  const animating = useRef(false);
 
   useEffect(() => {
-    if (started.current) return;
-    started.current = true;
+    if (!triggered || animating.current) return;
+    animating.current = true;
 
     const numMatch = target.match(/[\d,.]+/);
     if (!numMatch) { setDisplay(target); return; }
@@ -46,18 +46,18 @@ function useCountUp(target: string, duration = 1800) {
       else setDisplay(target);
     };
     requestAnimationFrame(tick);
-  }, [target, duration]);
+  }, [triggered, target, duration]);
 
   return display;
 }
 
 function StatCard({ value, label, delay }: { value: string; label: string; delay: number }) {
-  const [visible, setVisible] = useState(false);
+  const [triggered, setTriggered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const count = useCountUp(visible ? value : '0');
+  const count = useCountUp(value, triggered);
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), delay);
+    const timer = setTimeout(() => setTriggered(true), delay);
     return () => clearTimeout(timer);
   }, [delay]);
 
@@ -66,11 +66,11 @@ function StatCard({ value, label, delay }: { value: string; label: string; delay
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
       className={`flex flex-col items-center justify-center py-10 px-6 text-center transition-all duration-700 ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+        triggered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
       <div className="text-4xl sm:text-5xl font-black text-[#0d1b2e] tracking-tight leading-none mb-2">
-        {visible ? count : '0'}
+        {count}
       </div>
       <div className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase">{label}</div>
     </div>
