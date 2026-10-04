@@ -20,27 +20,27 @@ function formatDateTime(d: string | null) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-600',
-  submitted: 'bg-blue-100 text-blue-700',
-  under_review: 'bg-yellow-100 text-yellow-700',
-  guarantor_verification: 'bg-purple-100 text-purple-700',
-  collateral_verification: 'bg-indigo-100 text-indigo-700',
-  approved: 'bg-emerald-100 text-emerald-700',
-  rejected: 'bg-red-100 text-red-700',
-  awaiting_processing_fee: 'bg-orange-100 text-orange-700',
-  ready_for_disbursement: 'bg-teal-100 text-teal-700',
-  disbursed: 'bg-cyan-100 text-cyan-700',
-  active: 'bg-green-100 text-green-700',
-  interest_due: 'bg-amber-100 text-amber-700',
-  interest_overdue: 'bg-red-100 text-red-700',
-  default: 'bg-red-200 text-red-800',
-  completed: 'bg-gray-100 text-gray-600',
-  cancelled: 'bg-gray-100 text-gray-500',
-  pending: 'bg-yellow-100 text-yellow-700',
+  draft: 'bg-white/10 text-white/50',
+  submitted: 'bg-blue-500/15 text-blue-400',
+  under_review: 'bg-yellow-500/15 text-yellow-400',
+  guarantor_verification: 'bg-purple-500/15 text-purple-400',
+  collateral_verification: 'bg-indigo-500/15 text-indigo-400',
+  approved: 'bg-emerald-500/15 text-emerald-400',
+  rejected: 'bg-red-500/15 text-red-400',
+  awaiting_processing_fee: 'bg-orange-500/15 text-orange-400',
+  ready_for_disbursement: 'bg-teal-500/15 text-teal-400',
+  disbursed: 'bg-cyan-500/15 text-cyan-400',
+  active: 'bg-green-500/15 text-green-400',
+  interest_due: 'bg-amber-500/15 text-amber-400',
+  interest_overdue: 'bg-red-500/15 text-red-400',
+  default: 'bg-red-500/20 text-red-300',
+  completed: 'bg-white/10 text-white/50',
+  cancelled: 'bg-white/10 text-white/40',
+  pending: 'bg-yellow-500/15 text-yellow-400',
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const cls = STATUS_COLORS[status] || 'bg-gray-100 text-gray-600';
+  const cls = STATUS_COLORS[status] || 'bg-white/10 text-white/50';
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${cls}`}>
       {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -86,9 +86,8 @@ interface LoanApplication {
   user_id: string;
 }
 
-
 export default function AdminLoansPage() {
-  const { user, isAdmin } = useAuth();
+  const { user } = useAuth();
   const supabase = createClient();
 
   const [adminName, setAdminName] = useState('Administrator');
@@ -117,13 +116,11 @@ export default function AdminLoansPage() {
   const [paymentPrincipal, setPaymentPrincipal] = useState('');
 
   useEffect(() => {
-    // Load admin name from auth
     if (user) {
       const meta = user.user_metadata;
       setAdminName(meta?.full_name || user.email || 'Administrator');
       setAdminId(meta?.member_number || '');
     }
-    // Check URL parameters on mount
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
       const urlFilter = params.get('filter');
@@ -148,20 +145,15 @@ export default function AdminLoansPage() {
       const finalApps: LoanApplication[] = (!error && data) ? data : [];
       setApplications(finalApps);
 
-      // Check if URL specifies a particular loan to auto-open
       if (typeof window !== 'undefined') {
         const params = new URLSearchParams(window.location.search);
         const targetId = params.get('appId');
         if (targetId) {
           const match = finalApps.find(a => a.id === targetId || a.application_number === targetId);
-          if (match) {
-            loadApplicationDetails(match);
-            return;
-          }
+          if (match) { loadApplicationDetails(match); return; }
         }
       }
 
-      // Auto-select first loan if none selected
       if (finalApps.length > 0 && !selected) {
         loadApplicationDetails(finalApps[0]);
       } else if (finalApps.length === 0) {
@@ -182,50 +174,20 @@ export default function AdminLoansPage() {
     setActionError('');
     setActionNotes('');
 
-    // Load collateral
-    const { data: col } = await supabase
-      .from('loan_collaterals')
-      .select('*')
-      .eq('application_id', app.id)
-      .single();
+    const { data: col } = await supabase.from('loan_collaterals').select('*').eq('application_id', app.id).single();
     setCollateral(col);
 
-    // Load guarantor
-    const { data: guar } = await supabase
-      .from('loan_guarantors')
-      .select('*')
-      .eq('application_id', app.id)
-      .single();
+    const { data: guar } = await supabase.from('loan_guarantors').select('*').eq('application_id', app.id).single();
     setGuarantor(guar);
 
-    // Load audit trail
-    const { data: audit } = await supabase
-      .from('loan_audit_trail')
-      .select('*')
-      .eq('application_id', app.id)
-      .order('created_at', { ascending: false });
+    const { data: audit } = await supabase.from('loan_audit_trail').select('*').eq('application_id', app.id).order('created_at', { ascending: false });
     setAuditTrail(audit || []);
 
-    // Load repayment schedule if loan exists
-    const { data: loans } = await supabase
-      .from('loans')
-      .select('id')
-      .eq('application_id', app.id)
-      .single();
-
+    const { data: loans } = await supabase.from('loans').select('id').eq('application_id', app.id).single();
     if (loans) {
-      const { data: schedule } = await supabase
-        .from('loan_repayment_schedules')
-        .select('*')
-        .eq('loan_id', loans.id)
-        .order('instalment_number');
+      const { data: schedule } = await supabase.from('loan_repayment_schedules').select('*').eq('loan_id', loans.id).order('instalment_number');
       setRepaymentSchedule(schedule || []);
-
-      const { data: rec } = await supabase
-        .from('loan_receipts')
-        .select('*')
-        .eq('loan_id', loans.id)
-        .order('created_at', { ascending: false });
+      const { data: rec } = await supabase.from('loan_receipts').select('*').eq('loan_id', loans.id).order('created_at', { ascending: false });
       setReceipts(rec || []);
     } else {
       setRepaymentSchedule([]);
@@ -247,13 +209,8 @@ export default function AdminLoansPage() {
       if (actionNotes) updatePayload.admin_notes = actionNotes;
 
       try {
-        const { error } = await supabase
-          .from('loan_applications')
-          .update(updatePayload)
-          .eq('id', selected.id);
+        const { error } = await supabase.from('loan_applications').update(updatePayload).eq('id', selected.id);
         if (error) throw error;
-
-        // Audit trail
         await supabase.from('loan_audit_trail').insert({
           application_id: selected.id,
           user_id: user?.id,
@@ -268,21 +225,16 @@ export default function AdminLoansPage() {
 
       const updated = { ...selected, app_status: newStatus, ...updatePayload };
       setSelected(updated as LoanApplication);
-      setApplications(prev =>
-        prev.map(a => (a.id === selected.id ? (updated as LoanApplication) : a))
-      );
-      setAuditTrail(prev => [
-        {
-          id: 'audit-' + Date.now(),
-          application_id: selected.id,
-          action,
-          previous_status: selected.app_status,
-          new_status: newStatus,
-          notes: actionNotes || 'Status updated by Admin',
-          created_at: new Date().toISOString(),
-        },
-        ...prev,
-      ]);
+      setApplications(prev => prev.map(a => (a.id === selected.id ? (updated as LoanApplication) : a)));
+      setAuditTrail(prev => [{
+        id: 'audit-' + Date.now(),
+        application_id: selected.id,
+        action,
+        previous_status: selected.app_status,
+        new_status: newStatus,
+        notes: actionNotes || 'Status updated by Admin',
+        created_at: new Date().toISOString(),
+      }, ...prev]);
       setActionNotes('');
     } catch (err: any) {
       setActionError(err?.message || 'Action failed. Please try again.');
@@ -296,13 +248,7 @@ export default function AdminLoansPage() {
     setActionLoading(true);
     setActionError('');
     try {
-      // Get loan
-      const { data: loanData } = await supabase
-        .from('loans')
-        .select('id, outstanding_balance, amount_repaid')
-        .eq('application_id', selected.id)
-        .single();
-
+      const { data: loanData } = await supabase.from('loans').select('id, outstanding_balance, amount_repaid').eq('application_id', selected.id).single();
       if (!loanData) throw new Error('No active loan found for this application.');
 
       const amount = parseFloat(paymentAmount);
@@ -312,7 +258,6 @@ export default function AdminLoansPage() {
       const { count } = await supabase.from('loan_receipts').select('*', { count: 'exact', head: true });
       const receiptNum = `RCP/${year}/${String((count || 0) + 1).padStart(5, '0')}`;
 
-      // Insert receipt
       await supabase.from('loan_receipts').insert({
         receipt_number: receiptNum,
         loan_id: loanData.id,
@@ -329,14 +274,12 @@ export default function AdminLoansPage() {
         verified_at: new Date().toISOString(),
       });
 
-      // Update loan
       await supabase.from('loans').update({
         amount_repaid: (loanData.amount_repaid || 0) + amount,
         outstanding_balance: (loanData.outstanding_balance || 0) - principal,
         updated_at: new Date().toISOString(),
       }).eq('id', loanData.id);
 
-      // Audit
       await supabase.from('loan_audit_trail').insert({
         application_id: selected.id,
         loan_id: loanData.id,
@@ -371,61 +314,67 @@ export default function AdminLoansPage() {
   return (
     <AppLayout role="admin" memberName={adminName} memberId={adminId}>
       <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+
         {/* Left Panel — Application List */}
-        <div className="w-80 border-r border-gray-100 bg-white flex flex-col shrink-0">
-          <div className="p-4 border-b border-gray-100">
-            <h2 className="font-bold text-gray-900 mb-3">Loan Applications</h2>
+        <div className="w-80 border-r border-white/10 bg-[#0a0f1e] flex flex-col shrink-0">
+          <div className="p-4 border-b border-white/10">
+            <h2 className="font-bold text-white mb-3 text-sm">Loan Applications</h2>
             <input
               type="text"
               placeholder="Search applications..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+              className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 focus:ring-2 focus:ring-emerald-500/20"
             />
             <select
               value={filterStatus}
               onChange={e => setFilterStatus(e.target.value)}
-              className="w-full mt-2 px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none"
+              className="w-full mt-2 px-3 py-2 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm focus:outline-none focus:border-emerald-500/50"
             >
-              <option value="all">All Statuses</option>
-              <option value="submitted">Submitted</option>
-              <option value="under_review">Under Review</option>
-              <option value="guarantor_verification">Guarantor Verification</option>
-              <option value="collateral_verification">Collateral Verification</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-              <option value="awaiting_processing_fee">Awaiting Processing Fee</option>
-              <option value="disbursed">Disbursed</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
+              <option value="all" className="bg-[#0d1527]">All Statuses</option>
+              <option value="submitted" className="bg-[#0d1527]">Submitted</option>
+              <option value="under_review" className="bg-[#0d1527]">Under Review</option>
+              <option value="guarantor_verification" className="bg-[#0d1527]">Guarantor Verification</option>
+              <option value="collateral_verification" className="bg-[#0d1527]">Collateral Verification</option>
+              <option value="approved" className="bg-[#0d1527]">Approved</option>
+              <option value="rejected" className="bg-[#0d1527]">Rejected</option>
+              <option value="awaiting_processing_fee" className="bg-[#0d1527]">Awaiting Processing Fee</option>
+              <option value="disbursed" className="bg-[#0d1527]">Disbursed</option>
+              <option value="active" className="bg-[#0d1527]">Active</option>
+              <option value="completed" className="bg-[#0d1527]">Completed</option>
             </select>
           </div>
           <div className="flex-1 overflow-y-auto">
             {loading ? (
               <div className="flex items-center justify-center h-32">
-                <svg className="w-6 h-6 animate-spin text-emerald-500" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                </svg>
+                <div className="w-6 h-6 rounded-full border-4 border-emerald-500 border-t-transparent animate-spin" />
               </div>
             ) : filteredApps.length === 0 ? (
-              <div className="p-6 text-center text-sm text-gray-500">No applications found.</div>
+              <div className="p-6 text-center">
+                <div className="w-12 h-12 rounded-full bg-white/[0.06] flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </div>
+                <p className="text-sm text-white/40 font-medium">No applications found</p>
+                <p className="text-xs text-white/25 mt-1">Applications appear once members submit loan requests</p>
+              </div>
             ) : (
               filteredApps.map(app => (
                 <button
                   key={app.id}
                   onClick={() => loadApplicationDetails(app)}
-                  className={`w-full text-left p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${
-                    selected?.id === app.id ? 'bg-emerald-50 border-l-2 border-l-emerald-500' : ''
+                  className={`w-full text-left p-4 border-b border-white/[0.06] hover:bg-white/[0.06] transition-colors ${
+                    selected?.id === app.id ? 'bg-emerald-500/10 border-l-2 border-l-emerald-500' : ''
                   }`}
                 >
-                  <div className="flex items-start justify-between mb-1">
-                    <p className="text-sm font-semibold text-gray-900 truncate">{app.applicant_name || 'Unknown'}</p>
+                  <div className="flex items-start justify-between mb-1 gap-2">
+                    <p className="text-sm font-semibold text-white truncate">{app.applicant_name || 'Unknown'}</p>
                     <StatusBadge status={app.app_status || app.application_status || 'draft'} />
                   </div>
-                  <p className="text-xs text-gray-500">{app.application_number || 'Draft'}</p>
-                  <p className="text-xs font-medium text-emerald-700 mt-1">{formatNGN(app.requested_amount)}</p>
-                  <p className="text-xs text-gray-400">{formatDate(app.created_at)}</p>
+                  <p className="text-xs text-white/40 font-mono">{app.application_number || 'Draft'}</p>
+                  <p className="text-xs font-semibold text-emerald-400 mt-1">{formatNGN(app.requested_amount)}</p>
+                  <p className="text-xs text-white/30 mt-0.5">{formatDate(app.created_at)}</p>
                 </button>
               ))
             )}
@@ -433,128 +382,81 @@ export default function AdminLoansPage() {
         </div>
 
         {/* Right Panel — Application Detail */}
-        <div className="flex-1 overflow-y-auto bg-gray-50">
+        <div className="flex-1 overflow-y-auto bg-[#080d1a]">
           {!selected ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 bg-white/[0.06] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <p className="text-gray-500 text-sm">Select an application to review</p>
+                <p className="text-white/40 text-sm font-medium">Select an application to review</p>
+                <p className="text-white/25 text-xs mt-1">Click any application from the list</p>
               </div>
             </div>
           ) : (
             <div className="p-6 space-y-5">
+
               {/* Application Header */}
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+              <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-5">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900">{selected.applicant_name}</h2>
-                    <p className="text-sm text-gray-500">{selected.application_number}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">Submitted: {formatDateTime(selected.created_at)}</p>
+                    <h2 className="text-xl font-bold text-white">{selected.applicant_name}</h2>
+                    <p className="text-sm text-white/50 font-mono">{selected.application_number}</p>
+                    <p className="text-xs text-white/30 mt-0.5">Submitted: {formatDateTime(selected.created_at)}</p>
                   </div>
                   <StatusBadge status={selected.app_status || selected.application_status || 'draft'} />
                 </div>
-
-                {/* Quick Stats */}
                 <div className="grid grid-cols-4 gap-3">
-                  <div className="bg-gray-50 rounded-xl p-3">
-                    <p className="text-xs text-gray-500">Loan Amount</p>
-                    <p className="font-bold text-gray-900">{formatNGN(selected.requested_amount)}</p>
+                  <div className="bg-white/[0.06] rounded-xl p-3">
+                    <p className="text-xs text-white/40">Loan Amount</p>
+                    <p className="font-bold text-white mt-0.5">{formatNGN(selected.requested_amount)}</p>
                   </div>
-                  <div className="bg-orange-50 rounded-xl p-3">
-                    <p className="text-xs text-gray-500">Processing Fee</p>
-                    <p className="font-bold text-orange-700">{formatNGN(selected.processing_fee_amount)}</p>
+                  <div className="bg-orange-500/10 rounded-xl p-3">
+                    <p className="text-xs text-white/40">Processing Fee</p>
+                    <p className="font-bold text-orange-400 mt-0.5">{formatNGN(selected.processing_fee_amount)}</p>
                   </div>
-                  <div className="bg-blue-50 rounded-xl p-3">
-                    <p className="text-xs text-gray-500">Duration</p>
-                    <p className="font-bold text-blue-700">{selected.duration_months} month{selected.duration_months > 1 ? 's' : ''}</p>
+                  <div className="bg-blue-500/10 rounded-xl p-3">
+                    <p className="text-xs text-white/40">Duration</p>
+                    <p className="font-bold text-blue-400 mt-0.5">{selected.duration_months} month{selected.duration_months > 1 ? 's' : ''}</p>
                   </div>
-                  <div className="bg-emerald-50 rounded-xl p-3">
-                    <p className="text-xs text-gray-500">Total Repayable</p>
-                    <p className="font-bold text-emerald-700">{formatNGN(selected.total_repayment_amount)}</p>
+                  <div className="bg-emerald-500/10 rounded-xl p-3">
+                    <p className="text-xs text-white/40">Total Repayable</p>
+                    <p className="font-bold text-emerald-400 mt-0.5">{formatNGN(selected.total_repayment_amount)}</p>
                   </div>
                 </div>
               </div>
 
-              {/* Action Controls */}
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                <h3 className="font-semibold text-gray-900 mb-3">Admin Actions</h3>
+              {/* Admin Actions */}
+              <div className="bg-[#0d1527] rounded-2xl border border-white/10 p-5">
+                <h3 className="font-semibold text-white mb-3 text-sm">Admin Actions</h3>
                 {actionError && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 mb-3">
-                    {actionError}
-                  </div>
+                  <div className="bg-red-500/10 border border-red-500/25 rounded-xl p-3 text-sm text-red-400 mb-3">{actionError}</div>
                 )}
                 <textarea
                   value={actionNotes}
                   onChange={e => setActionNotes(e.target.value)}
                   placeholder="Add notes for this action (optional)..."
                   rows={2}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 resize-none mb-3"
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50 resize-none mb-3"
                 />
                 <div className="flex flex-wrap gap-2">
-                  <ActionButton
-                    label="Mark Under Review"
-                    color="yellow"
-                    loading={actionLoading}
-                    onClick={() => performAction('marked_under_review', 'under_review')}
-                  />
-                  <ActionButton
-                    label="Verify Guarantor"
-                    color="purple"
-                    loading={actionLoading}
-                    onClick={() => performAction('guarantor_verified', 'guarantor_verification', { guarantor_verified: true, guarantor_verified_at: new Date().toISOString() })}
-                  />
-                  <ActionButton
-                    label="Verify Collateral"
-                    color="indigo"
-                    loading={actionLoading}
-                    onClick={() => performAction('collateral_verified', 'collateral_verification', { collateral_verified: true, collateral_verified_at: new Date().toISOString() })}
-                  />
-                  <ActionButton
-                    label="Approve"
-                    color="emerald"
-                    loading={actionLoading}
-                    onClick={() => performAction('loan_approved', 'approved', { approved_amount: selected.requested_amount, approved_at: new Date().toISOString() })}
-                  />
-                  <ActionButton
-                    label="Reject"
-                    color="red"
-                    loading={actionLoading}
-                    onClick={() => performAction('loan_rejected', 'rejected', { rejected_at: new Date().toISOString(), rejection_reason: actionNotes })}
-                  />
-                  <ActionButton
-                    label="Processing Fee Paid"
-                    color="orange"
-                    loading={actionLoading}
-                    onClick={() => performAction('processing_fee_paid', 'awaiting_processing_fee', { processing_fee_paid: true, processing_fee_paid_at: new Date().toISOString() })}
-                  />
-                  <ActionButton
-                    label="Disburse"
-                    color="teal"
-                    loading={actionLoading}
-                    onClick={() => performAction('loan_disbursed', 'disbursed', { disbursed_at: new Date().toISOString() })}
-                  />
-                  <ActionButton
-                    label="Record Repayment"
-                    color="blue"
-                    loading={actionLoading}
-                    onClick={() => setShowPaymentModal(true)}
-                  />
-                  <ActionButton
-                    label="Mark Completed"
-                    color="gray"
-                    loading={actionLoading}
-                    onClick={() => performAction('loan_completed', 'completed')}
-                  />
+                  <ActionButton label="Mark Under Review" color="yellow" loading={actionLoading} onClick={() => performAction('marked_under_review', 'under_review')} />
+                  <ActionButton label="Verify Guarantor" color="purple" loading={actionLoading} onClick={() => performAction('guarantor_verified', 'guarantor_verification', { guarantor_verified: true, guarantor_verified_at: new Date().toISOString() })} />
+                  <ActionButton label="Verify Collateral" color="indigo" loading={actionLoading} onClick={() => performAction('collateral_verified', 'collateral_verification', { collateral_verified: true, collateral_verified_at: new Date().toISOString() })} />
+                  <ActionButton label="Approve" color="emerald" loading={actionLoading} onClick={() => performAction('loan_approved', 'approved', { approved_amount: selected.requested_amount, approved_at: new Date().toISOString() })} />
+                  <ActionButton label="Reject" color="red" loading={actionLoading} onClick={() => performAction('loan_rejected', 'rejected', { rejected_at: new Date().toISOString(), rejection_reason: actionNotes })} />
+                  <ActionButton label="Processing Fee Paid" color="orange" loading={actionLoading} onClick={() => performAction('processing_fee_paid', 'awaiting_processing_fee', { processing_fee_paid: true, processing_fee_paid_at: new Date().toISOString() })} />
+                  <ActionButton label="Disburse" color="teal" loading={actionLoading} onClick={() => performAction('loan_disbursed', 'disbursed', { disbursed_at: new Date().toISOString() })} />
+                  <ActionButton label="Record Repayment" color="blue" loading={actionLoading} onClick={() => setShowPaymentModal(true)} />
+                  <ActionButton label="Mark Completed" color="gray" loading={actionLoading} onClick={() => performAction('loan_completed', 'completed')} />
                 </div>
               </div>
 
               {/* Detail Tabs */}
-              <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                <div className="flex gap-0 border-b border-gray-100 overflow-x-auto">
+              <div className="bg-[#0d1527] rounded-2xl border border-white/10 overflow-hidden">
+                <div className="flex gap-0 border-b border-white/10 overflow-x-auto">
                   {[
                     { id: 'details', label: 'Applicant' },
                     { id: 'collateral', label: 'Collateral' },
@@ -569,7 +471,8 @@ export default function AdminLoansPage() {
                       onClick={() => setDetailTab(tab.id as any)}
                       className={`px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors border-b-2 ${
                         detailTab === tab.id
-                          ? 'border-emerald-500 text-emerald-700 bg-emerald-50/50' :'border-transparent text-gray-500 hover:text-gray-700'
+                          ? 'border-emerald-500 text-emerald-400 bg-emerald-500/5'
+                          : 'border-transparent text-white/40 hover:text-white hover:bg-white/[0.04]'
                       }`}
                     >
                       {tab.label}
@@ -578,7 +481,6 @@ export default function AdminLoansPage() {
                 </div>
 
                 <div className="p-5">
-                  {/* Applicant Details */}
                   {detailTab === 'details' && (
                     <div className="grid grid-cols-2 gap-4">
                       <DetailRow label="Full Name" value={selected.applicant_name} />
@@ -596,9 +498,8 @@ export default function AdminLoansPage() {
                     </div>
                   )}
 
-                  {/* Collateral */}
                   {detailTab === 'collateral' && (
-                    <div className="space-y-3">
+                    <div>
                       {collateral ? (
                         <div className="grid grid-cols-2 gap-4">
                           <DetailRow label="Collateral Type" value={collateral.collateral_type?.replace('_', ' ')} />
@@ -612,14 +513,13 @@ export default function AdminLoansPage() {
                           {collateral.verified_at && <DetailRow label="Verified At" value={formatDateTime(collateral.verified_at)} />}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">No collateral information found.</p>
+                        <p className="text-sm text-white/40">No collateral information found.</p>
                       )}
                     </div>
                   )}
 
-                  {/* Guarantor */}
                   {detailTab === 'guarantor' && (
-                    <div className="space-y-3">
+                    <div>
                       {guarantor ? (
                         <div className="grid grid-cols-2 gap-4">
                           <DetailRow label="Guarantor Name" value={guarantor.guarantor_name} />
@@ -630,12 +530,11 @@ export default function AdminLoansPage() {
                           {guarantor.verification_notes && <DetailRow label="Notes" value={guarantor.verification_notes} />}
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-500">No guarantor information found.</p>
+                        <p className="text-sm text-white/40">No guarantor information found.</p>
                       )}
                     </div>
                   )}
 
-                  {/* Bank Details */}
                   {detailTab === 'bank' && (
                     <div className="grid grid-cols-2 gap-4">
                       <DetailRow label="Account Name" value={selected.account_name} />
@@ -644,46 +543,42 @@ export default function AdminLoansPage() {
                     </div>
                   )}
 
-                  {/* Terms */}
                   {detailTab === 'terms' && (
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-2 gap-4">
-                        <DetailRow label="Loan Terms Agreed" value={selected.terms_agreed ? '✓ Yes' : '✗ No'} />
-                        <DetailRow label="Interest Acknowledgement" value={selected.interest_ack_agreed ? '✓ Yes' : '✗ No'} />
-                        <DetailRow label="Full Terms Agreed" value={selected.full_terms_agreed ? '✓ Yes' : '✗ No'} />
-                        <DetailRow label="Collateral Terms Agreed" value={selected.collateral_terms_agreed ? '✓ Yes' : '✗ No'} />
-                        <DetailRow label="Agreement Version" value={selected.agreement_version || 'v1.0'} />
-                        <DetailRow label="Full Terms Date" value={formatDateTime(selected.full_terms_agreed_at)} />
-                      </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <DetailRow label="Loan Terms Agreed" value={selected.terms_agreed ? '✓ Yes' : '✗ No'} />
+                      <DetailRow label="Interest Acknowledgement" value={selected.interest_ack_agreed ? '✓ Yes' : '✗ No'} />
+                      <DetailRow label="Full Terms Agreed" value={selected.full_terms_agreed ? '✓ Yes' : '✗ No'} />
+                      <DetailRow label="Collateral Terms Agreed" value={selected.collateral_terms_agreed ? '✓ Yes' : '✗ No'} />
+                      <DetailRow label="Agreement Version" value={selected.agreement_version || 'v1.0'} />
+                      <DetailRow label="Full Terms Date" value={formatDateTime(selected.full_terms_agreed_at)} />
                     </div>
                   )}
 
-                  {/* Payments */}
                   {detailTab === 'payments' && (
                     <div className="space-y-4">
                       {repaymentSchedule.length > 0 && (
                         <div>
-                          <h4 className="font-semibold text-gray-700 mb-2 text-sm">Repayment Schedule</h4>
-                          <div className="overflow-x-auto">
+                          <h4 className="font-semibold text-white/70 mb-2 text-sm">Repayment Schedule</h4>
+                          <div className="overflow-x-auto rounded-xl border border-white/10">
                             <table className="w-full text-xs">
-                              <thead className="bg-gray-50">
+                              <thead className="bg-white/[0.06]">
                                 <tr>
-                                  <th className="text-left px-3 py-2 font-semibold text-gray-500">#</th>
-                                  <th className="text-right px-3 py-2 font-semibold text-gray-500">Due Date</th>
-                                  <th className="text-right px-3 py-2 font-semibold text-gray-500">Expected</th>
-                                  <th className="text-right px-3 py-2 font-semibold text-gray-500">Paid</th>
-                                  <th className="text-center px-3 py-2 font-semibold text-gray-500">Status</th>
+                                  <th className="text-left px-3 py-2 font-semibold text-white/50">#</th>
+                                  <th className="text-right px-3 py-2 font-semibold text-white/50">Due Date</th>
+                                  <th className="text-right px-3 py-2 font-semibold text-white/50">Expected</th>
+                                  <th className="text-right px-3 py-2 font-semibold text-white/50">Paid</th>
+                                  <th className="text-center px-3 py-2 font-semibold text-white/50">Status</th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-gray-50">
+                              <tbody className="divide-y divide-white/10">
                                 {repaymentSchedule.map(row => (
-                                  <tr key={row.id}>
-                                    <td className="px-3 py-2">{row.instalment_number}</td>
-                                    <td className="px-3 py-2 text-right">{formatDate(row.due_date)}</td>
-                                    <td className="px-3 py-2 text-right">{formatNGN(row.expected_amount)}</td>
-                                    <td className="px-3 py-2 text-right text-emerald-600">{formatNGN(row.amount_paid)}</td>
+                                  <tr key={row.id} className="hover:bg-white/[0.04]">
+                                    <td className="px-3 py-2 text-white/70">{row.instalment_number}</td>
+                                    <td className="px-3 py-2 text-right text-white/50">{formatDate(row.due_date)}</td>
+                                    <td className="px-3 py-2 text-right text-white/70">{formatNGN(row.expected_amount)}</td>
+                                    <td className="px-3 py-2 text-right text-emerald-400 font-semibold">{formatNGN(row.amount_paid)}</td>
                                     <td className="px-3 py-2 text-center">
-                                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[row.schedule_status] || 'bg-gray-100 text-gray-600'}`}>
+                                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${STATUS_COLORS[row.schedule_status] || 'bg-white/10 text-white/50'}`}>
                                         {row.schedule_status}
                                       </span>
                                     </td>
@@ -696,17 +591,17 @@ export default function AdminLoansPage() {
                       )}
                       {receipts.length > 0 && (
                         <div>
-                          <h4 className="font-semibold text-gray-700 mb-2 text-sm">Payment Receipts</h4>
+                          <h4 className="font-semibold text-white/70 mb-2 text-sm">Payment Receipts</h4>
                           <div className="space-y-2">
                             {receipts.map(r => (
-                              <div key={r.id} className="bg-gray-50 rounded-xl p-3 flex items-center justify-between">
+                              <div key={r.id} className="bg-white/[0.06] rounded-xl p-3 flex items-center justify-between">
                                 <div>
-                                  <p className="text-sm font-semibold text-gray-900">{r.receipt_number}</p>
-                                  <p className="text-xs text-gray-500">{formatDateTime(r.payment_date)} · {r.payment_method}</p>
+                                  <p className="text-sm font-semibold text-white">{r.receipt_number}</p>
+                                  <p className="text-xs text-white/40">{formatDateTime(r.payment_date)} · {r.payment_method}</p>
                                 </div>
                                 <div className="text-right">
-                                  <p className="font-bold text-emerald-700">{formatNGN(r.amount)}</p>
-                                  {r.is_verified && <p className="text-xs text-emerald-600">✓ Verified</p>}
+                                  <p className="font-bold text-emerald-400">{formatNGN(r.amount)}</p>
+                                  {r.is_verified && <p className="text-xs text-emerald-500">✓ Verified</p>}
                                 </div>
                               </div>
                             ))}
@@ -714,34 +609,33 @@ export default function AdminLoansPage() {
                         </div>
                       )}
                       {repaymentSchedule.length === 0 && receipts.length === 0 && (
-                        <p className="text-sm text-gray-500">No payment records found.</p>
+                        <p className="text-sm text-white/40">No payment records found.</p>
                       )}
                     </div>
                   )}
 
-                  {/* Audit Trail */}
                   {detailTab === 'audit' && (
                     <div className="space-y-2">
                       {auditTrail.length > 0 ? auditTrail.map(entry => (
                         <div key={entry.id} className="flex gap-3 items-start">
                           <div className="w-2 h-2 bg-emerald-400 rounded-full mt-2 shrink-0" />
-                          <div className="flex-1 bg-gray-50 rounded-xl p-3">
+                          <div className="flex-1 bg-white/[0.06] rounded-xl p-3">
                             <div className="flex items-center justify-between mb-1">
-                              <p className="text-sm font-semibold text-gray-900">
+                              <p className="text-sm font-semibold text-white">
                                 {entry.action.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                               </p>
-                              <p className="text-xs text-gray-400">{formatDateTime(entry.created_at)}</p>
+                              <p className="text-xs text-white/30">{formatDateTime(entry.created_at)}</p>
                             </div>
                             {(entry.previous_status || entry.new_status) && (
-                              <p className="text-xs text-gray-500">
+                              <p className="text-xs text-white/40">
                                 {entry.previous_status && `${entry.previous_status} → `}{entry.new_status}
                               </p>
                             )}
-                            {entry.notes && <p className="text-xs text-gray-600 mt-1">{entry.notes}</p>}
+                            {entry.notes && <p className="text-xs text-white/60 mt-1">{entry.notes}</p>}
                           </div>
                         </div>
                       )) : (
-                        <p className="text-sm text-gray-500">No audit trail entries.</p>
+                        <p className="text-sm text-white/40">No audit trail entries.</p>
                       )}
                     </div>
                   )}
@@ -754,44 +648,60 @@ export default function AdminLoansPage() {
 
       {/* Record Payment Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Record Repayment</h3>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-[#0d1527] rounded-2xl border border-white/10 shadow-2xl p-6 w-full max-w-md">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-bold text-white">Record Repayment</h3>
+              <button onClick={() => setShowPaymentModal(false)} className="p-1.5 rounded-lg hover:bg-white/[0.06] text-white/50">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
             {actionError && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 mb-3">{actionError}</div>
+              <div className="bg-red-500/10 border border-red-500/25 rounded-xl p-3 text-sm text-red-400 mb-3">{actionError}</div>
             )}
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Total Amount (₦) *</label>
-                <input type="number" value={paymentAmount} onChange={e => setPaymentAmount(e.target.value)} placeholder="0" className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20" />
+                <label className="block text-sm font-semibold text-white mb-1">Total Amount (₦) *</label>
+                <input type="number" value={paymentAmount} onChange={e => setPaymentAmount(e.target.value)} placeholder="0"
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none focus:border-emerald-500/50" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Interest Portion (₦)</label>
-                  <input type="number" value={paymentInterest} onChange={e => setPaymentInterest(e.target.value)} placeholder="0" className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none" />
+                  <label className="block text-sm font-semibold text-white mb-1">Interest Portion (₦)</label>
+                  <input type="number" value={paymentInterest} onChange={e => setPaymentInterest(e.target.value)} placeholder="0"
+                    className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none" />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-1">Principal Portion (₦)</label>
-                  <input type="number" value={paymentPrincipal} onChange={e => setPaymentPrincipal(e.target.value)} placeholder="0" className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none" />
+                  <label className="block text-sm font-semibold text-white mb-1">Principal Portion (₦)</label>
+                  <input type="number" value={paymentPrincipal} onChange={e => setPaymentPrincipal(e.target.value)} placeholder="0"
+                    className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none" />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Payment Method</label>
-                <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)} className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none">
-                  <option value="cash">Cash</option>
-                  <option value="bank_transfer">Bank Transfer</option>
-                  <option value="cheque">Cheque</option>
-                  <option value="pos">POS</option>
+                <label className="block text-sm font-semibold text-white mb-1">Payment Method</label>
+                <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm focus:outline-none">
+                  <option value="cash" className="bg-[#0d1527]">Cash</option>
+                  <option value="bank_transfer" className="bg-[#0d1527]">Bank Transfer</option>
+                  <option value="cheque" className="bg-[#0d1527]">Cheque</option>
+                  <option value="pos" className="bg-[#0d1527]">POS</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-1">Transaction Reference</label>
-                <input type="text" value={paymentRef} onChange={e => setPaymentRef(e.target.value)} placeholder="Optional reference" className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none" />
+                <label className="block text-sm font-semibold text-white mb-1">Transaction Reference</label>
+                <input type="text" value={paymentRef} onChange={e => setPaymentRef(e.target.value)} placeholder="Optional reference"
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm placeholder:text-white/30 focus:outline-none" />
               </div>
             </div>
             <div className="flex gap-3 mt-5">
-              <button onClick={() => setShowPaymentModal(false)} className="flex-1 py-3 rounded-xl border border-gray-200 text-gray-700 font-semibold text-sm hover:bg-gray-50">Cancel</button>
-              <button onClick={recordPayment} disabled={actionLoading || !paymentAmount} className="flex-1 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 disabled:opacity-50">
+              <button onClick={() => setShowPaymentModal(false)}
+                className="flex-1 py-3 rounded-xl border border-white/10 text-white/60 font-semibold text-sm hover:bg-white/[0.06] transition-colors">
+                Cancel
+              </button>
+              <button onClick={recordPayment} disabled={actionLoading || !paymentAmount}
+                className="flex-1 py-3 rounded-xl bg-emerald-600 text-white font-semibold text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors">
                 {actionLoading ? 'Recording...' : 'Record Payment'}
               </button>
             </div>
@@ -804,15 +714,15 @@ export default function AdminLoansPage() {
 
 function ActionButton({ label, color, loading, onClick }: { label: string; color: string; loading: boolean; onClick: () => void }) {
   const colorMap: Record<string, string> = {
-    yellow: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200',
-    purple: 'bg-purple-100 text-purple-700 hover:bg-purple-200',
-    indigo: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
-    emerald: 'bg-emerald-100 text-emerald-700 hover:bg-emerald-200',
-    red: 'bg-red-100 text-red-700 hover:bg-red-200',
-    orange: 'bg-orange-100 text-orange-700 hover:bg-orange-200',
-    teal: 'bg-teal-100 text-teal-700 hover:bg-teal-200',
-    blue: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
-    gray: 'bg-gray-100 text-gray-700 hover:bg-gray-200',
+    yellow: 'bg-yellow-500/15 text-yellow-400 hover:bg-yellow-500/25 border border-yellow-500/25',
+    purple: 'bg-purple-500/15 text-purple-400 hover:bg-purple-500/25 border border-purple-500/25',
+    indigo: 'bg-indigo-500/15 text-indigo-400 hover:bg-indigo-500/25 border border-indigo-500/25',
+    emerald: 'bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25 border border-emerald-500/25',
+    red: 'bg-red-500/15 text-red-400 hover:bg-red-500/25 border border-red-500/25',
+    orange: 'bg-orange-500/15 text-orange-400 hover:bg-orange-500/25 border border-orange-500/25',
+    teal: 'bg-teal-500/15 text-teal-400 hover:bg-teal-500/25 border border-teal-500/25',
+    blue: 'bg-blue-500/15 text-blue-400 hover:bg-blue-500/25 border border-blue-500/25',
+    gray: 'bg-white/[0.06] text-white/50 hover:bg-white/10 border border-white/10',
   };
   return (
     <button
@@ -828,8 +738,8 @@ function ActionButton({ label, color, loading, onClick }: { label: string; color
 function DetailRow({ label, value }: { label: string; value: string | undefined | null }) {
   return (
     <div>
-      <p className="text-xs text-gray-400 mb-0.5">{label}</p>
-      <p className="text-sm font-medium text-gray-800">{value || '—'}</p>
+      <p className="text-xs text-white/40 mb-0.5">{label}</p>
+      <p className="text-sm font-medium text-white">{value || '—'}</p>
     </div>
   );
 }
