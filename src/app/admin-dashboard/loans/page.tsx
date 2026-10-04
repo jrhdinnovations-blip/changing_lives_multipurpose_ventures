@@ -137,8 +137,14 @@ export default function AdminLoansPage() {
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (filterStatus !== 'all') {
+      if (filterStatus === 'draft') {
+        // Explicit draft filter
+        query = query.eq('app_status', 'draft');
+      } else if (filterStatus !== 'all') {
         query = query.eq('app_status', filterStatus);
+      } else {
+        // Default: exclude drafts — they are incomplete/unsent applications
+        query = query.neq('app_status', 'draft');
       }
 
       const { data, error } = await query;
@@ -331,7 +337,7 @@ export default function AdminLoansPage() {
               onChange={e => setFilterStatus(e.target.value)}
               className="w-full mt-2 px-3 py-2 rounded-xl border border-white/10 bg-white/[0.06] text-white text-sm focus:outline-none focus:border-emerald-500/50"
             >
-              <option value="all" className="bg-[#0d1527]">All Statuses</option>
+              <option value="all" className="bg-[#0d1527]">All Submitted</option>
               <option value="submitted" className="bg-[#0d1527]">Submitted</option>
               <option value="under_review" className="bg-[#0d1527]">Under Review</option>
               <option value="guarantor_verification" className="bg-[#0d1527]">Guarantor Verification</option>
@@ -342,6 +348,7 @@ export default function AdminLoansPage() {
               <option value="disbursed" className="bg-[#0d1527]">Disbursed</option>
               <option value="active" className="bg-[#0d1527]">Active</option>
               <option value="completed" className="bg-[#0d1527]">Completed</option>
+              <option value="draft" className="bg-[#0d1527]">Drafts (Incomplete)</option>
             </select>
           </div>
           <div className="flex-1 overflow-y-auto">
