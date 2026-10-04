@@ -1,9 +1,36 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 type CalcTab = 'savings' | 'investment' | 'loan';
+
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+function useTabFade(activeTab: string) {
+  const [displayed, setDisplayed] = useState(activeTab);
+  const [show, setShow] = useState(true);
+  useEffect(() => {
+    setShow(false);
+    const t = setTimeout(() => { setDisplayed(activeTab); setShow(true); }, 160);
+    return () => clearTimeout(t);
+  }, [activeTab]);
+  return { displayed, show };
+}
 
 function formatNaira(val: number): string {
   return '₦' + Math.round(val).toLocaleString('en-NG');
@@ -235,13 +262,22 @@ const TABS: { id: CalcTab; label: string; activeClass: string }[] = [
 
 export default function FinancialCalculators() {
   const [activeTab, setActiveTab] = useState<CalcTab>('savings');
+  const { displayed, show } = useTabFade(activeTab);
+  const { ref, visible } = useInView(0.1);
 
   return (
-    <section id="calculators" className="py-20 lg:py-28 bg-[#0a0f1e]">
+    <section id="calculators" ref={ref} className="py-20 lg:py-28 bg-[#0a0f1e] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
-          {/* Left copy */}
-          <div className="lg:w-[340px] flex-shrink-0">
+          {/* Left copy — slides in from left */}
+          <div
+            className="lg:w-[340px] flex-shrink-0"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'translateX(0)' : 'translateX(-50px)',
+              transition: 'opacity 0.7s ease, transform 0.7s ease',
+            }}
+          >
             <div className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-5">
               CALCULATORS
             </div>
@@ -255,8 +291,15 @@ export default function FinancialCalculators() {
             </p>
           </div>
 
-          {/* Right calculator */}
-          <div className="flex-1 min-w-0">
+          {/* Right calculator — slides in from right */}
+          <div
+            className="flex-1 min-w-0"
+            style={{
+              opacity: visible ? 1 : 0,
+              transform: visible ? 'translateX(0)' : 'translateX(50px)',
+              transition: 'opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s',
+            }}
+          >
             <div className="bg-[#111827] rounded-2xl border border-white/10 overflow-hidden">
               {/* Tabs */}
               <div className="flex border-b border-white/10 bg-white/[0.03]">
@@ -275,11 +318,18 @@ export default function FinancialCalculators() {
                 ))}
               </div>
 
-              {/* Content */}
-              <div className="p-7 sm:p-9">
-                {activeTab === 'savings' && <SavingsCalc />}
-                {activeTab === 'investment' && <InvestmentCalc />}
-                {activeTab === 'loan' && <LoanCalc />}
+              {/* Content with fade transition */}
+              <div
+                className="p-7 sm:p-9"
+                style={{
+                  opacity: show ? 1 : 0,
+                  transform: show ? 'translateY(0)' : 'translateY(10px)',
+                  transition: 'opacity 0.18s ease, transform 0.18s ease',
+                }}
+              >
+                {displayed === 'savings' && <SavingsCalc />}
+                {displayed === 'investment' && <InvestmentCalc />}
+                {displayed === 'loan' && <LoanCalc />}
               </div>
 
               {/* Disclaimer */}

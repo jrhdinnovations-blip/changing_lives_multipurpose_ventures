@@ -1,8 +1,37 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { LogIn, ArrowRight } from 'lucide-react';
+import { ArrowRight, LogIn } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+
+/* ── Scroll-reveal hook ───────────────────────────────────────── */
+function useInView(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, visible };
+}
+
+/* ── Tab switch animation ─────────────────────────────────────── */
+function useTabTransition(activeTab: string) {
+  const [displayed, setDisplayed] = useState(activeTab);
+  const [fade, setFade] = useState(true);
+  useEffect(() => {
+    setFade(false);
+    const t = setTimeout(() => { setDisplayed(activeTab); setFade(true); }, 180);
+    return () => clearTimeout(t);
+  }, [activeTab]);
+  return { displayed, fade };
+}
 
 type ProductCategory = 'savings' | 'investment' | 'loan';
 
@@ -19,6 +48,7 @@ interface ProductItem {
   description: string;
   features: string[];
   accentColor: string;
+  glowColor: string;
   btnClass: string;
   href: string;
   viewHref?: string;
@@ -29,7 +59,7 @@ interface ProductItem {
 }
 
 const products: Record<ProductCategory, ProductItem[]> = {
-  savings:  [
+  savings: [
     {
       name: 'Regular Savings',
       tag: 'Regular Savings',
@@ -48,6 +78,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
         '₦5,000 – ₦200,000 monthly contribution',
       ],
       accentColor: 'border-blue-500/30',
+      glowColor: 'rgba(59,130,246,0.12)',
       btnClass: 'bg-blue-600 hover:bg-blue-500',
       href: '/save/start',
       viewHref: '/savings-products',
@@ -73,6 +104,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
         'Tenors: 6, 9, 12, 18, or 24 months',
       ],
       accentColor: 'border-amber-500/30',
+      glowColor: 'rgba(245,158,11,0.12)',
       btnClass: 'bg-amber-600 hover:bg-amber-500',
       href: '/save/regular',
       viewHref: '/savings-products',
@@ -99,6 +131,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
         'Formal Wealth Circle Agreement',
       ],
       accentColor: 'border-emerald-500/30',
+      glowColor: 'rgba(16,185,129,0.12)',
       btnClass: 'bg-emerald-600 hover:bg-emerald-500',
       href: '/investors-circle',
       viewHref: '/investment-products',
@@ -121,6 +154,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
         'Pool funds with other members to invest in verified prime Nigerian real estate — housing estates to commercial builds.',
       features: ['Quarterly progress reports', 'Exit option after 24 months', 'Insured & titled portfolio'],
       accentColor: 'border-amber-500/20',
+      glowColor: 'rgba(245,158,11,0.08)',
       btnClass: 'bg-amber-600 hover:bg-amber-500',
       href: '/investment-products',
       requiresAuth: false,
@@ -143,6 +177,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
         'Flexible personal financing for home improvements, travel, weddings, or any personal project at 10% monthly cooperative interest.',
       features: ['10% monthly cooperative interest', 'Flexible tenure up to 24 months', 'No early repayment penalty'],
       accentColor: 'border-blue-500/30',
+      glowColor: 'rgba(59,130,246,0.12)',
       btnClass: 'bg-blue-600 hover:bg-blue-500',
       href: '/loan-application',
       viewHref: '/loan-products',
@@ -159,16 +194,184 @@ const TABS: { id: ProductCategory; label: string }[] = [
   { id: 'loan', label: 'Loans' },
 ];
 
-export default function FeaturedProducts() {
-  const [activeTab, setActiveTab] = useState<ProductCategory>('savings');
+/* ── Product Card ─────────────────────────────────────────────── */
+function ProductCard({ product, index, visible }: { product: ProductItem; index: number; visible: boolean }) {
   const { user } = useAuth();
-  const currentProducts = products[activeTab];
+  const [hovered, setHovered] = useState(false);
+  const isComingSoon = 'comingSoon' in product && product.comingSoon;
+  const needsAuth = product.requiresAuth && !user;
 
   return (
-    <section id="products" className="py-20 lg:py-28 bg-[#0d1117]">
+    <div
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? 'translateY(0)' : 'translateY(40px)',
+        transition: `opacity 0.55s ease ${index * 0.12}s, transform 0.55s ease ${index * 0.12}s`,
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`relative rounded-2xl border p-7 flex flex-col overflow-hidden ${product.accentColor} ${
+        isComingSoon ? 'opacity-60' : ''
+      }`}
+      // Subtle glass bg base
+    >
+      {/* Dynamic radial glow on hover */}
+      <div
+        style={{
+          background: `radial-gradient(circle at 50% 0%, ${product.glowColor}, transparent 70%)`,
+          opacity: hovered ? 1 : 0,
+          transition: 'opacity 0.4s ease',
+        }}
+        className="absolute inset-0 pointer-events-none"
+      />
+
+      {/* Card background */}
+      <div
+        className="absolute inset-0 rounded-2xl transition-all duration-300"
+        style={{ background: hovered && !isComingSoon ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)' }}
+      />
+
+      {/* Hover border shimmer */}
+      {!isComingSoon && (
+        <div
+          className="absolute inset-0 rounded-2xl pointer-events-none"
+          style={{
+            background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(255,255,255,0.04) 100%)',
+            opacity: hovered ? 1 : 0,
+            transition: 'opacity 0.3s ease',
+          }}
+        />
+      )}
+
+      {/* Content (above overlays) */}
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Coming soon overlay */}
+        {isComingSoon && (
+          <div className="absolute inset-0 rounded-2xl bg-black/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
+            <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-center">
+              <p className="text-white font-bold mb-1">Coming Soon</p>
+              <a href="mailto:admin@climps.org" className="text-emerald-400 text-xs hover:underline">
+                Join waitlist →
+              </a>
+            </div>
+          </div>
+        )}
+
+        {/* Tag & View details link */}
+        <div className="flex items-center justify-between mb-5">
+          <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.tagColor}`}>
+            {product.tag}
+          </span>
+          {product.viewHref && (
+            <Link
+              href={product.viewHref}
+              className="text-xs text-white/50 hover:text-emerald-400 transition-colors underline underline-offset-4"
+            >
+              View Details
+            </Link>
+          )}
+        </div>
+
+        <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
+        <p className="text-white/45 text-sm leading-relaxed mb-6">{product.description}</p>
+
+        {/* Key metrics */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          {[
+            { val: product.rate, label: product.rateLabel },
+            { val: product.minAmount, label: product.minLabel },
+            { val: product.duration, label: product.durationLabel },
+          ].map((m) => (
+            <div
+              key={m.label}
+              className="bg-white/[0.06] rounded-xl p-3 text-center transition-all duration-200 hover:bg-white/[0.1]"
+            >
+              <div className="text-sm font-bold text-white font-tabular">{m.val}</div>
+              <div className="text-[11px] text-white/35 mt-0.5">{m.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Features */}
+        <ul className="space-y-2 mb-7 flex-1">
+          {product.features.map((f) => (
+            <li key={f} className="flex items-center gap-2 text-sm text-white/55">
+              <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+              {f}
+            </li>
+          ))}
+        </ul>
+
+        {isComingSoon ? (
+          <button disabled className="w-full text-center py-3 rounded-xl text-sm font-bold bg-white/10 text-white/30 cursor-not-allowed">
+            Coming Soon
+          </button>
+        ) : needsAuth ? (
+          <div className="space-y-2 w-full">
+            <Link
+              href={`/login?redirect=${encodeURIComponent(product.href)}`}
+              className={`w-full text-center py-3 px-4 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-2 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
+            >
+              <LogIn className="w-4 h-4" />
+              <span>{product.guestCtaText || 'Sign In to Subscribe'}</span>
+            </Link>
+            {product.viewHref && (
+              <Link
+                href={product.viewHref}
+                className="block text-center text-xs text-white/50 hover:text-emerald-400 py-1 transition-colors hover:underline"
+              >
+                Explore Product Catalog & Details →
+              </Link>
+            )}
+          </div>
+        ) : (
+          <Link
+            href={product.href}
+            className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-1.5 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
+          >
+            <span>{product.ctaText}</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ── Main Section ─────────────────────────────────────────────── */
+export default function FeaturedProducts() {
+  const [activeTab, setActiveTab] = useState<ProductCategory>('savings');
+  const { displayed, fade } = useTabTransition(activeTab);
+  const currentProducts = products[displayed as ProductCategory];
+  const { ref, visible } = useInView(0.1);
+  const [cardsVisible, setCardsVisible] = useState(false);
+
+  // Retrigger card entrance on tab change
+  useEffect(() => {
+    setCardsVisible(false);
+    const t = setTimeout(() => setCardsVisible(true), 200);
+    return () => clearTimeout(t);
+  }, [activeTab]);
+
+  // Also trigger when section first enters view
+  useEffect(() => {
+    if (visible) setCardsVisible(true);
+  }, [visible]);
+
+  return (
+    <section id="products" ref={ref} className="py-20 lg:py-28 bg-[#0d1117] overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         {/* Header */}
-        <div className="mb-12">
+        <div
+          className="mb-12"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'opacity 0.6s ease, transform 0.6s ease',
+          }}
+        >
           <div className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-4">
             OUR PRODUCTS
           </div>
@@ -179,15 +382,22 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-10 bg-white/[0.05] p-1 rounded-xl w-fit">
+        <div
+          className="flex gap-1 mb-10 bg-white/[0.05] p-1 rounded-xl w-fit"
+          style={{
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s',
+          }}
+        >
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 activeTab === tab.id
-                  ? 'bg-white text-[#0a0f1e] shadow-sm'
-                  : 'text-white/40 hover:text-white/70'
+                  ? 'bg-white text-[#0a0f1e] shadow-sm scale-[1.02]'
+                  : 'text-white/40 hover:text-white/70 hover:bg-white/5'
               }`}
             >
               {tab.label}
@@ -196,111 +406,19 @@ export default function FeaturedProducts() {
         </div>
 
         {/* Product cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {currentProducts.map((product) => {
-            const isComingSoon = 'comingSoon' in product && product.comingSoon;
-            const needsAuth = product.requiresAuth && !user;
-
-            return (
-              <div
-                key={product.name}
-                className={`relative rounded-2xl border p-7 flex flex-col bg-white/[0.04] ${product.accentColor} transition-all duration-200 ${
-                  isComingSoon ? 'opacity-60' : 'hover:bg-white/[0.07] hover:-translate-y-0.5 hover:shadow-xl hover:shadow-black/20'
-                }`}
-              >
-                {/* Coming soon overlay */}
-                {isComingSoon && (
-                  <div className="absolute inset-0 rounded-2xl bg-black/40 backdrop-blur-[2px] z-10 flex items-center justify-center">
-                    <div className="bg-white/10 border border-white/20 rounded-2xl px-6 py-4 text-center">
-                      <p className="text-white font-bold mb-1">Coming Soon</p>
-                      <a href="mailto:admin@climps.org" className="text-emerald-400 text-xs hover:underline">
-                        Join waitlist →
-                      </a>
-                    </div>
-                  </div>
-                )}
-
-                {/* Tag & View details link */}
-                <div className="flex items-center justify-between mb-5">
-                  <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.tagColor}`}>
-                    {product.tag}
-                  </span>
-                  {product.viewHref && (
-                    <Link
-                      href={product.viewHref}
-                      className="text-xs text-white/50 hover:text-emerald-400 transition-colors underline underline-offset-4"
-                    >
-                      View Details
-                    </Link>
-                  )}
-                </div>
-
-                <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
-                <p className="text-white/45 text-sm leading-relaxed mb-6">{product.description}</p>
-
-                {/* Key metrics */}
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  {[
-                    { val: product.rate, label: product.rateLabel },
-                    { val: product.minAmount, label: product.minLabel },
-                    { val: product.duration, label: product.durationLabel },
-                  ].map((m) => (
-                    <div key={m.label} className="bg-white/[0.06] rounded-xl p-3 text-center">
-                      <div className="text-sm font-bold text-white font-tabular">{m.val}</div>
-                      <div className="text-[11px] text-white/35 mt-0.5">{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Features */}
-                <ul className="space-y-2 mb-7 flex-1">
-                  {product.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-white/55">
-                      <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-
-                {isComingSoon ? (
-                  <button disabled className="w-full text-center py-3 rounded-xl text-sm font-bold bg-white/10 text-white/30 cursor-not-allowed">
-                    Coming Soon
-                  </button>
-                ) : needsAuth ? (
-                  <div className="space-y-2 w-full">
-                    <Link
-                      href={`/login?redirect=${encodeURIComponent(product.href)}`}
-                      className={`w-full text-center py-3 px-4 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-2 ${product.btnClass}`}
-                    >
-                      <LogIn className="w-4 h-4" />
-                      <span>{product.guestCtaText || 'Sign In to Subscribe'}</span>
-                    </Link>
-                    {product.viewHref && (
-                      <Link
-                        href={product.viewHref}
-                        className="block text-center text-xs text-white/50 hover:text-emerald-400 py-1 transition-colors hover:underline"
-                      >
-                        Explore Product Catalog & Details →
-                      </Link>
-                    )}
-                  </div>
-                ) : (
-                  <Link
-                    href={product.href}
-                    className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-1.5 ${product.btnClass}`}
-                  >
-                    <span>{product.ctaText}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-                )}
-              </div>
-            );
-          })}
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-5"
+          style={{
+            opacity: fade ? 1 : 0,
+            transform: fade ? 'translateY(0)' : 'translateY(12px)',
+            transition: 'opacity 0.22s ease, transform 0.22s ease',
+          }}
+        >
+          {currentProducts.map((product, i) => (
+            <ProductCard key={product.name} product={product} index={i} visible={cardsVisible} />
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
