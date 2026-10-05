@@ -65,14 +65,14 @@ function StatCard({ value, label, delay }: { value: string; label: string; delay
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`flex flex-col items-center justify-center py-10 px-6 text-center transition-all duration-700 ${
+      className={`flex flex-col items-center justify-center py-4 sm:py-8 px-2 sm:px-6 text-center transition-all duration-700 ${
         triggered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
-      <div className="text-4xl sm:text-5xl font-black text-[#0d1b2e] tracking-tight leading-none mb-2">
+      <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0d1b2e] tracking-tight leading-none mb-1">
         {count}
       </div>
-      <div className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase mt-2">{label}</div>
+      <div className="text-[10px] sm:text-xs font-bold tracking-[0.12em] text-gray-500 uppercase mt-1">{label}</div>
     </div>
   );
 }
@@ -194,11 +194,11 @@ export default function HeroSection() {
         ))}
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-40 pb-20 w-full">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-28 pb-10 sm:pt-36 sm:pb-16 w-full">
 
           {/* Badge — fade in */}
           <div
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm font-bold uppercase tracking-widest mb-8 transition-all duration-700"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 transition-all duration-700"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(16px)',
@@ -206,12 +206,12 @@ export default function HeroSection() {
             }}
           >
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
-            Welcome to CLIMPS • Cooperative Multipurpose Society
+            Welcome to CLIMPS • Cooperative Society
           </div>
 
           {/* Headline — staggered lines */}
           <h1
-            className="text-5xl sm:text-6xl lg:text-7xl xl:text-[82px] font-black text-white tracking-tight leading-[1.03] mb-8 max-w-4xl transition-all duration-700"
+            className="text-4xl sm:text-6xl lg:text-7xl xl:text-[80px] font-black text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 max-w-4xl transition-all duration-700"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(24px)',
@@ -226,14 +226,14 @@ export default function HeroSection() {
 
           {/* Sub-copy */}
           <p
-            className="text-white/70 text-xl sm:text-2xl max-w-xl mb-10 leading-relaxed transition-all duration-700 font-semibold"
+            className="text-white/75 text-base sm:text-xl lg:text-2xl max-w-xl mb-6 sm:mb-8 leading-relaxed transition-all duration-700 font-semibold"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(20px)',
               transitionDelay: '350ms',
             }}
           >
-            A structured wealth-building cooperative for Nigerians — savings, investments, and loans, all in one place.
+            A structured wealth-building cooperative for Nigerians — savings, investments, and 24-hour loans, all in one place.
           </p>
 
           {/* CTAs */}

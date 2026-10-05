@@ -266,27 +266,27 @@ export default function FinancialCalculators() {
   const { ref, visible } = useInView(0.1);
 
   return (
-    <section id="calculators" ref={ref} className="py-20 lg:py-28 bg-[#0a0f1e] overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="flex flex-col lg:flex-row gap-14 lg:gap-20 items-start">
+    <section id="calculators" ref={ref} className="py-12 sm:py-16 lg:py-20 bg-[#0a0f1e] overflow-hidden border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col lg:flex-row gap-8 sm:gap-12 lg:gap-16 items-start">
           {/* Left copy — slides in from left */}
           <div
-            className="lg:w-[340px] flex-shrink-0"
+            className="lg:w-[320px] flex-shrink-0"
             style={{
               opacity: visible ? 1 : 0,
               transform: visible ? 'translateX(0)' : 'translateX(-50px)',
               transition: 'opacity 0.7s ease, transform 0.7s ease',
             }}
           >
-            <div className="text-emerald-400 text-sm font-bold tracking-[0.2em] uppercase mb-5">
+            <div className="text-emerald-400 text-xs font-bold tracking-widest uppercase mb-3">
               CALCULATORS
             </div>
-            <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight tracking-tight mb-5">
-              See your money<br />
-              grow before{' '}
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight mb-3 sm:mb-4">
+              See your money<br className="hidden sm:inline" />
+              {' '}grow before{' '}
               <span className="text-emerald-400">you commit.</span>
             </h2>
-            <p className="text-white/60 text-lg font-semibold leading-relaxed">
+            <p className="text-white/60 text-sm sm:text-base font-semibold leading-relaxed">
               Adjust the sliders. Watch the numbers. No surprises.
             </p>
           </div>
