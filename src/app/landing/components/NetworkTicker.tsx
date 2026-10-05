@@ -5,7 +5,9 @@ import { createClient } from '@/lib/supabase/client';
 
 const STATIC_MESSAGES = [
   '🌟 CLIMPS — Changing Lives Multipurpose Ventures Cooperative Society',
+  '📞 Contact Person: Jauro Luka • Phone/WhatsApp: 08144447710, 08053331224',
   '💰 Earn 9–25% returns p.a. on your savings — join the Wealth Circle today',
+  '✉️ Email: Changinglivesmultipurpose@gmail.com',
   '⚡ Fast loan approvals within 24 hours for qualified members',
   '🤝 A registered cooperative empowering communities across Nigeria',
   '📈 Your savings. Your growth. Your future — powered by CLIMPS',
@@ -75,19 +77,29 @@ export default function NetworkTicker() {
   const tickerItems = [...allMessages, ...allMessages];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-8 bg-gradient-to-r from-emerald-900 via-[#0d1a2e] to-emerald-900 border-b border-emerald-800/60 flex items-center overflow-hidden">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-8 bg-white border-b border-slate-200/90 shadow-xs flex items-center overflow-hidden">
+      {/* Brand Color Top Stripe: Red, Green, Blue, White */}
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-red-500 via-emerald-500 via-blue-600 to-red-500" />
+
       {/* Logo badge pinned on left */}
-      <div className="flex-shrink-0 flex items-center gap-2 px-3 bg-[#0a0f1e]/80 h-full border-r border-emerald-800/60 z-10">
+      <div className="flex-shrink-0 flex items-center gap-2 px-3 bg-slate-50 h-full border-r border-slate-200 z-10">
         <Image
           src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
           alt="CLIMPS Logo"
           width={20}
           height={20}
-          className="rounded-md object-cover ring-1 ring-emerald-500/40"
+          className="rounded-md object-cover ring-1 ring-slate-300"
         />
-        <span className="text-[10px] font-bold text-emerald-400 tracking-widest uppercase hidden sm:block whitespace-nowrap">
-          CLIMPS Network
-        </span>
+        <div className="hidden sm:flex items-center gap-1.5">
+          <span className="text-[10px] font-extrabold text-slate-800 tracking-wider uppercase whitespace-nowrap">
+            CLIMPS Network
+          </span>
+          <span className="inline-flex items-center gap-0.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500" title="Red" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Green" />
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-600" title="Blue" />
+          </span>
+        </div>
       </div>
 
       {/* Scrolling ticker */}
@@ -96,10 +108,10 @@ export default function NetworkTicker() {
           {tickerItems.map((msg, i) => (
             <span
               key={i}
-              className="inline-flex items-center text-[11px] font-medium text-white/80 px-6 gap-1.5 whitespace-nowrap"
+              className="inline-flex items-center text-[11px] font-semibold text-slate-700 px-6 gap-1.5 whitespace-nowrap"
             >
               {msg}
-              <span className="mx-3 text-emerald-600 opacity-60">•</span>
+              <span className="mx-3 text-slate-300 font-bold">•</span>
             </span>
           ))}
         </div>

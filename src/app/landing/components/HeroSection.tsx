@@ -51,7 +51,7 @@ function useCountUp(target: string, triggered: boolean, duration = 1800) {
   return display;
 }
 
-function StatCard({ value, label, delay }: { value: string; label: string; delay: number }) {
+function StatCard({ value, label, delay, colorClass }: { value: string; label: string; delay: number; colorClass?: string }) {
   const [triggered, setTriggered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const count = useCountUp(value, triggered);
@@ -69,19 +69,19 @@ function StatCard({ value, label, delay }: { value: string; label: string; delay
         triggered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
-      <div className="text-2xl sm:text-4xl lg:text-5xl font-black text-emerald-300 tracking-tight leading-none mb-1" style={{ textShadow: '0 0 20px rgba(52,211,153,0.4)' }}>
+      <div className={`text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-none mb-1 ${colorClass || 'text-emerald-600'}`}>
         {count}
       </div>
-      <div className="text-[10px] sm:text-xs font-bold tracking-[0.12em] text-emerald-400/80 uppercase mt-1">{label}</div>
+      <div className="text-[10px] sm:text-xs font-bold tracking-[0.12em] text-slate-500 uppercase mt-1">{label}</div>
     </div>
   );
 }
 
 const DEFAULT_STATS = [
-  { value: '500+', label: 'MEMBERS' },
-  { value: '₦500M', label: 'MANAGED' },
-  { value: '9–25%', label: 'RETURNS P.A.' },
-  { value: '24hrs', label: 'LOAN APPROVAL' },
+  { value: '500+', label: 'ACTIVE MEMBERS', color: 'text-blue-600' },
+  { value: '₦500M', label: 'MANAGED FUNDS', color: 'text-emerald-600' },
+  { value: '9–25%', label: 'RETURNS P.A.', color: 'text-emerald-600' },
+  { value: '24hrs', label: 'EXPRESS LOANS', color: 'text-red-600' },
 ];
 
 export default function HeroSection() {
@@ -132,10 +132,10 @@ export default function HeroSection() {
         if (investments?.length) liveFundAdditions += investments.reduce((a, r) => a + (Number(r.amount) || 0), 0);
 
         setStats([
-          { value: `${totalMembers.toLocaleString()}+`, label: 'MEMBERS' },
-          { value: formatFundStat(BASELINE_FUNDS + liveFundAdditions), label: 'MANAGED' },
-          { value: '9–25%', label: 'RETURNS P.A.' },
-          { value: '24hrs', label: 'LOAN APPROVAL' },
+          { value: `${totalMembers.toLocaleString()}+`, label: 'ACTIVE MEMBERS', color: 'text-blue-600' },
+          { value: formatFundStat(BASELINE_FUNDS + liveFundAdditions), label: 'MANAGED FUNDS', color: 'text-emerald-600' },
+          { value: '9–25%', label: 'RETURNS P.A.', color: 'text-emerald-600' },
+          { value: '24hrs', label: 'EXPRESS LOANS', color: 'text-red-600' },
         ]);
       } catch {}
     }
@@ -160,63 +160,49 @@ export default function HeroSection() {
   return (
     <>
       {/* ── HERO ── */}
-      <section className="relative min-h-[88vh] flex flex-col justify-end overflow-hidden bg-[#050a16] text-white">
+      <section className="relative min-h-[88vh] flex flex-col justify-end overflow-hidden bg-gradient-to-br from-white via-blue-50/30 to-emerald-50/25 text-slate-900">
 
         {/* Animated grid background */}
         <div
           className="absolute inset-0 opacity-[0.06] pointer-events-none"
           style={{
-            backgroundImage: 'linear-gradient(rgba(52,211,153,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(52,211,153,0.4) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(37,99,235,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.4) 1px, transparent 1px)',
             backgroundSize: '60px 60px',
             animation: 'gridMove 20s linear infinite',
           }}
         />
 
-        {/* Animated glowing orbs */}
-        <div className="absolute top-[-80px] right-[-80px] w-[700px] h-[700px] rounded-full bg-teal-400/25 blur-[140px] pointer-events-none animate-pulse-slow" />
-        <div className="absolute top-1/3 right-[10%] w-[400px] h-[400px] rounded-full bg-emerald-400/20 blur-[120px] pointer-events-none"
+        {/* Subtle glowing ambient orbs */}
+        <div className="absolute top-[-80px] right-[-80px] w-[600px] h-[600px] rounded-full bg-emerald-200/40 blur-[130px] pointer-events-none" />
+        <div className="absolute top-1/3 right-[10%] w-[400px] h-[400px] rounded-full bg-blue-200/35 blur-[110px] pointer-events-none"
           style={{ animation: 'floatOrb 8s ease-in-out infinite' }} />
-        <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] rounded-full bg-blue-400/18 blur-[130px] pointer-events-none"
+        <div className="absolute bottom-0 left-[-100px] w-[500px] h-[500px] rounded-full bg-red-100/35 blur-[120px] pointer-events-none"
           style={{ animation: 'floatOrb 12s ease-in-out infinite reverse' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-indigo-500/10 blur-[160px] pointer-events-none" />
-
-        {/* Floating particles */}
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full pointer-events-none"
-            style={{
-              width: i % 3 === 0 ? '6px' : '4px',
-              height: i % 3 === 0 ? '6px' : '4px',
-              background: i % 2 === 0 ? 'rgba(52,211,153,0.9)' : 'rgba(56,189,248,0.8)',
-              boxShadow: i % 2 === 0 ? '0 0 8px rgba(52,211,153,0.8)' : '0 0 8px rgba(56,189,248,0.8)',
-              left: `${10 + i * 9}%`,
-              top: `${15 + (i % 4) * 20}%`,
-              animation: `floatParticle ${4 + i * 0.8}s ease-in-out infinite`,
-              animationDelay: `${i * 0.5}s`,
-            }}
-          />
-        ))}
 
         {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 pt-28 pb-10 sm:pt-36 sm:pb-16 w-full">
 
-          {/* Badge — fade in */}
+          {/* Badge — 4-Color Brand Ribbon: Red, Green, Blue, White */}
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-400/60 bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 transition-all duration-700 shadow-lg shadow-emerald-500/20"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-slate-200 bg-white text-slate-800 text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 sm:mb-6 transition-all duration-700 shadow-sm"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(16px)',
               transitionDelay: '100ms',
             }}
           >
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_12px_#34d399]" />
-            Welcome to CLIMPS • Cooperative Society
+            <span className="flex items-center gap-1.5">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 shadow-xs" title="Red" />
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 shadow-xs" title="Green" />
+              <span className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" title="Blue" />
+              <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-300 shadow-xs" title="White" />
+            </span>
+            <span>CLIMPS • Changing Lives Multipurpose Cooperative</span>
           </div>
 
-          {/* Headline — staggered lines */}
+          {/* Headline */}
           <h1
-            className="text-4xl sm:text-6xl lg:text-7xl xl:text-[80px] font-black text-white tracking-tight leading-[1.05] mb-4 sm:mb-6 max-w-4xl transition-all duration-700"
+            className="text-4xl sm:text-6xl lg:text-7xl xl:text-[80px] font-black text-slate-900 tracking-tight leading-[1.05] mb-4 sm:mb-6 max-w-4xl transition-all duration-700"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(24px)',
@@ -224,26 +210,26 @@ export default function HeroSection() {
             }}
           >
             Save. Grow.<br />
-            <span className="text-emerald-300" style={{ display: 'inline-block', animation: 'shimmer 3s ease-in-out infinite', textShadow: '0 0 40px rgba(52,211,153,0.6)' }}>
+            <span className="bg-gradient-to-r from-emerald-600 via-blue-600 to-emerald-600 bg-clip-text text-transparent">
               Prosper together.
             </span>
           </h1>
 
           {/* Sub-copy */}
           <p
-            className="text-white/90 text-base sm:text-xl lg:text-2xl max-w-xl mb-6 sm:mb-8 leading-relaxed transition-all duration-700 font-semibold"
+            className="text-slate-600 text-base sm:text-xl lg:text-2xl max-w-xl mb-6 sm:mb-8 leading-relaxed transition-all duration-700 font-semibold"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(20px)',
               transitionDelay: '350ms',
             }}
           >
-            A structured wealth-building cooperative for Nigerians — savings, investments, and 24-hour loans, all in one place.
+            A structured wealth-building cooperative for Nigerians — disciplined thrift savings, high-yield wealth opportunities, and express 24-hour loans.
           </p>
 
-          {/* CTAs */}
+          {/* CTAs showcasing Red, Green, Blue, White */}
           <div
-            className="flex flex-wrap items-center gap-3 transition-all duration-700"
+            className="flex flex-wrap items-center gap-3.5 transition-all duration-700"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -253,39 +239,50 @@ export default function HeroSection() {
             {user ? (
               <Link
                 href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
-                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 group overflow-hidden shadow-xl shadow-emerald-500/40"
+                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-600/25"
               >
-                <span className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
                 Go to Dashboard
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="w-4 h-4" />
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-400/50 group overflow-hidden"
-                style={{ animation: 'btnPulse 3s ease-in-out infinite' }}
+                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-600/25"
               >
-                <span className="absolute inset-0 bg-white/25 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
-                Sign In
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                <span>Join CLIMPS Today</span>
+                <ArrowRight className="w-4 h-4" />
               </Link>
             )}
+
             <Link
               href="#products"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-transparent border border-white/40 hover:border-emerald-400 hover:bg-emerald-500/10 text-white font-bold text-base transition-all duration-200 active:scale-95"
+              className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-base transition-all duration-200 active:scale-95 shadow-lg shadow-blue-600/25"
             >
               Explore Products
+            </Link>
+
+            <Link
+              href="/loan-application"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-white border-2 border-red-500 hover:bg-red-50 text-red-600 font-bold text-base transition-all duration-200 active:scale-95 shadow-sm"
+            >
+              Apply for 24h Loan
             </Link>
           </div>
         </div>
       </section>
 
       {/* ── STATS BAR ── */}
-      <section className="bg-gradient-to-r from-emerald-950 via-[#0a1628] to-indigo-950 border-b border-emerald-500/30">
+      <section className="bg-white border-y border-slate-200 shadow-xs">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-emerald-500/20">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-slate-100">
             {stats.map((stat, i) => (
-              <StatCard key={stat.label} value={stat.value} label={stat.label} delay={300 + i * 150} />
+              <StatCard
+                key={stat.label}
+                value={stat.value}
+                label={stat.label}
+                delay={300 + i * 150}
+                colorClass={(stat as any).color}
+              />
             ))}
           </div>
         </div>
@@ -307,12 +304,12 @@ export default function HeroSection() {
           66% { transform: translateY(-10px) translateX(-6px); opacity: 0.5; }
         }
         @keyframes shimmer {
-          0%, 100% { text-shadow: 0 0 30px rgba(52,211,153,0.7), 0 0 60px rgba(52,211,153,0.3); }
-          50% { text-shadow: 0 0 60px rgba(52,211,153,1), 0 0 100px rgba(52,211,153,0.5); }
+          0%, 100% { text-shadow: 0 0 20px rgba(16,185,129,0.4); }
+          50% { text-shadow: 0 0 50px rgba(16,185,129,0.7), 0 0 80px rgba(16,185,129,0.3); }
         }
         @keyframes btnPulse {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.6), 0 10px 40px rgba(52,211,153,0.4); }
-          50% { box-shadow: 0 0 0 12px rgba(52,211,153,0), 0 10px 40px rgba(52,211,153,0.7); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.5), 0 10px 40px rgba(52,211,153,0.35); }
+          50% { box-shadow: 0 0 0 12px rgba(52,211,153,0), 0 10px 40px rgba(52,211,153,0.6); }
         }
         .animate-pulse-slow {
           animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;

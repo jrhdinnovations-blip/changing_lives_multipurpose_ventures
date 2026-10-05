@@ -282,8 +282,8 @@ export default function AboutSection() {
               <h4 className="text-lg sm:text-xl font-bold text-white leading-tight">
                 Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State
               </h4>
-              <p className="text-xs text-white/50 mt-1">
-                Changing Lives Multipurpose Cooperative Society • Email: <a href="mailto:admin@climps.org" className="text-emerald-400 hover:underline">admin@climps.org</a>
+              <p className="text-xs text-white/70 mt-1">
+                Changing Lives Multipurpose Cooperative Society • Contact: <span className="text-white font-semibold">Jauro Luka</span> (Phone/WhatsApp: <a href="tel:08144447710" className="text-emerald-400 hover:underline">08144447710</a>, <a href="tel:08053331224" className="text-emerald-400 hover:underline">08053331224</a>) • Email: <a href="mailto:Changinglivesmultipurpose@gmail.com" className="text-emerald-400 hover:underline">Changinglivesmultipurpose@gmail.com</a>
               </p>
             </div>
           </div>

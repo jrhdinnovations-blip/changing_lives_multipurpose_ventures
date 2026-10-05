@@ -3,27 +3,33 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0f1e;
-  --foreground: #ffffff;
-  --primary: #10b981;
-  --primary-foreground: #060913;
-  --secondary: #111a2e;
-  --secondary-foreground: #f1f5f9;
-  --accent: #00a86b;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --primary: #16a34a;
+  --primary-foreground: #ffffff;
+  --secondary: #f8fafc;
+  --secondary-foreground: #0f172a;
+  --accent: #2563eb;
   --accent-foreground: #ffffff;
-  --destructive: #ef4444;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
   --warning: #f59e0b;
-  --warning-foreground: #0a0f1e;
-  --muted: #111a2e;
-  --muted-foreground: #94a3b8;
-  --card: #0d1527;
-  --card-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.1);
-  --input: rgba(255, 255, 255, 0.12);
-  --ring: #10b981;
+  --warning-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
   --radius: 0.875rem;
   --font-sans: var(--font-plus-jakarta-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /* CLIMPS Brand Colors: Red, Green, Blue, White */
+  --climps-red: #dc2626;
+  --climps-green: #16a34a;
+  --climps-blue: #2563eb;
+  --climps-white: #ffffff;
 
   --sidebar-width: 260px;
   --sidebar-collapsed-width: 68px;
@@ -46,8 +52,8 @@
   }
   html {
     scroll-behavior: smooth;
-    background-color: #0a0f1e;
-    color: #ffffff;
+    background-color: #ffffff;
+    color: #0f172a;
     font-size: 17px;
   }
   h1, h2, h3, h4, h5, h6, p {
@@ -85,27 +91,27 @@
   }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+    scrollbar-color: rgba(100, 116, 139, 0.25) transparent;
   }
   .scrollbar-thin::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
   .scrollbar-thin::-webkit-scrollbar-track {
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-radius: 2px;
+    background-color: rgba(100, 116, 139, 0.25);
+    border-radius: 3px;
   }
   .gradient-primary {
-    background: linear-gradient(135deg, #0a0f1e 0%, #0d1e38 50%, #08213b 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #eff6ff 100%);
   }
   .gradient-accent {
-    background: linear-gradient(135deg, #00a86b 0%, #10b981 100%);
+    background: linear-gradient(135deg, #16a34a 0%, #2563eb 100%);
   }
   .gradient-card-savings {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(13, 21, 39, 0.95) 100%);
+    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
   }
   .gradient-card-loan {
     background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(13, 21, 39, 0.95) 100%);
