@@ -109,9 +109,7 @@ export default function ServiceCards() {
               Three Direct Ways to <span className="text-emerald-600">Prosper</span>
             </h2>
           </div>
-          <p className="text-slate-600 text-sm sm:text-base font-semibold max-w-sm sm:text-right">
-            Disciplined thrift savings (Blue), high-yield wealth (Green), and express 24h loans (Red).
-          </p>
+
         </div>
 
         {/* 3 Unified White Cards with Red, Green, Blue Branding */}

@@ -11,9 +11,9 @@ interface InvestmentRadialChartProps {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-[#0d1527] border border-white/10 rounded-xl p-2.5 card-shadow text-xs">
-        <p className="font-semibold text-white">{payload[0]?.name}</p>
-        <p className="text-white/50">₦{Number(payload[0]?.value || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
+      <div className="bg-white border border-slate-200 shadow-md rounded-xl p-2.5 text-xs">
+        <p className="font-semibold text-slate-900">{payload[0]?.name}</p>
+        <p className="text-slate-500">₦{Number(payload[0]?.value || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</p>
       </div>
     );
   }
