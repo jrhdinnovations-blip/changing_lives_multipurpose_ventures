@@ -56,7 +56,7 @@ export default function LandingNav() {
               <span className={`font-extrabold text-xl tracking-tight transition-colors ${scrolled ? 'text-primary' : 'text-white'}`}>
                 CLIMPS
               </span>
-              <span className={`text-[10px] font-medium tracking-wide transition-colors ${scrolled ? 'text-muted-foreground' : 'text-white/60'}`}>
+              <span className={`text-xs font-semibold tracking-wide transition-colors ${scrolled ? 'text-muted-foreground' : 'text-white/70'}`}>
                 Changing Lives Multipurpose Ventures
               </span>
             </div>
@@ -66,7 +66,7 @@ export default function LandingNav() {
           <nav className="hidden lg:flex items-center gap-1">
             <Link
               href="/landing#services"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+              className={`px-3 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
                 scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
               }`}
             >
@@ -75,7 +75,7 @@ export default function LandingNav() {
 
             <Link
               href="/about"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+              className={`px-3 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
                 scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
               }`}
             >
@@ -83,8 +83,17 @@ export default function LandingNav() {
             </Link>
 
             <Link
+              href="/landing#welcome-vision"
+              className={`px-3 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
+                scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
+              }`}
+            >
+              Vision & Mission
+            </Link>
+
+            <Link
               href="/how-it-works"
-              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 hover:bg-white/10 ${
+              className={`px-3 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
                 scrolled ? 'text-foreground hover:bg-muted' : 'text-white/90 hover:text-white'
               }`}
             >
@@ -99,7 +108,7 @@ export default function LandingNav() {
             >
               <button
                 onClick={() => setSaveOpen(!saveOpen)}
-                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 hover:bg-white/10 ${
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
                   scrolled ? 'text-foreground hover:bg-muted' : 'text-white/95 hover:text-white'
                 }`}
                 aria-expanded={saveOpen}
@@ -169,7 +178,7 @@ export default function LandingNav() {
             >
               <button
                 onClick={() => setInvestOpen(!investOpen)}
-                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 hover:bg-white/10 ${
+                className={`flex items-center gap-1 px-3.5 py-2 rounded-lg text-base font-semibold transition-all duration-150 hover:bg-white/10 ${
                   scrolled ? 'text-foreground hover:bg-muted' : 'text-white/95 hover:text-white'
                 }`}
                 aria-expanded={investOpen}
@@ -381,6 +390,13 @@ export default function LandingNav() {
               className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
             >
               About CLIMPS
+            </Link>
+            <Link
+              href="/landing#welcome-vision"
+              onClick={() => setMenuOpen(false)}
+              className="block px-3 py-2 rounded-xl text-sm font-medium text-foreground hover:bg-muted transition-colors"
+            >
+              Vision & Mission
             </Link>
             <Link
               href="/how-it-works"

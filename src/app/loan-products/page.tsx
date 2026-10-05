@@ -43,7 +43,7 @@ const loanProducts: LoanProduct[] = [
       'Consistent monthly contribution history',
     ],
     benefits: [
-      'Fast review & transparent approval within 24–48 hours',
+      'Fast review & transparent approval within 24 hours',
       'No early repayment penalties',
       'Flexible repayment tenure from 3 to 24 months',
       'Top-up facility available upon satisfactory repayment track',
@@ -245,7 +245,7 @@ export default function LoanProductsPage() {
               { value: '₦50,000', label: 'Minimum Loan', sub: 'Personal Loan' },
               { value: '10% monthly', label: 'Cooperative Rate', sub: 'Transparent terms' },
               { value: '3 – 24 mo', label: 'Flexible Tenure', sub: 'Structured repayment' },
-              { value: '24–48 hrs', label: 'Fast Review', sub: 'For verified members' },
+              { value: '24 hrs', label: 'Fast Review', sub: 'For verified members' },
             ].map((stat) => (
               <div
                 key={stat.label}

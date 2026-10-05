@@ -72,7 +72,7 @@ function StatCard({ value, label, delay }: { value: string; label: string; delay
       <div className="text-4xl sm:text-5xl font-black text-[#0d1b2e] tracking-tight leading-none mb-2">
         {count}
       </div>
-      <div className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase">{label}</div>
+      <div className="text-xs font-bold tracking-[0.15em] text-gray-500 uppercase mt-2">{label}</div>
     </div>
   );
 }
@@ -81,7 +81,7 @@ const DEFAULT_STATS = [
   { value: '500+', label: 'MEMBERS' },
   { value: '₦500M', label: 'MANAGED' },
   { value: '9–25%', label: 'RETURNS P.A.' },
-  { value: '48hrs', label: 'LOAN APPROVAL' },
+  { value: '24hrs', label: 'LOAN APPROVAL' },
 ];
 
 export default function HeroSection() {
@@ -135,7 +135,7 @@ export default function HeroSection() {
           { value: `${totalMembers.toLocaleString()}+`, label: 'MEMBERS' },
           { value: formatFundStat(BASELINE_FUNDS + liveFundAdditions), label: 'MANAGED' },
           { value: '9–25%', label: 'RETURNS P.A.' },
-          { value: '48hrs', label: 'LOAN APPROVAL' },
+          { value: '24hrs', label: 'LOAN APPROVAL' },
         ]);
       } catch {}
     }
@@ -198,15 +198,15 @@ export default function HeroSection() {
 
           {/* Badge — fade in */}
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/15 text-white/60 text-xs font-medium uppercase tracking-widest mb-8 transition-all duration-700"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-sm font-bold uppercase tracking-widest mb-8 transition-all duration-700"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(16px)',
               transitionDelay: '100ms',
             }}
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Cooperative Multipurpose Society
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#34d399]" />
+            Welcome to CLIMPS • Cooperative Multipurpose Society
           </div>
 
           {/* Headline — staggered lines */}
@@ -226,7 +226,7 @@ export default function HeroSection() {
 
           {/* Sub-copy */}
           <p
-            className="text-white/55 text-lg sm:text-xl max-w-xl mb-10 leading-relaxed transition-all duration-700"
+            className="text-white/70 text-xl sm:text-2xl max-w-xl mb-10 leading-relaxed transition-all duration-700 font-semibold"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(20px)',
@@ -248,7 +248,7 @@ export default function HeroSection() {
             {user ? (
               <Link
                 href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
-                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-200 active:scale-95 group overflow-hidden"
+                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 group overflow-hidden"
               >
                 <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
                 Go to Dashboard
@@ -257,7 +257,7 @@ export default function HeroSection() {
             ) : (
               <Link
                 href="/login"
-                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-sm tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/30 group overflow-hidden"
+                className="relative inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/30 group overflow-hidden"
                 style={{ animation: 'btnPulse 3s ease-in-out infinite' }}
               >
                 <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
@@ -267,7 +267,7 @@ export default function HeroSection() {
             )}
             <Link
               href="#products"
-              className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-transparent border border-white/20 hover:border-emerald-500/50 hover:bg-emerald-500/5 text-white font-semibold text-sm transition-all duration-200 active:scale-95"
+              className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-transparent border border-white/20 hover:border-emerald-500/50 hover:bg-emerald-500/5 text-white font-bold text-base transition-all duration-200 active:scale-95"
             >
               Explore Products
             </Link>

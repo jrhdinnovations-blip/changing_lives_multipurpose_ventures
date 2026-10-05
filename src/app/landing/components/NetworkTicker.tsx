@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client';
 const STATIC_MESSAGES = [
   '🌟 CLIMPS — Changing Lives Multipurpose Ventures Cooperative Society',
   '💰 Earn 9–25% returns p.a. on your savings — join the Wealth Circle today',
-  '🏦 Fast loan approvals within 48 hours for qualified members',
+  '⚡ Fast loan approvals within 24 hours for qualified members',
   '🤝 A registered cooperative empowering communities across Nigeria',
   '📈 Your savings. Your growth. Your future — powered by CLIMPS',
   '✅ Transparent. Trustworthy. Member-owned cooperative since inception',

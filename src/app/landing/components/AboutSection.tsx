@@ -34,7 +34,7 @@ const SERVICES = [
   {
     icon: CreditCard,
     label: 'Loans',
-    badge: 'Disbursed in 48 Hours',
+    badge: 'Disbursed in 24 Hours',
     desc: 'Low-interest cooperative loan packages tailored for emergencies, personal milestones, and working capital needs with flexible repayment.',
     color: 'bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:bg-amber-500/20',
     href: '/loan-products',

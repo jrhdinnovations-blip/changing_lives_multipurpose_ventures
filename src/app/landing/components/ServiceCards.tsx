@@ -56,7 +56,7 @@ const pillars = [
     category: 'BORROW',
     rate: '10%',
     rateSub: 'monthly cooperative rate',
-    headline: 'Funds in 48 hours.',
+    headline: 'Funds in 24 hours.',
     color: 'bg-[#f97316]',
     glow: 'rgba(249,115,22,0.15)',
     textColor: 'text-white',
@@ -84,13 +84,13 @@ export default function ServiceCards() {
           style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(32px)' }}
         >
           <div>
-            <p className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-3">HOW WE SERVE YOU</p>
+            <p className="text-emerald-400 text-sm font-bold tracking-[0.2em] uppercase mb-3">HOW WE SERVE YOU</p>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight tracking-tight">
               Three ways to<br />
               <span className="text-emerald-400">build wealth.</span>
             </h2>
           </div>
-          <p className="text-white/40 text-sm sm:text-base sm:text-right max-w-xs transition-all duration-700" style={{ transitionDelay: '150ms' }}>
+          <p className="text-white/60 text-base sm:text-lg font-semibold sm:text-right max-w-xs transition-all duration-700" style={{ transitionDelay: '150ms' }}>
             All built for cooperative members.
           </p>
         </div>
@@ -136,8 +136,8 @@ export default function ServiceCards() {
                 >
                   {pillar.rate}
                 </div>
-                <div className={`text-sm font-medium mb-6 ${pillar.subtextColor}`}>{pillar.rateSub}</div>
-                <h3 className={`text-xl sm:text-2xl font-bold mb-6 ${pillar.textColor}`}>{pillar.headline}</h3>
+                <div className={`text-base font-bold mb-6 ${pillar.subtextColor}`}>{pillar.rateSub}</div>
+                <h3 className={`text-2xl sm:text-3xl font-bold mb-6 ${pillar.textColor}`}>{pillar.headline}</h3>
               </div>
 
               {/* CTA Area */}
@@ -145,7 +145,7 @@ export default function ServiceCards() {
                 {user ? (
                   <Link
                     href={pillar.href}
-                    className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass} group/btn`}
+                    className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-base font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass} group/btn`}
                   >
                     <span>{pillar.cta}</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" />
@@ -153,7 +153,7 @@ export default function ServiceCards() {
                 ) : (
                   <Link
                     href={`/login?redirect=${encodeURIComponent(pillar.href)}`}
-                    className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
+                    className={`inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-base font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
                   >
                     <LogIn className="w-4 h-4" />
                     <span>{pillar.guestCta}</span>
@@ -161,7 +161,7 @@ export default function ServiceCards() {
                 )}
                 <Link
                   href={pillar.viewHref}
-                  className={`text-center text-xs font-medium py-1 hover:underline transition-opacity opacity-80 hover:opacity-100 ${pillar.subtextColor}`}
+                  className={`text-center text-sm font-semibold py-1 hover:underline transition-opacity opacity-80 hover:opacity-100 ${pillar.subtextColor}`}
                 >
                   {pillar.viewCta}
                 </Link>

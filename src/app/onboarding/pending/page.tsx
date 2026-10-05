@@ -275,7 +275,7 @@ export default function OnboardingPendingPage() {
                 <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 text-xs text-slate-300">
                   <p className="font-semibold text-primary mb-1">What happens next?</p>
                   <p>
-                    Cooperative administrators will review your credentials within 24–48 hours. Once approved, you will receive an email confirmation and can immediately access member savings, contributions, and loan applications.
+                    Cooperative administrators will review your credentials within 24 hours. Once approved, you will receive an email confirmation and can immediately access member savings, contributions, and loan applications.
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-4 text-xs text-slate-400 pt-2">

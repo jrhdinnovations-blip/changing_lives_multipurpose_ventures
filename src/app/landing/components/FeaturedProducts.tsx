@@ -259,21 +259,21 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
 
         {/* Tag & View details link */}
         <div className="flex items-center justify-between mb-5">
-          <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold ${product.tagColor}`}>
+          <span className={`inline-flex items-center px-2.5 py-1 rounded-lg text-sm font-bold ${product.tagColor}`}>
             {product.tag}
           </span>
           {product.viewHref && (
             <Link
               href={product.viewHref}
-              className="text-xs text-white/50 hover:text-emerald-400 transition-colors underline underline-offset-4"
+              className="text-sm text-white/70 font-semibold hover:text-emerald-400 transition-colors underline underline-offset-4"
             >
               View Details
             </Link>
           )}
         </div>
 
-        <h3 className="text-lg font-bold text-white mb-2">{product.name}</h3>
-        <p className="text-white/45 text-sm leading-relaxed mb-6">{product.description}</p>
+        <h3 className="text-xl font-bold text-white mb-2">{product.name}</h3>
+        <p className="text-white/60 text-base leading-relaxed mb-6">{product.description}</p>
 
         {/* Key metrics */}
         <div className="grid grid-cols-3 gap-3 mb-6">
@@ -286,8 +286,8 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
               key={m.label}
               className="bg-white/[0.06] rounded-xl p-3 text-center transition-all duration-200 hover:bg-white/[0.1]"
             >
-              <div className="text-sm font-bold text-white font-tabular">{m.val}</div>
-              <div className="text-[11px] text-white/35 mt-0.5">{m.label}</div>
+              <div className="text-base font-bold text-white font-tabular">{m.val}</div>
+              <div className="text-xs text-white/50 font-medium mt-0.5">{m.label}</div>
             </div>
           ))}
         </div>
@@ -295,7 +295,7 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
         {/* Features */}
         <ul className="space-y-2 mb-7 flex-1">
           {product.features.map((f) => (
-            <li key={f} className="flex items-center gap-2 text-sm text-white/55">
+            <li key={f} className="flex items-center gap-2 text-base text-white/70 font-medium">
               <svg className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
@@ -305,14 +305,14 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
         </ul>
 
         {isComingSoon ? (
-          <button disabled className="w-full text-center py-3 rounded-xl text-sm font-bold bg-white/10 text-white/30 cursor-not-allowed">
+          <button disabled className="w-full text-center py-3 rounded-xl text-base font-bold bg-white/10 text-white/30 cursor-not-allowed">
             Coming Soon
           </button>
         ) : needsAuth ? (
           <div className="space-y-2 w-full">
             <Link
               href={`/login?redirect=${encodeURIComponent(product.href)}`}
-              className={`w-full text-center py-3 px-4 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-2 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
+              className={`w-full text-center py-3 px-4 rounded-xl text-base font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-2 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
             >
               <LogIn className="w-4 h-4" />
               <span>{product.guestCtaText || 'Sign In to Subscribe'}</span>
@@ -320,7 +320,7 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
             {product.viewHref && (
               <Link
                 href={product.viewHref}
-                className="block text-center text-xs text-white/50 hover:text-emerald-400 py-1 transition-colors hover:underline"
+                className="block text-center text-sm text-white/60 font-semibold hover:text-emerald-400 py-1 transition-colors hover:underline"
               >
                 Explore Product Catalog & Details →
               </Link>
@@ -329,7 +329,7 @@ function ProductCard({ product, index, visible }: { product: ProductItem; index:
         ) : (
           <Link
             href={product.href}
-            className={`w-full text-center py-3 rounded-xl text-sm font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-1.5 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
+            className={`w-full text-center py-3 rounded-xl text-base font-bold text-white transition-all duration-150 active:scale-95 flex items-center justify-center gap-1.5 ${product.btnClass} hover:shadow-lg hover:-translate-y-0.5`}
           >
             <span>{product.ctaText}</span>
             <ArrowRight className="w-4 h-4" />
@@ -372,7 +372,7 @@ export default function FeaturedProducts() {
             transition: 'opacity 0.6s ease, transform 0.6s ease',
           }}
         >
-          <div className="text-emerald-400 text-xs font-bold tracking-[0.2em] uppercase mb-4">
+          <div className="text-emerald-400 text-sm font-bold tracking-[0.2em] uppercase mb-4">
             OUR PRODUCTS
           </div>
           <h2 className="text-4xl sm:text-5xl font-black text-white leading-tight tracking-tight max-w-2xl">
@@ -394,7 +394,7 @@ export default function FeaturedProducts() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
+              className={`px-6 py-2.5 rounded-lg text-base font-bold transition-all duration-200 ${
                 activeTab === tab.id
                   ? 'bg-white text-[#0a0f1e] shadow-sm scale-[1.02]'
                   : 'text-white/40 hover:text-white/70 hover:bg-white/5'

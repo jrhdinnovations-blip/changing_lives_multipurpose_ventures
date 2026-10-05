@@ -124,7 +124,7 @@ export default function HowItWorksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">3. Borrow Responsibly</h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  Access cooperative personal loans at competitive rates. Fast review within 24–48 hours for active members, with no early repayment penalties.
+                  Access cooperative personal loans at competitive rates. Fast review within 24 hours for active members, with no early repayment penalties.
                 </p>
               </div>
               <Link

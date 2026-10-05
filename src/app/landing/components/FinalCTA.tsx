@@ -95,7 +95,7 @@ export default function FinalCTA() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         {/* Badge */}
         <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold tracking-wide mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold tracking-wide mb-8"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -119,7 +119,7 @@ export default function FinalCTA() {
         </h2>
 
         <p
-          className="text-white/45 text-base sm:text-lg mb-10 max-w-md mx-auto leading-relaxed"
+          className="text-white/65 text-xl sm:text-2xl mb-10 max-w-md mx-auto leading-relaxed font-semibold"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -140,7 +140,7 @@ export default function FinalCTA() {
           {user ? (
             <Link
               href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
             >
               {/* Pulse ring */}
               {pulse && (
@@ -152,7 +152,7 @@ export default function FinalCTA() {
           ) : (
             <Link
               href="/login"
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
             >
               {/* Pulse ring */}
               {pulse && (

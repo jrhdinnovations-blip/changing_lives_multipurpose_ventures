@@ -39,6 +39,8 @@
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 500;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -46,6 +48,7 @@
     scroll-behavior: smooth;
     background-color: #0a0f1e;
     color: #ffffff;
+    font-size: 17px;
   }
   h1, h2, h3, h4, h5, h6, p {
     margin: 0;
@@ -73,10 +76,12 @@
     animation: pulseHighlight 600ms ease;
   }
   .text-hero-xl {
-    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 900;
   }
   .text-display {
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 800;
   }
   .scrollbar-thin {
     scrollbar-width: thin;
@@ -128,48 +133,48 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-lg shadow-emerald-950/40;
+    @apply bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-lg shadow-emerald-950/40;
   }
   .btn-accent {
-    @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-emerald-500/20;
+    @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-emerald-500/20;
   }
   .btn-outline {
-    @apply border border-white/20 bg-white/[0.04] text-white hover:bg-white/10 hover:border-white/30 font-semibold rounded-xl px-5 py-2.5 text-sm
+    @apply border border-white/20 bg-white/[0.04] text-white hover:bg-white/10 hover:border-white/30 font-bold rounded-xl px-5 py-2.5 text-base
       transition-all duration-150 active:scale-95 disabled:opacity-50
       disabled:cursor-not-allowed;
   }
   .btn-ghost {
-    @apply bg-transparent text-white/80 hover:text-white hover:bg-white/10 font-medium rounded-xl px-4 py-2 text-sm
+    @apply bg-transparent text-white/80 hover:text-white hover:bg-white/10 font-semibold rounded-xl px-4 py-2 text-base
       transition-all duration-150 active:scale-95;
   }
   .btn-destructive {
-    @apply bg-destructive text-destructive-foreground font-semibold rounded-xl px-5 py-2.5 text-sm transition-all duration-150 active:scale-95 shadow-md shadow-red-950/40;
+    @apply bg-destructive text-destructive-foreground font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 shadow-md shadow-red-950/40;
   }
   .input-base {
-    @apply w-full rounded-xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-sm text-white
+    @apply w-full rounded-xl border border-white/15 bg-white/[0.05] px-4 py-2.5 text-base text-white
       placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-500/50
       focus:border-emerald-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .label-base {
-    @apply block text-sm font-medium text-white/90 mb-1.5;
+    @apply block text-base font-bold text-white/90 mb-1.5;
   }
   .helper-text {
-    @apply text-xs text-muted-foreground mt-1;
+    @apply text-sm text-muted-foreground mt-1;
   }
   .error-text {
-    @apply text-xs text-destructive mt-1;
+    @apply text-sm text-destructive mt-1;
   }
   .card-base {
     @apply bg-[#0d1527] rounded-2xl border border-white/10 card-shadow p-5;
   }
   .section-header {
-    @apply text-lg font-semibold text-foreground;
+    @apply text-xl font-bold text-foreground;
   }
   .metric-label {
-    @apply text-xs font-medium text-muted-foreground uppercase tracking-wide;
+    @apply text-sm font-bold text-muted-foreground uppercase tracking-wide;
   }
   .metric-value {
-    @apply text-3xl font-bold text-foreground font-tabular;
+    @apply text-3xl font-black text-foreground font-tabular;
   }
   .badge-active {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30;
@@ -190,11 +195,11 @@
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-400 border border-blue-500/30;
   }
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-400
       hover:bg-white/[0.06] hover:text-white transition-all duration-150 cursor-pointer;
   }
   .nav-item-active {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-bold
       bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 transition-all duration-150 cursor-pointer;
   }
   .progress-bar-bg {
@@ -204,10 +209,10 @@
     @apply h-full rounded-full transition-all duration-500;
   }
   .table-header {
-    @apply px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider bg-white/[0.02] border-b border-white/10;
+    @apply px-4 py-3 text-left text-sm font-bold text-slate-400 uppercase tracking-wider bg-white/[0.02] border-b border-white/10;
   }
   .table-cell {
-    @apply px-4 py-3.5 text-sm text-white/90 border-b border-white/[0.06];
+    @apply px-4 py-3.5 text-base text-white/90 border-b border-white/[0.06] font-medium;
   }
   .table-row-hover {
     @apply hover:bg-white/[0.03] transition-colors duration-100;
