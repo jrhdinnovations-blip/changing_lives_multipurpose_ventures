@@ -28,11 +28,11 @@ const pillars = [
     headline: 'Cooperative Savings',
     desc: 'Disciplined monthly thrift contributions from ₦5,000/mo. Earn guaranteed interest plus annual cooperative surplus dividends.',
     image: '/assets/images/climps_save_hero.jpg',
-    color: 'bg-[#0d1b4b]',
-    glow: 'rgba(59,130,246,0.2)',
+    color: 'bg-gradient-to-br from-[#0d1f5e] to-[#070f35]',
+    glow: 'rgba(59,130,246,0.25)',
     badge: '48% P.A. GROWTH',
     icon: PiggyBank,
-    btnClass: 'bg-blue-600 hover:bg-blue-500 text-white',
+    btnClass: 'bg-blue-500 hover:bg-blue-400 text-white shadow-lg shadow-blue-500/30',
     href: '/save/start',
     viewHref: '/savings-products',
     cta: 'Start Saving',
@@ -46,11 +46,11 @@ const pillars = [
     headline: 'High-Yield Investments',
     desc: 'Exclusive pooled capital tranches backed by verified cooperative assets and real enterprise growth with predictable payouts.',
     image: '/assets/images/climps_invest_hero.jpg',
-    color: 'bg-[#003822]',
-    glow: 'rgba(0,168,107,0.2)',
+    color: 'bg-gradient-to-br from-[#014a2c] to-[#01241a]',
+    glow: 'rgba(0,168,107,0.25)',
     badge: '3.5% MONTHLY RETURN',
     icon: TrendingUp,
-    btnClass: 'bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold',
+    btnClass: 'bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold shadow-lg shadow-emerald-400/30',
     href: '/investors-circle',
     viewHref: '/investment-products',
     cta: 'Join Wealth Circle',
@@ -64,11 +64,11 @@ const pillars = [
     headline: 'Fast Express Credit',
     desc: 'Low-interest cooperative emergency and business capital loans. Fast review and funds disbursement within 24 hours.',
     image: '/assets/images/climps_loan_hero.jpg',
-    color: 'bg-[#3b1700]',
-    glow: 'rgba(249,115,22,0.2)',
+    color: 'bg-gradient-to-br from-[#4a1c00] to-[#2a0e00]',
+    glow: 'rgba(249,115,22,0.25)',
     badge: 'FUNDS IN 24 HOURS',
     icon: CreditCard,
-    btnClass: 'bg-orange-600 hover:bg-orange-500 text-white',
+    btnClass: 'bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-orange-500/30',
     href: '/loan-application',
     viewHref: '/loan-products',
     cta: 'Apply for 24h Loan',
@@ -91,11 +91,11 @@ export default function ServiceCards() {
           style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(24px)' }}
         >
           <div>
-            <div className="inline-flex items-center gap-2 text-emerald-400 text-xs font-bold tracking-widest uppercase mb-2">
-              <Sparkles className="w-3.5 h-3.5" />
+            <div className="inline-flex items-center gap-2 text-emerald-300 text-xs font-bold tracking-widest uppercase mb-2">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
               <span>Core Financial Solutions</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight" style={{ textShadow: '0 0 30px rgba(52,211,153,0.15)' }}>
               Three Direct Ways to <span className="text-emerald-400">Prosper</span>
             </h2>
           </div>
@@ -111,7 +111,7 @@ export default function ServiceCards() {
             return (
               <div
                 key={pillar.category}
-                className={`relative rounded-2xl p-5 sm:p-6 flex flex-col justify-between ${pillar.color} border border-white/10 overflow-hidden group transition-all duration-500 hover:border-white/30`}
+                className={`relative rounded-2xl p-5 sm:p-6 flex flex-col justify-between ${pillar.color} border border-white/15 overflow-hidden group transition-all duration-500 hover:border-white/40 hover:scale-[1.01]`}
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? 'translateY(0)' : 'translateY(32px)',

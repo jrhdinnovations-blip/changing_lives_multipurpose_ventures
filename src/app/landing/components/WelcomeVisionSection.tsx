@@ -17,16 +17,17 @@ import {
 
 export default function WelcomeVisionSection() {
   return (
-    <section id="welcome-vision" className="py-12 sm:py-16 lg:py-20 bg-[#080d1a] relative overflow-hidden border-t border-white/5 scroll-mt-16">
+    <section id="welcome-vision" className="py-12 sm:py-16 lg:py-20 bg-[#06091a] relative overflow-hidden border-t border-emerald-500/20 scroll-mt-16">
       {/* Background ambient glowing orbs */}
-      <div className="absolute top-1/4 -left-32 w-[400px] h-[400px] rounded-full bg-emerald-500/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-10 -right-32 w-[400px] h-[400px] rounded-full bg-blue-500/5 blur-[120px] pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-[500px] h-[500px] rounded-full bg-emerald-500/15 blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-10 -right-32 w-[500px] h-[500px] rounded-full bg-indigo-500/15 blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] rounded-full bg-blue-500/8 blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* ── TOP HEADER: WELCOME TO CLIMP (DIRECT & CONCISE) ── */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-400/50 bg-emerald-500/20 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-4 shadow-lg shadow-emerald-500/20">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
             <span>Welcome to CLIMPS</span>
           </div>
@@ -43,16 +44,16 @@ export default function WelcomeVisionSection() {
           </p>
 
           {/* Trust badges strip — compact on phone */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold text-white/85">
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10">
+          <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold text-white">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/15 border border-emerald-400/30 text-emerald-300">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
               <span>Registered Society</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500/10 border border-amber-500/25 text-amber-300">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-400/20 border border-amber-400/40 text-amber-200">
               <Clock className="w-3.5 h-3.5 text-amber-400 shrink-0" />
               <span className="font-extrabold">24-Hour Express Loans</span>
             </div>
-            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/[0.04] border border-white/10">
+            <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/15 border border-blue-400/30 text-blue-200">
               <Coins className="w-3.5 h-3.5 text-blue-400 shrink-0" />
               <span>4% Monthly Savings Growth</span>
             </div>
@@ -63,10 +64,10 @@ export default function WelcomeVisionSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 items-stretch">
           
           {/* VISION CARD */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-[#0c1a3b] via-[#09142b] to-[#060c1c] border border-indigo-500/30 p-6 sm:p-8 shadow-xl flex flex-col justify-between group hover:border-indigo-400/50 transition-colors">
+          <div className="relative rounded-2xl bg-gradient-to-br from-[#0f2060] via-[#0c1840] to-[#080e28] border border-indigo-400/40 p-6 sm:p-8 shadow-2xl shadow-indigo-900/50 flex flex-col justify-between group hover:border-indigo-300/60 transition-colors">
             <div>
               <div className="flex items-center justify-between mb-5">
-                <div className="inline-flex items-center gap-2 bg-indigo-500/20 border border-indigo-400/40 rounded-full px-3 py-1 text-indigo-300 text-xs font-extrabold uppercase tracking-wider">
+                <div className="inline-flex items-center gap-2 bg-indigo-500/30 border border-indigo-300/50 rounded-full px-3 py-1 text-indigo-200 text-xs font-extrabold uppercase tracking-wider">
                   <Eye className="w-3.5 h-3.5 text-indigo-400" />
                   <span>Our Vision</span>
                 </div>
@@ -109,10 +110,10 @@ export default function WelcomeVisionSection() {
           </div>
 
           {/* MISSION & MANDATE CARD */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-[#07241c] via-[#091b16] to-[#04100c] border border-emerald-500/30 p-6 sm:p-8 shadow-xl flex flex-col justify-between group hover:border-emerald-400/50 transition-colors">
+          <div className="relative rounded-2xl bg-gradient-to-br from-[#063a22] via-[#052b1a] to-[#031510] border border-emerald-400/40 p-6 sm:p-8 shadow-2xl shadow-emerald-900/50 flex flex-col justify-between group hover:border-emerald-300/60 transition-colors">
             <div>
               <div className="flex items-center justify-between mb-5">
-                <div className="inline-flex items-center gap-2 bg-emerald-500/20 border border-emerald-400/40 rounded-full px-3 py-1 text-emerald-300 text-xs font-extrabold uppercase tracking-wider">
+                <div className="inline-flex items-center gap-2 bg-emerald-500/30 border border-emerald-400/50 rounded-full px-3 py-1 text-emerald-200 text-xs font-extrabold uppercase tracking-wider">
                   <Target className="w-3.5 h-3.5 text-emerald-400" />
                   <span>Our Mandate</span>
                 </div>

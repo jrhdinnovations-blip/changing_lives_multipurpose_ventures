@@ -35,12 +35,12 @@ export default function FinalCTA() {
   return (
     <section
       ref={ref}
-      className="py-24 lg:py-36 bg-gradient-to-b from-[#0a0f1e] via-[#0d2040] to-[#0a2a35] relative overflow-hidden"
+      className="py-24 lg:py-36 bg-gradient-to-b from-[#050a16] via-[#0a1a35] to-[#051a20] relative overflow-hidden"
     >
       {/* Animated radial glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
-          className="w-[700px] h-[700px] rounded-full bg-emerald-500/10 blur-[160px]"
+          className="w-[900px] h-[900px] rounded-full bg-emerald-500/20 blur-[140px]"
           style={{
             transform: visible ? 'scale(1)' : 'scale(0.6)',
             opacity: visible ? 1 : 0,
@@ -52,7 +52,7 @@ export default function FinalCTA() {
       {/* Secondary accent glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
-          className="w-[400px] h-[400px] rounded-full bg-blue-500/8 blur-[100px]"
+          className="w-[500px] h-[500px] rounded-full bg-cyan-400/15 blur-[90px]"
           style={{
             transform: visible ? 'scale(1) translateY(60px)' : 'scale(0.5) translateY(60px)',
             opacity: visible ? 1 : 0,
@@ -95,7 +95,7 @@ export default function FinalCTA() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         {/* Badge */}
         <div
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-bold tracking-wide mb-8"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-sm font-bold tracking-wide mb-8 shadow-lg shadow-emerald-500/20"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -112,6 +112,7 @@ export default function FinalCTA() {
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(40px)',
             transition: 'opacity 0.7s ease 0.2s, transform 0.7s ease 0.2s',
+            textShadow: '0 0 60px rgba(52,211,153,0.2)',
           }}
         >
           One step.{' '}
@@ -119,7 +120,7 @@ export default function FinalCTA() {
         </h2>
 
         <p
-          className="text-white/65 text-xl sm:text-2xl mb-10 max-w-md mx-auto leading-relaxed font-semibold"
+          className="text-white/90 text-xl sm:text-2xl mb-10 max-w-md mx-auto leading-relaxed font-semibold"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -140,7 +141,7 @@ export default function FinalCTA() {
           {user ? (
             <Link
               href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-2xl shadow-emerald-500/40 group hover:-translate-y-0.5 hover:shadow-emerald-400/50"
             >
               {/* Pulse ring */}
               {pulse && (
@@ -152,7 +153,7 @@ export default function FinalCTA() {
           ) : (
             <Link
               href="/login"
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/20 group hover:-translate-y-0.5 hover:shadow-emerald-500/35"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-2xl shadow-emerald-500/40 group hover:-translate-y-0.5 hover:shadow-emerald-400/50"
             >
               {/* Pulse ring */}
               {pulse && (
