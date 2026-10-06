@@ -226,21 +226,21 @@ export default function AdminSettingsPage() {
     <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
       <div className="p-6 xl:p-8 2xl:p-10 max-w-5xl mx-auto space-y-6">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-white/10/40">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2">
               <span className="p-2 rounded-xl bg-indigo-50 text-indigo-700">
                 <Settings size={24} />
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                 System Settings
               </h1>
             </div>
-            <p className="text-sm text-white/50 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Configure financial rules, cooperative parameters, and system-level defaults. Changes take effect immediately for new applications.
             </p>
           </div>
-          <div className="flex items-center gap-2 text-xs text-white/50 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-3 py-1.5">
+          <div className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-3 py-1.5">
             <AlertCircle size={14} className="shrink-0" />
             <span className="font-medium">Super Admin Access Required</span>
           </div>
@@ -248,7 +248,7 @@ export default function AdminSettingsPage() {
 
         {loading ? (
           <div className="flex items-center justify-center h-48">
-            <div className="flex flex-col items-center gap-3 text-white/50">
+            <div className="flex flex-col items-center gap-3 text-slate-400">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               <span className="text-sm">Loading system settings…</span>
             </div>
@@ -265,8 +265,8 @@ export default function AdminSettingsPage() {
                     onClick={() => setActiveGroup(group.id)}
                     className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center gap-3 ${
                       activeGroup === group.id
-                        ? 'bg-emerald-500/10 text-emerald-400 border border-primary/20 font-semibold'
-                        : 'text-white/50 hover:bg-white/[0.06] hover:text-white'
+                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold'
+                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
                     <GIcon size={16} className="shrink-0" />
@@ -276,8 +276,8 @@ export default function AdminSettingsPage() {
               })}
 
               {/* Info box */}
-              <div className="mt-6 p-3 bg-white/[0.06]/60 rounded-xl text-2xs text-white/50 space-y-1.5">
-                <p className="font-semibold text-white text-xs">About Settings</p>
+              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-2xs text-slate-500 space-y-1.5">
+                <p className="font-semibold text-slate-800 text-xs">About Settings</p>
                 <p>Changes are persisted to the database and applied immediately for new applications.</p>
                 <p>All setting changes are recorded in the Audit Log.</p>
               </div>
@@ -285,16 +285,16 @@ export default function AdminSettingsPage() {
 
             {/* Main Settings Panel */}
             {currentGroup && (
-              <div className="flex-1 bg-[#0d1527] rounded-2xl border border-white/10 shadow-sm overflow-hidden">
+              <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
                 {/* Panel Header */}
-                <div className="px-6 py-4 border-b border-white/10/60 flex items-center justify-between bg-white/[0.06]/20">
+                <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
                   <div className="flex items-center gap-3">
                     <span className={`p-2 rounded-xl ${currentGroup.bg}`}>
                       <currentGroup.icon size={18} className={currentGroup.color} />
                     </span>
                     <div>
-                      <h2 className="font-bold text-white">{currentGroup.title}</h2>
-                      <p className="text-xs text-white/50">Changes take effect immediately for new applications</p>
+                      <h2 className="font-bold text-slate-900">{currentGroup.title}</h2>
+                      <p className="text-xs text-slate-500">Changes take effect immediately for new applications</p>
                     </div>
                   </div>
                   <button
@@ -319,12 +319,12 @@ export default function AdminSettingsPage() {
                     return (
                       <div key={item.key} className="space-y-1.5">
                         <div className="flex items-center justify-between">
-                          <label className="text-sm font-semibold text-white">{item.label}</label>
+                          <label className="text-sm font-semibold text-slate-800">{item.label}</label>
                           <div className="flex items-center gap-2">
                             {hasChanged && !isSaved && (
                               <button
                                 onClick={() => setEditValues(v => ({ ...v, [item.key]: savedVal }))}
-                                className="text-xs text-white/50 hover:text-white flex items-center gap-1"
+                                className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1"
                                 title="Discard changes"
                               >
                                 <RotateCcw size={11} />
@@ -344,7 +344,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {item.hint && (
-                          <p className="text-xs text-white/50">{item.hint}</p>
+                          <p className="text-xs text-slate-500">{item.hint}</p>
                         )}
 
                         <div className="flex gap-2">
@@ -360,7 +360,7 @@ export default function AdminSettingsPage() {
                                       ? opt === 'true'
                                         ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
                                         : 'border-rose-400 bg-rose-50 text-rose-700'
-                                      : 'border-white/10 text-white/50 hover:border-white/10/80 hover:bg-white/[0.06]'
+                                      : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
                                   }`}
                                 >
                                   {opt === 'true' ? '✓ Yes' : '✗ No'}
@@ -372,12 +372,12 @@ export default function AdminSettingsPage() {
                               type={item.type === 'number' ? 'number' : 'text'}
                               value={currentVal}
                               onChange={e => setEditValues(v => ({ ...v, [item.key]: e.target.value }))}
-                              className={`flex-1 px-4 py-2.5 rounded-xl border text-sm bg-background text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors ${
+                              className={`flex-1 px-4 py-2.5 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors ${
                                 error
-                                  ? 'border-destructive bg-red-500/5'
+                                  ? 'border-red-500 bg-red-50/30'
                                   : hasChanged
                                   ? 'border-amber-400 focus:border-amber-500'
-                                  : 'border-input focus:border-primary'
+                                  : 'border-slate-300 focus:border-blue-500'
                               }`}
                             />
                           )}
@@ -403,7 +403,7 @@ export default function AdminSettingsPage() {
                         </div>
 
                         {error && (
-                          <p className="text-red-400 text-xs flex items-center gap-1">
+                          <p className="text-red-500 text-xs flex items-center gap-1">
                             <AlertCircle size={12} />
                             {error}
                           </p>
@@ -415,15 +415,15 @@ export default function AdminSettingsPage() {
 
                 {/* Current Values Reference */}
                 <div className="px-6 pb-6">
-                  <div className="bg-white/[0.06]/40 rounded-xl p-4 border border-white/10/40">
-                    <p className="text-xs font-bold text-white/50 uppercase tracking-wide mb-3">
+                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
                       Current Saved Values Reference
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
                       {currentGroup.keys.map(item => (
                         <div key={item.key} className="flex justify-between text-xs gap-2">
-                          <span className="text-white/50 shrink-0">{item.label}:</span>
-                          <span className="font-medium text-white font-mono text-right truncate">
+                          <span className="text-slate-500 shrink-0">{item.label}:</span>
+                          <span className="font-medium text-slate-900 font-mono text-right truncate">
                             {settings[item.key] || '—'}
                           </span>
                         </div>

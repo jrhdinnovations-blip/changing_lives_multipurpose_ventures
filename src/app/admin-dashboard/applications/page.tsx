@@ -68,19 +68,19 @@ interface MemberApplicant {
 }
 
 const STATUS_CONFIG: Record<ApplicationStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
-  pending: { label: 'Pending', color: 'text-amber-600', bg: 'bg-amber-50', icon: Clock },
-  under_review: { label: 'Under Review', color: 'text-blue-600', bg: 'bg-blue-50', icon: Eye },
-  approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50', icon: CheckCircle2 },
-  rejected: { label: 'Rejected', color: 'text-red-400', bg: 'bg-red-500/10', icon: XCircle },
-  cancelled: { label: 'Cancelled', color: 'text-white/50', bg: 'bg-white/[0.06]', icon: X },
+  pending: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-50', icon: Clock },
+  under_review: { label: 'Under Review', color: 'text-blue-700', bg: 'bg-blue-50', icon: Eye },
+  approved: { label: 'Approved', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: CheckCircle2 },
+  rejected: { label: 'Rejected', color: 'text-red-700', bg: 'bg-red-50', icon: XCircle },
+  cancelled: { label: 'Cancelled', color: 'text-slate-500', bg: 'bg-slate-100', icon: X },
 };
 
 const MEMBER_STATUS_CONFIG: Record<MembershipStatus, { label: string; color: string; bg: string; icon: React.ElementType }> = {
-  pending: { label: 'Pending', color: 'text-amber-600', bg: 'bg-amber-50 dark:bg-amber-950/40', icon: Clock },
-  under_review: { label: 'Under Review', color: 'text-blue-600', bg: 'bg-blue-50 dark:bg-blue-950/40', icon: Eye },
-  approved: { label: 'Approved', color: 'text-emerald-600', bg: 'bg-emerald-50 dark:bg-emerald-950/40', icon: CheckCircle2 },
-  active: { label: 'Active', color: 'text-teal-600', bg: 'bg-teal-50 dark:bg-teal-950/40', icon: ShieldCheck },
-  suspended: { label: 'Suspended', color: 'text-red-400', bg: 'bg-red-500/10', icon: XCircle },
+  pending: { label: 'Pending', color: 'text-amber-700', bg: 'bg-amber-50', icon: Clock },
+  under_review: { label: 'Under Review', color: 'text-blue-700', bg: 'bg-blue-50', icon: Eye },
+  approved: { label: 'Approved', color: 'text-emerald-700', bg: 'bg-emerald-50', icon: CheckCircle2 },
+  active: { label: 'Active', color: 'text-teal-700', bg: 'bg-teal-50', icon: ShieldCheck },
+  suspended: { label: 'Suspended', color: 'text-red-700', bg: 'bg-red-50', icon: XCircle },
 };
 
 const PRODUCT_TYPE_CONFIG: Record<ProductType, { label: string; color: string; icon: React.ElementType }> = {
@@ -158,28 +158,28 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
   const cfg = MEMBER_STATUS_CONFIG[member.membershipStatus] || MEMBER_STATUS_CONFIG.pending;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-[#0d1527] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-slate-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center overflow-hidden shrink-0">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center overflow-hidden shrink-0">
               {member.profilePhotoUrl ? (
                 <img src={member.profilePhotoUrl} alt="Applicant" className="w-full h-full object-cover" />
               ) : (
-                <User size={22} className="text-emerald-400" />
+                <User size={22} className="text-emerald-600" />
               )}
             </div>
             <div>
-              <h2 className="font-bold text-white text-base">
+              <h2 className="font-bold text-slate-900 text-base">
                 {[member.firstName, member.middleName, member.lastName].filter(Boolean).join(' ')}
               </h2>
-              <p className="text-xs text-white/50 font-mono">
+              <p className="text-xs text-slate-500 font-mono">
                 {member.memberNumber || `Provisional ID: CLMV/2026/PENDING-${member.id.slice(0, 4).toUpperCase()}`}
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/50">
+          <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
             <X size={16} />
           </button>
         </div>
@@ -191,84 +191,84 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
               <StatusIcon size={14} />
               Status: {cfg.label}
             </div>
-            <span className="text-xs text-white/50">
+            <span className="text-xs text-slate-500">
               Submitted: {formatDate(member.createdAt)}
             </span>
           </div>
 
           {/* Contact & Personal */}
-          <div className="grid grid-cols-2 gap-3 bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
+          <div className="grid grid-cols-2 gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-100 text-xs">
             <div>
-              <span className="text-white/50 block mb-0.5">Email</span>
-              <span className="font-medium text-white">{member.email || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Email</span>
+              <span className="font-medium text-slate-800">{member.email || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">Phone</span>
-              <span className="font-medium text-white">{member.phone || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Phone</span>
+              <span className="font-medium text-slate-800">{member.phone || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">Gender / DOB</span>
-              <span className="font-medium text-white">{member.gender || '—'} · {member.dateOfBirth || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Gender / DOB</span>
+              <span className="font-medium text-slate-800">{member.gender || '—'} · {member.dateOfBirth || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">Location</span>
-              <span className="font-medium text-white">{member.state ? `${member.state}${member.lga ? `, ${member.lga}` : ''}` : '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Location</span>
+              <span className="font-medium text-slate-800">{member.state ? `${member.state}${member.lga ? `, ${member.lga}` : ''}` : '—'}</span>
             </div>
             <div className="col-span-2">
-              <span className="text-white/50 block mb-0.5">Residential Address</span>
-              <span className="font-medium text-white">{member.address || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Residential Address</span>
+              <span className="font-medium text-slate-800">{member.address || '—'}</span>
             </div>
           </div>
 
           {/* Employment & Identity */}
-          <div className="grid grid-cols-2 gap-3 bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
+          <div className="grid grid-cols-2 gap-3 bg-slate-50 rounded-2xl p-4 border border-slate-100 text-xs">
             <div>
-              <span className="text-white/50 block mb-0.5">Occupation</span>
-              <span className="font-medium text-white">{member.occupation || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Occupation</span>
+              <span className="font-medium text-slate-800">{member.occupation || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">Employer / Business</span>
-              <span className="font-medium text-white">{member.employer || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">Employer / Business</span>
+              <span className="font-medium text-slate-800">{member.employer || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">ID Type</span>
-              <span className="font-medium text-white">{member.idType || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">ID Type</span>
+              <span className="font-medium text-slate-800">{member.idType || '—'}</span>
             </div>
             <div>
-              <span className="text-white/50 block mb-0.5">ID Number</span>
-              <span className="font-mono font-medium text-white">{member.idNumber || '—'}</span>
+              <span className="text-slate-500 block mb-0.5">ID Number</span>
+              <span className="font-mono font-medium text-slate-800">{member.idNumber || '—'}</span>
             </div>
           </div>
 
           {/* Next of Kin */}
-          <div className="bg-white/[0.06]/40 rounded-2xl p-4 border border-white/10/50 text-xs">
-            <h4 className="font-semibold text-white mb-2 flex items-center gap-1.5">
-              <Users size={13} className="text-emerald-400" />
+          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 text-xs">
+            <h4 className="font-semibold text-slate-800 mb-2 flex items-center gap-1.5">
+              <Users size={13} className="text-emerald-600" />
               Next of Kin Information
             </h4>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <span className="text-white/50 block mb-0.5">Name</span>
-                <span className="font-medium text-white">{member.nokName || '—'}</span>
+                <span className="text-slate-500 block mb-0.5">Name</span>
+                <span className="font-medium text-slate-800">{member.nokName || '—'}</span>
               </div>
               <div>
-                <span className="text-white/50 block mb-0.5">Relationship</span>
-                <span className="font-medium text-white">{member.nokRelationship || '—'}</span>
+                <span className="text-slate-500 block mb-0.5">Relationship</span>
+                <span className="font-medium text-slate-800">{member.nokRelationship || '—'}</span>
               </div>
               <div>
-                <span className="text-white/50 block mb-0.5">Phone</span>
-                <span className="font-medium text-white">{member.nokPhone || '—'}</span>
+                <span className="text-slate-500 block mb-0.5">Phone</span>
+                <span className="font-medium text-slate-800">{member.nokPhone || '—'}</span>
               </div>
               <div>
-                <span className="text-white/50 block mb-0.5">Address</span>
-                <span className="font-medium text-white">{member.nokAddress || '—'}</span>
+                <span className="text-slate-500 block mb-0.5">Address</span>
+                <span className="font-medium text-slate-800">{member.nokAddress || '—'}</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-wrap items-center gap-2.5 p-6 border-t border-white/10 bg-white/[0.06]/30">
+        <div className="flex flex-wrap items-center gap-2.5 p-6 border-t border-slate-100 bg-slate-50/50">
           {member.membershipStatus !== 'under_review' && member.membershipStatus !== 'active' && member.membershipStatus !== 'approved' && (
             <button
               onClick={() => handleAction('under_review')}
@@ -306,14 +306,14 @@ function MemberDetailModal({ member, onClose, onStatusUpdate }: MemberDetailModa
             <button
               onClick={() => handleAction('suspended')}
               disabled={saving !== null}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-destructive text-red-400-foreground text-xs font-semibold hover:bg-red-500/90 transition-colors disabled:opacity-50"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
             >
               {saving === 'suspended' ? <Loader2 size={13} className="animate-spin" /> : <XCircle size={13} />}
               Suspend
             </button>
           )}
 
-          <button onClick={onClose} className="ml-auto px-4 py-2 rounded-xl border border-white/10 text-xs font-semibold text-white/50 hover:bg-white/[0.06] transition-colors">
+          <button onClick={onClose} className="ml-auto px-4 py-2 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors">
             Close
           </button>
         </div>
@@ -349,20 +349,20 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
   const ProductIcon = PRODUCT_TYPE_CONFIG[application.productType].icon;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-      <div className="bg-[#0d1527] rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-white/10">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-slate-200">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className={`p-2 rounded-xl ${PRODUCT_TYPE_CONFIG[application.productType].color}`}>
               <ProductIcon size={18} />
             </div>
             <div>
-              <h2 className="font-bold text-white text-base">Application Review</h2>
-              <p className="text-xs text-white/50 font-mono">{application.id.slice(0, 8).toUpperCase()}</p>
+              <h2 className="font-bold text-slate-900 text-base">Application Review</h2>
+              <p className="text-xs text-slate-500 font-mono">{application.id.slice(0, 8).toUpperCase()}</p>
             </div>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/[0.06] transition-colors text-white/50">
+          <button onClick={onClose} className="p-2 rounded-xl hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-600">
             <X size={16} />
           </button>
         </div>
@@ -376,16 +376,16 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
 
           {/* Applicant info */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white/[0.06]/50 rounded-xl p-4">
-              <p className="text-xs text-white/50 mb-1">Applicant</p>
-              <p className="font-semibold text-white text-sm">{application.memberName || 'Unknown Member'}</p>
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1">Applicant</p>
+              <p className="font-semibold text-slate-900 text-sm">{application.memberName || 'Unknown Member'}</p>
               {application.memberNumber && (
-                <p className="text-xs text-white/50 font-mono mt-0.5">{application.memberNumber}</p>
+                <p className="text-xs text-slate-500 font-mono mt-0.5">{application.memberNumber}</p>
               )}
             </div>
-            <div className="bg-white/[0.06]/50 rounded-xl p-4">
-              <p className="text-xs text-white/50 mb-1">Product</p>
-              <p className="font-semibold text-white text-sm">{application.productName}</p>
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1">Product</p>
+              <p className="font-semibold text-slate-900 text-sm">{application.productName}</p>
               <span className={`text-xs font-semibold px-2 py-0.5 rounded-lg mt-1 inline-block ${PRODUCT_TYPE_CONFIG[application.productType].color}`}>
                 {PRODUCT_TYPE_CONFIG[application.productType].label}
               </span>
@@ -394,50 +394,50 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
 
           {/* Financial details */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-white/50 mb-1">Amount</p>
-              <p className="font-bold text-white text-sm font-tabular">{formatCurrency(application.amount)}</p>
+            <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1">Amount</p>
+              <p className="font-bold text-slate-900 text-sm font-tabular">{formatCurrency(application.amount)}</p>
             </div>
-            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-white/50 mb-1">Duration</p>
-              <p className="font-bold text-white text-sm">{application.durationMonths} months</p>
+            <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1">Duration</p>
+              <p className="font-bold text-slate-900 text-sm">{application.durationMonths} months</p>
             </div>
-            <div className="bg-white/[0.06]/50 rounded-xl p-3 text-center">
-              <p className="text-xs text-white/50 mb-1">Submitted</p>
-              <p className="font-bold text-white text-sm">{formatDate(application.submittedAt)}</p>
+            <div className="bg-slate-50 rounded-xl p-3 text-center border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1">Submitted</p>
+              <p className="font-bold text-slate-900 text-sm">{formatDate(application.submittedAt)}</p>
             </div>
           </div>
 
           {/* Eligibility */}
-          <div className={`rounded-xl p-4 border ${application.isEligible ? 'bg-emerald-50 border-emerald-200' : 'bg-red-500/5 border-destructive/20'}`}>
+          <div className={`rounded-xl p-4 border ${application.isEligible ? 'bg-emerald-50 border-emerald-200' : 'bg-red-50 border-red-200'}`}>
             <div className="flex items-center justify-between mb-2">
-              <p className="text-sm font-semibold text-white">Eligibility Check</p>
-              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${application.isEligible ? 'bg-emerald-100 text-emerald-700' : 'bg-red-500/10 text-red-400'}`}>
+              <p className="text-sm font-semibold text-slate-900">Eligibility Check</p>
+              <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${application.isEligible ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-800'}`}>
                 {application.isEligible ? 'Eligible' : 'Not Eligible'}
               </span>
             </div>
             <div className="flex items-center gap-3">
-              <div className="flex-1 bg-white/60 rounded-full h-2">
+              <div className="flex-1 bg-slate-200 rounded-full h-2">
                 <div
-                  className={`h-2 rounded-full transition-all ${application.eligibilityScore >= 70 ? 'bg-emerald-500' : application.eligibilityScore >= 40 ? 'bg-amber-500' : 'bg-destructive'}`}
+                  className={`h-2 rounded-full transition-all ${application.eligibilityScore >= 70 ? 'bg-emerald-500' : application.eligibilityScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
                   style={{ width: `${application.eligibilityScore}%` }}
                 />
               </div>
-              <span className="text-sm font-bold text-white tabular-nums">{application.eligibilityScore}%</span>
+              <span className="text-sm font-bold text-slate-900 tabular-nums">{application.eligibilityScore}%</span>
             </div>
           </div>
 
           {/* Applicant notes */}
           {application.notes && (
-            <div className="bg-white/[0.06]/50 rounded-xl p-4">
-              <p className="text-xs text-white/50 mb-1.5">Applicant Notes</p>
-              <p className="text-sm text-white">{application.notes}</p>
+            <div className="bg-slate-50 rounded-xl p-4 border border-slate-100">
+              <p className="text-xs text-slate-500 mb-1.5">Applicant Notes</p>
+              <p className="text-sm text-slate-700">{application.notes}</p>
             </div>
           )}
 
           {/* Admin review notes */}
           <div>
-            <label className="text-sm font-semibold text-white block mb-2">
+            <label className="text-sm font-semibold text-slate-900 block mb-2">
               Admin Review Notes / Eligibility Notes
             </label>
             <textarea
@@ -445,13 +445,13 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
               onChange={e => setReviewNotes(e.target.value)}
               placeholder="Add eligibility notes, conditions, or reasons for decision..."
               rows={3}
-              className="w-full px-3 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30 resize-none"
+              className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
             />
           </div>
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 p-6 border-t border-white/10 bg-white/[0.06]/30">
+        <div className="flex items-center gap-3 p-6 border-t border-slate-100 bg-slate-50/50">
           {application.applicationStatus !== 'under_review' && (
             <button
               onClick={() => handleAction('review')}
@@ -473,12 +473,12 @@ function DetailModal({ application, onClose, onStatusUpdate }: DetailModalProps)
           <button
             onClick={() => handleAction('reject')}
             disabled={saving !== null || application.applicationStatus === 'rejected'}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-destructive text-red-400-foreground text-sm font-semibold hover:bg-red-500/90 transition-colors disabled:opacity-50"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition-colors disabled:opacity-50"
           >
             {saving === 'reject' ? <Loader2 size={14} className="animate-spin" /> : <XCircle size={14} />}
             Reject
           </button>
-          <button onClick={onClose} className="ml-auto px-4 py-2.5 rounded-xl border border-white/10 text-sm font-semibold text-white/50 hover:bg-white/[0.06] transition-colors">
+          <button onClick={onClose} className="ml-auto px-4 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors">
             Cancel
           </button>
         </div>
@@ -748,8 +748,8 @@ export default function AdminApplicationsPage() {
         {/* Header & Main Tabs */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-white">Applications & Approvals</h1>
-            <p className="text-sm text-white/50 mt-0.5">
+            <h1 className="text-2xl font-bold text-slate-900">Applications & Approvals</h1>
+            <p className="text-sm text-slate-500 mt-0.5">
               Review member registrations, KYC submissions, and product applications
             </p>
           </div>
@@ -757,7 +757,7 @@ export default function AdminApplicationsPage() {
             <button
               onClick={() => activeTab === 'members' ? fetchMembers() : fetchApplications()}
               disabled={loadingMembers || loadingApps}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 text-sm font-semibold text-white/50 hover:bg-white/[0.06] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-slate-200 text-sm font-semibold text-slate-700 hover:bg-slate-50 bg-white transition-colors disabled:opacity-50"
             >
               <RefreshCw size={14} className={(loadingMembers || loadingApps) ? 'animate-spin' : ''} />
               Refresh
@@ -766,18 +766,18 @@ export default function AdminApplicationsPage() {
         </div>
 
         {/* Primary View Switcher: Member Applications vs Product Applications */}
-        <div className="flex items-center gap-2 p-1 bg-white/[0.06]/60 rounded-2xl w-fit border border-white/10">
+        <div className="flex items-center gap-1.5 p-1.5 bg-slate-100 rounded-2xl w-fit border border-slate-200">
           <button
             onClick={() => setActiveTab('members')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeTab === 'members'
-                ? 'bg-[#0d1527] text-white shadow-sm'
-                : 'text-white/50 hover:text-white'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <Users size={16} />
             <span>Member Registrations</span>
-            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-emerald-500/10 text-emerald-400 font-bold">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-emerald-50 text-emerald-700 font-bold border border-emerald-100">
               Workflow
             </span>
           </button>
@@ -785,13 +785,13 @@ export default function AdminApplicationsPage() {
             onClick={() => setActiveTab('products')}
             className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
               activeTab === 'products'
-                ? 'bg-[#0d1527] text-white shadow-sm'
-                : 'text-white/50 hover:text-white'
+                ? 'bg-white text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900'
             }`}
           >
             <FileText size={16} />
             <span>Product Applications</span>
-            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-white/[0.06] text-white/50 font-medium">
+            <span className="ml-1 px-2 py-0.5 rounded-full text-2xs bg-slate-200/80 text-slate-600 font-medium">
               Savings · Loans · Inv
             </span>
           </button>
@@ -810,17 +810,17 @@ export default function AdminApplicationsPage() {
                   <button
                     key={st}
                     onClick={() => { setMemberStatusFilter(st); setMembersPage(0); }}
-                    className={`p-4 rounded-xl border text-left transition-all hover:shadow-sm ${
+                    className={`p-4 rounded-xl border text-left transition-all hover:shadow-xs ${
                       memberStatusFilter === st
-                        ? `${cfg.bg} border-current ${cfg.color} shadow-sm`
-                        : 'bg-[#0d1527] border-white/10 hover:border-primary/30'
+                        ? `${cfg.bg} border-current ${cfg.color} shadow-xs ring-1 ring-current/20`
+                        : 'bg-white border-slate-200 hover:border-slate-300'
                     }`}
                   >
-                    <div className={`flex items-center gap-2 mb-2 ${memberStatusFilter === st ? cfg.color : 'text-white/50'}`}>
+                    <div className={`flex items-center gap-2 mb-2 ${memberStatusFilter === st ? cfg.color : 'text-slate-500'}`}>
                       <Icon size={14} />
                       <span className="text-xs font-semibold">{cfg.label}</span>
                     </div>
-                    <p className={`text-xl font-bold ${memberStatusFilter === st ? cfg.color : 'text-white'}`}>
+                    <p className={`text-xl font-bold ${memberStatusFilter === st ? cfg.color : 'text-slate-900'}`}>
                       {count}
                     </p>
                   </button>
@@ -832,13 +832,13 @@ export default function AdminApplicationsPage() {
             <div className="card-base">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
                     placeholder="Search applicant by name, email, phone, state, or member ID..."
                     value={membersSearchQuery}
                     onChange={e => { setMembersSearchQuery(e.target.value); setMembersPage(0); }}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                   />
                 </div>
 
@@ -846,7 +846,7 @@ export default function AdminApplicationsPage() {
                   <select
                     value={memberStatusFilter}
                     onChange={e => { setMemberStatusFilter(e.target.value as MembershipStatus | 'all'); setMembersPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer"
                   >
                     <option value="all">All Statuses</option>
                     <option value="pending">Pending</option>
@@ -855,13 +855,13 @@ export default function AdminApplicationsPage() {
                     <option value="active">Active</option>
                     <option value="suspended">Suspended</option>
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
 
                 {(memberStatusFilter !== 'all' || membersSearchQuery) && (
                   <button
                     onClick={() => { setMemberStatusFilter('all'); setMembersSearchQuery(''); setMembersPage(0); }}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 text-sm text-white/50 hover:bg-white/[0.06] transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
                   >
                     <X size={13} /> Clear
                   </button>
@@ -873,9 +873,9 @@ export default function AdminApplicationsPage() {
             <div className="card-base overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <h2 className="section-header">Applicant Queue</h2>
+                  <h2 className="text-base font-bold text-slate-900">Applicant Queue</h2>
                   {!loadingMembers && (
-                    <span className="bg-white/[0.06] text-white/50 text-2xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-slate-100 text-slate-600 text-2xs font-bold px-2 py-0.5 rounded-full border border-slate-200">
                       {members.length} shown
                     </span>
                   )}
@@ -884,89 +884,89 @@ export default function AdminApplicationsPage() {
 
               {loadingMembers ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 size={24} className="animate-spin text-emerald-400" />
-                  <span className="ml-3 text-sm text-white/50">Loading member registrations...</span>
+                  <Loader2 size={24} className="animate-spin text-emerald-600" />
+                  <span className="ml-3 text-sm text-slate-500">Loading member registrations...</span>
                 </div>
               ) : members.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <Users size={32} className="text-white/50 mb-3" />
-                  <p className="text-sm font-semibold text-white mb-1">No member applicants found</p>
-                  <p className="text-xs text-white/50">New online registrations will appear here for review.</p>
+                  <Users size={32} className="text-slate-400 mb-3" />
+                  <p className="text-sm font-semibold text-slate-900 mb-1">No member applicants found</p>
+                  <p className="text-xs text-slate-500">New online registrations will appear here for review.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="table-header">Applicant</th>
-                        <th className="table-header">Contact</th>
-                        <th className="table-header">Location</th>
-                        <th className="table-header">Next of Kin</th>
-                        <th className="table-header">Member Number</th>
-                        <th className="table-header">Status</th>
-                        <th className="table-header">Registered</th>
-                        <th className="table-header text-right">Actions</th>
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Applicant</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Location</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Next of Kin</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Member Number</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Registered</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-slate-100">
                       {members.map(m => {
                         const cfg = MEMBER_STATUS_CONFIG[m.membershipStatus] || MEMBER_STATUS_CONFIG.pending;
                         const StatusIcon = cfg.icon;
 
                         return (
-                          <tr key={m.id} className="border-b border-white/10/60 table-row-hover">
+                          <tr key={m.id} className="hover:bg-slate-50/80 transition-colors">
                             {/* Applicant */}
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               <div className="flex items-center gap-2.5">
-                                <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0 overflow-hidden">
+                                <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 overflow-hidden">
                                   {m.profilePhotoUrl ? (
                                     <img src={m.profilePhotoUrl} alt="" className="w-full h-full object-cover" />
                                   ) : (
-                                    <User size={13} className="text-emerald-400" />
+                                    <User size={13} className="text-emerald-600" />
                                   )}
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold text-white">
+                                  <p className="text-xs font-semibold text-slate-900">
                                     {[m.firstName, m.lastName].filter(Boolean).join(' ') || 'Applicant'}
                                   </p>
-                                  <p className="text-2xs text-white/50">{m.occupation || 'Member'}</p>
+                                  <p className="text-2xs text-slate-500">{m.occupation || 'Member'}</p>
                                 </div>
                               </div>
                             </td>
 
                             {/* Contact */}
-                            <td className="table-cell">
-                              <p className="text-xs text-white font-medium">{m.phone || '—'}</p>
-                              <p className="text-2xs text-white/50">{m.email || '—'}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs text-slate-900 font-medium">{m.phone || '—'}</p>
+                              <p className="text-2xs text-slate-500">{m.email || '—'}</p>
                             </td>
 
                             {/* Location */}
-                            <td className="table-cell">
-                              <p className="text-xs text-white">{m.state || '—'}</p>
-                              <p className="text-2xs text-white/50">{m.lga || ''}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs text-slate-800">{m.state || '—'}</p>
+                              <p className="text-2xs text-slate-500">{m.lga || ''}</p>
                             </td>
 
                             {/* Next of Kin */}
-                            <td className="table-cell">
-                              <p className="text-xs text-white font-medium">{m.nokName || '—'}</p>
-                              <p className="text-2xs text-white/50">{m.nokRelationship || ''}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs text-slate-800 font-medium">{m.nokName || '—'}</p>
+                              <p className="text-2xs text-slate-500">{m.nokRelationship || ''}</p>
                             </td>
 
                             {/* Member Number */}
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               {m.memberNumber ? (
-                                <span className="font-mono text-xs font-bold text-emerald-400 px-2 py-0.5 rounded-lg bg-emerald-500/10">
+                                <span className="font-mono text-xs font-bold text-emerald-700 px-2 py-0.5 rounded-lg bg-emerald-50 border border-emerald-100">
                                   {m.memberNumber}
                                 </span>
                               ) : (
-                                <span className="text-2xs text-white/50 italic">
+                                <span className="text-2xs text-slate-400 italic">
                                   Unassigned
                                 </span>
                               )}
                             </td>
 
                             {/* Status */}
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               <div className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold ${cfg.bg} ${cfg.color}`}>
                                 <StatusIcon size={12} />
                                 {cfg.label}
@@ -974,16 +974,16 @@ export default function AdminApplicationsPage() {
                             </td>
 
                             {/* Registered */}
-                            <td className="table-cell">
-                              <p className="text-xs text-white">{formatDate(m.createdAt)}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs text-slate-700">{formatDate(m.createdAt)}</p>
                             </td>
 
                             {/* Actions */}
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5 text-right">
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
                                   onClick={() => setSelectedMember(m)}
-                                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/50 hover:text-white"
+                                  className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700"
                                   title="View full application"
                                 >
                                   <Eye size={14} />
@@ -1044,17 +1044,17 @@ export default function AdminApplicationsPage() {
                   <button
                     key={status}
                     onClick={() => { setStatusFilter(status); setAppsPage(0); }}
-                    className={`p-4 rounded-xl border text-left transition-all hover:shadow-sm ${
+                    className={`p-4 rounded-xl border text-left transition-all hover:shadow-xs ${
                       statusFilter === status
-                        ? `${cfg.bg} border-current ${cfg.color} shadow-sm`
-                        : 'bg-[#0d1527] border-white/10 hover:border-primary/30'
+                        ? `${cfg.bg} border-current ${cfg.color} shadow-xs ring-1 ring-current/20`
+                        : 'bg-white border-slate-200 hover:border-slate-300'
                     }`}
                   >
-                    <div className={`flex items-center gap-2 mb-2 ${statusFilter === status ? cfg.color : 'text-white/50'}`}>
+                    <div className={`flex items-center gap-2 mb-2 ${statusFilter === status ? cfg.color : 'text-slate-500'}`}>
                       <Icon size={14} />
                       <span className="text-xs font-semibold">{cfg.label}</span>
                     </div>
-                    <p className={`text-xl font-bold ${statusFilter === status ? cfg.color : 'text-white'}`}>—</p>
+                    <p className={`text-xl font-bold ${statusFilter === status ? cfg.color : 'text-slate-900'}`}>—</p>
                   </button>
                 );
               })}
@@ -1064,13 +1064,13 @@ export default function AdminApplicationsPage() {
             <div className="card-base">
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
-                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/50" />
+                  <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                   <input
                     type="text"
                     placeholder="Search by member name, ID, or product..."
                     value={appsSearchQuery}
                     onChange={e => { setAppsSearchQuery(e.target.value); setAppsPage(0); }}
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                   />
                 </div>
 
@@ -1078,34 +1078,34 @@ export default function AdminApplicationsPage() {
                   <select
                     value={statusFilter}
                     onChange={e => { setStatusFilter(e.target.value as ApplicationStatus | 'all'); setAppsPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer"
                   >
                     <option value="all">All Statuses</option>
                     {(Object.entries(STATUS_CONFIG) as [ApplicationStatus, typeof STATUS_CONFIG[ApplicationStatus]][]).map(([s, cfg]) => (
                       <option key={s} value={s}>{cfg.label}</option>
                     ))}
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
 
                 <div className="relative">
                   <select
                     value={typeFilter}
                     onChange={e => { setTypeFilter(e.target.value as ProductType | 'all'); setAppsPage(0); }}
-                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-white/10 bg-background text-sm text-white focus:outline-none focus:ring-2 focus:ring-primary/30 cursor-pointer"
+                    className="appearance-none pl-3 pr-8 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 cursor-pointer"
                   >
                     <option value="all">All Types</option>
                     {(Object.entries(PRODUCT_TYPE_CONFIG) as [ProductType, typeof PRODUCT_TYPE_CONFIG[ProductType]][]).map(([t, cfg]) => (
                       <option key={t} value={t}>{cfg.label}</option>
                     ))}
                   </select>
-                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/50 pointer-events-none" />
+                  <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                 </div>
 
                 {(statusFilter !== 'all' || typeFilter !== 'all' || appsSearchQuery) && (
                   <button
                     onClick={() => { setStatusFilter('all'); setTypeFilter('all'); setAppsSearchQuery(''); setAppsPage(0); }}
-                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-white/10 text-sm text-white/50 hover:bg-white/[0.06] transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
                   >
                     <X size={13} /> Clear
                   </button>
@@ -1117,9 +1117,9 @@ export default function AdminApplicationsPage() {
             <div className="card-base overflow-hidden">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <h2 className="section-header">Product Applications</h2>
+                  <h2 className="text-base font-bold text-slate-900">Product Applications</h2>
                   {!loadingApps && (
-                    <span className="bg-white/[0.06] text-white/50 text-2xs font-bold px-2 py-0.5 rounded-full">
+                    <span className="bg-slate-100 text-slate-600 text-2xs font-bold px-2 py-0.5 rounded-full border border-slate-200">
                       {applications.length} shown
                     </span>
                   )}
@@ -1128,94 +1128,94 @@ export default function AdminApplicationsPage() {
 
               {loadingApps ? (
                 <div className="flex items-center justify-center py-16">
-                  <Loader2 size={24} className="animate-spin text-emerald-400" />
-                  <span className="ml-3 text-sm text-white/50">Loading applications...</span>
+                  <Loader2 size={24} className="animate-spin text-emerald-600" />
+                  <span className="ml-3 text-sm text-slate-500">Loading applications...</span>
                 </div>
               ) : applications.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 text-center">
-                  <FileText size={32} className="text-white/50 mb-3" />
-                  <p className="text-sm font-semibold text-white mb-1">No applications found</p>
-                  <p className="text-xs text-white/50">Try adjusting your filters.</p>
+                  <FileText size={32} className="text-slate-400 mb-3" />
+                  <p className="text-sm font-semibold text-slate-900 mb-1">No applications found</p>
+                  <p className="text-xs text-slate-500">Try adjusting your filters.</p>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
                   <table className="w-full">
                     <thead>
-                      <tr className="border-b border-white/10">
-                        <th className="table-header">Applicant</th>
-                        <th className="table-header">Product</th>
-                        <th className="table-header">Type</th>
-                        <th className="table-header">Amount</th>
-                        <th className="table-header">Duration</th>
-                        <th className="table-header">Eligibility</th>
-                        <th className="table-header">Status</th>
-                        <th className="table-header">Submitted</th>
-                        <th className="table-header text-right">Actions</th>
+                      <tr className="bg-slate-50 border-b border-slate-200">
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Applicant</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Product</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Type</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Duration</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Eligibility</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+                        <th className="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Submitted</th>
+                        <th className="px-4 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-slate-100">
                       {applications.map(app => {
                         const StatusIcon = STATUS_CONFIG[app.applicationStatus].icon;
                         const ProductIcon = PRODUCT_TYPE_CONFIG[app.productType].icon;
 
                         return (
-                          <tr key={app.id} className="border-b border-white/10/60 table-row-hover">
-                            <td className="table-cell">
+                          <tr key={app.id} className="hover:bg-slate-50/80 transition-colors">
+                            <td className="px-4 py-3.5">
                               <div className="flex items-center gap-2.5">
-                                <div className="w-7 h-7 rounded-full bg-emerald-500/10 flex items-center justify-center shrink-0">
-                                  <User size={12} className="text-emerald-400" />
+                                <div className="w-7 h-7 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0">
+                                  <User size={12} className="text-emerald-600" />
                                 </div>
                                 <div>
-                                  <p className="text-xs font-semibold text-white">{app.memberName || 'Unknown'}</p>
+                                  <p className="text-xs font-semibold text-slate-900">{app.memberName || 'Unknown'}</p>
                                   {app.memberNumber && (
-                                    <p className="text-2xs text-white/50 font-mono">{app.memberNumber}</p>
+                                    <p className="text-2xs text-slate-500 font-mono">{app.memberNumber}</p>
                                   )}
                                 </div>
                               </div>
                             </td>
-                            <td className="table-cell">
-                              <p className="text-xs font-medium text-white max-w-[140px] truncate">{app.productName}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs font-medium text-slate-900 max-w-[140px] truncate">{app.productName}</p>
                             </td>
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold ${PRODUCT_TYPE_CONFIG[app.productType].color}`}>
                                 <ProductIcon size={11} />
                                 {PRODUCT_TYPE_CONFIG[app.productType].label}
                               </div>
                             </td>
-                            <td className="table-cell">
-                              <span className="text-xs font-semibold text-white font-tabular">{formatCurrency(app.amount)}</span>
+                            <td className="px-4 py-3.5">
+                              <span className="text-xs font-semibold text-slate-900 font-tabular">{formatCurrency(app.amount)}</span>
                             </td>
-                            <td className="table-cell">
-                              <span className="text-xs text-white/50">{app.durationMonths}mo</span>
+                            <td className="px-4 py-3.5">
+                              <span className="text-xs text-slate-600">{app.durationMonths}mo</span>
                             </td>
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               <div className="flex items-center gap-2">
-                                <div className="w-16 bg-white/[0.06] rounded-full h-1.5">
+                                <div className="w-16 bg-slate-100 rounded-full h-1.5">
                                   <div
-                                    className={`h-1.5 rounded-full ${app.eligibilityScore >= 70 ? 'bg-emerald-500' : app.eligibilityScore >= 40 ? 'bg-amber-500' : 'bg-destructive'}`}
+                                    className={`h-1.5 rounded-full ${app.eligibilityScore >= 70 ? 'bg-emerald-500' : app.eligibilityScore >= 40 ? 'bg-amber-500' : 'bg-red-500'}`}
                                     style={{ width: `${app.eligibilityScore}%` }}
                                   />
                                 </div>
-                                <span className={`text-xs font-bold tabular-nums ${app.isEligible ? 'text-emerald-600' : 'text-red-400'}`}>
+                                <span className={`text-xs font-bold tabular-nums ${app.isEligible ? 'text-emerald-700' : 'text-red-700'}`}>
                                   {app.eligibilityScore}%
                                 </span>
                               </div>
                             </td>
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5">
                               <div className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-semibold ${STATUS_CONFIG[app.applicationStatus].bg} ${STATUS_CONFIG[app.applicationStatus].color}`}>
                                 <StatusIcon size={11} />
                                 {STATUS_CONFIG[app.applicationStatus].label}
                               </div>
                             </td>
-                            <td className="table-cell">
-                              <p className="text-xs text-white">{formatDate(app.submittedAt)}</p>
-                              <p className="text-2xs text-white/50">{formatTime(app.submittedAt)}</p>
+                            <td className="px-4 py-3.5">
+                              <p className="text-xs text-slate-700">{formatDate(app.submittedAt)}</p>
+                              <p className="text-2xs text-slate-400">{formatTime(app.submittedAt)}</p>
                             </td>
-                            <td className="table-cell">
+                            <td className="px-4 py-3.5 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <button
                                   onClick={() => setSelectedApp(app)}
-                                  className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors text-white/50 hover:text-white"
+                                  className="p-1.5 rounded-lg hover:bg-slate-100 transition-colors text-slate-400 hover:text-slate-700"
                                   title="View details & review"
                                 >
                                   <Eye size={13} />

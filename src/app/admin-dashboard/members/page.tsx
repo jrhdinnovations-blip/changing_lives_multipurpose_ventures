@@ -318,17 +318,17 @@ export default function AdminMembersPage() {
     <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
         {/* Header Bar */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10/40">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+              <span className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
                 <Users size={24} />
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
                 Members & User Directory
               </h1>
             </div>
-            <p className="text-sm text-white/50 mt-1">
+            <p className="text-sm text-slate-500 mt-1 font-medium">
               Authoritative administration portal: provision new user profiles, assign operational roles, and manage cooperative thrift accounts.
             </p>
           </div>
@@ -345,7 +345,7 @@ export default function AdminMembersPage() {
 
             <button
               onClick={handleOpenCreate}
-              className="btn-primary text-xs px-4 py-2.5 flex items-center gap-2 shadow-sm shadow-primary/20"
+              className="btn-primary text-xs px-4 py-2.5 flex items-center gap-2 shadow-xs"
             >
               <UserPlus size={16} />
               <span>Create New User Profile</span>
@@ -355,85 +355,85 @@ export default function AdminMembersPage() {
 
         {/* Operational KPI Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Total Registered Users</span>
+              <span className="text-xs font-semibold text-slate-500">Total Registered Users</span>
               <span className="p-2 rounded-xl bg-blue-50 text-blue-600">
                 <Users size={16} />
               </span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">{stats.total}</div>
-            <div className="mt-1 flex items-center gap-1.5 text-xs text-white/50">
+            <div className="mt-2 text-2xl font-black text-slate-900">{stats.total}</div>
+            <div className="mt-1 flex items-center gap-1.5 text-xs text-slate-500 font-medium">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-500" />
               <span>{stats.active} Active Members</span>
             </div>
           </div>
 
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Monthly Thrift Commitment</span>
+              <span className="text-xs font-semibold text-slate-500">Monthly Thrift Commitment</span>
               <span className="p-2 rounded-xl bg-emerald-50 text-emerald-600">
                 <Calendar size={16} />
               </span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">
+            <div className="mt-2 text-2xl font-black text-slate-900">
               {formatNGN(stats.totalMonthlyCommitment)}
             </div>
-            <div className="mt-1 text-xs text-white/50">Monthly expected dues pool</div>
+            <div className="mt-1 text-xs text-slate-500 font-medium">Monthly expected dues pool</div>
           </div>
 
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Total Savings Vault</span>
+              <span className="text-xs font-semibold text-slate-500">Total Savings Vault</span>
               <span className="p-2 rounded-xl bg-purple-50 text-purple-600">
                 <Banknote size={16} />
               </span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">
+            <div className="mt-2 text-2xl font-black text-slate-900">
               {formatNGN(stats.totalSavings)}
             </div>
-            <div className="mt-1 text-xs text-white/50">Combined voluntary & thrift</div>
+            <div className="mt-1 text-xs text-slate-500 font-medium">Combined voluntary & thrift</div>
           </div>
 
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Staff & Admin Officers</span>
+              <span className="text-xs font-semibold text-slate-500">Staff & Admin Officers</span>
               <span className="p-2 rounded-xl bg-indigo-50 text-indigo-600">
                 <Shield size={16} />
               </span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">{stats.staff}</div>
-            <div className="mt-1 text-xs text-white/50">Privileged system access</div>
+            <div className="mt-2 text-2xl font-black text-slate-900">{stats.staff}</div>
+            <div className="mt-1 text-xs text-slate-500 font-medium">Privileged system access</div>
           </div>
         </div>
 
         {/* Search, Filters & Controls */}
-        <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             {/* Search Input */}
             <div className="relative flex-1 max-w-md">
               <Search
                 size={16}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50"
+                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
               />
               <input
                 type="text"
                 placeholder="Search by name, email, phone, or member ID..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
               />
             </div>
 
             {/* Sort & Quick Actions */}
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 text-xs text-white/50">
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
                 <ArrowUpDown size={14} />
                 <span>Sort by:</span>
                 <select
                   value={sortBy}
                   onChange={e => setSortBy(e.target.value as any)}
-                  className="bg-background border border-input rounded-lg px-2.5 py-1.5 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-800 focus:outline-none focus:border-blue-500"
                 >
                   <option value="newest">Recently Joined</option>
                   <option value="name">Full Name (A–Z)</option>
@@ -445,10 +445,10 @@ export default function AdminMembersPage() {
           </div>
 
           {/* Filter Pills */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/10/40">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
             {/* Roles */}
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-semibold text-white/50 mr-1">Role:</span>
+              <span className="text-xs font-bold text-slate-500 mr-1">Role:</span>
               {[
                 { id: 'all', label: 'All Roles' },
                 { id: 'member', label: 'Members' },
@@ -460,10 +460,10 @@ export default function AdminMembersPage() {
                 <button
                   key={r.id}
                   onClick={() => setRoleFilter(r.id)}
-                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                     roleFilter === r.id
-                      ? 'bg-emerald-500 text-emerald-400-foreground font-semibold shadow-xs'
-                      : 'bg-white/[0.06]/60 text-white/50 hover:bg-white/[0.06] hover:text-white'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                   }`}
                 >
                   {r.label}
@@ -473,7 +473,7 @@ export default function AdminMembersPage() {
 
             {/* Status */}
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="text-xs font-semibold text-white/50 mr-1">Status:</span>
+              <span className="text-xs font-bold text-slate-500 mr-1">Status:</span>
               {[
                 { id: 'all', label: 'All Status' },
                 { id: 'active', label: 'Active' },
@@ -483,10 +483,10 @@ export default function AdminMembersPage() {
                 <button
                   key={s.id}
                   onClick={() => setStatusFilter(s.id)}
-                  className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
+                  className={`px-3 py-1 text-xs font-semibold rounded-lg transition-all ${
                     statusFilter === s.id
-                      ? 'bg-white/[0.04] text-emerald-400 font-semibold border border-primary/20'
-                      : 'bg-white/[0.06]/60 text-white/50 hover:bg-white/[0.06] hover:text-white'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                   }`}
                 >
                   {s.label}
@@ -497,10 +497,10 @@ export default function AdminMembersPage() {
         </div>
 
         {/* Member Table */}
-        <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-white/[0.06]/50 border-b border-white/10 text-xs font-semibold text-white/50 uppercase tracking-wider">
+              <thead className="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider">
                 <tr>
                   <th className="px-5 py-3.5">Member & Account</th>
                   <th className="px-5 py-3.5">Contact Details</th>
@@ -512,22 +512,22 @@ export default function AdminMembersPage() {
                   <th className="px-5 py-3.5 text-center">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10/60">
+              <tbody className="divide-y divide-slate-100">
                 {loading ? (
                   <tr>
-                    <td colSpan={8} className="px-5 py-12 text-center text-white/50">
+                    <td colSpan={8} className="px-5 py-12 text-center text-slate-500">
                       <div className="flex flex-col items-center justify-center gap-2">
-                        <RefreshCw size={24} className="animate-spin text-emerald-400" />
-                        <span>Loading members directory...</span>
+                        <RefreshCw size={24} className="animate-spin text-emerald-600" />
+                        <span className="font-medium">Loading members directory...</span>
                       </div>
                     </td>
                   </tr>
                 ) : filteredMembers.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="px-5 py-12 text-center text-white/50">
+                    <td colSpan={8} className="px-5 py-12 text-center text-slate-500">
                       <div className="flex flex-col items-center justify-center gap-2">
-                        <Users size={32} className="text-white/50/50" />
-                        <span className="font-semibold text-white">No members found</span>
+                        <Users size={32} className="text-slate-300" />
+                        <span className="font-bold text-slate-900">No members found</span>
                         <p className="text-xs">
                           {searchQuery
                             ? `No records matching "${searchQuery}"`
@@ -549,21 +549,21 @@ export default function AdminMembersPage() {
                     const statusCfg = STATUS_CONFIG[m.membership_status] || STATUS_CONFIG.active;
 
                     return (
-                      <tr key={m.id} className="hover:bg-white/[0.06]/20 transition-colors">
+                      <tr key={m.id} className="hover:bg-slate-50/80 transition-colors">
                         {/* Member & Account */}
                         <td className="px-5 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 font-bold text-xs flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 font-bold text-xs flex items-center justify-center shrink-0 border border-blue-200/50">
                               {initials}
                             </div>
                             <div>
-                              <div className="font-semibold text-white flex items-center gap-1.5">
+                              <div className="font-bold text-slate-900 flex items-center gap-1.5">
                                 <span>
                                   {m.first_name} {m.middle_name ? `${m.middle_name} ` : ''}
                                   {m.last_name}
                                 </span>
                               </div>
-                              <div className="text-2xs font-mono font-medium text-emerald-400/80 bg-emerald-500/5 px-2 py-0.5 rounded-md inline-block mt-0.5">
+                              <div className="text-2xs font-mono font-bold text-blue-700 bg-blue-50/80 px-2 py-0.5 rounded-md inline-block mt-0.5 border border-blue-200/60">
                                 {m.member_number}
                               </div>
                             </div>
@@ -572,8 +572,8 @@ export default function AdminMembersPage() {
 
                         {/* Contact Details */}
                         <td className="px-5 py-4">
-                          <div className="text-xs text-white font-medium">{m.email}</div>
-                          <div className="text-2xs text-white/50 flex items-center gap-1 mt-0.5">
+                          <div className="text-xs text-slate-900 font-semibold">{m.email}</div>
+                          <div className="text-2xs text-slate-500 flex items-center gap-1 mt-0.5">
                             <Phone size={11} />
                             <span>{m.phone}</span>
                             {m.state && (
@@ -598,7 +598,7 @@ export default function AdminMembersPage() {
                         {/* Status Badge */}
                         <td className="px-5 py-4">
                           <span
-                            className={`inline-flex items-center gap-1 text-2xs font-semibold px-2.5 py-1 rounded-full border ${statusCfg.badge}`}
+                            className={`inline-flex items-center gap-1 text-2xs font-bold px-2.5 py-1 rounded-full border ${statusCfg.badge}`}
                           >
                             <span
                               className={`w-1.5 h-1.5 rounded-full ${
@@ -610,16 +610,16 @@ export default function AdminMembersPage() {
                         </td>
 
                         {/* Monthly Dues */}
-                        <td className="px-5 py-4 text-right font-medium text-white">
+                        <td className="px-5 py-4 text-right font-bold text-slate-900">
                           {formatNGN(m.monthly_contribution_amount)}
                         </td>
 
                         {/* Savings Vault */}
                         <td className="px-5 py-4 text-right">
-                          <div className="font-semibold text-white">
+                          <div className="font-bold text-slate-900">
                             {formatNGN(m.total_savings)}
                           </div>
-                          <div className="text-2xs text-white/50">
+                          <div className="text-2xs text-slate-500 font-medium">
                             Contrib: {formatNGN(m.total_contributions)}
                           </div>
                         </td>
@@ -627,8 +627,8 @@ export default function AdminMembersPage() {
                         {/* Active Loan */}
                         <td className="px-5 py-4 text-right">
                           <div
-                            className={`font-semibold ${
-                              m.active_loan_balance > 0 ? 'text-amber-600' : 'text-white/50'
+                            className={`font-bold ${
+                              m.active_loan_balance > 0 ? 'text-amber-600' : 'text-slate-400'
                             }`}
                           >
                             {m.active_loan_balance > 0 ? formatNGN(m.active_loan_balance) : '—'}
@@ -644,7 +644,7 @@ export default function AdminMembersPage() {
                                 setSelectedMember(m);
                                 setShowDetailsDrawer(true);
                               }}
-                              className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors"
+                              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors"
                               title="View Full Profile Dossier"
                             >
                               <Eye size={16} />
@@ -689,12 +689,12 @@ export default function AdminMembersPage() {
             </table>
           </div>
 
-          <div className="p-4 bg-white/[0.06]/20 border-t border-white/10/60 text-xs text-white/50 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="p-4 bg-slate-50 border-t border-slate-200 text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
             <span>
-              Showing <strong className="text-white">{filteredMembers.length}</strong> of{' '}
-              <strong className="text-white">{members.length}</strong> total registered accounts
+              Showing <strong className="text-slate-900 font-bold">{filteredMembers.length}</strong> of{' '}
+              <strong className="text-slate-900 font-bold">{members.length}</strong> total registered accounts
             </span>
-            <span className="text-2xs">
+            <span className="text-2xs font-medium">
               Direct Admin Access · Role changes are logged for security & audit trails
             </span>
           </div>
@@ -704,25 +704,25 @@ export default function AdminMembersPage() {
         {/* MODAL 1: ADD NEW MEMBER — ADMIN PROVISION FORM              */}
         {/* ============================================================ */}
         {showCreateModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-            <div className="bg-[#0d1527] border border-white/10 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
 
               {/* Modal Header */}
-              <div className="p-6 border-b border-white/10 flex items-center justify-between">
+              <div className="p-6 border-b border-slate-200 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-2.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                  <div className="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600">
                     <UserPlus size={20} />
                   </div>
                   <div>
-                    <h2 className="text-base font-bold text-white">Add New Member</h2>
-                    <p className="text-xs text-white/40 mt-0.5">
+                    <h2 className="text-base font-bold text-slate-900">Add New Member</h2>
+                    <p className="text-xs text-slate-500 mt-0.5">
                       Enter basic info &amp; assign role · Member completes their profile on first login
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowCreateModal(false)}
-                  className="p-2 text-white/40 hover:text-white rounded-xl hover:bg-white/[0.06] transition-colors"
+                  className="p-2 text-slate-400 hover:text-slate-700 rounded-xl hover:bg-slate-100 transition-colors"
                 >
                   <X size={18} />
                 </button>
@@ -733,9 +733,9 @@ export default function AdminMembersPage() {
                 <div className="p-6 space-y-5">
 
                   {/* Info Banner */}
-                  <div className="flex items-start gap-2.5 bg-blue-500/10 border border-blue-500/20 rounded-xl p-3.5">
-                    <AlertCircle size={15} className="text-blue-400 shrink-0 mt-0.5" />
-                    <p className="text-xs text-blue-300 leading-relaxed">
+                  <div className="flex items-start gap-2.5 bg-blue-50 border border-blue-200 rounded-xl p-3.5">
+                    <AlertCircle size={15} className="text-blue-600 shrink-0 mt-0.5" />
+                    <p className="text-xs text-blue-800 leading-relaxed font-medium">
                       Only fill in the member&apos;s personal info and assign their role. All other details
                       (address, next of kin, KYC documents, monthly contribution) will be completed
                       by the member in their own dashboard.
@@ -745,8 +745,8 @@ export default function AdminMembersPage() {
                   {/* Name Row */}
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-xs font-semibold text-white/70 mb-1.5">
-                        First Name <span className="text-rose-400">*</span>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        First Name <span className="text-rose-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -755,12 +755,12 @@ export default function AdminMembersPage() {
                         placeholder="e.g. Olumide"
                         value={formData.firstName}
                         onChange={e => setFormData({ ...formData, firstName: e.target.value })}
-                        className="w-full px-3 py-2.5 text-sm rounded-xl border border-white/10 bg-white/[0.04] text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/40 transition-all"
+                        className="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all font-medium"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-white/70 mb-1.5">
-                        Last Name <span className="text-rose-400">*</span>
+                      <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                        Last Name <span className="text-rose-500">*</span>
                       </label>
                       <input
                         type="text"
@@ -768,62 +768,62 @@ export default function AdminMembersPage() {
                         placeholder="e.g. Balogun"
                         value={formData.lastName}
                         onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                        className="w-full px-3 py-2.5 text-sm rounded-xl border border-white/10 bg-white/[0.04] text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/40 transition-all"
+                        className="w-full px-3 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all font-medium"
                       />
                     </div>
                   </div>
 
                   {/* Email */}
                   <div>
-                    <label className="block text-xs font-semibold text-white/70 mb-1.5">
-                      Email Address <span className="text-rose-400">*</span>
-                      <span className="ml-1 text-white/30 font-normal">(will be used to log in)</span>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Email Address <span className="text-rose-500">*</span>
+                      <span className="ml-1 text-slate-400 font-normal">(will be used to log in)</span>
                     </label>
                     <div className="relative">
-                      <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                      <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
                         type="email"
                         required
                         placeholder="member@example.com"
                         value={formData.email}
                         onChange={e => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-white/10 bg-white/[0.04] text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/40 transition-all"
+                        className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all font-medium"
                       />
                     </div>
                   </div>
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-xs font-semibold text-white/70 mb-1.5">
-                      Phone Number <span className="text-rose-400">*</span>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                      Phone Number <span className="text-rose-500">*</span>
                     </label>
                     <div className="relative">
-                      <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
+                      <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
                         type="tel"
                         required
                         placeholder="+234 803 000 0000"
                         value={formData.phone}
                         onChange={e => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-white/10 bg-white/[0.04] text-white placeholder:text-white/25 focus:outline-none focus:ring-2 focus:ring-emerald-500/40 focus:border-emerald-500/40 transition-all"
+                        className="w-full pl-9 pr-3 py-2.5 text-sm rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 focus:bg-white transition-all font-medium"
                       />
                     </div>
                   </div>
 
                   {/* Role Selection */}
                   <div>
-                    <label className="block text-xs font-semibold text-white/70 mb-2">
-                      Assign Role <span className="text-rose-400">*</span>
+                    <label className="block text-xs font-bold text-slate-700 mb-2">
+                      Assign Role <span className="text-rose-500">*</span>
                     </label>
                     <div className="grid grid-cols-2 gap-2">
                       {(['admin', 'accountant', 'financial_secretary', 'auditor'] as UserRole[]).map(r => {
                         const cfg = ROLE_CONFIG[r];
                         const isSelected = formData.role === r;
                         const icons: Record<string, React.ReactNode> = {
-                          admin: <Shield size={15} className={isSelected ? 'text-emerald-400' : 'text-white/30'} />,
-                          accountant: <Banknote size={15} className={isSelected ? 'text-emerald-400' : 'text-white/30'} />,
-                          financial_secretary: <CreditCard size={15} className={isSelected ? 'text-emerald-400' : 'text-white/30'} />,
-                          auditor: <Eye size={15} className={isSelected ? 'text-emerald-400' : 'text-white/30'} />,
+                          admin: <Shield size={15} className={isSelected ? 'text-blue-600' : 'text-slate-400'} />,
+                          accountant: <Banknote size={15} className={isSelected ? 'text-blue-600' : 'text-slate-400'} />,
+                          financial_secretary: <CreditCard size={15} className={isSelected ? 'text-blue-600' : 'text-slate-400'} />,
+                          auditor: <Eye size={15} className={isSelected ? 'text-blue-600' : 'text-slate-400'} />,
                         };
                         return (
                           <button
@@ -832,18 +832,18 @@ export default function AdminMembersPage() {
                             onClick={() => setFormData({ ...formData, role: r })}
                             className={`flex items-start gap-2.5 p-3 rounded-xl border text-left transition-all ${
                               isSelected
-                                ? 'border-emerald-500/50 bg-emerald-500/10 ring-1 ring-emerald-500/30'
-                                : 'border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/20'
+                                ? 'border-blue-500 bg-blue-50/60 ring-1 ring-blue-500/30'
+                                : 'border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-slate-300'
                             }`}
                           >
-                            <div className={`mt-0.5 p-1.5 rounded-lg ${isSelected ? 'bg-emerald-500/15' : 'bg-white/[0.06]'}`}>
+                            <div className={`mt-0.5 p-1.5 rounded-lg ${isSelected ? 'bg-blue-100' : 'bg-slate-200/60'}`}>
                               {icons[r]}
                             </div>
                             <div>
-                              <p className={`text-xs font-bold ${isSelected ? 'text-white' : 'text-white/60'}`}>
+                              <p className={`text-xs font-bold ${isSelected ? 'text-blue-900' : 'text-slate-800'}`}>
                                 {cfg.label}
                               </p>
-                              <p className="text-2xs text-white/35 mt-0.5 line-clamp-2 leading-relaxed">
+                              <p className="text-2xs text-slate-500 mt-0.5 line-clamp-2 leading-relaxed">
                                 {cfg.desc}
                               </p>
                             </div>
@@ -854,10 +854,10 @@ export default function AdminMembersPage() {
                   </div>
 
                   {/* Temporary Password */}
-                  <div className="bg-white/[0.03] border border-white/10 rounded-xl p-4">
+                  <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-2">
-                      <label className="text-xs font-semibold text-white/70 flex items-center gap-1.5">
-                        <Key size={13} className="text-amber-400" />
+                      <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                        <Key size={13} className="text-amber-600" />
                         Temporary Password
                       </label>
                       <div className="flex items-center gap-1.5">
@@ -867,7 +867,7 @@ export default function AdminMembersPage() {
                             setFormData({ ...formData, temporaryPassword: generateRandomPassword() });
                             toast.info('New password generated');
                           }}
-                          className="text-2xs text-white/40 hover:text-white/70 flex items-center gap-1 transition-colors"
+                          className="text-2xs text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-colors font-medium"
                         >
                           <RefreshCw size={11} /> Regenerate
                         </button>
@@ -879,35 +879,35 @@ export default function AdminMembersPage() {
                             toast.success('Password copied');
                             setTimeout(() => setCopiedPwd(false), 2000);
                           }}
-                          className="text-2xs text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition-colors"
+                          className="text-2xs text-emerald-600 hover:text-emerald-700 flex items-center gap-1 transition-colors font-bold"
                         >
                           {copiedPwd ? <Check size={11} /> : <Copy size={11} />}
                           {copiedPwd ? 'Copied' : 'Copy'}
                         </button>
                       </div>
                     </div>
-                    <p className="font-mono text-sm text-amber-300 font-bold tracking-wider">
+                    <p className="font-mono text-sm text-amber-700 font-bold tracking-wider">
                       {formData.temporaryPassword}
                     </p>
-                    <p className="text-2xs text-white/30 mt-1.5">
+                    <p className="text-2xs text-slate-500 mt-1.5 font-medium">
                       Share this with the member · They&apos;ll be prompted to change it on first login
                     </p>
                   </div>
                 </div>
 
                 {/* Footer */}
-                <div className="px-6 py-4 border-t border-white/10 flex items-center justify-between gap-3">
+                <div className="px-6 py-4 border-t border-slate-200 bg-slate-50/50 flex items-center justify-between gap-3">
                   <button
                     type="button"
                     onClick={() => setShowCreateModal(false)}
-                    className="px-4 py-2 text-xs text-white/50 hover:text-white hover:bg-white/[0.06] rounded-xl transition-all"
+                    className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={creating}
-                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-bold transition-all shadow-md shadow-emerald-500/25 active:scale-95 disabled:opacity-60 disabled:pointer-events-none"
+                    className="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs active:scale-95 disabled:opacity-60 disabled:pointer-events-none"
                   >
                     {creating ? (
                       <>
@@ -930,62 +930,62 @@ export default function AdminMembersPage() {
         {/* MODAL 2: CREDENTIALS SLIP — SHARE WITH NEW MEMBER           */}
         {/* ========================================================================= */}
         {showCredentialsSlip && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-            <div className="bg-[#0d1527] border border-white/10 rounded-3xl max-w-lg w-full shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white border border-slate-200 rounded-3xl max-w-lg w-full shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
               <div className="text-center space-y-1">
                 <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center shadow-xs">
                   <CheckCircle2 size={26} />
                 </div>
-                <h3 className="text-lg font-bold text-white mt-2">
+                <h3 className="text-lg font-bold text-slate-900 mt-2">
                   Member Profile Provisioned Successfully
                 </h3>
-                <p className="text-xs text-white/50">
+                <p className="text-xs text-slate-500 font-medium">
                   Give these initial credentials to the member. They must log in and
                     complete their profile to activate their account.
                 </p>
               </div>
 
               {/* Printable Card */}
-              <div className="bg-white/[0.06]/40 border border-white/10/80 rounded-2xl p-4 space-y-3 font-sans text-xs">
-                <div className="flex items-center justify-between border-b border-white/10/40 pb-2">
-                  <span className="font-bold text-white">CLIMPS Cooperative Society</span>
-                  <span className="text-2xs font-mono font-bold text-emerald-400">
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3 font-sans text-xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                  <span className="font-bold text-slate-900">CLIMPS Cooperative Society</span>
+                  <span className="text-2xs font-mono font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-md">
                     {showCredentialsSlip.member.member_number}
                   </span>
                 </div>
 
                 <div className="grid grid-cols-2 gap-2">
                   <div>
-                    <span className="text-2xs text-white/50 block">Full Name</span>
-                    <span className="font-semibold text-white">
+                    <span className="text-2xs text-slate-500 font-medium block">Full Name</span>
+                    <span className="font-bold text-slate-900">
                       {showCredentialsSlip.member.first_name} {showCredentialsSlip.member.last_name}
                     </span>
                   </div>
                   <div>
-                    <span className="text-2xs text-white/50 block">Assigned Role</span>
-                    <span className="font-semibold text-white">
+                    <span className="text-2xs text-slate-500 font-medium block">Assigned Role</span>
+                    <span className="font-bold text-slate-900">
                       {ROLE_CONFIG[showCredentialsSlip.member.role]?.label}
                     </span>
                   </div>
                   <div>
-                    <span className="text-2xs text-white/50 block">Sign-In Email</span>
-                    <span className="font-semibold text-white break-all">
+                    <span className="text-2xs text-slate-500 font-medium block">Sign-In Email</span>
+                    <span className="font-semibold text-slate-900 break-all">
                       {showCredentialsSlip.member.email}
                     </span>
                   </div>
                   <div>
-                    <span className="text-2xs text-white/50 block">Temporary Password</span>
-                    <span className="font-mono font-bold text-emerald-400">
+                    <span className="text-2xs text-slate-500 font-medium block">Temporary Password</span>
+                    <span className="font-mono font-bold text-emerald-700">
                       {showCredentialsSlip.password || '••••••••'}
                     </span>
                   </div>
                   <div>
-                    <span className="text-2xs text-white/50 block">Account Status</span>
-                    <span className="font-semibold text-amber-400">Pending — profile completion required</span>
+                    <span className="text-2xs text-slate-500 font-medium block">Account Status</span>
+                    <span className="font-semibold text-amber-700">Pending — profile completion required</span>
                   </div>
                   <div>
-                    <span className="text-2xs text-white/50 block">Portal URL</span>
-                    <span className="font-mono text-2xs text-white">climps.org/login</span>
+                    <span className="text-2xs text-slate-500 font-medium block">Portal URL</span>
+                    <span className="font-mono text-2xs text-slate-700 font-bold">climps.org/login</span>
                   </div>
                 </div>
               </div>
@@ -1029,16 +1029,16 @@ export default function AdminMembersPage() {
         {/* MODAL 3: ASSIGN / CHANGE USER ROLE */}
         {/* ========================================================================= */}
         {showRoleModal && selectedMember && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-            <div className="bg-[#0d1527] border border-white/10 rounded-3xl max-w-md w-full shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
-              <div className="flex items-center justify-between border-b border-white/10/40 pb-3">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
+            <div className="bg-white border border-slate-200 rounded-3xl max-w-md w-full shadow-2xl p-6 space-y-5 animate-in fade-in zoom-in-95">
+              <div className="flex items-center justify-between border-b border-slate-200 pb-3">
                 <div className="flex items-center gap-2.5">
                   <div className="p-2 rounded-xl bg-indigo-50 text-indigo-700">
                     <Shield size={20} />
                   </div>
                   <div>
-                    <h3 className="font-bold text-white">Assign System Role</h3>
-                    <p className="text-2xs text-white/50">
+                    <h3 className="font-bold text-slate-900">Assign System Role</h3>
+                    <p className="text-2xs text-slate-500 font-medium">
                       {selectedMember.first_name} {selectedMember.last_name} (
                       {selectedMember.member_number})
                     </p>
@@ -1046,7 +1046,7 @@ export default function AdminMembersPage() {
                 </div>
                 <button
                   onClick={() => setShowRoleModal(false)}
-                  className="text-white/50 hover:text-white p-1.5 rounded-lg"
+                  className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
                 >
                   <X size={16} />
                 </button>
@@ -1054,7 +1054,7 @@ export default function AdminMembersPage() {
 
               <form onSubmit={handleRoleChangeSubmit} className="space-y-4">
                 <div>
-                  <label className="text-xs font-semibold text-white block mb-2">
+                  <label className="text-xs font-bold text-slate-700 block mb-2">
                     Select New Role & Permission Tier
                   </label>
                   <div className="space-y-2">
@@ -1067,15 +1067,15 @@ export default function AdminMembersPage() {
                           onClick={() => setNewRoleSelection(r)}
                           className={`p-3 rounded-xl border cursor-pointer transition-all ${
                             isSelected
-                              ? 'border-primary bg-emerald-500/5 ring-1 ring-primary'
-                              : 'border-white/10 bg-background hover:bg-white/[0.06]/30'
+                              ? 'border-indigo-600 bg-indigo-50/50 ring-1 ring-indigo-600/30'
+                              : 'border-slate-200 bg-slate-50 hover:bg-slate-100'
                           }`}
                         >
                           <div className="flex items-center justify-between">
-                            <span className="font-bold text-xs text-white">{cfg.label}</span>
-                            {isSelected && <CheckCircle2 size={15} className="text-emerald-400" />}
+                            <span className="font-bold text-xs text-slate-900">{cfg.label}</span>
+                            {isSelected && <CheckCircle2 size={15} className="text-indigo-600" />}
                           </div>
-                          <p className="text-2xs text-white/50 mt-0.5">{cfg.desc}</p>
+                          <p className="text-2xs text-slate-500 mt-0.5 font-medium">{cfg.desc}</p>
                         </div>
                       );
                     })}
@@ -1083,7 +1083,7 @@ export default function AdminMembersPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-white block mb-1">
+                  <label className="text-xs font-bold text-slate-700 block mb-1">
                     Administrative Reason / Change Note
                   </label>
                   <textarea
@@ -1091,15 +1091,15 @@ export default function AdminMembersPage() {
                     placeholder="e.g. Promoted to Credit Risk Officer per Board resolution"
                     value={roleChangeReason}
                     onChange={e => setRoleChangeReason(e.target.value)}
-                    className="w-full text-xs p-2.5 rounded-xl border border-input bg-background focus:ring-2 focus:ring-primary/20"
+                    className="w-full text-xs p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-indigo-500 focus:bg-white transition-colors"
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-2 pt-2 border-t border-white/10/40">
+                <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200">
                   <button
                     type="button"
                     onClick={() => setShowRoleModal(false)}
-                    className="btn-ghost text-xs px-4 py-2"
+                    className="btn-ghost text-xs px-4 py-2 font-semibold text-slate-600 hover:text-slate-900"
                   >
                     Cancel
                   </button>
@@ -1120,27 +1120,27 @@ export default function AdminMembersPage() {
         {/* DRAWER / MODAL 4: MEMBER PROFILE DOSSIER */}
         {/* ========================================================================= */}
         {showDetailsDrawer && selectedMember && (
-          <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/50 backdrop-blur-xs">
-            <div className="bg-[#0d1527] border-l border-white/10 w-full max-w-xl h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-200">
+          <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-900/40 backdrop-blur-xs">
+            <div className="bg-white border-l border-slate-200 w-full max-w-xl h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-200">
               {/* Drawer Header */}
-              <div className="p-6 border-b border-white/10/60 flex items-center justify-between bg-white/[0.06]/20">
+              <div className="p-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 font-bold text-sm flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-700 font-bold text-sm flex items-center justify-center border border-emerald-200">
                     {selectedMember.first_name[0]}
                     {selectedMember.last_name[0]}
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-white">
+                    <h3 className="text-base font-bold text-slate-900">
                       {selectedMember.first_name} {selectedMember.middle_name || ''}{' '}
                       {selectedMember.last_name}
                     </h3>
                     <div className="flex items-center gap-2 mt-0.5">
-                      <span className="text-2xs font-mono font-semibold text-emerald-400">
+                      <span className="text-2xs font-mono font-bold text-emerald-700">
                         {selectedMember.member_number}
                       </span>
-                      <span>·</span>
+                      <span className="text-slate-400">·</span>
                       <span
-                        className={`text-2xs px-2 py-0.5 rounded-md font-semibold border ${
+                        className={`text-2xs px-2 py-0.5 rounded-md font-bold border ${
                           STATUS_CONFIG[selectedMember.membership_status].badge
                         }`}
                       >
@@ -1151,35 +1151,35 @@ export default function AdminMembersPage() {
                 </div>
                 <button
                   onClick={() => setShowDetailsDrawer(false)}
-                  className="p-2 text-white/50 hover:text-white rounded-full hover:bg-white/[0.06]"
+                  className="p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-200 transition-colors"
                 >
                   <X size={18} />
                 </button>
               </div>
 
               {/* Drawer Body */}
-              <div className="flex-1 p-6 overflow-y-auto space-y-6 text-xs">
+              <div className="flex-1 p-6 overflow-y-auto space-y-6 text-xs bg-white">
                 {/* Financial Summary */}
                 <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white/[0.06]/30 border border-white/10/60 rounded-2xl p-3">
-                    <span className="text-2xs text-white/50 block">Monthly Thrift Commitment</span>
-                    <span className="text-base font-bold text-white">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <span className="text-2xs text-slate-500 font-medium block">Monthly Thrift Commitment</span>
+                    <span className="text-base font-bold text-slate-900">
                       {formatNGN(selectedMember.monthly_contribution_amount)}
                     </span>
                   </div>
-                  <div className="bg-white/[0.06]/30 border border-white/10/60 rounded-2xl p-3">
-                    <span className="text-2xs text-white/50 block">Total Savings Vault</span>
-                    <span className="text-base font-bold text-white">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <span className="text-2xs text-slate-500 font-medium block">Total Savings Vault</span>
+                    <span className="text-base font-bold text-slate-900">
                       {formatNGN(selectedMember.total_savings)}
                     </span>
                   </div>
-                  <div className="bg-white/[0.06]/30 border border-white/10/60 rounded-2xl p-3">
-                    <span className="text-2xs text-white/50 block">Active Loan Balance</span>
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <span className="text-2xs text-slate-500 font-medium block">Active Loan Balance</span>
                     <span
                       className={`text-base font-bold ${
                         selectedMember.active_loan_balance > 0
                           ? 'text-amber-600'
-                          : 'text-white/50'
+                          : 'text-slate-500'
                       }`}
                     >
                       {selectedMember.active_loan_balance > 0
@@ -1187,40 +1187,40 @@ export default function AdminMembersPage() {
                         : '₦0 (No Debt)'}
                     </span>
                   </div>
-                  <div className="bg-white/[0.06]/30 border border-white/10/60 rounded-2xl p-3">
-                    <span className="text-2xs text-white/50 block">Investment Portfolio</span>
-                    <span className="text-base font-bold text-white">
+                  <div className="bg-slate-50 border border-slate-200 rounded-2xl p-3">
+                    <span className="text-2xs text-slate-500 font-medium block">Investment Portfolio</span>
+                    <span className="text-base font-bold text-slate-900">
                       {formatNGN(selectedMember.investment_portfolio_value)}
                     </span>
                   </div>
                 </div>
 
                 {/* Contact & Residential Information */}
-                <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 space-y-3">
-                  <h4 className="font-bold text-white flex items-center gap-1.5 border-b border-white/10/40 pb-2">
-                    <Phone size={14} className="text-emerald-400" />
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                  <h4 className="font-bold text-slate-900 flex items-center gap-1.5 border-b border-slate-200 pb-2">
+                    <Phone size={14} className="text-emerald-600" />
                     Contact & Residential
                   </h4>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-2xs text-white/50 block">Email</span>
-                      <span className="font-medium text-white">{selectedMember.email}</span>
+                      <span className="text-2xs text-slate-500 font-medium block">Email</span>
+                      <span className="font-semibold text-slate-900">{selectedMember.email}</span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">Phone</span>
-                      <span className="font-medium text-white">{selectedMember.phone}</span>
+                      <span className="text-2xs text-slate-500 font-medium block">Phone</span>
+                      <span className="font-semibold text-slate-900">{selectedMember.phone}</span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">State of Residence</span>
-                      <span className="font-medium text-white">{selectedMember.state || '—'}</span>
+                      <span className="text-2xs text-slate-500 font-medium block">State of Residence</span>
+                      <span className="font-semibold text-slate-900">{selectedMember.state || '—'}</span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">LGA</span>
-                      <span className="font-medium text-white">{selectedMember.lga || '—'}</span>
+                      <span className="text-2xs text-slate-500 font-medium block">LGA</span>
+                      <span className="font-semibold text-slate-900">{selectedMember.lga || '—'}</span>
                     </div>
                     <div className="col-span-2">
-                      <span className="text-2xs text-white/50 block">Address</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Address</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.address || '—'}
                       </span>
                     </div>
@@ -1228,45 +1228,45 @@ export default function AdminMembersPage() {
                 </div>
 
                 {/* Occupation & Next of Kin */}
-                <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 space-y-3">
-                  <h4 className="font-bold text-white flex items-center gap-1.5 border-b border-white/10/40 pb-2">
-                    <Briefcase size={14} className="text-emerald-400" />
+                <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+                  <h4 className="font-bold text-slate-900 flex items-center gap-1.5 border-b border-slate-200 pb-2">
+                    <Briefcase size={14} className="text-emerald-600" />
                     Employment & Next of Kin
                   </h4>
                   <div className="grid grid-cols-2 gap-3 text-xs">
                     <div>
-                      <span className="text-2xs text-white/50 block">Occupation</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Occupation</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.occupation || '—'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">Employer</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Employer</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.employer || '—'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">Next of Kin Name</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Next of Kin Name</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.nok_name || '—'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">Relationship</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Relationship</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.nok_relationship || '—'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">Next of Kin Phone</span>
-                      <span className="font-medium text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">Next of Kin Phone</span>
+                      <span className="font-semibold text-slate-900">
                         {selectedMember.nok_phone || '—'}
                       </span>
                     </div>
                     <div>
-                      <span className="text-2xs text-white/50 block">ID Document</span>
-                      <span className="font-mono text-2xs text-white">
+                      <span className="text-2xs text-slate-500 font-medium block">ID Document</span>
+                      <span className="font-mono text-2xs font-semibold text-slate-900">
                         {selectedMember.id_type}: {selectedMember.id_number || '—'}
                       </span>
                     </div>
@@ -1275,7 +1275,7 @@ export default function AdminMembersPage() {
               </div>
 
               {/* Drawer Footer Actions */}
-              <div className="p-4 border-t border-white/10/60 bg-white/[0.06]/20 flex items-center justify-between">
+              <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
                 <button
                   onClick={() => {
                     setShowDetailsDrawer(false);
@@ -1292,7 +1292,7 @@ export default function AdminMembersPage() {
                     handleToggleStatus(selectedMember);
                     setShowDetailsDrawer(false);
                   }}
-                  className={`text-xs px-4 py-2 rounded-xl font-semibold transition-colors ${
+                  className={`text-xs px-4 py-2 rounded-xl font-bold transition-colors ${
                     selectedMember.membership_status === 'active'
                       ? 'bg-rose-100 text-rose-800 hover:bg-rose-200'
                       : 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'

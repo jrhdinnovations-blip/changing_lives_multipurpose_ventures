@@ -140,25 +140,25 @@ function KPICard({
   iconColor: string;
 }) {
   return (
-    <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+    <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium text-white/50">{label}</span>
+        <span className="text-xs font-semibold text-slate-500">{label}</span>
         <span className={`p-2 rounded-xl ${iconBg}`}>
           <Icon size={16} className={iconColor} />
         </span>
       </div>
-      <div className="mt-2 text-2xl font-bold text-white">{value}</div>
+      <div className="mt-2 text-2xl font-black text-slate-900">{value}</div>
       {sublabel && (
-        <div className="mt-1 text-xs text-white/50">{sublabel}</div>
+        <div className="mt-1 text-xs text-slate-500">{sublabel}</div>
       )}
       {delta !== undefined && delta !== 0 && (
-        <div className={`mt-1 flex items-center gap-1 text-xs font-semibold ${delta > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
+        <div className={`mt-1 flex items-center gap-1 text-xs font-bold ${delta > 0 ? 'text-emerald-600' : 'text-rose-600'}`}>
           {delta > 0 ? <ArrowUpRight size={13} /> : <ArrowDownRight size={13} />}
           {Math.abs(delta)}% vs prior period
         </div>
       )}
       {delta === 0 && (
-        <div className="mt-1 flex items-center gap-1 text-xs text-white/50">
+        <div className="mt-1 flex items-center gap-1 text-xs font-medium text-slate-400">
           <Minus size={13} />
           All-time cumulative
         </div>
@@ -192,8 +192,8 @@ function MiniBarChart({ data, key1, key2, color1, color2, label1, label2 }: {
         const y = padT + chartH * (1 - ratio);
         return (
           <g key={ratio}>
-            <line x1={padL} y1={y} x2={W - padR} y2={y} stroke="var(--border)" strokeDasharray="3 3" strokeOpacity={0.5} />
-            <text x={padL - 4} y={y + 4} textAnchor="end" fontSize={8} fill="var(--muted-foreground)">
+            <line x1={padL} y1={y} x2={W - padR} y2={y} stroke="#e2e8f0" strokeDasharray="3 3" strokeOpacity={0.8} />
+            <text x={padL - 4} y={y + 4} textAnchor="end" fontSize={8} fill="#64748b">
               {Math.round(max * ratio)}M
             </text>
           </g>
@@ -214,7 +214,7 @@ function MiniBarChart({ data, key1, key2, color1, color2, label1, label2 }: {
               const x2 = cx + gap / 2;
               return <rect x={x2} y={padT + chartH - h2} width={barW} height={h2} fill={color2} rx={3} opacity={0.75} />;
             })()}
-            <text x={cx} y={H - 4} textAnchor="middle" fontSize={8} fill="var(--muted-foreground)">
+            <text x={cx} y={H - 4} textAnchor="middle" fontSize={8} fill="#64748b">
               {String(d.month)}
             </text>
           </g>
@@ -223,11 +223,11 @@ function MiniBarChart({ data, key1, key2, color1, color2, label1, label2 }: {
 
       {/* Legend */}
       <circle cx={padL + 6} cy={padT + 4} r={4} fill={color1} />
-      <text x={padL + 14} y={padT + 8} fontSize={9} fill="var(--muted-foreground)">{label1}</text>
+      <text x={padL + 14} y={padT + 8} fontSize={9} fill="#475569" fontWeight="600">{label1}</text>
       {key2 && color2 && label2 && (
         <>
           <circle cx={padL + 80} cy={padT + 4} r={4} fill={color2} />
-          <text x={padL + 88} y={padT + 8} fontSize={9} fill="var(--muted-foreground)">{label2}</text>
+          <text x={padL + 88} y={padT + 8} fontSize={9} fill="#475569" fontWeight="600">{label2}</text>
         </>
       )}
     </svg>
@@ -274,17 +274,17 @@ export default function AdminReportsPage() {
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10/40">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2">
               <span className="p-2 rounded-xl bg-indigo-50 text-indigo-700">
                 <BarChart3 size={24} />
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
                 Financial Reports
               </h1>
             </div>
-            <p className="text-sm text-white/50 mt-1">
+            <p className="text-sm text-slate-500 mt-1 font-medium">
               Cooperative performance metrics, portfolio health, and financial position summaries.
             </p>
           </div>
@@ -308,7 +308,7 @@ export default function AdminReportsPage() {
 
         {/* Period Selector */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold text-white/50 mr-1 flex items-center gap-1.5">
+          <span className="text-xs font-bold text-slate-600 mr-1 flex items-center gap-1.5">
             <Calendar size={13} />
             Report Period:
           </span>
@@ -316,10 +316,10 @@ export default function AdminReportsPage() {
             <button
               key={key}
               onClick={() => setPeriod(key)}
-              className={`px-3.5 py-1.5 text-xs font-medium rounded-xl transition-all ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-xl transition-all ${
                 period === key
-                  ? 'bg-emerald-500 text-emerald-400-foreground font-semibold shadow-xs'
-                  : 'bg-white/[0.06]/60 text-white/50 hover:bg-white/[0.06] hover:text-white border border-white/10/40'
+                  ? 'bg-emerald-600 text-white shadow-xs'
+                  : 'bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 border border-slate-200'
               }`}
             >
               {label}
@@ -388,16 +388,16 @@ export default function AdminReportsPage() {
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Savings vs Loans trend */}
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
             <div className="mb-4">
-              <h3 className="text-sm font-bold text-white">Portfolio Trend (₦M) — 12 Months</h3>
-              <p className="text-xs text-white/50 mt-0.5">Savings, Loans & Investments month-by-month</p>
+              <h3 className="text-sm font-bold text-slate-900">Portfolio Trend (₦M) — 12 Months</h3>
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">Savings, Loans & Investments month-by-month</p>
             </div>
             <MiniBarChart
               data={MONTHLY_PORTFOLIO}
               key1="savings"
               key2="loans"
-              color1="var(--primary)"
+              color1="#16a34a"
               color2="#f59e0b"
               label1="Savings"
               label2="Loans"
@@ -405,15 +405,15 @@ export default function AdminReportsPage() {
           </div>
 
           {/* Investment vs Repayments */}
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
             <div className="mb-4">
-              <h3 className="text-sm font-bold text-white">Investments vs Repayments (₦M)</h3>
-              <p className="text-xs text-white/50 mt-0.5">Capital recycling & investor portfolio growth</p>
+              <h3 className="text-sm font-bold text-slate-900">Investments vs Repayments (₦M)</h3>
+              <p className="text-xs text-slate-500 mt-0.5 font-medium">Capital recycling & investor portfolio growth</p>
             </div>
             <MiniBarChart
               data={MONTHLY_PORTFOLIO}
               key1="investments"
-              color1="#0d9488"
+              color1="#0284c7"
               label1="Investments"
             />
           </div>
@@ -423,10 +423,10 @@ export default function AdminReportsPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           {/* Loan Activity Summary */}
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div>
-              <h3 className="text-sm font-bold text-white">Loan Activity Summary</h3>
-              <p className="text-xs text-white/50">For {PERIOD_LABELS[period]}</p>
+              <h3 className="text-sm font-bold text-slate-900">Loan Activity Summary</h3>
+              <p className="text-xs text-slate-500 font-medium">For {PERIOD_LABELS[period]}</p>
             </div>
             <div className="space-y-3">
               {[
@@ -437,10 +437,10 @@ export default function AdminReportsPage() {
               ].map(item => (
                 <div key={item.label}>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/50">{item.label}</span>
+                    <span className="text-slate-500 font-medium">{item.label}</span>
                     <span className={`font-bold ${item.color}`}>{item.val}</span>
                   </div>
-                  <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full ${item.bar}`}
                       style={{ width: `${Math.min(100, (item.val / Math.max(d.loansApproved, d.activeLoans)) * 100)}%` }}
@@ -450,30 +450,30 @@ export default function AdminReportsPage() {
               ))}
             </div>
 
-            <div className="pt-3 border-t border-white/10/40">
+            <div className="pt-3 border-t border-slate-100">
               <div className="flex justify-between text-xs">
-                <span className="text-white/50">Portfolio Default Rate</span>
+                <span className="text-slate-500 font-medium">Portfolio Default Rate</span>
                 <span className={`font-bold ${d.defaultRate > 5 ? 'text-rose-600' : d.defaultRate > 3 ? 'text-amber-600' : 'text-emerald-600'}`}>
                   {d.defaultRate}%
                 </span>
               </div>
-              <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden mt-1">
+              <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1">
                 <div
                   className={`h-full rounded-full ${d.defaultRate > 5 ? 'bg-rose-500' : d.defaultRate > 3 ? 'bg-amber-500' : 'bg-emerald-500'}`}
                   style={{ width: `${d.defaultRate * 10}%` }}
                 />
               </div>
-              <p className="text-2xs text-white/50 mt-1">
+              <p className="text-2xs text-slate-400 mt-1">
                 Industry benchmark: &lt;5% is healthy
               </p>
             </div>
           </div>
 
           {/* Financial Position */}
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div>
-              <h3 className="text-sm font-bold text-white">Financial Position</h3>
-              <p className="text-xs text-white/50">Cooperative balance sheet snapshot</p>
+              <h3 className="text-sm font-bold text-slate-900">Financial Position</h3>
+              <p className="text-xs text-slate-500 font-medium">Cooperative balance sheet snapshot</p>
             </div>
             <div className="space-y-3 text-sm">
               {[
@@ -482,10 +482,10 @@ export default function AdminReportsPage() {
                 { label: 'Investment Portfolio', val: d.totalInvestments, note: 'IC capital deployed', neg: false },
                 { label: 'Interest Earned', val: d.totalInterestEarned, note: 'Revenue generated', neg: false },
               ].map(item => (
-                <div key={item.label} className="flex justify-between items-start py-2 border-b border-white/10/40">
+                <div key={item.label} className="flex justify-between items-start py-2 border-b border-slate-100">
                   <div>
-                    <div className="font-medium text-white text-xs">{item.label}</div>
-                    <div className="text-2xs text-white/50">{item.note}</div>
+                    <div className="font-semibold text-slate-900 text-xs">{item.label}</div>
+                    <div className="text-2xs text-slate-500">{item.note}</div>
                   </div>
                   <div className={`font-bold text-sm tabular-nums ${item.neg ? 'text-rose-600' : 'text-emerald-700'}`}>
                     {item.neg ? '(' : ''}{formatNGN(item.val)}{item.neg ? ')' : ''}
@@ -496,10 +496,10 @@ export default function AdminReportsPage() {
           </div>
 
           {/* Member Growth Breakdown */}
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-5 shadow-sm space-y-4">
+          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs space-y-4">
             <div>
-              <h3 className="text-sm font-bold text-white">Member Breakdown</h3>
-              <p className="text-xs text-white/50">Roster composition & status</p>
+              <h3 className="text-sm font-bold text-slate-900">Member Breakdown</h3>
+              <p className="text-xs text-slate-500 font-medium">Roster composition & status</p>
             </div>
             <div className="space-y-3">
               {[
@@ -510,10 +510,10 @@ export default function AdminReportsPage() {
               ].map(item => (
                 <div key={item.label}>
                   <div className="flex justify-between text-xs mb-1">
-                    <span className="text-white/50">{item.label}</span>
-                    <span className="font-bold text-white">{item.count}</span>
+                    <span className="text-slate-500 font-medium">{item.label}</span>
+                    <span className="font-bold text-slate-900">{item.count}</span>
                   </div>
-                  <div className="h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
                     <div
                       className={`h-full rounded-full ${item.color}`}
                       style={{ width: `${(item.count / item.total) * 100}%` }}
@@ -523,13 +523,13 @@ export default function AdminReportsPage() {
               ))}
             </div>
 
-            <div className="pt-3 border-t border-white/10/40 space-y-2 text-xs">
+            <div className="pt-3 border-t border-slate-100 space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-white/50">Total Staff / Officers</span>
-                <span className="font-bold text-white">5</span>
+                <span className="text-slate-500 font-medium">Total Staff / Officers</span>
+                <span className="font-bold text-slate-900">5</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-white/50">New Members This Period</span>
+                <span className="text-slate-500 font-medium">New Members This Period</span>
                 <span className="font-bold text-emerald-700">+{d.newMembers}</span>
               </div>
             </div>
@@ -537,8 +537,8 @@ export default function AdminReportsPage() {
         </div>
 
         {/* Footer note */}
-        <div className="text-xs text-white/50 bg-white/[0.06]/40 border border-white/10/40 rounded-xl px-4 py-3 flex items-center gap-2">
-          <BarChart3 size={14} className="shrink-0 text-emerald-400" />
+        <div className="text-xs text-slate-600 bg-slate-100/70 border border-slate-200 rounded-xl px-4 py-3 flex items-center gap-2">
+          <BarChart3 size={14} className="shrink-0 text-emerald-600" />
           <span>
             Reports are generated from live cooperative data. All financial figures are in Nigerian Naira (₦).
             For audited financial statements, contact your cooperative accountant or use the Audit Logs page.

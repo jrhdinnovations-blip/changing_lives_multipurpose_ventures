@@ -8,14 +8,14 @@ import Icon from '@/components/ui/AppIcon';
 
 
 const actions = [
-  { id: 'qa-add-savings', label: 'Add Savings', icon: Plus, color: 'bg-blue-50 text-blue-600 hover:bg-blue-100' },
-  { id: 'qa-create-goal', label: 'Create Goal', icon: Target, color: 'bg-purple-50 text-purple-600 hover:bg-purple-100' },
-  { id: 'qa-apply-loan', label: 'Apply for Loan', icon: CreditCard, color: 'bg-orange-50 text-orange-600 hover:bg-orange-100' },
-  { id: 'qa-invest', label: 'Wealth Circle', icon: TrendingUp, color: 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20' },
-  { id: 'qa-transfer', label: 'Transfer Funds', icon: Send, color: 'bg-indigo-50 text-indigo-600 hover:bg-indigo-100' },
-  { id: 'qa-statement', label: 'Download Statement', icon: Download, color: 'bg-white/[0.06] text-white/50 hover:bg-white/[0.06]/80' },
-  { id: 'qa-receipts', label: 'View Receipts', icon: Receipt, color: 'bg-white/[0.06] text-white/50 hover:bg-white/[0.06]/80' },
-  { id: 'qa-help', label: 'Get Help', icon: HelpCircle, color: 'bg-white/[0.06] text-white/50 hover:bg-white/[0.06]/80' },
+  { id: 'qa-add-savings', label: 'Add Savings', icon: Plus, color: 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 shadow-2xs' },
+  { id: 'qa-create-goal', label: 'Create Goal', icon: Target, color: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 shadow-2xs' },
+  { id: 'qa-apply-loan', label: 'Apply for Loan', icon: CreditCard, color: 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 shadow-2xs' },
+  { id: 'qa-invest', label: 'Wealth Circle', icon: TrendingUp, color: 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 shadow-2xs' },
+  { id: 'qa-transfer', label: 'Transfer Funds', icon: Send, color: 'bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 shadow-2xs' },
+  { id: 'qa-statement', label: 'Download Statement', icon: Download, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
+  { id: 'qa-receipts', label: 'View Receipts', icon: Receipt, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
+  { id: 'qa-help', label: 'Get Help', icon: HelpCircle, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
 ];
 
 export default function MemberQuickActions() {

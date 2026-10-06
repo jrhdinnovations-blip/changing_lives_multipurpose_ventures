@@ -60,8 +60,8 @@ export default function AdminKPISection() {
       subLabel: `${stats.activeMembers} active accounts`,
       badge: 'Verified',
       icon: Users,
-      iconColor: 'text-emerald-400',
-      iconBg: 'bg-emerald-500/10 border-emerald-500/20',
+      iconColor: 'text-emerald-600',
+      iconBg: 'bg-emerald-50 border-emerald-200',
       href: '/admin-dashboard/members',
     },
     {
@@ -71,8 +71,8 @@ export default function AdminKPISection() {
       subLabel: 'Scheduled monthly pool',
       badge: 'Current',
       icon: PiggyBank,
-      iconColor: 'text-blue-400',
-      iconBg: 'bg-blue-500/10 border-blue-500/20',
+      iconColor: 'text-blue-600',
+      iconBg: 'bg-blue-50 border-blue-200',
       href: '/financial-statements',
     },
     {
@@ -82,8 +82,8 @@ export default function AdminKPISection() {
       subLabel: `${stats.activeLoansCount} active facilities · 0 overdue`,
       badge: 'Zero Risk',
       icon: CreditCard,
-      iconColor: 'text-amber-400',
-      iconBg: 'bg-amber-500/10 border-amber-500/20',
+      iconColor: 'text-red-600',
+      iconBg: 'bg-red-50 border-red-200',
       href: '/admin-dashboard/loans',
     },
     {
@@ -93,8 +93,8 @@ export default function AdminKPISection() {
       subLabel: 'Supabase cloud live & verified',
       badge: 'Healthy',
       icon: ShieldCheck,
-      iconColor: 'text-purple-400',
-      iconBg: 'bg-purple-500/10 border-purple-500/20',
+      iconColor: 'text-purple-600',
+      iconBg: 'bg-purple-50 border-purple-200',
       href: '/admin-dashboard/settings',
     },
   ];
@@ -107,25 +107,25 @@ export default function AdminKPISection() {
           <Link
             key={card.id}
             href={card.href}
-            className="group relative bg-[#0b1329] border border-white/10 hover:border-white/20 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 shadow-lg block"
+            className="group relative bg-white border border-slate-200 hover:border-slate-300 rounded-2xl p-5 transition-all duration-200 hover:-translate-y-0.5 shadow-xs hover:shadow-md block"
           >
             <div className="flex items-start justify-between mb-3">
               <div className={`p-2.5 rounded-xl border ${card.iconBg} ${card.iconColor}`}>
                 <Icon size={18} />
               </div>
-              <span className="text-2xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.04] text-white/60 border border-white/10 group-hover:border-white/20 transition-colors">
+              <span className="text-2xs font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 group-hover:border-slate-300 transition-colors">
                 {card.badge}
               </span>
             </div>
 
             <div>
-              <p className="text-xs font-medium text-white/50">{card.label}</p>
-              <h3 className="text-2xl font-bold text-white tracking-tight mt-1 font-tabular">
+              <p className="text-xs font-semibold text-slate-500">{card.label}</p>
+              <h3 className="text-2xl font-black text-slate-900 tracking-tight mt-1 font-tabular">
                 {card.value}
               </h3>
-              <div className="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
-                <span className="text-2xs text-white/40">{card.subLabel}</span>
-                <span className="text-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center text-2xs font-semibold">
+              <div className="flex items-center justify-between mt-2 pt-2 border-t border-slate-100">
+                <span className="text-2xs text-slate-500 font-medium">{card.subLabel}</span>
+                <span className="text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center text-2xs font-bold">
                   Manage <ArrowUpRight size={12} />
                 </span>
               </div>

@@ -114,28 +114,28 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
     return (
       <div className="card-base">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="section-header">Active Loan</h2>
+          <h2 className="text-sm font-bold text-slate-900">Active Loan</h2>
           <Link
             href="/loan-application"
-            className="text-xs font-semibold text-emerald-400 hover:text-emerald-400/80 transition-colors flex items-center gap-1"
+            className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1"
           >
             Apply for Loan <ChevronRight size={13} />
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/10 flex items-center justify-center text-emerald-400 mx-auto mb-3">
+        <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-6 text-center">
+          <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600 mx-auto mb-3 shadow-xs">
             <CreditCard size={22} />
           </div>
-          <h3 className="text-base font-bold text-white">No Active Loan</h3>
-          <p className="text-xs text-white/50 max-w-sm mx-auto mt-1 mb-5">
-            You currently have no active or outstanding loans. Cooperative members can access flexible loan financing up to 2.5× their savings balance.
+          <h3 className="text-base font-bold text-slate-900">No Active Loan</h3>
+          <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-5 font-medium">
+            You currently have no active or outstanding loans. Cooperative members can access flexible loan financing up to 2.5× their savings balance within 24 hours.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/loan-application"
-              className="btn-primary text-xs flex items-center gap-1.5 px-4 py-2 rounded-xl"
+              className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 px-4 py-2 rounded-xl shadow-xs transition-all active:scale-95"
             >
               <PlusCircle size={14} />
               Apply for a Loan
@@ -170,81 +170,81 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
   return (
     <div className="card-base">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="section-header">Active Loan</h2>
+        <h2 className="text-sm font-bold text-slate-900">Active Loan</h2>
         <Link
           href="/loan-dashboard"
-          className="text-xs font-semibold text-emerald-400 hover:text-emerald-400/80 transition-colors flex items-center gap-1"
+          className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1"
         >
           Loan Details <ChevronRight size={13} />
         </Link>
       </div>
 
-      <div className="bg-white/[0.04]/40 rounded-2xl p-4 mb-4">
+      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4">
         <div className="flex items-start justify-between mb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <CreditCard size={16} className="text-emerald-400" />
-              <p className="text-sm font-bold text-white">{productName}</p>
+              <CreditCard size={16} className="text-red-600" />
+              <p className="text-sm font-bold text-slate-900">{productName}</p>
               <Badge variant="disbursed">Active</Badge>
             </div>
-            <p className="text-xs text-white/50 font-mono">{loanRef}</p>
+            <p className="text-xs text-slate-500 font-mono font-semibold">{loanRef}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-white/50">Outstanding Balance</p>
-            <p className="text-xl font-bold text-white font-tabular">{fmt(outstanding)}</p>
+            <p className="text-xs text-slate-500 font-medium">Outstanding Balance</p>
+            <p className="text-xl font-black text-slate-900 font-tabular">{fmt(outstanding)}</p>
           </div>
         </div>
 
         {/* Repayment progress */}
         <div className="mb-3">
           <div className="flex items-center justify-between mb-1.5">
-            <p className="text-xs font-medium text-white/50">Repayment Progress</p>
-            <p className="text-xs font-bold text-emerald-400">{repaymentPct}% paid</p>
+            <p className="text-xs font-bold text-slate-500">Repayment Progress</p>
+            <p className="text-xs font-bold text-red-600">{repaymentPct}% paid</p>
           </div>
           <div className="progress-bar-bg h-2.5">
             <div
-              className="bg-accent h-full rounded-full transition-all duration-700"
+              className="bg-red-600 h-full rounded-full transition-all duration-700"
               style={{ width: `${repaymentPct}%` }}
             />
           </div>
-          <div className="flex items-center justify-between mt-1">
-            <p className="text-xs text-white/50">{fmt(amountRepaid)} repaid</p>
-            <p className="text-xs text-white/50">{fmt(totalRepayable)} total</p>
+          <div className="flex items-center justify-between mt-1 text-xs text-slate-500 font-medium">
+            <span>{fmt(amountRepaid)} repaid</span>
+            <span>{fmt(totalRepayable)} total</span>
           </div>
         </div>
 
         {/* Key details row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-white/10/60">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-200">
           <div>
-            <p className="text-2xs text-white/50">Principal Borrowed</p>
-            <p className="text-xs font-semibold text-white mt-0.5 font-tabular">{fmt(principal)}</p>
+            <p className="text-2xs text-slate-500 font-semibold">Principal Borrowed</p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5 font-tabular">{fmt(principal)}</p>
           </div>
           <div>
-            <p className="text-2xs text-white/50">Monthly Instalment</p>
-            <p className="text-xs font-semibold text-white mt-0.5 font-tabular">{fmt(monthlyInstalment)}</p>
+            <p className="text-2xs text-slate-500 font-semibold">Monthly Instalment</p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5 font-tabular">{fmt(monthlyInstalment)}</p>
           </div>
           <div>
-            <p className="text-2xs text-white/50">Next Due Date</p>
-            <p className="text-xs font-semibold text-white mt-0.5">{nextDueDate}</p>
+            <p className="text-2xs text-slate-500 font-semibold">Next Due Date</p>
+            <p className="text-xs font-bold text-slate-900 mt-0.5">{nextDueDate}</p>
           </div>
         </div>
       </div>
 
       {/* Next due alert */}
       {monthlyInstalment > 0 && (
-        <div className="flex items-center gap-3 p-3 bg-warning/8 border border-warning/20 rounded-xl mb-4">
-          <div className="p-1.5 bg-warning/10 rounded-lg shrink-0">
-            <Calendar size={14} className="text-warning" />
+        <div className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-xl mb-4">
+          <div className="p-1.5 bg-amber-100 text-amber-800 rounded-lg shrink-0">
+            <Calendar size={14} />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-semibold text-white">Next Repayment Due</p>
-            <p className="text-xs text-white/50">
-              Instalment of <span className="font-semibold text-white font-tabular">{fmt(monthlyInstalment)}</span> due on <span className="font-semibold">{nextDueDate}</span>
+            <p className="text-xs font-bold text-slate-900">Next Repayment Due</p>
+            <p className="text-xs text-slate-600 font-medium">
+              Instalment of <span className="font-bold text-slate-900 font-tabular">{fmt(monthlyInstalment)}</span> due on <span className="font-bold text-slate-900">{nextDueDate}</span>
             </p>
           </div>
           <Link
             href="/loan-dashboard?tab=repay"
-            className="btn-primary text-xs px-3 py-1.5 shrink-0"
+            className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
           >
             Pay Now
           </Link>
@@ -254,30 +254,30 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
       {/* Recent repayments */}
       {recentRepayments.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-white/50 uppercase tracking-wide mb-2">Recent Repayments</p>
+          <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Recent Repayments</p>
           <div className="space-y-1.5">
             {recentRepayments.map((rep, idx) => (
               <div
                 key={rep.id || idx}
-                className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/[0.06]/40 transition-colors"
+                className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-blue-500/10 flex items-center justify-center shrink-0">
-                    <span className="text-2xs font-bold text-blue-400">
+                  <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 border border-blue-200">
+                    <span className="text-2xs font-bold text-blue-700">
                       {rep.instalment_number || idx + 1}
                     </span>
                   </div>
                   <div>
-                    <p className="text-xs font-medium text-white">
+                    <p className="text-xs font-bold text-slate-900">
                       Instalment #{rep.instalment_number || idx + 1}
                     </p>
-                    <p className="text-2xs text-white/50">
+                    <p className="text-2xs text-slate-500 font-medium">
                       {rep.payment_date || rep.created_at ? new Date(rep.payment_date || rep.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <p className="text-xs font-bold text-white font-tabular">
+                  <p className="text-xs font-bold text-slate-900 font-tabular">
                     {fmt(Number(rep.amount_paid || rep.amount) || 0)}
                   </p>
                   <Badge variant="paid">Paid</Badge>
@@ -287,7 +287,7 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           </div>
           <Link
             href="/loan-dashboard"
-            className="block w-full mt-2 text-xs font-semibold text-emerald-400 hover:text-emerald-400/80 transition-colors py-2 text-center"
+            className="block w-full mt-2 text-xs font-bold text-red-600 hover:text-red-700 transition-colors py-2 text-center"
           >
             View Full Repayment Schedule →
           </Link>

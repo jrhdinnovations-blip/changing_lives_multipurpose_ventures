@@ -51,19 +51,19 @@ export default function AdminPendingQueue() {
   }, []);
 
   return (
-    <div className="bg-[#0b1329] border border-white/10 rounded-2xl p-5 shadow-lg">
+    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20">
+          <div className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-200">
             <Clock size={16} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Pending Verification Queue</h2>
-            <p className="text-2xs text-white/50">Membership & facility applications awaiting review</p>
+            <h2 className="text-sm font-bold text-slate-900">Pending Verification Queue</h2>
+            <p className="text-2xs text-slate-500">Membership & facility applications awaiting review</p>
           </div>
         </div>
         {items.length > 0 && (
-          <span className="bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-2 py-0.5 rounded-full">
             {items.length} Pending
           </span>
         )}
@@ -71,34 +71,34 @@ export default function AdminPendingQueue() {
 
       {loading ? (
         <div className="py-8 flex justify-center">
-          <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : items.length === 0 ? (
-        <div className="py-8 px-4 text-center rounded-xl bg-white/[0.02] border border-white/5">
-          <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-2.5">
+        <div className="py-8 px-4 text-center rounded-xl bg-slate-50 border border-slate-200/80">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center mx-auto mb-2.5">
             <ShieldCheck size={20} />
           </div>
-          <h3 className="text-xs font-bold text-white mb-1">Operational Queue is Clear</h3>
-          <p className="text-2xs text-white/40 max-w-sm mx-auto">
+          <h3 className="text-xs font-bold text-slate-900 mb-1">Operational Queue is Clear</h3>
+          <p className="text-2xs text-slate-500 max-w-sm mx-auto font-medium">
             All member registrations and loan files are up to date. New submissions will appear here automatically for review.
           </p>
         </div>
       ) : (
-        <div className="divide-y divide-white/10">
+        <div className="divide-y divide-slate-100">
           {items.map(item => (
             <div key={item.id} className="py-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-white/[0.05] text-white/70">
+                <div className="p-2 rounded-lg bg-slate-100 text-slate-700">
                   {item.type === 'loan' ? <CreditCard size={15} /> : <User size={15} />}
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-white">{item.applicantName}</p>
-                  <p className="text-2xs text-white/40 font-mono">{item.ref} · {item.submittedDate}</p>
+                  <p className="text-xs font-bold text-slate-900">{item.applicantName}</p>
+                  <p className="text-2xs text-slate-500 font-mono">{item.ref} · {item.submittedDate}</p>
                 </div>
               </div>
               <Link
                 href="/admin-dashboard/members"
-                className="text-xs font-medium text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
               >
                 Review <ChevronRight size={13} />
               </Link>

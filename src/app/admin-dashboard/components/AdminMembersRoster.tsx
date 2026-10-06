@@ -53,33 +53,33 @@ export default function AdminMembersRoster() {
   });
 
   return (
-    <div className="bg-[#0b1329] border border-white/10 rounded-2xl p-5 shadow-lg">
+    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <div className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-200">
             <Users size={16} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Registered Cooperative Members</h2>
-            <p className="text-2xs text-white/50">Active member files synced with database</p>
+            <h2 className="text-sm font-bold text-slate-900">Registered Cooperative Members</h2>
+            <p className="text-2xs text-slate-500">Active member files synced with database</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <div className="relative">
-            <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-white/40" />
+            <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               placeholder="Search member..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-8 pr-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/10 text-xs text-white placeholder-white/40 focus:outline-none focus:border-emerald-500/50 w-44"
+              className="pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500/50 w-44"
             />
           </div>
 
           <Link
             href="/admin-dashboard/members"
-            className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1 shrink-0"
+            className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 shrink-0"
           >
             Full Directory <ChevronRight size={13} />
           </Link>
@@ -88,56 +88,56 @@ export default function AdminMembersRoster() {
 
       {loading ? (
         <div className="py-10 flex justify-center">
-          <div className="w-6 h-6 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-8 text-center text-xs text-white/50">
+        <div className="py-8 text-center text-xs text-slate-500 font-medium">
           No members matched your search.
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-white/10 text-2xs uppercase tracking-wider text-white/50">
-                <th className="pb-2.5 font-semibold">Member</th>
-                <th className="pb-2.5 font-semibold">Member ID</th>
-                <th className="pb-2.5 font-semibold">Monthly Inflow</th>
-                <th className="pb-2.5 font-semibold">Status</th>
-                <th className="pb-2.5 font-semibold text-right">Action</th>
+              <tr className="border-b border-slate-200 text-2xs uppercase tracking-wider text-slate-500 bg-slate-50/50">
+                <th className="py-2.5 px-3 font-bold">Member</th>
+                <th className="py-2.5 px-3 font-bold">Member ID</th>
+                <th className="py-2.5 px-3 font-bold">Monthly Inflow</th>
+                <th className="py-2.5 px-3 font-bold">Status</th>
+                <th className="py-2.5 px-3 font-bold text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-xs">
+            <tbody className="divide-y divide-slate-100 text-xs">
               {filtered.map(member => (
-                <tr key={member.id} className="hover:bg-white/[0.02] transition-colors">
-                  <td className="py-3 pr-4">
+                <tr key={member.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="py-3 px-3">
                     <div>
-                      <p className="font-semibold text-white">
+                      <p className="font-bold text-slate-900">
                         {member.first_name} {member.last_name}
                       </p>
-                      <p className="text-2xs text-white/40">{member.email}</p>
+                      <p className="text-2xs text-slate-500">{member.email}</p>
                     </div>
                   </td>
-                  <td className="py-3 pr-4">
-                    <span className="font-mono text-2xs text-white/70 bg-white/[0.05] px-2 py-0.5 rounded-md border border-white/10">
+                  <td className="py-3 px-3">
+                    <span className="font-mono text-2xs text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 font-semibold">
                       {member.membership_no || 'Pending'}
                     </span>
                   </td>
-                  <td className="py-3 pr-4">
-                    <span className="font-tabular font-medium text-white">
+                  <td className="py-3 px-3">
+                    <span className="font-tabular font-bold text-slate-900">
                       ₦{Number(member.monthly_contribution || 0).toLocaleString('en-NG')}
                     </span>
-                    <span className="text-2xs text-white/40"> / mo</span>
+                    <span className="text-2xs text-slate-400 font-normal"> / mo</span>
                   </td>
-                  <td className="py-3 pr-4">
-                    <span className="inline-flex items-center gap-1 text-2xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  <td className="py-3 px-3">
+                    <span className="inline-flex items-center gap-1 text-2xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                       <UserCheck size={10} />
                       <span className="capitalize">{member.status || 'Active'}</span>
                     </span>
                   </td>
-                  <td className="py-3 text-right">
+                  <td className="py-3 px-3 text-right">
                     <Link
                       href={`/admin-dashboard/members`}
-                      className="text-2xs font-medium text-emerald-400 hover:text-emerald-300 hover:underline"
+                      className="text-2xs font-bold text-blue-600 hover:text-blue-800 hover:underline"
                     >
                       Manage
                     </Link>

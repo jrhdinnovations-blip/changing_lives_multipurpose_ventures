@@ -455,17 +455,17 @@ export default function AdminAuditLogsPage() {
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-white/10/40">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-2 border-b border-slate-200">
           <div>
             <div className="flex items-center gap-2">
               <span className="p-2 rounded-xl bg-indigo-50 text-indigo-700">
                 <ClipboardList size={24} />
               </span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
                 Audit Logs
               </h1>
             </div>
-            <p className="text-sm text-white/50 mt-1">
+            <p className="text-sm text-slate-500 mt-1">
               Complete, tamper-evident record of all system activities, administrator actions, and security events.
             </p>
           </div>
@@ -477,7 +477,7 @@ export default function AdminAuditLogsPage() {
               <Download size={14} />
               Export CSV
             </button>
-            <div className="flex items-center gap-2 text-xs text-white/50 bg-white/[0.06] rounded-xl px-3 py-1.5">
+            <div className="flex items-center gap-2 text-xs text-slate-600 bg-slate-100 border border-slate-200 rounded-xl px-3 py-1.5 font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               Live Audit Trail
             </div>
@@ -486,55 +486,55 @@ export default function AdminAuditLogsPage() {
 
         {/* KPI Summary Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Total Events (30d)</span>
+              <span className="text-xs font-medium text-slate-500">Total Events (30d)</span>
               <span className="p-2 rounded-xl bg-blue-50 text-blue-600"><Activity size={16} /></span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">{totalEvents}</div>
-            <div className="mt-1 text-xs text-white/50">All recorded actions</div>
+            <div className="mt-2 text-2xl font-bold text-slate-900">{totalEvents}</div>
+            <div className="mt-1 text-xs text-slate-400">All recorded actions</div>
           </div>
 
-          <div className="bg-[#0d1527] border border-rose-200/60 rounded-2xl p-4 shadow-sm bg-gradient-to-b from-rose-50/30 to-transparent">
+          <div className="bg-white border border-rose-200 rounded-2xl p-4 shadow-xs bg-gradient-to-b from-rose-50/40 to-transparent">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Critical Alerts</span>
+              <span className="text-xs font-medium text-slate-500">Critical Alerts</span>
               <span className="p-2 rounded-xl bg-rose-50 text-rose-600"><AlertCircle size={16} /></span>
             </div>
             <div className="mt-2 text-2xl font-bold text-rose-700">{criticalEvents}</div>
-            <div className="mt-1 text-xs text-white/50">Require attention</div>
+            <div className="mt-1 text-xs text-slate-400">Require attention</div>
           </div>
 
-          <div className="bg-[#0d1527] border border-amber-200/60 rounded-2xl p-4 shadow-sm bg-gradient-to-b from-amber-50/30 to-transparent">
+          <div className="bg-white border border-amber-200 rounded-2xl p-4 shadow-xs bg-gradient-to-b from-amber-50/40 to-transparent">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Failed Operations</span>
+              <span className="text-xs font-medium text-slate-500">Failed Operations</span>
               <span className="p-2 rounded-xl bg-amber-50 text-amber-600"><XCircle size={16} /></span>
             </div>
             <div className="mt-2 text-2xl font-bold text-amber-700">{failedEvents}</div>
-            <div className="mt-1 text-xs text-white/50">Unsuccessful attempts</div>
+            <div className="mt-1 text-xs text-slate-400">Unsuccessful attempts</div>
           </div>
 
-          <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-white/50">Active Users</span>
+              <span className="text-xs font-medium text-slate-500">Active Users</span>
               <span className="p-2 rounded-xl bg-emerald-50 text-emerald-600"><User size={16} /></span>
             </div>
-            <div className="mt-2 text-2xl font-bold text-white">{uniqueActors}</div>
-            <div className="mt-1 text-xs text-white/50">Distinct actors this period</div>
+            <div className="mt-2 text-2xl font-bold text-slate-900">{uniqueActors}</div>
+            <div className="mt-1 text-xs text-slate-400">Distinct actors this period</div>
           </div>
         </div>
 
         {/* Filters & Search */}
-        <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl p-4 shadow-sm space-y-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50" />
+              <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
                 placeholder="Search actions, actors, targets, IP addresses..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-input bg-background focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-slate-200 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
               />
             </div>
 
@@ -543,7 +543,7 @@ export default function AdminAuditLogsPage() {
               <select
                 value={severityFilter}
                 onChange={e => setSeverityFilter(e.target.value as any)}
-                className="bg-background border border-input rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="all">All Severity</option>
                 <option value="info">Info</option>
@@ -554,7 +554,7 @@ export default function AdminAuditLogsPage() {
               <select
                 value={outcomeFilter}
                 onChange={e => setOutcomeFilter(e.target.value as any)}
-                className="bg-background border border-input rounded-xl px-3 py-2 text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
               >
                 <option value="all">All Outcomes</option>
                 <option value="success">Success</option>
@@ -565,8 +565,8 @@ export default function AdminAuditLogsPage() {
           </div>
 
           {/* Category pills */}
-          <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-white/10/40">
-            <span className="text-xs font-semibold text-white/50 mr-1">Category:</span>
+          <div className="flex flex-wrap items-center gap-2 pt-3 border-t border-slate-100">
+            <span className="text-xs font-semibold text-slate-500 mr-1">Category:</span>
             {([
               { id: 'all', label: 'All Events' },
               ...Object.entries(CATEGORY_CONFIG).map(([id, cfg]) => ({ id, label: cfg.label })),
@@ -576,8 +576,8 @@ export default function AdminAuditLogsPage() {
                 onClick={() => setCategoryFilter(c.id as AuditCategory)}
                 className={`px-3 py-1 text-xs font-medium rounded-lg transition-all ${
                   categoryFilter === c.id
-                    ? 'bg-emerald-500 text-emerald-400-foreground font-semibold shadow-xs'
-                    : 'bg-white/[0.06]/60 text-white/50 hover:bg-white/[0.06] hover:text-white'
+                    ? 'bg-emerald-600 text-white font-semibold shadow-xs'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900'
                 }`}
               >
                 {c.label}
@@ -587,10 +587,10 @@ export default function AdminAuditLogsPage() {
         </div>
 
         {/* Log Table */}
-        <div className="bg-[#0d1527] border border-white/10/60 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="bg-white/[0.06]/50 border-b border-white/10 text-xs font-semibold text-white/50 uppercase tracking-wider">
+              <thead className="bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                 <tr>
                   <th className="px-5 py-3.5 w-40">Timestamp</th>
                   <th className="px-5 py-3.5">Actor</th>
@@ -602,14 +602,14 @@ export default function AdminAuditLogsPage() {
                   <th className="px-5 py-3.5 text-center">Details</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10/60">
+              <tbody className="divide-y divide-slate-100">
                 {paged.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-5 py-12 text-center">
-                      <div className="flex flex-col items-center gap-2 text-white/50">
+                      <div className="flex flex-col items-center gap-2 text-slate-400">
                         <ClipboardList size={32} className="opacity-40" />
-                        <span className="font-semibold text-white">No events found</span>
-                        <p className="text-xs">Try adjusting your search or filter criteria.</p>
+                        <span className="font-semibold text-slate-900">No events found</span>
+                        <p className="text-xs text-slate-500">Try adjusting your search or filter criteria.</p>
                       </div>
                     </td>
                   </tr>
@@ -624,14 +624,14 @@ export default function AdminAuditLogsPage() {
                     return (
                       <React.Fragment key={log.id}>
                         <tr
-                          className={`hover:bg-white/[0.06]/20 transition-colors cursor-pointer ${
+                          className={`hover:bg-slate-50/80 transition-colors cursor-pointer ${
                             log.severity === 'critical' ? 'border-l-2 border-rose-500' : ''
                           }`}
                           onClick={() => setExpandedId(isExpanded ? null : log.id)}
                         >
                           {/* Timestamp */}
                           <td className="px-5 py-4">
-                            <div className="flex items-center gap-1.5 text-xs text-white/50 font-mono">
+                            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-mono">
                               <Calendar size={11} className="shrink-0" />
                               {formatDateShort(log.timestamp)}
                             </div>
@@ -639,14 +639,14 @@ export default function AdminAuditLogsPage() {
 
                           {/* Actor */}
                           <td className="px-5 py-4">
-                            <div className="font-semibold text-white text-xs">{log.actor}</div>
-                            <div className="text-2xs text-white/50 font-mono">{log.actorId}</div>
-                            <div className="text-2xs text-white/50">{log.actorRole}</div>
+                            <div className="font-semibold text-slate-900 text-xs">{log.actor}</div>
+                            <div className="text-2xs text-slate-500 font-mono">{log.actorId}</div>
+                            <div className="text-2xs text-slate-400">{log.actorRole}</div>
                           </td>
 
                           {/* Action */}
                           <td className="px-5 py-4">
-                            <span className="font-mono text-xs font-semibold text-white bg-white/[0.06] px-2 py-0.5 rounded-md">
+                            <span className="font-mono text-xs font-semibold text-slate-800 bg-slate-100 border border-slate-200 px-2 py-0.5 rounded-md">
                               {log.action}
                             </span>
                           </td>
@@ -663,9 +663,9 @@ export default function AdminAuditLogsPage() {
 
                           {/* Target */}
                           <td className="px-5 py-4">
-                            <div className="text-xs font-medium text-white">{log.target || '—'}</div>
+                            <div className="text-xs font-medium text-slate-900">{log.target || '—'}</div>
                             {log.targetId && (
-                              <div className="text-2xs text-white/50 font-mono">{log.targetId}</div>
+                              <div className="text-2xs text-slate-500 font-mono">{log.targetId}</div>
                             )}
                           </td>
 
@@ -684,7 +684,7 @@ export default function AdminAuditLogsPage() {
 
                           {/* Expand */}
                           <td className="px-5 py-4 text-center">
-                            <button className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/[0.06] transition-colors">
+                            <button className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
                               <Eye size={14} />
                             </button>
                           </td>
@@ -692,28 +692,28 @@ export default function AdminAuditLogsPage() {
 
                         {/* Expanded details row */}
                         {isExpanded && (
-                          <tr className="bg-white/[0.06]/20 border-b border-white/10/60">
+                          <tr className="bg-slate-50/60 border-b border-slate-200">
                             <td colSpan={8} className="px-5 py-4">
-                              <div className="bg-[#0d1527] border border-white/10/60 rounded-xl p-4 space-y-3 text-xs">
+                              <div className="bg-white border border-slate-200 rounded-xl p-4 space-y-3 text-xs shadow-xs">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                   <div>
-                                    <span className="font-semibold text-white/50 block mb-1">Full Timestamp</span>
-                                    <span className="font-mono text-white">{formatDateTime(log.timestamp)}</span>
+                                    <span className="font-semibold text-slate-500 block mb-1">Full Timestamp</span>
+                                    <span className="font-mono text-slate-900">{formatDateTime(log.timestamp)}</span>
                                   </div>
                                   <div>
-                                    <span className="font-semibold text-white/50 block mb-1">IP Address</span>
-                                    <span className="font-mono text-white">{log.ipAddress}</span>
+                                    <span className="font-semibold text-slate-500 block mb-1">IP Address</span>
+                                    <span className="font-mono text-slate-900">{log.ipAddress}</span>
                                   </div>
                                   <div className="md:col-span-2">
-                                    <span className="font-semibold text-white/50 block mb-1">Event Details</span>
-                                    <p className="text-white leading-relaxed">{log.details}</p>
+                                    <span className="font-semibold text-slate-500 block mb-1">Event Details</span>
+                                    <p className="text-slate-700 leading-relaxed">{log.details}</p>
                                   </div>
                                   <div>
-                                    <span className="font-semibold text-white/50 block mb-1">Event ID</span>
-                                    <span className="font-mono text-white">{log.id.toUpperCase()}</span>
+                                    <span className="font-semibold text-slate-500 block mb-1">Event ID</span>
+                                    <span className="font-mono text-slate-900">{log.id.toUpperCase()}</span>
                                   </div>
                                   <div>
-                                    <span className="font-semibold text-white/50 block mb-1">Outcome</span>
+                                    <span className="font-semibold text-slate-500 block mb-1">Outcome</span>
                                     <span className={`font-semibold capitalize ${OUTCOME_CONFIG[log.outcome].color}`}>
                                       {log.outcome}
                                     </span>
@@ -732,27 +732,27 @@ export default function AdminAuditLogsPage() {
           </div>
 
           {/* Pagination */}
-          <div className="p-4 bg-white/[0.06]/20 border-t border-white/10/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/50">
+          <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
             <span>
-              Showing <strong className="text-white">{paged.length}</strong> of{' '}
-              <strong className="text-white">{filtered.length}</strong> events
+              Showing <strong className="text-slate-900">{paged.length}</strong> of{' '}
+              <strong className="text-slate-900">{filtered.length}</strong> events
               {filtered.length !== totalEvents && ` (filtered from ${totalEvents} total)`}
             </span>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="p-1.5 rounded-lg hover:bg-slate-200 transition-colors text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronLeft size={16} />
               </button>
-              <span className="font-medium text-white">
+              <span className="font-medium text-slate-900">
                 Page {page + 1} of {Math.max(1, totalPages)}
               </span>
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
-                className="p-1.5 rounded-lg hover:bg-white/[0.06] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="p-1.5 rounded-lg hover:bg-slate-200 transition-colors text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <ChevronRight size={16} />
               </button>

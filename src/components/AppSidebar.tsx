@@ -96,7 +96,8 @@ function NavItemRow({
           onClick={() => setExpanded(e => !e)}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
             isChildActive
-              ? 'bg-emerald-500/15 text-emerald-400 font-semibold' :'text-white/60 hover:bg-white/[0.06] hover:text-white'
+              ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200'
+              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
           }`}
           title={collapsed ? item.label : undefined}
           aria-expanded={expanded}
@@ -106,7 +107,7 @@ function NavItemRow({
             <>
               <span className="flex-1 text-left">{item.label}</span>
               {item.badge != null && item.badge > 0 && (
-                <span className="bg-red-500/80 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {item.badge}
                 </span>
               )}
@@ -115,20 +116,21 @@ function NavItemRow({
           )}
         </button>
         {!collapsed && expanded && (
-          <div className="ml-7 mt-0.5 space-y-0.5 border-l border-white/10 pl-3">
+          <div className="ml-7 mt-0.5 space-y-0.5 border-l-2 border-slate-200 pl-3">
             {item.children!.map(child => (
               <Link
                 key={child.id}
                 href={child.href}
                 onClick={onNavigate}
-                className={`flex items-center justify-between px-2 py-2 rounded-lg text-sm transition-all duration-150 ${
+                className={`flex items-center justify-between px-2.5 py-2 rounded-lg text-sm transition-all duration-150 ${
                   pathname === child.href
-                    ? 'text-emerald-400 font-semibold bg-emerald-500/10' :'text-white/50 hover:text-white hover:bg-white/[0.06]'
+                    ? 'text-blue-700 font-bold bg-blue-50/80'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <span>{child.label}</span>
                 {child.badge != null && child.badge > 0 && (
-                  <span className="bg-red-500/80 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                     {child.badge}
                   </span>
                 )}
@@ -146,7 +148,8 @@ function NavItemRow({
       onClick={onNavigate}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
         active
-          ? 'bg-emerald-500/15 text-emerald-400 font-semibold' :'text-white/60 hover:bg-white/[0.06] hover:text-white'
+          ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200 shadow-2xs'
+          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
       }`}
       title={collapsed ? item.label : undefined}
     >
@@ -155,7 +158,7 @@ function NavItemRow({
         <>
           <span className="flex-1">{item.label}</span>
           {item.badge != null && item.badge > 0 && (
-            <span className="bg-red-500/80 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+            <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
               {item.badge}
             </span>
           )}
@@ -183,30 +186,40 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-[#0a0f1e] border-r border-white/10 flex flex-col z-30 sidebar-transition ${
+      className={`fixed top-0 left-0 h-screen bg-white border-r border-slate-200 shadow-xs flex flex-col z-30 sidebar-transition ${
         collapsed ? 'w-[68px]' : 'w-[260px]'
       }`}
     >
+      {/* 4-Color Brand Stripe on Top of Sidebar */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-emerald-600 via-blue-600 to-red-600" />
+
       {/* Logo */}
-      <div className={`flex items-center border-b border-white/10 h-16 shrink-0 ${collapsed ? 'justify-center px-3' : 'px-4 gap-3'}`}>
+      <div className={`flex items-center border-b border-slate-200 h-16 shrink-0 mt-1 ${collapsed ? 'justify-center px-3' : 'px-4 gap-3'}`}>
         <div className="flex items-center gap-2.5">
-          <AppLogo size={44} className="rounded-xl ring-2 ring-white/20 shadow-lg" />
+          <AppLogo size={42} className="rounded-xl ring-2 ring-slate-200 shadow-xs" />
           {!collapsed && (
             <div className="flex flex-col leading-tight">
-              <span className="font-extrabold text-base text-emerald-400 tracking-tight leading-none">
-                CLIMPS
-              </span>
-              <p className="text-[9px] text-white/50 leading-none mt-0.5 font-medium">Changing Lives Multipurpose Ventures</p>
+              <div className="flex items-center gap-1.5">
+                <span className="font-black text-base text-slate-900 tracking-tight leading-none">
+                  CLIMPS
+                </span>
+                <span className="inline-flex items-center gap-0.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                </span>
+              </div>
+              <p className="text-[9px] text-slate-500 leading-none mt-1 font-semibold">Changing Lives Multipurpose</p>
             </div>
           )}
         </div>
         {!collapsed && (
           <button
             onClick={onToggle}
-            className="ml-auto p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+            className="ml-auto p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
             aria-label="Collapse sidebar"
           >
-            <Menu size={16} className="text-white/50" />
+            <Menu size={16} className="text-slate-500" />
           </button>
         )}
       </div>
@@ -215,20 +228,22 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
       {collapsed && (
         <button
           onClick={onToggle}
-          className="flex items-center justify-center h-10 hover:bg-white/10 transition-colors mx-2 mt-2 rounded-xl"
+          className="flex items-center justify-center h-10 hover:bg-slate-100 transition-colors mx-2 mt-2 rounded-xl"
           aria-label="Expand sidebar"
         >
-          <Menu size={16} className="text-white/50" />
+          <Menu size={16} className="text-slate-500" />
         </button>
       )}
 
       {/* Member/Admin info strip */}
       {!collapsed && (
-        <div className="px-4 py-3 bg-white/[0.04] border-b border-white/10">
-          <p className="text-xs font-semibold text-emerald-400 truncate">{memberName || 'Member'}</p>
-          <p className="text-2xs text-white/40">{memberId || ''}</p>
-          <span className={`inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-2xs font-semibold ${
-            role === 'admin' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-blue-500/20 text-blue-400'
+        <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
+          <p className="text-xs font-bold text-slate-900 truncate">{memberName || 'Member'}</p>
+          <p className="text-2xs text-slate-500 font-medium">{memberId || ''}</p>
+          <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-2xs font-bold ${
+            role === 'admin'
+              ? 'bg-red-50 text-red-700 border border-red-200'
+              : 'bg-blue-50 text-blue-700 border border-blue-200'
           }`}>
             {role === 'admin' ? 'Administrator' : role === 'manager' ? 'Manager' : role === 'staff' ? 'Staff' : 'Member'}
           </span>
@@ -248,21 +263,21 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
       </nav>
 
       {/* Bottom: logout */}
-      <div className="border-t border-white/10 p-2 space-y-1">
+      <div className="border-t border-slate-200 p-2 space-y-1 bg-slate-50/50">
         <Link
           href="/landing"
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-emerald-500/10 hover:text-emerald-400 transition-all duration-150 w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-150 w-full"
           title={collapsed ? 'Back to Home' : undefined}
         >
-          <Home size={18} className="shrink-0" />
+          <Home size={18} className="shrink-0 text-blue-600" />
           {!collapsed && <span>Back to Home</span>}
         </Link>
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/50 hover:bg-red-500/10 hover:text-red-400 transition-all duration-150 w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-red-50 hover:text-red-700 transition-all duration-150 w-full"
           title={collapsed ? 'Sign Out' : undefined}
         >
-          <LogOut size={18} className="shrink-0" />
+          <LogOut size={18} className="shrink-0 text-red-600" />
           {!collapsed && <span>Sign Out</span>}
         </button>
       </div>

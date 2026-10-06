@@ -86,7 +86,7 @@ export default function AppLayout({
   }, [user, profile, memberNameProp, memberIdProp, roleProp]);
 
   return (
-    <div className="min-h-screen bg-[#070c18] flex">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex">
       <AppSidebar
         role={resolvedRole}
         collapsed={sidebarCollapsed}
