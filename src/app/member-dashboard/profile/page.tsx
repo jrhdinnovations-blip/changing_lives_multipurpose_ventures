@@ -464,8 +464,8 @@ export default function MemberProfileCompletionPage() {
     return (
       <AppLayout role="member" memberName="Loading…" memberId="—">
         <div className="p-6 xl:p-8 max-w-4xl mx-auto space-y-6">
-          <div className="h-10 w-72 bg-slate-200 rounded-xl animate-pulse" />
-          <div className="h-64 bg-slate-200 rounded-2xl animate-pulse" />
+          <div className="h-10 w-72 bg-white/5 rounded-xl animate-pulse" />
+          <div className="h-64 bg-white/5 rounded-2xl animate-pulse" />
         </div>
       </AppLayout>
     );
@@ -476,41 +476,41 @@ export default function MemberProfileCompletionPage() {
     return (
       <AppLayout role="member" memberName={memberDisplayName} memberId={memberDisplayId}>
         <div className="p-6 xl:p-8 2xl:p-12 max-w-2xl mx-auto my-12 text-center">
-          <div className="relative overflow-hidden rounded-3xl border border-emerald-200 bg-white p-8 sm:p-12 shadow-xl">
-            <div className="w-20 h-20 mx-auto rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-6 shadow-xs">
+          <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0D182E]/90 backdrop-blur-xl p-8 sm:p-12 shadow-2xl">
+            <div className="w-20 h-20 mx-auto rounded-2xl bg-[#00E599]/10 border border-[#00E599]/30 flex items-center justify-center text-[#00E599] mb-6">
               <CheckCircle2 size={42} />
             </div>
 
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 mb-4">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#00E599]/10 text-[#00E599] border border-[#00E599]/30 mb-4">
               <Sparkles size={12} /> Profile Fully Completed
             </span>
 
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Welcome aboard, {form.firstName}!
             </h1>
 
-            <p className="text-sm text-slate-600 mt-3 max-w-md mx-auto leading-relaxed">
+            <p className="text-sm text-white/60 mt-3 max-w-md mx-auto leading-relaxed">
               Your member profile, KYC records, and monthly contribution plan of{' '}
-              <span className="text-emerald-600 font-bold">
+              <span className="text-[#00E599] font-bold">
                 ₦{Number(form.monthlyContribution).toLocaleString()}/month
               </span>{' '}
               have been registered successfully.
             </p>
 
-            <div className="mt-8 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-left space-y-2">
-              <div className="flex justify-between text-xs py-1 border-b border-slate-200">
-                <span className="text-slate-500">Member ID:</span>
-                <span className="text-slate-900 font-mono font-semibold">{memberDisplayId}</span>
+            <div className="mt-8 p-4 rounded-2xl bg-white/5 border border-white/10 text-left space-y-2">
+              <div className="flex justify-between text-xs py-1 border-b border-white/10">
+                <span className="text-white/50">Member ID:</span>
+                <span className="text-white font-mono font-semibold">{memberDisplayId}</span>
               </div>
-              <div className="flex justify-between text-xs py-1 border-b border-slate-200">
-                <span className="text-slate-500">Account Status:</span>
-                <span className="text-emerald-600 font-semibold flex items-center gap-1">
+              <div className="flex justify-between text-xs py-1 border-b border-white/10">
+                <span className="text-white/50">Account Status:</span>
+                <span className="text-[#00E599] font-semibold flex items-center gap-1">
                   <Check size={12} /> Active & Verified
                 </span>
               </div>
               <div className="flex justify-between text-xs py-1">
-                <span className="text-slate-500">Monthly Savings Target:</span>
-                <span className="text-slate-900 font-semibold">₦{Number(form.monthlyContribution).toLocaleString()}</span>
+                <span className="text-white/50">Monthly Savings Target:</span>
+                <span className="text-white font-semibold">₦{Number(form.monthlyContribution).toLocaleString()}</span>
               </div>
             </div>
 
@@ -536,14 +536,14 @@ export default function MemberProfileCompletionPage() {
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 text-xs text-amber-700 font-semibold mb-1">
+            <div className="flex items-center gap-2 text-xs text-[#00E599] font-semibold mb-1">
               <ShieldCheck size={14} />
               <span>CLIMPS Member Onboarding & Verification</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
               Complete Your Profile
             </h1>
-            <p className="text-sm text-slate-500 mt-1 max-w-xl">
+            <p className="text-sm text-white/50 mt-1 max-w-xl">
               Fill in your remaining details, next-of-kin, and monthly savings plan to complete your cooperative registration.
             </p>
           </div>
@@ -559,7 +559,7 @@ export default function MemberProfileCompletionPage() {
         </div>
 
         {/* Stepper Progress Bar */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
+        <div className="bg-[#0D182E]/80 border border-white/10 rounded-2xl p-4 sm:p-6 backdrop-blur-xl">
           <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
             {steps.map(s => {
               const IconComp = s.icon;
@@ -577,29 +577,29 @@ export default function MemberProfileCompletionPage() {
                   }}
                   className={`text-left p-2.5 sm:p-3 rounded-xl transition-all border ${
                     isCurrent
-                      ? 'bg-amber-50 border-amber-300 shadow-xs'
+                      ? 'bg-[#00E599]/10 border-[#00E599]/40'
                       : isPassed
-                      ? 'bg-emerald-50 border-emerald-200'
-                      : 'bg-slate-50 border-slate-200 opacity-70'
+                      ? 'bg-[#00E599]/5 border-[#00E599]/20'
+                      : 'bg-white/5 border-white/10 opacity-60'
                   }`}
                 >
                   <div className="flex items-center gap-2">
                     <div
                       className={`w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
                         isCurrent
-                          ? 'bg-amber-500 text-white'
+                          ? 'bg-[#00E599] text-[#0D182E]'
                           : isPassed
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-slate-200 text-slate-600'
+                          ? 'bg-[#00E599]/80 text-[#0D182E]'
+                          : 'bg-white/10 text-white/50'
                       }`}
                     >
                       {isPassed ? <Check size={12} strokeWidth={3} /> : s.number}
                     </div>
-                    <span className={`text-xs font-semibold line-clamp-1 ${isCurrent ? 'text-amber-800' : isPassed ? 'text-emerald-700' : 'text-slate-600'}`}>
+                    <span className={`text-xs font-semibold line-clamp-1 ${isCurrent ? 'text-[#00E599]' : isPassed ? 'text-[#00E599]/70' : 'text-white/50'}`}>
                       {s.title}
                     </span>
                   </div>
-                  <p className="text-2xs text-slate-400 mt-1 hidden sm:block truncate">
+                  <p className="text-2xs text-white/30 mt-1 hidden sm:block truncate">
                     {s.subtitle}
                   </p>
                 </button>
@@ -607,22 +607,22 @@ export default function MemberProfileCompletionPage() {
             })}
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
+          <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/40">
             <span>Step {activeStep} of 5</span>
-            <span className="font-semibold text-slate-700">{Math.round((activeStep / 5) * 100)}% Progress</span>
+            <span className="font-semibold text-[#00E599]">{Math.round((activeStep / 5) * 100)}% Progress</span>
           </div>
         </div>
 
         {/* Error Alert */}
         {errorMessage && (
-          <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-3 animate-shake">
-            <AlertCircle size={16} className="text-red-500 shrink-0" />
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs flex items-center gap-3 animate-shake">
+            <AlertCircle size={16} className="text-red-400 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {/* Form Body */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 shadow-sm">
+        <div className="bg-[#0D182E]/80 border border-white/10 rounded-2xl p-6 sm:p-8 backdrop-blur-xl">
 
           {/* ════════════════════════════════════════════════════════════ */}
           {/* STEP 1: PERSONAL INFORMATION                                 */}
@@ -630,19 +630,19 @@ export default function MemberProfileCompletionPage() {
           {activeStep === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <User size={18} className="text-amber-600" />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <User size={18} className="text-[#00E599]" />
                   Personal Information
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-white/40 mt-0.5">
                   Confirm the details provided by the administrator and add your background info.
                 </p>
               </div>
 
               {/* Photo Upload section */}
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
                 <div className="relative">
-                  <div className="w-20 h-20 rounded-2xl bg-white border border-slate-200 overflow-hidden flex items-center justify-center text-slate-400">
+                  <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/10 overflow-hidden flex items-center justify-center text-white/40">
                     {photoPreview ? (
                       <img src={photoPreview} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
@@ -652,7 +652,7 @@ export default function MemberProfileCompletionPage() {
                   <button
                     type="button"
                     onClick={() => photoInputRef.current?.click()}
-                    className="absolute -bottom-2 -right-2 p-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-white transition-colors shadow-md"
+                    className="absolute -bottom-2 -right-2 p-1.5 rounded-lg bg-[#00E599] hover:bg-[#00E599]/80 text-[#0D182E] transition-colors shadow-md"
                     title="Upload profile photo"
                   >
                     <Camera size={14} />
@@ -666,14 +666,14 @@ export default function MemberProfileCompletionPage() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-xs font-bold text-slate-900">Passport / Profile Photo</h4>
-                  <p className="text-2xs text-slate-500 mt-0.5">
+                  <h4 className="text-xs font-bold text-white">Passport / Profile Photo</h4>
+                  <p className="text-2xs text-white/40 mt-0.5">
                     Clear headshot photo against a light background (PNG or JPG, max 3MB).
                   </p>
                   <button
                     type="button"
                     onClick={() => photoInputRef.current?.click()}
-                    className="mt-2 text-xs text-amber-600 hover:underline font-semibold"
+                    className="mt-2 text-xs text-[#00E599] hover:underline font-semibold"
                   >
                     {photoPreview ? 'Change Photo' : 'Upload Photo'}
                   </button>
@@ -682,13 +682,13 @@ export default function MemberProfileCompletionPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Title
                   </label>
                   <select
                     value={form.title}
                     onChange={e => handleChange('title', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="Mr">Mr.</option>
                     <option value="Mrs">Mrs.</option>
@@ -700,27 +700,27 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     First Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={form.firstName}
                     onChange={e => handleChange('firstName', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Emmanuel"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Middle Name (Optional)
                   </label>
                   <input
                     type="text"
                     value={form.middleName}
                     onChange={e => handleChange('middleName', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Chukwu"
                   />
                 </div>
@@ -728,44 +728,44 @@ export default function MemberProfileCompletionPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Last Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={form.lastName}
                     onChange={e => handleChange('lastName', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Longdiem"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="email"
                       value={form.email}
                       disabled
-                      className="w-full pl-9 pr-3 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-500 cursor-not-allowed"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs text-white/40 cursor-not-allowed"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="tel"
                       value={form.phone}
                       onChange={e => handleChange('phone', e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="+234 800 000 0000"
                     />
                   </div>
@@ -774,13 +774,13 @@ export default function MemberProfileCompletionPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Gender
                   </label>
                   <select
                     value={form.gender}
                     onChange={e => handleChange('gender', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -788,7 +788,7 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Date of Birth
                   </label>
                   <div className="relative">
@@ -796,19 +796,19 @@ export default function MemberProfileCompletionPage() {
                       type="date"
                       value={form.dateOfBirth}
                       onChange={e => handleChange('dateOfBirth', e.target.value)}
-                      className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Marital Status
                   </label>
                   <select
                     value={form.maritalStatus}
                     onChange={e => handleChange('maritalStatus', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="Single">Single</option>
                     <option value="Married">Married</option>
@@ -818,34 +818,34 @@ export default function MemberProfileCompletionPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Occupation / Profession
                   </label>
                   <div className="relative">
-                    <Briefcase size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Briefcase size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="text"
                       value={form.occupation}
                       onChange={e => handleChange('occupation', e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="e.g. Civil Servant, Engineer, Trader"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Employer / Business Name
                   </label>
                   <div className="relative">
-                    <Building2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Building2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="text"
                       value={form.employer}
                       onChange={e => handleChange('employer', e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="e.g. Plateau State Government, Self-employed"
                     />
                   </div>
@@ -860,37 +860,37 @@ export default function MemberProfileCompletionPage() {
           {activeStep === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <MapPin size={18} className="text-amber-600" />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <MapPin size={18} className="text-[#00E599]" />
                   Residential Address & Location
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-white/40 mt-0.5">
                   Provide your permanent residential location for correspondence and physical verification.
                 </p>
               </div>
 
               <div>
-                <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                   Full Street Address <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   rows={3}
                   value={form.address}
                   onChange={e => handleChange('address', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
+                  className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50 resize-none"
                   placeholder="e.g. No. 14 Yakubu Gowon Way, Rayfield, Jos"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     State of Residence <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={form.state}
                     onChange={e => handleChange('state', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     {NIGERIAN_STATES.map(s => (
                       <option key={s} value={s}>{s}</option>
@@ -899,41 +899,41 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     LGA (Local Government)
                   </label>
                   <input
                     type="text"
                     value={form.lga}
                     onChange={e => handleChange('lga', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Jos North, Ikeja"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     City / Town
                   </label>
                   <input
                     type="text"
                     value={form.city}
                     onChange={e => handleChange('city', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Jos, Bukuru"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                   Nearest Landmark / Bus Stop
                 </label>
                 <input
                   type="text"
                   value={form.landmark}
                   onChange={e => handleChange('landmark', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   placeholder="e.g. Opposite Old Government House, Near Police Post"
                 />
               </div>
@@ -946,37 +946,37 @@ export default function MemberProfileCompletionPage() {
           {activeStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Users size={18} className="text-amber-600" />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Users size={18} className="text-[#00E599]" />
                   Next of Kin & Beneficiary Information
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-white/40 mt-0.5">
                   Required by cooperative law as designated primary beneficiary and emergency contact.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Full Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={form.nokName}
                     onChange={e => handleChange('nokName', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     placeholder="e.g. Maryann Longdiem"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Relationship <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={form.nokRelationship}
                     onChange={e => handleChange('nokRelationship', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="Spouse">Spouse</option>
                     <option value="Child">Child</option>
@@ -990,32 +990,32 @@ export default function MemberProfileCompletionPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Phone Number <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Phone size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="tel"
                       value={form.nokPhone}
                       onChange={e => handleChange('nokPhone', e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="+234 800 000 0000"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Email Address (Optional)
                   </label>
                   <div className="relative">
-                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" />
                     <input
                       type="email"
                       value={form.nokEmail}
                       onChange={e => handleChange('nokEmail', e.target.value)}
-                      className="w-full pl-9 pr-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-9 pr-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="e.g. nok@example.com"
                     />
                   </div>
@@ -1023,14 +1023,14 @@ export default function MemberProfileCompletionPage() {
               </div>
 
               <div>
-                <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                   Residential Address of Next of Kin
                 </label>
                 <div className="flex items-center gap-2 mb-2">
                   <button
                     type="button"
                     onClick={() => handleChange('nokAddress', form.address)}
-                    className="text-2xs text-amber-600 hover:underline flex items-center gap-1 font-semibold"
+                    className="text-2xs text-[#00E599] hover:underline flex items-center gap-1 font-semibold"
                   >
                     <span>Same as my residential address</span>
                   </button>
@@ -1039,7 +1039,7 @@ export default function MemberProfileCompletionPage() {
                   rows={2}
                   value={form.nokAddress}
                   onChange={e => handleChange('nokAddress', e.target.value)}
-                  className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 resize-none"
+                  className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50 resize-none"
                   placeholder="Address if different from yours"
                 />
               </div>
@@ -1052,24 +1052,24 @@ export default function MemberProfileCompletionPage() {
           {activeStep === 4 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <FileText size={18} className="text-amber-600" />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <FileText size={18} className="text-[#00E599]" />
                   KYC Verification & Bank Settlement Details
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-white/40 mt-0.5">
                   Legal identification compliance and your nominated bank account for loan disbursements and dividends.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Means of Identification <span className="text-red-500">*</span>
                   </label>
                   <select
                     value={form.idType}
                     onChange={e => handleChange('idType', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="NIN">National Identity Number (NIN)</option>
                     <option value="VotersCard">Permanent Voter&apos;s Card (PVC)</option>
@@ -1079,35 +1079,35 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     ID / Document Number <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={form.idNumber}
                     onChange={e => handleChange('idNumber', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-mono"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50 font-mono"
                     placeholder="e.g. 12345678901"
                   />
                 </div>
               </div>
 
               {/* Upload ID Document */}
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
+              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                      <Upload size={14} className="text-amber-600" />
+                    <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Upload size={14} className="text-[#00E599]" />
                       Upload Copy of ID Document (Optional)
                     </h4>
-                    <p className="text-2xs text-slate-500 mt-0.5">
+                    <p className="text-2xs text-white/40 mt-0.5">
                       Front and back of ID or data page (JPG, PNG, PDF up to 5MB).
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => idDocInputRef.current?.click()}
-                    className="px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-colors"
+                    className="px-3 py-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 text-xs font-semibold text-white/700 transition-colors"
                   >
                     Browse Files
                   </button>
@@ -1122,30 +1122,30 @@ export default function MemberProfileCompletionPage() {
 
                 {form.idDocumentPreview && (
                   <div className="flex items-center gap-3 p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs">
-                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <CheckCircle2 size={16} className="text-[#00E599] shrink-0" />
                     <span className="truncate font-medium">Document uploaded and attached successfully.</span>
                   </div>
                 )}
               </div>
 
               {/* Bank Settlement Account */}
-              <div className="pt-4 border-t border-slate-200 space-y-4">
+              <div className="pt-4 border-t border-white/10 space-y-4">
                 <div className="flex items-center gap-2">
-                  <CreditCard size={16} className="text-amber-600" />
-                  <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
+                  <CreditCard size={16} className="text-[#00E599]" />
+                  <h3 className="text-xs font-bold text-white uppercase tracking-wider">
                     Bank Account for Payouts & Dividends
                   </h3>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                       Bank Name
                     </label>
                     <select
                       value={form.bankName}
                       onChange={e => handleChange('bankName', e.target.value)}
-                      className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                     >
                       <option value="First Bank of Nigeria">First Bank of Nigeria</option>
                       <option value="Zenith Bank">Zenith Bank</option>
@@ -1162,7 +1162,7 @@ export default function MemberProfileCompletionPage() {
                   </div>
 
                   <div>
-                    <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                       Account Number (NUBAN)
                     </label>
                     <input
@@ -1170,20 +1170,20 @@ export default function MemberProfileCompletionPage() {
                       maxLength={10}
                       value={form.accountNumber}
                       onChange={e => handleChange('accountNumber', e.target.value.replace(/\D/g, ''))}
-                      className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-mono tracking-widest"
+                      className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50 font-mono tracking-widest"
                       placeholder="0123456789"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                    <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                       Account Name
                     </label>
                     <input
                       type="text"
                       value={form.accountName || `${form.firstName} ${form.lastName}`.trim()}
                       onChange={e => handleChange('accountName', e.target.value)}
-                      className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                       placeholder="Matching legal name on ID"
                     />
                   </div>
@@ -1198,18 +1198,18 @@ export default function MemberProfileCompletionPage() {
           {activeStep === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-                  <Banknote size={18} className="text-amber-600" />
+                <h2 className="text-lg font-bold text-white flex items-center gap-2">
+                  <Banknote size={18} className="text-[#00E599]" />
                   Monthly Contribution & Membership Agreement
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-white/40 mt-0.5">
                   Select your monthly cooperative thrift contribution and sign your membership consent.
                 </p>
               </div>
 
               {/* Monthly Contribution selector */}
               <div>
-                <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-2">
                   Select Monthly Contribution Target (Minimum ₦5,000)
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -1226,8 +1226,8 @@ export default function MemberProfileCompletionPage() {
                             : 'bg-white border-slate-200 hover:bg-slate-50 text-slate-700'
                         }`}
                       >
-                        <p className="text-xs text-slate-500 font-medium">{tier.tier}</p>
-                        <p className={`text-base font-bold mt-1 ${selected ? 'text-amber-800' : 'text-slate-900'}`}>
+                        <p className="text-xs text-white/40 font-medium">{tier.tier}</p>
+                        <p className={`text-base font-bold mt-1 ${selected ? 'text-[#00E599]' : 'text-slate-900'}`}>
                           {tier.label}
                         </p>
                       </button>
@@ -1236,33 +1236,33 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div className="mt-3">
-                  <label className="block text-2xs font-semibold text-slate-500 mb-1">
+                  <label className="block text-2xs font-semibold text-white/50 mb-1">
                     Or enter a custom monthly contribution amount (₦):
                   </label>
                   <div className="relative max-w-xs">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs font-bold">₦</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-xs font-bold">₦</span>
                     <input
                       type="number"
                       min={5000}
                       step={1000}
                       value={form.monthlyContribution}
                       onChange={e => handleChange('monthlyContribution', Number(e.target.value))}
-                      className="w-full pl-8 pr-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                      className="w-full pl-8 pr-3 py-2 bg-white/5 border border-white/15 rounded-xl text-xs text-white font-mono font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Preferences */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Preferred Deduction / Remittance Day
                   </label>
                   <select
                     value={form.contributionDay}
                     onChange={e => handleChange('contributionDay', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="25">25th of every month</option>
                     <option value="28">28th of every month (Recommended)</option>
@@ -1272,13 +1272,13 @@ export default function MemberProfileCompletionPage() {
                 </div>
 
                 <div>
-                  <label className="block text-2xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-2xs font-semibold text-white/60 uppercase tracking-wider mb-1.5">
                     Preferred Payment Method
                   </label>
                   <select
                     value={form.paymentMethod}
                     onChange={e => handleChange('paymentMethod', e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                    className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
                     <option value="bank_transfer">Direct Bank Transfer to Cooperative</option>
                     <option value="auto_debit">Automated Monthly Direct Debit</option>
@@ -1289,40 +1289,40 @@ export default function MemberProfileCompletionPage() {
 
               {/* Summary Review Card */}
               <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 space-y-2">
-                <div className="flex items-center gap-2 text-xs font-bold text-amber-800">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#00E599]">
                   <Sparkles size={14} />
                   <span>Membership Profile Summary</span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs pt-1">
                   <div>
-                    <span className="text-slate-500 block text-2xs">Member</span>
-                    <span className="text-slate-900 font-semibold">{form.firstName} {form.lastName}</span>
+                    <span className="text-white/40 block text-2xs">Member</span>
+                    <span className="text-white font-semibold">{form.firstName} {form.lastName}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-2xs">Contact</span>
-                    <span className="text-slate-900 font-semibold">{form.phone}</span>
+                    <span className="text-white/40 block text-2xs">Contact</span>
+                    <span className="text-white font-semibold">{form.phone}</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-2xs">Next of Kin</span>
-                    <span className="text-slate-900 font-semibold">{form.nokName} ({form.nokRelationship})</span>
+                    <span className="text-white/40 block text-2xs">Next of Kin</span>
+                    <span className="text-white font-semibold">{form.nokName} ({form.nokRelationship})</span>
                   </div>
                   <div>
-                    <span className="text-slate-500 block text-2xs">Monthly Savings</span>
+                    <span className="text-white/40 block text-2xs">Monthly Savings</span>
                     <span className="text-emerald-700 font-bold">₦{Number(form.monthlyContribution).toLocaleString()}/mo</span>
                   </div>
                 </div>
               </div>
 
               {/* Declarations and agreements */}
-              <div className="pt-2 border-t border-slate-200 space-y-3">
+              <div className="pt-2 border-t border-white/10 space-y-3">
                 <label className="flex items-start gap-3 cursor-pointer group">
                   <input
                     type="checkbox"
                     checked={form.confirmTruth}
                     onChange={e => handleChange('confirmTruth', e.target.checked)}
-                    className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 rounded border-white/20 text-[#00E599] focus:ring-[#00E599]"
                   />
-                  <span className="text-xs text-slate-700 group-hover:text-slate-900 leading-relaxed">
+                  <span className="text-xs text-white/60 group-hover:text-white leading-relaxed">
                     I solemnly declare that all personal information, Next of Kin, address, and KYC identification details provided herein are accurate, authentic, and complete to the best of my knowledge.
                   </span>
                 </label>
@@ -1332,9 +1332,9 @@ export default function MemberProfileCompletionPage() {
                     type="checkbox"
                     checked={form.agreeByeLaws}
                     onChange={e => handleChange('agreeByeLaws', e.target.checked)}
-                    className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="mt-0.5 rounded border-white/20 text-[#00E599] focus:ring-[#00E599]"
                   />
-                  <span className="text-xs text-slate-700 group-hover:text-slate-900 leading-relaxed">
+                  <span className="text-xs text-white/60 group-hover:text-white leading-relaxed">
                     I agree to adhere strictly to the Constitution, Bye-Laws, code of conduct, and monthly contribution commitments of Changing Lives Multipurpose Ventures (CLIMPS).
                   </span>
                 </label>
@@ -1343,7 +1343,7 @@ export default function MemberProfileCompletionPage() {
           )}
 
           {/* Form Actions Footer */}
-          <div className="mt-8 pt-6 border-t border-slate-200 flex items-center justify-between gap-4">
+          <div className="mt-8 pt-6 border-t border-white/10 flex items-center justify-between gap-4">
             {activeStep > 1 ? (
               <button
                 type="button"
@@ -1373,7 +1373,7 @@ export default function MemberProfileCompletionPage() {
                   disabled={saving || !form.agreeByeLaws || !form.confirmTruth}
                   className={`px-7 py-3 rounded-xl text-xs font-bold transition-all flex items-center gap-2 shadow-md ${
                     saving || !form.agreeByeLaws || !form.confirmTruth
-                      ? 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'
+                      ? 'bg-white/5 text-white/30 border border-white/10 cursor-not-allowed'
                       : 'btn-primary text-white shadow-emerald-600/20 active:scale-95'
                   }`}
                 >

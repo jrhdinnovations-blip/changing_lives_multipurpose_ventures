@@ -53,15 +53,15 @@ export default function AdminMembersRoster() {
   });
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+    <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 rounded-xl bg-blue-50 text-blue-600 border border-blue-200">
+          <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400 border border-blue-500/30">
             <Users size={16} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-slate-900">Registered Cooperative Members</h2>
-            <p className="text-2xs text-slate-500">Active member files synced with database</p>
+            <h2 className="text-sm font-bold text-white">Registered Cooperative Members</h2>
+            <p className="text-2xs text-slate-400">Active member files synced with database</p>
           </div>
         </div>
 
@@ -73,13 +73,13 @@ export default function AdminMembersRoster() {
               placeholder="Search member..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-blue-500/50 w-44"
+              className="pl-8 pr-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#00D084]/50 w-44"
             />
           </div>
 
           <Link
             href="/admin-dashboard/members"
-            className="text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-1 shrink-0"
+            className="text-xs font-bold text-[#00E599] hover:text-emerald-300 transition-colors flex items-center gap-1 shrink-0"
           >
             Full Directory <ChevronRight size={13} />
           </Link>
@@ -91,14 +91,14 @@ export default function AdminMembersRoster() {
           <div className="w-6 h-6 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <div className="py-8 text-center text-xs text-slate-500 font-medium">
+        <div className="py-8 text-center text-xs text-slate-400 font-medium">
           No members matched your search.
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-slate-200 text-2xs uppercase tracking-wider text-slate-500 bg-slate-50/50">
+              <tr className="border-b border-white/10 text-2xs uppercase tracking-wider text-slate-500 bg-white/5">
                 <th className="py-2.5 px-3 font-bold">Member</th>
                 <th className="py-2.5 px-3 font-bold">Member ID</th>
                 <th className="py-2.5 px-3 font-bold">Monthly Inflow</th>
@@ -106,30 +106,30 @@ export default function AdminMembersRoster() {
                 <th className="py-2.5 px-3 font-bold text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-xs">
+            <tbody className="divide-y divide-white/5 text-xs">
               {filtered.map(member => (
-                <tr key={member.id} className="hover:bg-slate-50/60 transition-colors">
+                <tr key={member.id} className="hover:bg-white/5 transition-colors">
                   <td className="py-3 px-3">
                     <div>
-                      <p className="font-bold text-slate-900">
+                      <p className="font-bold text-white">
                         {member.first_name} {member.last_name}
                       </p>
-                      <p className="text-2xs text-slate-500">{member.email}</p>
+                      <p className="text-2xs text-slate-400">{member.email}</p>
                     </div>
                   </td>
                   <td className="py-3 px-3">
-                    <span className="font-mono text-2xs text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 font-semibold">
+                    <span className="font-mono text-2xs text-slate-300 bg-white/5 px-2 py-0.5 rounded-md border border-white/10 font-semibold">
                       {member.membership_no || 'Pending'}
                     </span>
                   </td>
                   <td className="py-3 px-3">
-                    <span className="font-tabular font-bold text-slate-900">
+                    <span className="font-tabular font-bold text-white">
                       ₦{Number(member.monthly_contribution || 0).toLocaleString('en-NG')}
                     </span>
                     <span className="text-2xs text-slate-400 font-normal"> / mo</span>
                   </td>
                   <td className="py-3 px-3">
-                    <span className="inline-flex items-center gap-1 text-2xs font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span className="inline-flex items-center gap-1 text-2xs font-bold px-2 py-0.5 rounded-full bg-emerald-500/15 text-[#00E599] border border-emerald-500/30">
                       <UserCheck size={10} />
                       <span className="capitalize">{member.status || 'Active'}</span>
                     </span>
@@ -137,7 +137,7 @@ export default function AdminMembersRoster() {
                   <td className="py-3 px-3 text-right">
                     <Link
                       href={`/admin-dashboard/members`}
-                      className="text-2xs font-bold text-blue-600 hover:text-blue-800 hover:underline"
+                      className="text-2xs font-bold text-[#00E599] hover:text-emerald-300 transition-colors"
                     >
                       Manage
                     </Link>

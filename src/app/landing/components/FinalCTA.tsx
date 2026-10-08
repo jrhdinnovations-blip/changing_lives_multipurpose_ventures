@@ -35,12 +35,12 @@ export default function FinalCTA() {
   return (
     <section
       ref={ref}
-      className="py-20 lg:py-28 bg-gradient-to-br from-blue-50/60 via-white to-emerald-50/60 border-t border-slate-200 relative overflow-hidden"
+      className="py-20 lg:py-28 bg-[#050B17] border-t border-white/10 relative overflow-hidden"
     >
-      {/* Subtle ambient light glows */}
+      {/* Radiant ambient glow orbs */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div
-          className="w-[700px] h-[700px] rounded-full bg-emerald-200/40 blur-[130px]"
+          className="w-[600px] h-[600px] rounded-full bg-emerald-500/15 blur-[140px]"
           style={{
             transform: visible ? 'scale(1)' : 'scale(0.6)',
             opacity: visible ? 1 : 0,
@@ -48,9 +48,9 @@ export default function FinalCTA() {
           }}
         />
         <div
-          className="w-[500px] h-[500px] rounded-full bg-blue-200/35 blur-[100px] translate-y-20"
+          className="w-[450px] h-[450px] rounded-full bg-blue-500/15 blur-[120px] translate-y-16"
           style={{
-            transform: visible ? 'scale(1) translateY(60px)' : 'scale(0.5) translateY(60px)',
+            transform: visible ? 'scale(1) translateY(40px)' : 'scale(0.5) translateY(40px)',
             opacity: visible ? 1 : 0,
             transition: 'transform 1.6s ease 0.2s, opacity 1.6s ease 0.2s',
           }}
@@ -58,26 +58,26 @@ export default function FinalCTA() {
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
-        {/* Badge with Red, Green, Blue, White dots */}
+        {/* Badge */}
         <div
-          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white border border-slate-200 text-slate-800 text-xs sm:text-sm font-bold tracking-wide mb-6 shadow-sm"
+          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/15 text-slate-200 text-xs sm:text-sm font-bold tracking-wide mb-6 backdrop-blur-md shadow-lg shadow-black/20"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
             transition: 'opacity 0.6s ease 0.1s, transform 0.6s ease 0.1s',
           }}
         >
-          <span className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-600" title="Red" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" title="Green" />
-            <span className="w-2.5 h-2.5 rounded-full bg-blue-600" title="Blue" />
-            <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-300" title="White" />
+          <span className="flex items-center gap-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" title="Red" />
+            <span className="w-2.5 h-2.5 rounded-full bg-[#00E599] shadow-sm shadow-emerald-500/50" title="Green" />
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" title="Blue" />
+            <span className="w-2.5 h-2.5 rounded-full bg-white shadow-sm shadow-white/50" title="White" />
           </span>
-          <span>Changing Lives Multipurpose Cooperative Society</span>
+          <span className="text-slate-200">Changing Lives Multipurpose Cooperative Society</span>
         </div>
 
         <h2
-          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-slate-900 leading-tight tracking-tight mb-5"
+          className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-tight tracking-tight mb-5"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(40px)',
@@ -85,13 +85,13 @@ export default function FinalCTA() {
           }}
         >
           One step.{' '}
-          <span className="bg-gradient-to-r from-emerald-600 via-blue-600 to-emerald-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-[#00E599] via-emerald-400 to-[#00D084] bg-clip-text text-transparent">
             Infinite growth.
           </span>
         </h2>
 
         <p
-          className="text-slate-600 text-base sm:text-xl mb-9 max-w-xl mx-auto leading-relaxed font-semibold"
+          className="text-slate-300 text-base sm:text-xl mb-9 max-w-xl mx-auto leading-relaxed font-normal"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -101,9 +101,9 @@ export default function FinalCTA() {
           Join thousands of cooperative members building real, sustainable prosperity together across Nigeria.
         </p>
 
-        {/* Action buttons with Red, Green, Blue branding */}
+        {/* Action buttons */}
         <div
-          className="flex flex-wrap items-center justify-center gap-3.5"
+          className="flex flex-wrap items-center justify-center gap-4"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
@@ -113,7 +113,7 @@ export default function FinalCTA() {
           {user ? (
             <Link
               href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-600/25 group"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/25 group"
             >
               Go to Dashboard
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -121,7 +121,7 @@ export default function FinalCTA() {
           ) : (
             <Link
               href="/login"
-              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-600/25 group"
+              className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/25 group"
             >
               <span>Join CLIMPS Today</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -130,14 +130,14 @@ export default function FinalCTA() {
 
           <Link
             href="/savings-products"
-            className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-base transition-all duration-200 active:scale-95 shadow-lg shadow-blue-600/25"
+            className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-bold text-base transition-all duration-200 active:scale-95 backdrop-blur-md shadow-md"
           >
             Explore Savings
           </Link>
 
           <Link
             href="/loan-application"
-            className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-white border-2 border-red-500 hover:bg-red-50 text-red-600 font-bold text-base transition-all duration-200 active:scale-95 shadow-sm"
+            className="inline-flex items-center gap-2 px-6 py-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-300 font-bold text-base transition-all duration-200 active:scale-95 shadow-sm"
           >
             Apply for Loan
           </Link>

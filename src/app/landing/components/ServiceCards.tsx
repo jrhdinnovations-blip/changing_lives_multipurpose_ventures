@@ -88,38 +88,37 @@ export default function ServiceCards() {
   const { ref: sectionRef, inView } = useInView(0.08);
 
   return (
-    <section id="services" className="py-12 sm:py-16 lg:py-20 bg-white border-t border-slate-200 scroll-mt-16 overflow-hidden" ref={sectionRef}>
+    <section id="services" className="py-16 sm:py-20 lg:py-24 bg-[#050B17] border-t border-white/10 scroll-mt-16 overflow-hidden text-white" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Direct Header */}
         <div
-          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-8 sm:mb-10 transition-all duration-700"
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-10 sm:mb-12 transition-all duration-700"
           style={{ opacity: inView ? 1 : 0, transform: inView ? 'translateY(0)' : 'translateY(24px)' }}
         >
           <div>
-            <div className="inline-flex items-center gap-2 text-slate-800 text-xs font-bold tracking-widest uppercase mb-2">
-              <span className="flex items-center gap-1">
+            <div className="inline-flex items-center gap-2 text-emerald-400 text-xs font-bold tracking-widest uppercase mb-2">
+              <span className="flex items-center gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-500" />
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="w-2 h-2 rounded-full bg-blue-600" />
+                <span className="w-2 h-2 rounded-full bg-[#00E599]" />
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
               </span>
               <span>Core Financial Solutions</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 leading-tight tracking-tight">
-              Three Direct Ways to <span className="text-emerald-600">Prosper</span>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight">
+              Three Direct Ways to <span className="text-[#00E599]">Prosper</span>
             </h2>
           </div>
-
         </div>
 
-        {/* 3 Unified White Cards with Red, Green, Blue Branding */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        {/* 3 Unified Dark Glass Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={pillar.category}
-                className={`relative rounded-2xl p-5 sm:p-6 flex flex-col justify-between bg-white ${pillar.cardBorder} overflow-hidden group transition-all duration-300 hover:scale-[1.01]`}
+                className="relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-[#0D182E]/90 border border-white/15 hover:border-emerald-500/40 overflow-hidden group transition-all duration-300 hover:scale-[1.01] shadow-2xl backdrop-blur-xl"
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? 'translateY(0)' : 'translateY(32px)',
@@ -127,7 +126,7 @@ export default function ServiceCards() {
                 }}
               >
                 {/* Image Banner */}
-                <div className="relative w-full h-40 sm:h-44 rounded-xl overflow-hidden mb-5 border border-slate-200">
+                <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-6 border border-white/10">
                   <Image
                     src={pillar.image}
                     alt={pillar.headline}
@@ -135,42 +134,42 @@ export default function ServiceCards() {
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D182E] via-black/40 to-transparent" />
                   
                   {/* Badge on photo */}
-                  <div className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${pillar.badgeBg} text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-sm`}>
+                  <div className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${pillar.badgeBg} text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg`}>
                     <Icon className="w-3.5 h-3.5 text-white" />
                     <span>{pillar.badge}</span>
                   </div>
 
                   {/* Rate on photo */}
-                  <div className="absolute bottom-3 left-3 right-3 flex items-baseline justify-between text-white">
+                  <div className="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
                     <div>
                       <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">{pillar.rate}</div>
-                      <div className="text-[10px] sm:text-xs text-white/90 font-bold">{pillar.rateSub}</div>
+                      <div className="text-[11px] sm:text-xs text-slate-300 font-bold">{pillar.rateSub}</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 mb-5">
-                  <div className={`text-xs font-extrabold uppercase tracking-widest mb-1.5 ${pillar.categoryColor}`}>
+                <div className="flex-1 mb-6">
+                  <div className={`text-xs font-extrabold uppercase tracking-widest mb-2 ${pillar.categoryColor}`}>
                     {pillar.category}
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-slate-900 mb-2">
+                  <h3 className="text-xl sm:text-2xl font-black text-white mb-2.5">
                     {pillar.headline}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
                     {pillar.desc}
                   </p>
                 </div>
 
                 {/* CTA buttons */}
-                <div className="space-y-2 pt-3 border-t border-slate-100">
+                <div className="space-y-2.5 pt-4 border-t border-white/10">
                   {user ? (
                     <Link
                       href={pillar.href}
-                      className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
+                      className={`inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
                     >
                       <span>{pillar.cta}</span>
                       <ArrowRight className="w-4 h-4" />
@@ -178,7 +177,7 @@ export default function ServiceCards() {
                   ) : (
                     <Link
                       href={`/login?redirect=${encodeURIComponent(pillar.href)}`}
-                      className={`inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
+                      className={`inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
                     >
                       <LogIn className="w-4 h-4" />
                       <span>{pillar.guestCta}</span>
@@ -186,7 +185,7 @@ export default function ServiceCards() {
                   )}
                   <Link
                     href={pillar.viewHref}
-                    className={`block text-center text-xs font-bold py-1 transition-colors ${pillar.viewLinkClass}`}
+                    className="block text-center text-xs font-bold py-1 text-slate-400 hover:text-white transition-colors"
                   >
                     {pillar.viewCta}
                   </Link>

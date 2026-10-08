@@ -7,89 +7,89 @@ export default function AdminChartsGrid() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
       {/* Cooperative Capital Health Card */}
-      <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl p-6 shadow-xs">
+      <div className="lg:col-span-2 bg-[#0D182E]/90 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-xl shadow-black/20">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
             <div className="flex items-center gap-2">
-              <div className="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 border border-emerald-200">
+              <div className="p-1.5 rounded-lg bg-emerald-500/15 text-[#00E599] border border-emerald-500/30">
                 <PiggyBank size={16} />
               </div>
-              <h3 className="text-sm font-bold text-slate-900">Cooperative Capital Allocation & Pool</h3>
+              <h3 className="text-sm font-bold text-white">Cooperative Capital Allocation & Pool</h3>
             </div>
-            <p className="text-xs text-slate-500 mt-1">Live summary of members savings and scheduled monthly cashflow</p>
+            <p className="text-xs text-slate-400 mt-1">Live summary of members savings and scheduled monthly cashflow</p>
           </div>
           <Link
             href="/financial-statements"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-800 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#00E599] hover:text-emerald-300 transition-colors"
           >
             Detailed Statements <ArrowRight size={13} />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-            <span className="text-2xs text-slate-500 uppercase tracking-wider font-bold">Active Savings Inflow</span>
-            <p className="text-lg font-black text-slate-900 mt-1 font-tabular">₦130,000 / mo</p>
-            <span className="text-2xs text-emerald-600 font-bold mt-1 inline-block">100% on schedule</span>
+          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <span className="text-2xs text-slate-400 uppercase tracking-wider font-bold">Active Savings Inflow</span>
+            <p className="text-lg font-black text-white mt-1 font-tabular">₦130,000 / mo</p>
+            <span className="text-2xs text-[#00E599] font-bold mt-1 inline-block">100% on schedule</span>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-            <span className="text-2xs text-slate-500 uppercase tracking-wider font-bold">Outstanding Loans</span>
-            <p className="text-lg font-black text-slate-900 mt-1 font-tabular">₦0.00</p>
+          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <span className="text-2xs text-slate-400 uppercase tracking-wider font-bold">Outstanding Loans</span>
+            <p className="text-lg font-black text-white mt-1 font-tabular">₦0.00</p>
             <span className="text-2xs text-slate-400 mt-1 inline-block font-medium">0 active disbursements</span>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/80">
-            <span className="text-2xs text-slate-500 uppercase tracking-wider font-bold">Reserve Fund Ratio</span>
-            <p className="text-lg font-black text-slate-900 mt-1 font-tabular">100% Liquidity</p>
-            <span className="text-2xs text-blue-600 font-bold mt-1 inline-block">Zero risk exposure</span>
+          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+            <span className="text-2xs text-slate-400 uppercase tracking-wider font-bold">Reserve Fund Ratio</span>
+            <p className="text-lg font-black text-white mt-1 font-tabular">100% Liquidity</p>
+            <span className="text-2xs text-blue-400 font-bold mt-1 inline-block">Zero risk exposure</span>
           </div>
         </div>
 
         {/* Progress Bar of Capital Health */}
         <div className="space-y-2">
-          <div className="flex justify-between text-2xs text-slate-600 font-semibold">
+          <div className="flex justify-between text-2xs text-slate-300 font-semibold">
             <span>Cooperative Solvency Index</span>
-            <span className="font-bold text-emerald-600">Optimal (100%)</span>
+            <span className="font-bold text-[#00E599]">Optimal (100%)</span>
           </div>
-          <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden border border-slate-200">
-            <div className="h-full bg-gradient-to-r from-emerald-600 to-teal-500 rounded-full w-full" />
+          <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden border border-white/10">
+            <div className="h-full bg-gradient-to-r from-emerald-500 to-[#00E599] rounded-full w-full shadow-[0_0_12px_rgba(0,229,153,0.5)]" />
           </div>
         </div>
       </div>
 
       {/* Governance & Compliance Overview */}
-      <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs flex flex-col justify-between">
+      <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-xl shadow-black/20 flex flex-col justify-between">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
+            <div className="p-1.5 rounded-lg bg-blue-500/15 text-blue-400 border border-blue-500/30">
               <ShieldCheck size={16} />
             </div>
-            <h3 className="text-sm font-bold text-slate-900">Governance & Audit</h3>
+            <h3 className="text-sm font-bold text-white">Governance & Audit</h3>
           </div>
-          <p className="text-xs text-slate-500 mb-5">Current administrative posture and compliance status</p>
+          <p className="text-xs text-slate-400 mb-5">Current administrative posture and compliance status</p>
 
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-              <span className="text-xs text-slate-600 font-medium">Lead Administrator</span>
-              <span className="text-xs font-bold text-slate-900">Raymond Longdiem</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-xs text-slate-400 font-medium">Lead Administrator</span>
+              <span className="text-xs font-bold text-white">Raymond Longdiem</span>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-              <span className="text-xs text-slate-600 font-medium">Database Status</span>
-              <span className="text-xs font-bold text-emerald-600">Live & Synchronized</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-xs text-slate-400 font-medium">Database Status</span>
+              <span className="text-xs font-bold text-[#00E599]">Live & Synchronized</span>
             </div>
 
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50 border border-slate-200/80">
-              <span className="text-xs text-slate-600 font-medium">Cooperative ID</span>
-              <span className="text-xs font-mono font-bold text-slate-700">ADM/2026/0001</span>
+            <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-xs text-slate-400 font-medium">Cooperative ID</span>
+              <span className="text-xs font-mono font-bold text-slate-300">ADM/2026/0001</span>
             </div>
           </div>
         </div>
 
         <Link
           href="/admin-dashboard/staff"
-          className="mt-6 w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200 text-xs font-bold text-slate-800 flex items-center justify-center gap-2 transition-all"
+          className="mt-6 w-full py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-bold text-white flex items-center justify-center gap-2 transition-all hover:border-emerald-500/30"
         >
           <span>Manage Staff & Access</span>
           <ArrowRight size={13} />

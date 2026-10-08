@@ -11,7 +11,7 @@ import LandingFooter from './components/LandingFooter';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#050B17] text-slate-100 overflow-x-hidden">
       <NetworkTicker />
       <LandingNav />
       <HeroSection />

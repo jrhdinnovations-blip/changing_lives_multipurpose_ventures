@@ -150,13 +150,13 @@ export default function MemberTransactionsTable({ member: memberProp }: MemberTr
 
       {loading ? (
         <div className="space-y-2">
-          {[1,2,3,4].map(i => <div key={i} className="h-10 bg-slate-100 rounded-lg animate-pulse" />)}
+          {[1,2,3,4].map(i => <div key={i} className="h-10 bg-white/5 rounded-lg animate-pulse" />)}
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-200">
+              <tr className="border-b border-white/10">
                 <th className="table-header text-left">Reference</th>
                 <th className="table-header text-left">Date</th>
                 <th className="table-header text-left">Description</th>
@@ -168,19 +168,19 @@ export default function MemberTransactionsTable({ member: memberProp }: MemberTr
             </thead>
             <tbody>
               {filtered.map(txn => (
-                <tr key={txn.id} className="border-b border-slate-100 table-row-hover">
+                <tr key={txn.id} className="border-b border-white/5 table-row-hover">
                   <td className="table-cell">
-                    <span className="font-mono text-xs text-slate-500 font-semibold">{txn.transaction_ref}</span>
+                    <span className="font-mono text-xs text-slate-400 font-semibold">{txn.transaction_ref}</span>
                   </td>
-                  <td className="table-cell whitespace-nowrap text-xs text-slate-600 font-medium">{formatDate(txn.created_at)}</td>
+                  <td className="table-cell whitespace-nowrap text-xs text-slate-400 font-medium">{formatDate(txn.created_at)}</td>
                   <td className="table-cell">
                     <div className="flex items-center gap-1.5">
                       {txn.is_debit ? (
-                        <ArrowUpRight size={13} className="text-red-600 shrink-0" />
+                        <ArrowUpRight size={13} className="text-rose-400 shrink-0" />
                       ) : (
-                        <ArrowDownLeft size={13} className="text-blue-600 shrink-0" />
+                        <ArrowDownLeft size={13} className="text-blue-400 shrink-0" />
                       )}
-                      <span className="text-xs font-bold text-slate-900 truncate max-w-[180px]">{txn.description}</span>
+                      <span className="text-xs font-bold text-white truncate max-w-[180px]">{txn.description}</span>
                     </div>
                   </td>
                   <td className="table-cell">
@@ -188,10 +188,10 @@ export default function MemberTransactionsTable({ member: memberProp }: MemberTr
                       {typeLabel[txn.transaction_type as TransactionType] || txn.transaction_type}
                     </Badge>
                   </td>
-                  <td className="table-cell text-right font-tabular text-xs text-red-600 font-bold">
+                  <td className="table-cell text-right font-tabular text-xs text-rose-400 font-bold">
                     {txn.is_debit ? Number(txn.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) : '—'}
                   </td>
-                  <td className="table-cell text-right font-tabular text-xs text-blue-600 font-bold">
+                  <td className="table-cell text-right font-tabular text-xs text-blue-400 font-bold">
                     {!txn.is_debit ? Number(txn.amount).toLocaleString('en-NG', { minimumFractionDigits: 2 }) : '—'}
                   </td>
                   <td className="table-cell">
@@ -205,7 +205,7 @@ export default function MemberTransactionsTable({ member: memberProp }: MemberTr
           </table>
           {filtered.length === 0 && (
             <div className="text-center py-10">
-              <p className="text-sm text-slate-500 font-medium">
+              <p className="text-sm text-slate-400 font-medium">
                 {transactions.length === 0 ? 'No transactions found.' : 'No transactions match your search.'}
               </p>
             </div>
@@ -213,11 +213,11 @@ export default function MemberTransactionsTable({ member: memberProp }: MemberTr
         </div>
       )}
 
-      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-200">
-        <p className="text-xs text-slate-500 font-medium">Showing {filtered.length} of {transactions.length} transactions</p>
+      <div className="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
+        <p className="text-xs text-slate-400 font-medium">Showing {filtered.length} of {transactions.length} transactions</p>
         <button
           onClick={() => toast.info('Full transaction history — coming soon')}
-          className="text-xs font-bold text-blue-600 hover:text-blue-700 transition-colors"
+          className="text-xs font-bold text-[#00E599] hover:text-emerald-300 transition-colors"
         >
           View All Transactions →
         </button>

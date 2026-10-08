@@ -4,7 +4,6 @@ import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
 import { useAuth } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase/client';
-
 import { useRouter } from 'next/navigation';
 
 interface AppLayoutProps {
@@ -86,7 +85,7 @@ export default function AppLayout({
   }, [user, profile, memberNameProp, memberIdProp, roleProp]);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex">
+    <div className="min-h-screen bg-[#050B17] text-slate-100 flex selection:bg-emerald-500/30 selection:text-white">
       <AppSidebar
         role={resolvedRole}
         collapsed={sidebarCollapsed}
@@ -104,7 +103,7 @@ export default function AppLayout({
           role={resolvedRole}
           sidebarCollapsed={sidebarCollapsed}
         />
-        <main className="flex-1 pt-16 overflow-x-hidden">
+        <main className="flex-1 pt-16 overflow-x-hidden bg-[#050B17]">
           {children}
         </main>
       </div>

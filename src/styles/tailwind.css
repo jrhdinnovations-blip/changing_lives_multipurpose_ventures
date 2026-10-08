@@ -3,32 +3,32 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --primary: #16a34a;
-  --primary-foreground: #ffffff;
-  --secondary: #f8fafc;
-  --secondary-foreground: #0f172a;
+  --background: #050B17;
+  --foreground: #f8fafc;
+  --primary: #00D084;
+  --primary-foreground: #02120a;
+  --secondary: #0D182E;
+  --secondary-foreground: #f8fafc;
   --accent: #2563eb;
   --accent-foreground: #ffffff;
-  --destructive: #dc2626;
+  --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --warning: #f59e0b;
   --warning-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #2563eb;
+  --muted: #0D1B2E;
+  --muted-foreground: #94a3b8;
+  --card: #0B1528;
+  --card-foreground: #f8fafc;
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.1);
+  --ring: #00D084;
   --radius: 0.875rem;
   --font-sans: var(--font-plus-jakarta-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-  /* CLIMPS Brand Colors: Red, Green, Blue, White */
-  --climps-red: #dc2626;
-  --climps-green: #16a34a;
-  --climps-blue: #2563eb;
+  /* CLIMPS Brand Colors */
+  --climps-red: #ef4444;
+  --climps-green: #00D084;
+  --climps-blue: #3b82f6;
   --climps-white: #ffffff;
 
   --sidebar-width: 260px;
@@ -42,8 +42,8 @@
     border-color: var(--border);
   }
   body {
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: #050B17;
+    color: #f8fafc;
     font-family: var(--font-sans);
     font-size: 17px;
     font-weight: 500;
@@ -52,8 +52,8 @@
   }
   html {
     scroll-behavior: smooth;
-    background-color: #ffffff;
-    color: #0f172a;
+    background-color: #050B17;
+    color: #f8fafc;
     font-size: 17px;
   }
   h1, h2, h3, h4, h5, h6, p {
@@ -91,7 +91,7 @@
   }
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: rgba(100, 116, 139, 0.25) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
   }
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
@@ -101,136 +101,129 @@
     background: transparent;
   }
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background-color: rgba(100, 116, 139, 0.25);
+    background-color: rgba(255, 255, 255, 0.15);
     border-radius: 3px;
   }
   .gradient-primary {
-    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 50%, #eff6ff 100%);
+    background: linear-gradient(135deg, #0B1528 0%, #0D182E 50%, #050B17 100%);
   }
   .gradient-accent {
-    background: linear-gradient(135deg, #16a34a 0%, #2563eb 100%);
+    background: linear-gradient(135deg, #00D084 0%, #2563eb 100%);
   }
   .gradient-card-savings {
-    background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.12) 0%, rgba(13, 24, 46, 0.95) 100%);
   }
   .gradient-card-loan {
-    background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(13, 24, 46, 0.95) 100%);
   }
   .gradient-card-invest {
-    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    background: linear-gradient(135deg, rgba(0, 208, 132, 0.12) 0%, rgba(13, 24, 46, 0.95) 100%);
   }
   .gradient-card-alert {
-    background: linear-gradient(135deg, #fff1f2 0%, #ffffff 100%);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(13, 24, 46, 0.95) 100%);
   }
   .card-shadow {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35), 0 2px 6px -1px rgba(0, 0, 0, 0.2);
   }
   .card-shadow-md {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.45), 0 4px 10px -2px rgba(0, 0, 0, 0.25);
   }
   .card-shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 20px 35px -5px rgba(0, 0, 0, 0.55), 0 8px 16px -4px rgba(0, 0, 0, 0.3);
   }
   .blob-primary {
-    background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, rgba(0, 208, 132, 0.15) 0%, transparent 70%);
     filter: blur(40px);
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-md shadow-emerald-600/20;
+    @apply bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-md shadow-emerald-600/25;
   }
   .btn-accent {
     @apply bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-blue-600/20;
   }
   .btn-outline {
-    @apply border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:border-slate-400 font-bold rounded-xl px-5 py-2.5 text-base
-      transition-all duration-150 active:scale-95 disabled:opacity-50
-      disabled:cursor-not-allowed;
+    @apply border border-white/15 bg-white/5 text-slate-200 hover:bg-white/10 hover:border-white/30 font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .btn-ghost {
-    @apply bg-transparent text-slate-700 hover:text-slate-900 hover:bg-slate-100 font-semibold rounded-xl px-4 py-2 text-base
-      transition-all duration-150 active:scale-95;
+    @apply bg-transparent text-slate-300 hover:text-white hover:bg-white/5 font-semibold rounded-xl px-4 py-2 text-base transition-all duration-150 active:scale-95;
   }
   .btn-destructive {
-    @apply bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 shadow-md shadow-red-600/20;
+    @apply bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl px-5 py-2.5 text-base transition-all duration-150 active:scale-95 shadow-md shadow-rose-600/25;
   }
   .input-base {
-    @apply w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-base text-slate-900
-      placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40
-      focus:border-blue-500 transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#00D084]/40 focus:border-[#00D084] transition-all duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
   }
   .label-base {
-    @apply block text-sm font-bold text-slate-800 mb-1.5;
+    @apply block text-sm font-bold text-slate-200 mb-1.5;
   }
   .helper-text {
-    @apply text-sm text-slate-500 mt-1;
+    @apply text-sm text-slate-400 mt-1;
   }
   .error-text {
-    @apply text-sm text-red-600 mt-1;
+    @apply text-sm text-rose-400 mt-1;
   }
   .card-base {
-    @apply bg-white rounded-2xl border border-slate-200 card-shadow p-5;
+    @apply bg-[#0D182E]/90 rounded-2xl border border-white/10 card-shadow p-5 backdrop-blur-xl text-slate-100;
   }
   .section-header {
-    @apply text-xl font-bold text-foreground;
+    @apply text-xl font-bold text-white;
   }
   .metric-label {
-    @apply text-sm font-bold text-muted-foreground uppercase tracking-wide;
+    @apply text-sm font-bold text-slate-400 uppercase tracking-wide;
   }
   .metric-value {
-    @apply text-3xl font-black text-foreground font-tabular;
+    @apply text-3xl font-black text-white font-tabular;
   }
   .badge-active {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-[#00E599] border border-emerald-500/30;
   }
   .badge-pending {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30;
   }
   .badge-overdue {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-500/15 text-rose-300 border border-rose-500/30;
   }
   .badge-paid {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/15 text-[#00E599] border border-emerald-500/30;
   }
   .badge-unpaid {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-white/5 text-slate-300 border border-white/10;
   }
   .badge-partial {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200;
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/15 text-blue-300 border border-blue-500/30;
   }
   .nav-item {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-600
-      hover:bg-slate-100 hover:text-slate-900 transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-semibold text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-150 cursor-pointer;
   }
   .nav-item-active {
-    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-bold
-      bg-blue-50 text-blue-700 border border-blue-200 transition-all duration-150 cursor-pointer;
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-base font-bold bg-[#00D084]/15 text-[#00E599] border border-[#00D084]/30 transition-all duration-150 cursor-pointer shadow-sm;
   }
   .progress-bar-bg {
-    @apply w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200;
+    @apply w-full bg-white/10 rounded-full overflow-hidden border border-white/10;
   }
   .progress-bar-fill {
     @apply h-full rounded-full transition-all duration-500;
   }
   .table-header {
-    @apply px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider bg-slate-50 border-b border-slate-200;
+    @apply px-4 py-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider bg-[#070D1E]/90 border-b border-white/10;
   }
   .table-cell {
-    @apply px-4 py-3.5 text-sm text-slate-800 border-b border-slate-100 font-medium;
+    @apply px-4 py-3.5 text-sm text-slate-200 border-b border-white/5 font-medium;
   }
   .table-row-hover {
-    @apply hover:bg-slate-50/80 transition-colors duration-100;
+    @apply hover:bg-white/5 transition-colors duration-100;
   }
   .stat-card-positive {
-    @apply flex items-center gap-1 text-xs font-semibold text-emerald-600;
+    @apply flex items-center gap-1 text-xs font-semibold text-[#00E599];
   }
   .stat-card-negative {
-    @apply flex items-center gap-1 text-xs font-semibold text-red-600;
+    @apply flex items-center gap-1 text-xs font-semibold text-rose-400;
   }
   .sidebar-section-label {
-    @apply px-3 pt-4 pb-1 text-xs font-semibold text-slate-500 uppercase tracking-widest;
+    @apply px-3 pt-4 pb-1 text-xs font-semibold text-slate-400 uppercase tracking-widest;
   }
 }
 
@@ -248,7 +241,7 @@
 }
 @keyframes pulseHighlight {
   0% { background-color: transparent; }
-  30% { background-color: rgba(22,163,74,0.12); }
+  30% { background-color: rgba(0, 208, 132, 0.15); }
   100% { background-color: transparent; }
 }
 @keyframes ticker {

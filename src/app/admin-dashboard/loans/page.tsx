@@ -20,27 +20,27 @@ function formatDateTime(d: string | null) {
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  draft: 'bg-slate-100 text-slate-700 border border-slate-200',
-  submitted: 'bg-blue-50 text-blue-700 border border-blue-200',
-  under_review: 'bg-amber-50 text-amber-700 border border-amber-200',
-  guarantor_verification: 'bg-purple-50 text-purple-700 border border-purple-200',
-  collateral_verification: 'bg-indigo-50 text-indigo-700 border border-indigo-200',
-  approved: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-  rejected: 'bg-red-50 text-red-700 border border-red-200',
-  awaiting_processing_fee: 'bg-orange-50 text-orange-700 border border-orange-200',
-  ready_for_disbursement: 'bg-teal-50 text-teal-700 border border-teal-200',
-  disbursed: 'bg-cyan-50 text-cyan-700 border border-cyan-200',
-  active: 'bg-emerald-50 text-emerald-700 border border-emerald-200',
-  interest_due: 'bg-amber-50 text-amber-700 border border-amber-200',
-  interest_overdue: 'bg-red-50 text-red-700 border border-red-200',
-  default: 'bg-red-100 text-red-800 border border-red-300',
-  completed: 'bg-slate-100 text-slate-700 border border-slate-200',
-  cancelled: 'bg-slate-100 text-slate-500 border border-slate-200',
-  pending: 'bg-amber-50 text-amber-700 border border-amber-200',
+  draft: 'bg-white/5 text-white/40 border border-white/10',
+  submitted: 'bg-blue-500/15 text-blue-400 border border-blue-500/30',
+  under_review: 'bg-[#00E599]/15 text-amber-400 border border-amber-500/30',
+  guarantor_verification: 'bg-purple-500/15 text-purple-400 border border-purple-500/30',
+  collateral_verification: 'bg-indigo-500/15 text-indigo-400 border border-indigo-500/30',
+  approved: 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30',
+  rejected: 'bg-rose-500/15 text-rose-400 border border-rose-500/30',
+  awaiting_processing_fee: 'bg-orange-500/15 text-orange-400 border border-orange-500/30',
+  ready_for_disbursement: 'bg-teal-500/15 text-teal-400 border border-teal-500/30',
+  disbursed: 'bg-cyan-500/15 text-cyan-400 border border-cyan-500/30',
+  active: 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30',
+  interest_due: 'bg-[#00E599]/15 text-amber-400 border border-amber-500/30',
+  interest_overdue: 'bg-rose-500/15 text-rose-400 border border-rose-500/30',
+  default: 'bg-rose-500/20 text-rose-300 border border-rose-500/40',
+  completed: 'bg-white/10 text-white/50 border border-white/15',
+  cancelled: 'bg-white/5 text-white/40 border border-white/10',
+  pending: 'bg-[#00E599]/15 text-amber-400 border border-amber-500/30',
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const cls = STATUS_COLORS[status] || 'bg-slate-100 text-slate-700 border border-slate-200';
+  const cls = STATUS_COLORS[status] || 'bg-white/5 text-white/40 border border-white/10';
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${cls}`}>
       {status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -319,71 +319,71 @@ export default function AdminLoansPage() {
 
   return (
     <AppLayout role="admin" memberName={adminName} memberId={adminId}>
-      <div className="flex h-[calc(100vh-64px)] overflow-hidden">
+      <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-[#050B17]">
 
         {/* Left Panel — Application List */}
-        <div className="w-80 border-r border-slate-200 bg-white flex flex-col shrink-0">
-          <div className="p-4 border-b border-slate-200">
-            <h2 className="font-bold text-slate-900 mb-3 text-sm">Loan Applications</h2>
+        <div className="w-80 border-r border-white/10 bg-[#0B1528] flex flex-col shrink-0">
+          <div className="p-4 border-b border-white/10">
+            <h2 className="font-bold text-white mb-3 text-sm">Loan Applications</h2>
             <input
               type="text"
               placeholder="Search applications..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20"
+              className="w-full px-3 py-2 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C] focus:ring-1 focus:ring-[#00E599]/30"
             />
             <select
               value={filterStatus}
               onChange={e => setFilterStatus(e.target.value)}
-              className="w-full mt-2 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:outline-none focus:border-blue-500/50"
+              className="w-full mt-2 px-3 py-2 rounded-xl border border-white/10 bg-[#0B1528] text-white text-sm focus:outline-none focus:border-[#00E599]/60"
             >
-              <option value="all">All Submitted</option>
-              <option value="submitted">Submitted</option>
-              <option value="under_review">Under Review</option>
-              <option value="guarantor_verification">Guarantor Verification</option>
-              <option value="collateral_verification">Collateral Verification</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-              <option value="awaiting_processing_fee">Awaiting Processing Fee</option>
-              <option value="disbursed">Disbursed</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="draft">Drafts (Incomplete)</option>
+              <option value="all" className="bg-[#0B1528] text-white">All Submitted</option>
+              <option value="submitted" className="bg-[#0B1528] text-white">Submitted</option>
+              <option value="under_review" className="bg-[#0B1528] text-white">Under Review</option>
+              <option value="guarantor_verification" className="bg-[#0B1528] text-white">Guarantor Verification</option>
+              <option value="collateral_verification" className="bg-[#0B1528] text-white">Collateral Verification</option>
+              <option value="approved" className="bg-[#0B1528] text-white">Approved</option>
+              <option value="rejected" className="bg-[#0B1528] text-white">Rejected</option>
+              <option value="awaiting_processing_fee" className="bg-[#0B1528] text-white">Awaiting Processing Fee</option>
+              <option value="disbursed" className="bg-[#0B1528] text-white">Disbursed</option>
+              <option value="active" className="bg-[#0B1528] text-white">Active</option>
+              <option value="completed" className="bg-[#0B1528] text-white">Completed</option>
+              <option value="draft" className="bg-[#0B1528] text-white">Drafts (Incomplete)</option>
             </select>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1 overflow-y-auto divide-y divide-white/5">
             {loading ? (
               <div className="flex items-center justify-center h-32">
-                <div className="w-6 h-6 rounded-full border-4 border-emerald-600 border-t-transparent animate-spin" />
+                <div className="w-6 h-6 rounded-full border-4 border-[#00E599] border-t-transparent animate-spin" />
               </div>
             ) : filteredApps.length === 0 ? (
               <div className="p-6 text-center">
-                <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3">
-                  <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto mb-3">
+                  <svg className="w-6 h-6 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <p className="text-sm text-slate-600 font-bold">No applications found</p>
-                <p className="text-xs text-slate-400 mt-1">Applications appear once members submit loan requests</p>
+                <p className="text-sm text-white/50 font-bold">No applications found</p>
+                <p className="text-xs text-white/50 mt-1">Applications appear once members submit loan requests</p>
               </div>
             ) : (
               filteredApps.map(app => (
                 <button
                   key={app.id}
                   onClick={() => loadApplicationDetails(app)}
-                  className={`w-full text-left p-4 border-b border-slate-100 transition-colors ${
+                  className={`w-full text-left p-4 transition-colors ${
                     selected?.id === app.id
-                      ? 'bg-blue-50/80 border-l-4 border-l-blue-600 text-slate-900 shadow-2xs'
-                      : 'hover:bg-slate-50'
+                      ? 'bg-blue-600/15 border-l-4 border-l-[#00E599] text-white'
+                      : 'hover:bg-white/5 text-white/50'
                   }`}
                 >
                   <div className="flex items-start justify-between mb-1 gap-2">
-                    <p className="text-sm font-bold text-slate-900 truncate">{app.applicant_name || 'Unknown'}</p>
+                    <p className="text-sm font-bold text-white truncate">{app.applicant_name || 'Unknown'}</p>
                     <StatusBadge status={app.app_status || app.application_status || 'draft'} />
                   </div>
-                  <p className="text-xs text-slate-500 font-mono">{app.application_number || 'Draft'}</p>
-                  <p className="text-xs font-black text-emerald-600 mt-1">{formatNGN(app.requested_amount)}</p>
-                  <p className="text-xs text-slate-400 mt-0.5">{formatDate(app.created_at)}</p>
+                  <p className="text-xs text-white/40 font-mono">{app.application_number || 'Draft'}</p>
+                  <p className="text-xs font-black text-[#00E599] mt-1">{formatNGN(app.requested_amount)}</p>
+                  <p className="text-xs text-white/50 mt-0.5">{formatDate(app.created_at)}</p>
                 </button>
               ))
             )}
@@ -391,64 +391,64 @@ export default function AdminLoansPage() {
         </div>
 
         {/* Right Panel — Application Detail */}
-        <div className="flex-1 overflow-y-auto bg-slate-50">
+        <div className="flex-1 overflow-y-auto bg-[#050B17]">
           {!selected ? (
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
-                <div className="w-16 h-16 bg-white border border-slate-200 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xs">
-                  <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 bg-[#0D182E] border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl shadow-black/20">
+                  <svg className="w-8 h-8 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
-                <p className="text-slate-600 text-sm font-bold">Select an application to review</p>
-                <p className="text-slate-400 text-xs mt-1">Click any application from the list</p>
+                <p className="text-white/50 text-sm font-bold">Select an application to review</p>
+                <p className="text-white/50 text-xs mt-1">Click any application from the list</p>
               </div>
             </div>
           ) : (
             <div className="p-6 space-y-5">
 
               {/* Application Header */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
+              <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 p-5 backdrop-blur-xl shadow-xl shadow-black/20">
                 <div className="flex items-start justify-between mb-4">
                   <div>
-                    <h2 className="text-xl font-black text-slate-900">{selected.applicant_name}</h2>
-                    <p className="text-sm text-slate-500 font-mono font-medium">{selected.application_number}</p>
-                    <p className="text-xs text-slate-400 mt-0.5 font-medium">Submitted: {formatDateTime(selected.created_at)}</p>
+                    <h2 className="text-xl font-black text-white">{selected.applicant_name}</h2>
+                    <p className="text-sm text-white/40 font-mono font-medium">{selected.application_number}</p>
+                    <p className="text-xs text-white/50 mt-0.5 font-medium">Submitted: {formatDateTime(selected.created_at)}</p>
                   </div>
                   <StatusBadge status={selected.app_status || selected.application_status || 'draft'} />
                 </div>
                 <div className="grid grid-cols-4 gap-3">
-                  <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3">
-                    <p className="text-xs font-semibold text-slate-500">Loan Amount</p>
-                    <p className="font-black text-slate-900 mt-0.5 font-tabular">{formatNGN(selected.requested_amount)}</p>
+                  <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                    <p className="text-xs font-semibold text-white/40">Loan Amount</p>
+                    <p className="font-black text-white mt-0.5 font-tabular">{formatNGN(selected.requested_amount)}</p>
                   </div>
-                  <div className="bg-orange-50 border border-orange-200 rounded-xl p-3">
-                    <p className="text-xs font-semibold text-orange-700">Processing Fee</p>
-                    <p className="font-black text-orange-700 mt-0.5 font-tabular">{formatNGN(selected.processing_fee_amount)}</p>
+                  <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3">
+                    <p className="text-xs font-semibold text-orange-400">Processing Fee</p>
+                    <p className="font-black text-orange-400 mt-0.5 font-tabular">{formatNGN(selected.processing_fee_amount)}</p>
                   </div>
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-3">
-                    <p className="text-xs font-semibold text-blue-700">Duration</p>
-                    <p className="font-black text-blue-700 mt-0.5">{selected.duration_months} month{selected.duration_months > 1 ? 's' : ''}</p>
+                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                    <p className="text-xs font-semibold text-blue-400">Duration</p>
+                    <p className="font-black text-blue-400 mt-0.5">{selected.duration_months} month{selected.duration_months > 1 ? 's' : ''}</p>
                   </div>
-                  <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3">
-                    <p className="text-xs font-semibold text-emerald-700">Total Repayable</p>
-                    <p className="font-black text-emerald-700 mt-0.5 font-tabular">{formatNGN(selected.total_repayment_amount)}</p>
+                  <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+                    <p className="text-xs font-semibold text-[#00E599]">Total Repayable</p>
+                    <p className="font-black text-[#00E599] mt-0.5 font-tabular">{formatNGN(selected.total_repayment_amount)}</p>
                   </div>
                 </div>
               </div>
 
               {/* Admin Actions */}
-              <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-xs">
-                <h3 className="font-bold text-slate-900 mb-3 text-sm">Admin Actions</h3>
+              <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 p-5 backdrop-blur-xl shadow-xl shadow-black/20">
+                <h3 className="font-bold text-white mb-3 text-sm">Admin Actions</h3>
                 {actionError && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 font-semibold mb-3">{actionError}</div>
+                  <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-sm text-rose-300 font-semibold mb-3">{actionError}</div>
                 )}
                 <textarea
                   value={actionNotes}
                   onChange={e => setActionNotes(e.target.value)}
                   placeholder="Add notes for this action (optional)..."
                   rows={2}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50 resize-none mb-3"
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C] resize-none mb-3"
                 />
                 <div className="flex flex-wrap gap-2">
                   <ActionButton label="Mark Under Review" color="yellow" loading={actionLoading} onClick={() => performAction('marked_under_review', 'under_review')} />
@@ -464,8 +464,8 @@ export default function AdminLoansPage() {
               </div>
 
               {/* Detail Tabs */}
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-                <div className="flex gap-0 border-b border-slate-200 overflow-x-auto bg-slate-50/50">
+              <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 overflow-hidden backdrop-blur-xl shadow-xl shadow-black/20">
+                <div className="flex gap-0 border-b border-white/10 overflow-x-auto bg-white/5/[0.02]">
                   {[
                     { id: 'details', label: 'Applicant' },
                     { id: 'collateral', label: 'Collateral' },
@@ -480,8 +480,8 @@ export default function AdminLoansPage() {
                       onClick={() => setDetailTab(tab.id as any)}
                       className={`px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors border-b-2 ${
                         detailTab === tab.id
-                          ? 'border-blue-600 text-blue-700 bg-blue-50/50'
-                          : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                          ? 'border-[#00E599] text-[#00E599] bg-[#00E599]/10'
+                          : 'border-transparent text-white/40 hover:text-white hover:bg-white/5'
                       }`}
                     >
                       {tab.label}
@@ -567,27 +567,27 @@ export default function AdminLoansPage() {
                     <div className="space-y-4">
                       {repaymentSchedule.length > 0 && (
                         <div>
-                          <h4 className="font-bold text-slate-800 mb-2 text-sm">Repayment Schedule</h4>
-                          <div className="overflow-x-auto rounded-xl border border-slate-200">
+                          <h4 className="font-bold text-white mb-2 text-sm">Repayment Schedule</h4>
+                          <div className="overflow-x-auto rounded-xl border border-white/10 bg-white/5/[0.02]">
                             <table className="w-full text-xs">
-                              <thead className="bg-slate-50 border-b border-slate-200">
+                              <thead className="bg-white/5 border-b border-white/10">
                                 <tr>
-                                  <th className="text-left px-3 py-2 font-bold text-slate-600">#</th>
-                                  <th className="text-right px-3 py-2 font-bold text-slate-600">Due Date</th>
-                                  <th className="text-right px-3 py-2 font-bold text-slate-600">Expected</th>
-                                  <th className="text-right px-3 py-2 font-bold text-slate-600">Paid</th>
-                                  <th className="text-center px-3 py-2 font-bold text-slate-600">Status</th>
+                                  <th className="text-left px-3 py-2 font-bold text-white/40">#</th>
+                                  <th className="text-right px-3 py-2 font-bold text-white/40">Due Date</th>
+                                  <th className="text-right px-3 py-2 font-bold text-white/40">Expected</th>
+                                  <th className="text-right px-3 py-2 font-bold text-white/40">Paid</th>
+                                  <th className="text-center px-3 py-2 font-bold text-white/40">Status</th>
                                 </tr>
                               </thead>
-                              <tbody className="divide-y divide-slate-100">
+                              <tbody className="divide-y divide-white/5">
                                 {repaymentSchedule.map(row => (
-                                  <tr key={row.id} className="hover:bg-slate-50/60">
-                                    <td className="px-3 py-2 text-slate-700 font-semibold">{row.instalment_number}</td>
-                                    <td className="px-3 py-2 text-right text-slate-500">{formatDate(row.due_date)}</td>
-                                    <td className="px-3 py-2 text-right text-slate-700 font-bold">{formatNGN(row.expected_amount)}</td>
-                                    <td className="px-3 py-2 text-right text-emerald-700 font-bold">{formatNGN(row.amount_paid)}</td>
+                                  <tr key={row.id} className="hover:bg-white/5/[0.03]">
+                                    <td className="px-3 py-2 text-white/50 font-semibold">{row.instalment_number}</td>
+                                    <td className="px-3 py-2 text-right text-white/40">{formatDate(row.due_date)}</td>
+                                    <td className="px-3 py-2 text-right text-white font-bold">{formatNGN(row.expected_amount)}</td>
+                                    <td className="px-3 py-2 text-right text-[#00E599] font-bold">{formatNGN(row.amount_paid)}</td>
                                     <td className="px-3 py-2 text-center">
-                                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${STATUS_COLORS[row.schedule_status] || 'bg-slate-100 text-slate-700 border border-slate-200'}`}>
+                                      <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${STATUS_COLORS[row.schedule_status] || 'bg-white/5 text-white/40 border border-white/10'}`}>
                                         {row.schedule_status}
                                       </span>
                                     </td>
@@ -600,17 +600,17 @@ export default function AdminLoansPage() {
                       )}
                       {receipts.length > 0 && (
                         <div>
-                          <h4 className="font-bold text-slate-800 mb-2 text-sm">Payment Receipts</h4>
+                          <h4 className="font-bold text-white mb-2 text-sm">Payment Receipts</h4>
                           <div className="space-y-2">
                             {receipts.map(r => (
-                              <div key={r.id} className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 flex items-center justify-between">
+                              <div key={r.id} className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center justify-between">
                                 <div>
-                                  <p className="text-sm font-bold text-slate-900">{r.receipt_number}</p>
-                                  <p className="text-xs text-slate-500">{formatDateTime(r.payment_date)} · {r.payment_method}</p>
+                                  <p className="text-sm font-bold text-white">{r.receipt_number}</p>
+                                  <p className="text-xs text-white/40">{formatDateTime(r.payment_date)} · {r.payment_method}</p>
                                 </div>
                                 <div className="text-right">
-                                  <p className="font-bold text-emerald-700">{formatNGN(r.amount)}</p>
-                                  {r.is_verified && <p className="text-xs text-emerald-600 font-semibold">✓ Verified</p>}
+                                  <p className="font-bold text-[#00E599]">{formatNGN(r.amount)}</p>
+                                  {r.is_verified && <p className="text-xs text-[#00E599] font-semibold">✓ Verified</p>}
                                 </div>
                               </div>
                             ))}
@@ -618,7 +618,7 @@ export default function AdminLoansPage() {
                         </div>
                       )}
                       {repaymentSchedule.length === 0 && receipts.length === 0 && (
-                        <p className="text-sm text-slate-500 font-medium">No payment records found.</p>
+                        <p className="text-sm text-white/40 font-medium">No payment records found.</p>
                       )}
                     </div>
                   )}
@@ -627,24 +627,24 @@ export default function AdminLoansPage() {
                     <div className="space-y-2">
                       {auditTrail.length > 0 ? auditTrail.map(entry => (
                         <div key={entry.id} className="flex gap-3 items-start">
-                          <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 shrink-0" />
-                          <div className="flex-1 bg-slate-50 border border-slate-200/80 rounded-xl p-3">
+                          <div className="w-2 h-2 bg-[#00E599] rounded-full mt-2 shrink-0 shadow-[0_0_8px_rgba(0,229,153,0.5)]" />
+                          <div className="flex-1 bg-white/5 border border-white/10 rounded-xl p-3">
                             <div className="flex items-center justify-between mb-1">
-                              <p className="text-sm font-bold text-slate-900">
+                              <p className="text-sm font-bold text-white">
                                 {entry.action.replace(/_/g, ' ').replace(/\b\w/g, (l: string) => l.toUpperCase())}
                               </p>
-                              <p className="text-xs text-slate-400">{formatDateTime(entry.created_at)}</p>
+                              <p className="text-xs text-white/40">{formatDateTime(entry.created_at)}</p>
                             </div>
                             {(entry.previous_status || entry.new_status) && (
-                              <p className="text-xs text-slate-500">
+                              <p className="text-xs text-white/40">
                                 {entry.previous_status && `${entry.previous_status} → `}{entry.new_status}
                               </p>
                             )}
-                            {entry.notes && <p className="text-xs text-slate-600 mt-1">{entry.notes}</p>}
+                            {entry.notes && <p className="text-xs text-white/50 mt-1">{entry.notes}</p>}
                           </div>
                         </div>
                       )) : (
-                        <p className="text-sm text-slate-500 font-medium">No audit trail entries.</p>
+                        <p className="text-sm text-white/40 font-medium">No audit trail entries.</p>
                       )}
                     </div>
                   )}
@@ -657,60 +657,60 @@ export default function AdminLoansPage() {
 
       {/* Record Payment Modal */}
       {showPaymentModal && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-2xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-[#0B1528] rounded-2xl border border-white/15 shadow-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-base font-bold text-slate-900">Record Repayment</h3>
-              <button onClick={() => setShowPaymentModal(false)} className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600">
+              <h3 className="text-base font-bold text-white">Record Repayment</h3>
+              <button onClick={() => setShowPaymentModal(false)} className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             {actionError && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 font-semibold mb-3">{actionError}</div>
+              <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-sm text-rose-300 font-semibold mb-3">{actionError}</div>
             )}
             <div className="space-y-3">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Total Amount (₦) *</label>
+                <label className="block text-xs font-bold text-white/50 mb-1">Total Amount (₦) *</label>
                 <input type="number" value={paymentAmount} onChange={e => setPaymentAmount(e.target.value)} placeholder="0"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50" />
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]" />
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Interest Portion (₦)</label>
+                  <label className="block text-xs font-bold text-white/50 mb-1">Interest Portion (₦)</label>
                   <input type="number" value={paymentInterest} onChange={e => setPaymentInterest(e.target.value)} placeholder="0"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50" />
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]" />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Principal Portion (₦)</label>
+                  <label className="block text-xs font-bold text-white/50 mb-1">Principal Portion (₦)</label>
                   <input type="number" value={paymentPrincipal} onChange={e => setPaymentPrincipal(e.target.value)} placeholder="0"
-                    className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50" />
+                    className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Payment Method</label>
+                <label className="block text-xs font-bold text-white/50 mb-1">Payment Method</label>
                 <select value={paymentMethod} onChange={e => setPaymentMethod(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm focus:outline-none focus:border-blue-500/50">
-                  <option value="cash">Cash</option>
-                  <option value="bank_transfer">Bank Transfer</option>
-                  <option value="cheque">Cheque</option>
-                  <option value="pos">POS</option>
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-[#080E1C] text-white text-sm focus:outline-none focus:border-[#00E599]/60">
+                  <option value="cash" className="bg-[#0B1528] text-white">Cash</option>
+                  <option value="bank_transfer" className="bg-[#0B1528] text-white">Bank Transfer</option>
+                  <option value="cheque" className="bg-[#0B1528] text-white">Cheque</option>
+                  <option value="pos" className="bg-[#0B1528] text-white">POS</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Transaction Reference</label>
+                <label className="block text-xs font-bold text-white/50 mb-1">Transaction Reference</label>
                 <input type="text" value={paymentRef} onChange={e => setPaymentRef(e.target.value)} placeholder="Optional reference"
-                  className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 text-sm placeholder:text-slate-400 focus:outline-none focus:border-blue-500/50" />
+                  className="w-full px-4 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white text-sm placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]" />
               </div>
             </div>
             <div className="flex gap-3 mt-5">
               <button onClick={() => setShowPaymentModal(false)}
-                className="flex-1 py-2.5 rounded-xl border border-slate-200 bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-colors">
+                className="flex-1 py-2.5 rounded-xl border border-white/10 bg-white/5 text-white/50 font-bold text-sm hover:bg-white/5 transition-colors">
                 Cancel
               </button>
               <button onClick={recordPayment} disabled={actionLoading || !paymentAmount}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 text-white font-bold text-sm hover:bg-emerald-700 disabled:opacity-50 transition-colors shadow-xs">
+                className="flex-1 py-2.5 rounded-xl bg-[#00E599] text-[#050B17] font-black text-sm hover:bg-[#00E599]/90 disabled:opacity-50 transition-colors shadow-lg shadow-[#00E599]/20">
                 {actionLoading ? 'Recording...' : 'Record Payment'}
               </button>
             </div>
@@ -723,15 +723,15 @@ export default function AdminLoansPage() {
 
 function ActionButton({ label, color, loading, onClick }: { label: string; color: string; loading: boolean; onClick: () => void }) {
   const colorMap: Record<string, string> = {
-    yellow: 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200',
-    purple: 'bg-purple-50 text-purple-800 hover:bg-purple-100 border border-purple-200',
-    indigo: 'bg-indigo-50 text-indigo-800 hover:bg-indigo-100 border border-indigo-200',
-    emerald: 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200',
-    red: 'bg-red-50 text-red-800 hover:bg-red-100 border border-red-200',
-    orange: 'bg-orange-50 text-orange-800 hover:bg-orange-100 border border-orange-200',
-    teal: 'bg-teal-50 text-teal-800 hover:bg-teal-100 border border-teal-200',
-    blue: 'bg-blue-50 text-blue-800 hover:bg-blue-100 border border-blue-200',
-    gray: 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200',
+    yellow: 'bg-[#00E599]/15 text-amber-300 hover:bg-[#00E599]/25 border border-amber-500/30',
+    purple: 'bg-purple-500/15 text-purple-300 hover:bg-purple-500/25 border border-purple-500/30',
+    indigo: 'bg-indigo-500/15 text-indigo-300 hover:bg-indigo-500/25 border border-indigo-500/30',
+    emerald: 'bg-emerald-500/15 text-[#00E599] hover:bg-emerald-500/25 border border-emerald-500/30',
+    red: 'bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 border border-rose-500/30',
+    orange: 'bg-orange-500/15 text-orange-300 hover:bg-orange-500/25 border border-orange-500/30',
+    teal: 'bg-teal-500/15 text-teal-300 hover:bg-teal-500/25 border border-teal-500/30',
+    blue: 'bg-blue-500/15 text-blue-300 hover:bg-blue-500/25 border border-blue-500/30',
+    gray: 'bg-white/5 text-white/50 hover:bg-white/10 border border-white/10',
   };
   return (
     <button
@@ -746,9 +746,9 @@ function ActionButton({ label, color, loading, onClick }: { label: string; color
 
 function DetailRow({ label, value }: { label: string; value: string | undefined | null }) {
   return (
-    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-      <p className="text-2xs font-semibold text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
-      <p className="text-sm font-bold text-slate-900">{value || '—'}</p>
+    <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+      <p className="text-2xs font-semibold text-white/40 uppercase tracking-wider mb-0.5">{label}</p>
+      <p className="text-sm font-bold text-white">{value || '—'}</p>
     </div>
   );
 }

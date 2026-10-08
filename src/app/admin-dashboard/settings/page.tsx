@@ -37,8 +37,8 @@ const SETTING_GROUPS: SettingGroup[] = [
     id: 'loan',
     title: 'Loan Configuration',
     icon: CreditCard,
-    color: 'text-emerald-700',
-    bg: 'bg-emerald-50',
+    color: 'text-emerald-400',
+    bg: 'bg-emerald-500/15 border border-emerald-500/30',
     keys: [
       { key: 'loan_processing_fee_percent', label: 'Processing Fee (%)', type: 'number', hint: '1% of loan amount charged upfront' },
       { key: 'loan_interest_rate_percent', label: 'Monthly Interest Rate (%)', type: 'number', hint: '10% monthly interest on principal' },
@@ -56,8 +56,8 @@ const SETTING_GROUPS: SettingGroup[] = [
     id: 'savings',
     title: 'Savings Configuration',
     icon: Settings,
-    color: 'text-teal-700',
-    bg: 'bg-teal-50',
+    color: 'text-[#00E599]',
+    bg: 'bg-[#00E599]/15 border border-[#00E599]/30',
     keys: [
       { key: 'savings_min_monthly', label: 'Minimum Monthly Contribution (₦)', type: 'number', hint: 'Minimum monthly savings limit (₦5,000)' },
       { key: 'savings_max_monthly', label: 'Maximum Monthly Contribution (₦)', type: 'number', hint: 'Maximum monthly savings limit (₦200,000)' },
@@ -69,8 +69,8 @@ const SETTING_GROUPS: SettingGroup[] = [
     id: 'investment',
     title: 'Investment Configuration',
     icon: TrendingUp,
-    color: 'text-blue-700',
-    bg: 'bg-blue-50',
+    color: 'text-blue-400',
+    bg: 'bg-blue-500/15 border border-blue-500/30',
     keys: [
       { key: 'investors_circle_min_amount', label: 'Minimum Investment Amount (₦)', type: 'number', hint: 'Minimum capital to join the Investors Circle' },
       { key: 'investors_circle_processing_fee', label: 'Processing / Administrative Fee (₦)', type: 'number', hint: 'Fixed fee charged on each investment application' },
@@ -84,8 +84,8 @@ const SETTING_GROUPS: SettingGroup[] = [
     id: 'general',
     title: 'General Settings',
     icon: Building2,
-    color: 'text-indigo-700',
-    bg: 'bg-indigo-50',
+    color: 'text-purple-400',
+    bg: 'bg-purple-500/15 border border-purple-500/30',
     keys: [
       { key: 'cooperative_name', label: 'Cooperative Legal Name', type: 'text', hint: 'Full registered legal name of the cooperative' },
       { key: 'cooperative_address', label: 'Registered Address', type: 'text', hint: 'Official registered office address' },
@@ -224,217 +224,220 @@ export default function AdminSettingsPage() {
 
   return (
     <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
-      <div className="p-6 xl:p-8 2xl:p-10 max-w-5xl mx-auto space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-200">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-indigo-50 text-indigo-700">
-                <Settings size={24} />
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900">
-                System Settings
-              </h1>
+      <div className="min-h-screen bg-[#050B17] text-slate-100 p-6 xl:p-8 2xl:p-10">
+        <div className="max-w-5xl mx-auto space-y-6">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
+            <div>
+              <div className="flex items-center gap-3">
+                <span className="p-2.5 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400">
+                  <Settings size={24} />
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                  System Settings
+                </h1>
+              </div>
+              <p className="text-sm text-slate-400 mt-1.5">
+                Configure financial rules, cooperative parameters, and system-level defaults. Changes take effect immediately for new applications.
+              </p>
             </div>
-            <p className="text-sm text-slate-500 mt-1">
-              Configure financial rules, cooperative parameters, and system-level defaults. Changes take effect immediately for new applications.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 text-xs bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-3 py-1.5">
-            <AlertCircle size={14} className="shrink-0" />
-            <span className="font-medium">Super Admin Access Required</span>
-          </div>
-        </div>
-
-        {loading ? (
-          <div className="flex items-center justify-center h-48">
-            <div className="flex flex-col items-center gap-3 text-slate-400">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <span className="text-sm">Loading system settings…</span>
+            <div className="flex items-center gap-2 text-xs bg-amber-500/15 border border-amber-500/30 text-amber-300 rounded-xl px-3.5 py-2 shadow-sm">
+              <AlertCircle size={14} className="shrink-0" />
+              <span className="font-medium">Super Admin Access Required</span>
             </div>
           </div>
-        ) : (
-          <div className="flex gap-6">
-            {/* Settings Sidebar */}
-            <div className="w-56 shrink-0 space-y-1.5">
-              {SETTING_GROUPS.map(group => {
-                const GIcon = group.icon;
-                return (
-                  <button
-                    key={group.id}
-                    onClick={() => setActiveGroup(group.id)}
-                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center gap-3 ${
-                      activeGroup === group.id
-                        ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-semibold'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-                    }`}
-                  >
-                    <GIcon size={16} className="shrink-0" />
-                    {group.title}
-                  </button>
-                );
-              })}
 
-              {/* Info box */}
-              <div className="mt-6 p-4 bg-slate-50 border border-slate-200 rounded-xl text-2xs text-slate-500 space-y-1.5">
-                <p className="font-semibold text-slate-800 text-xs">About Settings</p>
-                <p>Changes are persisted to the database and applied immediately for new applications.</p>
-                <p>All setting changes are recorded in the Audit Log.</p>
+          {loading ? (
+            <div className="flex items-center justify-center h-48">
+              <div className="flex flex-col items-center gap-3 text-slate-400">
+                <div className="w-8 h-8 border-2 border-[#00E599] border-t-transparent rounded-full animate-spin" />
+                <span className="text-sm">Loading system settings…</span>
               </div>
             </div>
+          ) : (
+            <div className="flex flex-col md:flex-row gap-6">
+              {/* Settings Sidebar */}
+              <div className="w-full md:w-60 shrink-0 space-y-2">
+                {SETTING_GROUPS.map(group => {
+                  const GIcon = group.icon;
+                  const isActive = activeGroup === group.id;
+                  return (
+                    <button
+                      key={group.id}
+                      onClick={() => setActiveGroup(group.id)}
+                      className={`w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all flex items-center gap-3 ${
+                        isActive
+                          ? 'bg-[#00E599]/15 text-[#00E599] border border-[#00E599]/30 font-semibold shadow-lg shadow-[#00E599]/10'
+                          : 'text-slate-400 border border-transparent hover:bg-white/5 hover:text-white'
+                      }`}
+                    >
+                      <GIcon size={16} className={`shrink-0 ${isActive ? 'text-[#00E599]' : 'text-slate-400'}`} />
+                      {group.title}
+                    </button>
+                  );
+                })}
 
-            {/* Main Settings Panel */}
-            {currentGroup && (
-              <div className="flex-1 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                {/* Panel Header */}
-                <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
-                  <div className="flex items-center gap-3">
-                    <span className={`p-2 rounded-xl ${currentGroup.bg}`}>
-                      <currentGroup.icon size={18} className={currentGroup.color} />
-                    </span>
-                    <div>
-                      <h2 className="font-bold text-slate-900">{currentGroup.title}</h2>
-                      <p className="text-xs text-slate-500">Changes take effect immediately for new applications</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => saveGroup(currentGroup.id)}
-                    className="btn-primary text-xs px-4 py-2 flex items-center gap-1.5"
-                  >
-                    <Save size={13} />
-                    Save All
-                  </button>
+                {/* Info box */}
+                <div className="mt-6 p-4 bg-[#0D182E]/90 border border-white/10 rounded-2xl text-2xs text-slate-400 space-y-1.5 backdrop-blur-xl">
+                  <p className="font-semibold text-white text-xs">About Settings</p>
+                  <p>Changes are persisted to the database and applied immediately for new applications.</p>
+                  <p>All setting changes are recorded in the Audit Log.</p>
                 </div>
+              </div>
 
-                {/* Settings Items */}
-                <div className="p-6 space-y-5">
-                  {currentGroup.keys.map(item => {
-                    const currentVal = editValues[item.key] ?? '';
-                    const savedVal = settings[item.key] ?? '';
-                    const hasChanged = currentVal !== savedVal;
-                    const isSaving = saving[item.key];
-                    const isSaved = saved[item.key];
-                    const error = errors[item.key];
+              {/* Main Settings Panel */}
+              {currentGroup && (
+                <div className="flex-1 bg-[#0D182E]/90 rounded-2xl border border-white/10 shadow-xl shadow-black/20 backdrop-blur-xl overflow-hidden">
+                  {/* Panel Header */}
+                  <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between bg-[#0B1528]/80">
+                    <div className="flex items-center gap-3">
+                      <span className={`p-2 rounded-xl ${currentGroup.bg}`}>
+                        <currentGroup.icon size={18} className={currentGroup.color} />
+                      </span>
+                      <div>
+                        <h2 className="font-bold text-white text-base">{currentGroup.title}</h2>
+                        <p className="text-xs text-slate-400">Changes take effect immediately for new applications</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => saveGroup(currentGroup.id)}
+                      className="px-4 py-2 bg-[#00E599] text-[#050B17] font-semibold text-xs rounded-xl hover:bg-[#00E599]/90 shadow-lg shadow-[#00E599]/20 transition-all flex items-center gap-1.5"
+                    >
+                      <Save size={13} />
+                      Save All
+                    </button>
+                  </div>
 
-                    return (
-                      <div key={item.key} className="space-y-1.5">
-                        <div className="flex items-center justify-between">
-                          <label className="text-sm font-semibold text-slate-800">{item.label}</label>
-                          <div className="flex items-center gap-2">
-                            {hasChanged && !isSaved && (
-                              <button
-                                onClick={() => setEditValues(v => ({ ...v, [item.key]: savedVal }))}
-                                className="text-xs text-slate-500 hover:text-slate-800 flex items-center gap-1"
-                                title="Discard changes"
-                              >
-                                <RotateCcw size={11} />
-                                Discard
-                              </button>
-                            )}
-                            {hasChanged && !isSaved && (
-                              <span className="text-xs text-amber-600 font-medium">Unsaved</span>
-                            )}
-                            {isSaved && (
-                              <span className="text-xs text-emerald-600 font-medium flex items-center gap-1">
-                                <CheckCircle2 size={12} />
-                                Saved
-                              </span>
-                            )}
-                          </div>
-                        </div>
+                  {/* Settings Items */}
+                  <div className="p-6 space-y-5">
+                    {currentGroup.keys.map(item => {
+                      const currentVal = editValues[item.key] ?? '';
+                      const savedVal = settings[item.key] ?? '';
+                      const hasChanged = currentVal !== savedVal;
+                      const isSaving = saving[item.key];
+                      const isSaved = saved[item.key];
+                      const error = errors[item.key];
 
-                        {item.hint && (
-                          <p className="text-xs text-slate-500">{item.hint}</p>
-                        )}
-
-                        <div className="flex gap-2">
-                          {item.type === 'boolean' ? (
-                            <div className="flex gap-2 flex-1">
-                              {(['true', 'false'] as const).map(opt => (
+                      return (
+                        <div key={item.key} className="space-y-1.5">
+                          <div className="flex items-center justify-between">
+                            <label className="text-sm font-semibold text-white">{item.label}</label>
+                            <div className="flex items-center gap-2">
+                              {hasChanged && !isSaved && (
                                 <button
-                                  key={opt}
-                                  type="button"
-                                  onClick={() => setEditValues(v => ({ ...v, [item.key]: opt }))}
-                                  className={`flex-1 py-2.5 px-4 rounded-xl border-2 text-sm font-semibold transition-all ${
-                                    currentVal === opt
-                                      ? opt === 'true'
-                                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                                        : 'border-rose-400 bg-rose-50 text-rose-700'
-                                      : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50'
-                                  }`}
+                                  onClick={() => setEditValues(v => ({ ...v, [item.key]: savedVal }))}
+                                  className="text-xs text-slate-400 hover:text-white flex items-center gap-1 transition-colors"
+                                  title="Discard changes"
                                 >
-                                  {opt === 'true' ? '✓ Yes' : '✗ No'}
+                                  <RotateCcw size={11} />
+                                  Discard
                                 </button>
-                              ))}
+                              )}
+                              {hasChanged && !isSaved && (
+                                <span className="text-xs text-amber-400 font-medium">Unsaved</span>
+                              )}
+                              {isSaved && (
+                                <span className="text-xs text-[#00E599] font-medium flex items-center gap-1">
+                                  <CheckCircle2 size={12} />
+                                  Saved
+                                </span>
+                              )}
                             </div>
-                          ) : (
-                            <input
-                              type={item.type === 'number' ? 'number' : 'text'}
-                              value={currentVal}
-                              onChange={e => setEditValues(v => ({ ...v, [item.key]: e.target.value }))}
-                              className={`flex-1 px-4 py-2.5 rounded-xl border text-sm bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-colors ${
-                                error
-                                  ? 'border-red-500 bg-red-50/30'
-                                  : hasChanged
-                                  ? 'border-amber-400 focus:border-amber-500'
-                                  : 'border-slate-300 focus:border-blue-500'
-                              }`}
-                            />
+                          </div>
+
+                          {item.hint && (
+                            <p className="text-xs text-slate-400">{item.hint}</p>
                           )}
 
-                          <button
-                            onClick={() => saveSetting(item.key)}
-                            disabled={isSaving || !hasChanged}
-                            className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center gap-1.5 shrink-0 ${
-                              isSaved
-                                ? 'bg-emerald-600 text-white'
-                                : 'btn-primary disabled:opacity-40'
-                            }`}
-                          >
-                            {isSaving ? (
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                            ) : isSaved ? (
-                              <Check size={14} />
+                          <div className="flex gap-2">
+                            {item.type === 'boolean' ? (
+                              <div className="flex gap-2 flex-1">
+                                {(['true', 'false'] as const).map(opt => (
+                                  <button
+                                    key={opt}
+                                    type="button"
+                                    onClick={() => setEditValues(v => ({ ...v, [item.key]: opt }))}
+                                    className={`flex-1 py-2.5 px-4 rounded-xl border text-sm font-semibold transition-all ${
+                                      currentVal === opt
+                                        ? opt === 'true'
+                                          ? 'border-[#00E599] bg-[#00E599]/15 text-[#00E599] shadow-lg shadow-[#00E599]/10'
+                                          : 'border-rose-500 bg-rose-500/15 text-rose-300'
+                                        : 'border-white/10 text-slate-400 hover:border-white/20 hover:bg-white/5'
+                                    }`}
+                                  >
+                                    {opt === 'true' ? '✓ Yes' : '✗ No'}
+                                  </button>
+                                ))}
+                              </div>
                             ) : (
-                              <Save size={14} />
+                              <input
+                                type={item.type === 'number' ? 'number' : 'text'}
+                                value={currentVal}
+                                onChange={e => setEditValues(v => ({ ...v, [item.key]: e.target.value }))}
+                                className={`flex-1 px-4 py-2.5 rounded-xl border text-sm bg-white/5 text-white placeholder:text-slate-500 focus:outline-none transition-colors ${
+                                  error
+                                    ? 'border-rose-500 bg-rose-500/10'
+                                    : hasChanged
+                                    ? 'border-amber-400/60 focus:border-amber-400 bg-[#080E1C]'
+                                    : 'border-white/10 focus:border-[#00E599]/60 focus:bg-[#080E1C]'
+                                }`}
+                              />
                             )}
-                            {isSaving ? 'Saving…' : isSaved ? 'Saved!' : 'Save'}
-                          </button>
-                        </div>
 
-                        {error && (
-                          <p className="text-red-500 text-xs flex items-center gap-1">
-                            <AlertCircle size={12} />
-                            {error}
-                          </p>
-                        )}
+                            <button
+                              onClick={() => saveSetting(item.key)}
+                              disabled={isSaving || !hasChanged}
+                              className={`px-4 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center gap-1.5 shrink-0 ${
+                                isSaved
+                                  ? 'bg-emerald-600 text-white'
+                                  : 'bg-[#00E599] text-[#050B17] hover:bg-[#00E599]/90 disabled:opacity-30 disabled:hover:bg-[#00E599]'
+                              }`}
+                            >
+                              {isSaving ? (
+                                <div className="w-4 h-4 border-2 border-[#050B17] border-t-transparent rounded-full animate-spin" />
+                              ) : isSaved ? (
+                                <Check size={14} />
+                              ) : (
+                                <Save size={14} />
+                              )}
+                              {isSaving ? 'Saving…' : isSaved ? 'Saved!' : 'Save'}
+                            </button>
+                          </div>
+
+                          {error && (
+                            <p className="text-rose-400 text-xs flex items-center gap-1">
+                              <AlertCircle size={12} />
+                              {error}
+                            </p>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Current Values Reference */}
+                  <div className="px-6 pb-6">
+                    <div className="bg-[#080E1C] rounded-xl p-4 border border-white/5">
+                      <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-3">
+                        Current Saved Values Reference
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+                        {currentGroup.keys.map(item => (
+                          <div key={item.key} className="flex justify-between text-xs gap-2 py-0.5 border-b border-white/5 last:border-0">
+                            <span className="text-slate-400 shrink-0">{item.label}:</span>
+                            <span className="font-medium text-slate-200 font-mono text-right truncate">
+                              {settings[item.key] || '—'}
+                            </span>
+                          </div>
+                        ))}
                       </div>
-                    );
-                  })}
-                </div>
-
-                {/* Current Values Reference */}
-                <div className="px-6 pb-6">
-                  <div className="bg-slate-50 rounded-xl p-4 border border-slate-200">
-                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-3">
-                      Current Saved Values Reference
-                    </p>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-                      {currentGroup.keys.map(item => (
-                        <div key={item.key} className="flex justify-between text-xs gap-2">
-                          <span className="text-slate-500 shrink-0">{item.label}:</span>
-                          <span className="font-medium text-slate-900 font-mono text-right truncate">
-                            {settings[item.key] || '—'}
-                          </span>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </AppLayout>
   );

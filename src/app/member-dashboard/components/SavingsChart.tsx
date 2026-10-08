@@ -14,9 +14,9 @@ interface SavingsChartProps {
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white border border-slate-200 shadow-md rounded-xl p-3 text-xs">
-        <p className="font-semibold text-slate-900 mb-1.5">{label}</p>
-        <p className="text-slate-500">Balance: <span className="font-bold text-emerald-600 font-tabular">₦{Number(payload[0]?.value || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</span></p>
+      <div className="bg-[#0D182E]/80 backdrop-blur-xl border border-white/10 shadow-md rounded-xl p-3 text-xs">
+        <p className="font-semibold text-white/50 mb-1.5">{label}</p>
+        <p className="text-white/50">Balance: <span className="font-bold text-emerald-600 font-tabular">₦{Number(payload[0]?.value || 0).toLocaleString('en-NG', { minimumFractionDigits: 2 })}</span></p>
       </div>
     );
   }
@@ -30,8 +30,8 @@ export default function SavingsChart({ data }: SavingsChartProps) {
         <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-3">
           <TrendingUp size={18} />
         </div>
-        <p className="text-sm font-bold text-slate-800">No Savings History Yet</p>
-        <p className="text-xs text-slate-500 max-w-xs mt-1">
+        <p className="text-sm font-bold text-white/50">No Savings History Yet</p>
+        <p className="text-xs text-white/50 max-w-xs mt-1">
           Your savings balance and contribution growth trend will appear here as transactions are recorded.
         </p>
       </div>
@@ -40,7 +40,7 @@ export default function SavingsChart({ data }: SavingsChartProps) {
 
   return (
     <div>
-      <p className="text-xs text-slate-500 mb-3">Savings balance trend</p>
+      <p className="text-xs text-white/50 mb-3">Savings balance trend</p>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart data={data} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
           <defs>

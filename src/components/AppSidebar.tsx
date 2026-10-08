@@ -3,10 +3,25 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import AppLogo from '@/components/ui/AppLogo';
-import { LayoutDashboard, PiggyBank, TrendingUp, CreditCard, Users, FileText, Receipt, Bell, MessageSquare, Settings, ChevronDown, ChevronRight, LogOut, BarChart3, Shield, BookOpen, HelpCircle, Menu, Wallet, ClipboardList, FolderOpen, Home, User } from 'lucide-react';
-import Icon from '@/components/ui/AppIcon';
+import {
+  LayoutDashboard,
+  PiggyBank,
+  TrendingUp,
+  CreditCard,
+  Users,
+  FileText,
+  Settings,
+  ChevronDown,
+  ChevronRight,
+  LogOut,
+  Shield,
+  ClipboardList,
+  FolderOpen,
+  Home,
+  User,
+  Menu,
+} from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-
 
 interface NavItem {
   id: string;
@@ -29,30 +44,36 @@ const memberNav: NavItem[] = [
   { id: 'nav-dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/member-dashboard' },
   { id: 'nav-profile', label: 'My Profile & KYC', icon: User, href: '/member-dashboard/profile' },
   {
-    id: 'nav-savings', label: 'Save', icon: PiggyBank,
+    id: 'nav-savings',
+    label: 'Save',
+    icon: PiggyBank,
     children: [
       { id: 'nav-savings-products', label: 'Savings Overview', href: '/savings-products' },
       { id: 'nav-contributions', label: 'Monthly Contribution', href: '/save/contributions' },
       { id: 'nav-regular-savings', label: 'Regular Savings', href: '/save/regular' },
       { id: 'nav-savings-goals', label: 'Savings Goals', href: '/save/goals' },
       { id: 'nav-calculator', label: 'Savings Calculator', href: '/save/calculator' },
-    ]
+    ],
   },
   {
-    id: 'nav-loans', label: 'My Loans', icon: CreditCard,
+    id: 'nav-loans',
+    label: 'My Loans',
+    icon: CreditCard,
     children: [
       { id: 'nav-active-loans', label: 'Active Loans', href: '/loan-dashboard' },
       { id: 'nav-apply-loan', label: 'Apply for Loan', href: '/loan-application' },
       { id: 'nav-repayments', label: 'Repayments', href: '/loan-dashboard' },
-    ]
+    ],
   },
   {
-    id: 'nav-investments', label: 'Wealth Circle', icon: TrendingUp,
+    id: 'nav-investments',
+    label: 'Wealth Circle',
+    icon: TrendingUp,
     children: [
       { id: 'nav-investors-circle', label: 'Wealth Circle Overview', href: '/investors-circle' },
       { id: 'nav-inv-dashboard', label: 'Circle Dashboard', href: '/investors-circle/dashboard' },
       { id: 'nav-portfolio', label: 'My Portfolio', href: '/invest/portfolio' },
-    ]
+    ],
   },
   { id: 'nav-documents', label: 'My Documents', icon: FolderOpen, href: '/documents' },
   { id: 'nav-statements', label: 'Statements', icon: FileText, href: '/financial-statements' },
@@ -96,8 +117,8 @@ function NavItemRow({
           onClick={() => setExpanded(e => !e)}
           className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
             isChildActive
-              ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200'
-              : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+              ? 'bg-[#00D084]/15 text-[#00E599] font-bold border border-[#00D084]/30 shadow-sm'
+              : 'text-slate-400 hover:bg-white/5 hover:text-white'
           }`}
           title={collapsed ? item.label : undefined}
           aria-expanded={expanded}
@@ -107,7 +128,7 @@ function NavItemRow({
             <>
               <span className="flex-1 text-left">{item.label}</span>
               {item.badge != null && item.badge > 0 && (
-                <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                <span className="bg-rose-500 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-sm">
                   {item.badge}
                 </span>
               )}
@@ -116,7 +137,7 @@ function NavItemRow({
           )}
         </button>
         {!collapsed && expanded && (
-          <div className="ml-7 mt-0.5 space-y-0.5 border-l-2 border-slate-200 pl-3">
+          <div className="ml-7 mt-1 space-y-0.5 border-l-2 border-white/10 pl-3">
             {item.children!.map(child => (
               <Link
                 key={child.id}
@@ -124,13 +145,13 @@ function NavItemRow({
                 onClick={onNavigate}
                 className={`flex items-center justify-between px-2.5 py-2 rounded-lg text-sm transition-all duration-150 ${
                   pathname === child.href
-                    ? 'text-blue-700 font-bold bg-blue-50/80'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                    ? 'text-[#00E599] font-bold bg-[#00D084]/10 border border-[#00D084]/20'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
                 }`}
               >
                 <span>{child.label}</span>
                 {child.badge != null && child.badge > 0 && (
-                  <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  <span className="bg-rose-500 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                     {child.badge}
                   </span>
                 )}
@@ -148,8 +169,8 @@ function NavItemRow({
       onClick={onNavigate}
       className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
         active
-          ? 'bg-blue-50 text-blue-700 font-bold border border-blue-200 shadow-2xs'
-          : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+          ? 'bg-[#00D084]/15 text-[#00E599] font-bold border border-[#00D084]/30 shadow-sm'
+          : 'text-slate-400 hover:bg-white/5 hover:text-white'
       }`}
       title={collapsed ? item.label : undefined}
     >
@@ -158,7 +179,7 @@ function NavItemRow({
         <>
           <span className="flex-1">{item.label}</span>
           {item.badge != null && item.badge > 0 && (
-            <span className="bg-red-600 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+            <span className="bg-rose-500 text-white text-2xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center shadow-sm">
               {item.badge}
             </span>
           )}
@@ -186,40 +207,40 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-white border-r border-slate-200 shadow-xs flex flex-col z-30 sidebar-transition ${
+      className={`fixed top-0 left-0 h-screen bg-[#070D1E] border-r border-white/10 shadow-2xl flex flex-col z-30 sidebar-transition ${
         collapsed ? 'w-[68px]' : 'w-[260px]'
       }`}
     >
       {/* 4-Color Brand Stripe on Top of Sidebar */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-emerald-600 via-blue-600 to-red-600" />
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-500 via-[#00D084] via-blue-500 to-rose-500" />
 
       {/* Logo */}
-      <div className={`flex items-center border-b border-slate-200 h-16 shrink-0 mt-1 ${collapsed ? 'justify-center px-3' : 'px-4 gap-3'}`}>
+      <div className={`flex items-center border-b border-white/10 h-16 shrink-0 mt-1 ${collapsed ? 'justify-center px-3' : 'px-4 gap-3'}`}>
         <div className="flex items-center gap-2.5">
-          <AppLogo size={42} className="rounded-xl ring-2 ring-slate-200 shadow-xs" />
+          <AppLogo size={40} className="rounded-xl ring-2 ring-white/15 shadow-md" />
           {!collapsed && (
             <div className="flex flex-col leading-tight">
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-base text-slate-900 tracking-tight leading-none">
+                <span className="font-black text-base text-white tracking-tight leading-none">
                   CLIMPS
                 </span>
-                <span className="inline-flex items-center gap-0.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+                <span className="inline-flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00E599] shadow-sm shadow-emerald-500/50" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
                 </span>
               </div>
-              <p className="text-[9px] text-slate-500 leading-none mt-1 font-semibold">Changing Lives Multipurpose</p>
+              <p className="text-[9px] text-slate-400 leading-none mt-1 font-medium">Changing Lives Multipurpose</p>
             </div>
           )}
         </div>
         {!collapsed && (
           <button
             onClick={onToggle}
-            className="ml-auto p-1.5 rounded-lg hover:bg-slate-100 transition-colors"
+            className="ml-auto p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition-colors"
             aria-label="Collapse sidebar"
           >
-            <Menu size={16} className="text-slate-500" />
+            <Menu size={16} />
           </button>
         )}
       </div>
@@ -228,22 +249,22 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
       {collapsed && (
         <button
           onClick={onToggle}
-          className="flex items-center justify-center h-10 hover:bg-slate-100 transition-colors mx-2 mt-2 rounded-xl"
+          className="flex items-center justify-center h-10 hover:bg-white/5 text-slate-400 hover:text-white transition-colors mx-2 mt-2 rounded-xl"
           aria-label="Expand sidebar"
         >
-          <Menu size={16} className="text-slate-500" />
+          <Menu size={16} />
         </button>
       )}
 
       {/* Member/Admin info strip */}
       {!collapsed && (
-        <div className="px-4 py-3 bg-slate-50 border-b border-slate-200">
-          <p className="text-xs font-bold text-slate-900 truncate">{memberName || 'Member'}</p>
-          <p className="text-2xs text-slate-500 font-medium">{memberId || ''}</p>
+        <div className="px-4 py-3 bg-[#0D182E]/80 border-b border-white/10">
+          <p className="text-xs font-bold text-white truncate">{memberName || 'Member'}</p>
+          <p className="text-2xs text-slate-400 font-medium">{memberId || ''}</p>
           <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-2xs font-bold ${
             role === 'admin'
-              ? 'bg-red-50 text-red-700 border border-red-200'
-              : 'bg-blue-50 text-blue-700 border border-blue-200'
+              ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+              : 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30'
           }`}>
             {role === 'admin' ? 'Administrator' : role === 'manager' ? 'Manager' : role === 'staff' ? 'Staff' : 'Member'}
           </span>
@@ -263,21 +284,21 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
       </nav>
 
       {/* Bottom: logout */}
-      <div className="border-t border-slate-200 p-2 space-y-1 bg-slate-50/50">
+      <div className="border-t border-white/10 p-2 space-y-1 bg-[#060B18]/90">
         <Link
           href="/landing"
-          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-all duration-150 w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:bg-white/5 hover:text-white transition-all duration-150 w-full"
           title={collapsed ? 'Back to Home' : undefined}
         >
-          <Home size={18} className="shrink-0 text-blue-600" />
+          <Home size={18} className="shrink-0 text-blue-400" />
           {!collapsed && <span>Back to Home</span>}
         </Link>
         <button
           onClick={handleSignOut}
-          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:bg-red-50 hover:text-red-700 transition-all duration-150 w-full"
+          className="flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all duration-150 w-full"
           title={collapsed ? 'Sign Out' : undefined}
         >
-          <LogOut size={18} className="shrink-0 text-red-600" />
+          <LogOut size={18} className="shrink-0 text-rose-400" />
           {!collapsed && <span>Sign Out</span>}
         </button>
       </div>

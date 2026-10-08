@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Badge from '@/components/ui/Badge';
-import { CreditCard, Calendar, ChevronRight, CheckCircle2, PlusCircle, ArrowUpRight } from 'lucide-react';
-import { toast } from 'sonner';
+import { CreditCard, Calendar, ChevronRight, PlusCircle } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -103,8 +102,8 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
   if (loading) {
     return (
       <div className="card-base animate-pulse space-y-4">
-        <div className="h-6 w-32 bg-white/[0.06] rounded-lg" />
-        <div className="h-40 bg-white/[0.06] rounded-2xl" />
+        <div className="h-6 w-32 bg-white/10 rounded-lg" />
+        <div className="h-40 bg-white/10 rounded-2xl" />
       </div>
     );
   }
@@ -114,28 +113,28 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
     return (
       <div className="card-base">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-slate-900">Active Loan</h2>
+          <h2 className="text-sm font-bold text-white">Active Loan</h2>
           <Link
             href="/loan-application"
-            className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1"
+            className="text-xs font-bold text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1"
           >
             Apply for Loan <ChevronRight size={13} />
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-6 text-center">
-          <div className="w-12 h-12 rounded-2xl bg-red-50 border border-red-200 flex items-center justify-center text-red-600 mx-auto mb-3 shadow-xs">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-6 text-center backdrop-blur-md">
+          <div className="w-12 h-12 rounded-2xl bg-rose-500/15 border border-rose-500/30 flex items-center justify-center text-rose-400 mx-auto mb-3 shadow-md">
             <CreditCard size={22} />
           </div>
-          <h3 className="text-base font-bold text-slate-900">No Active Loan</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-5 font-medium">
+          <h3 className="text-base font-bold text-white">No Active Loan</h3>
+          <p className="text-xs text-slate-400 max-w-sm mx-auto mt-1 mb-5 font-normal">
             You currently have no active or outstanding loans. Cooperative members can access flexible loan financing up to 2.5× their savings balance within 24 hours.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/loan-application"
-              className="bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center gap-1.5 px-4 py-2 rounded-xl shadow-xs transition-all active:scale-95"
+              className="bg-rose-600 hover:bg-rose-500 text-white font-bold text-xs flex items-center gap-1.5 px-4 py-2 rounded-xl shadow-md transition-all active:scale-95"
             >
               <PlusCircle size={14} />
               Apply for a Loan
@@ -170,81 +169,81 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
   return (
     <div className="card-base">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-sm font-bold text-slate-900">Active Loan</h2>
+        <h2 className="text-sm font-bold text-white">Active Loan</h2>
         <Link
           href="/loan-dashboard"
-          className="text-xs font-bold text-red-600 hover:text-red-700 transition-colors flex items-center gap-1"
+          className="text-xs font-bold text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1"
         >
           Loan Details <ChevronRight size={13} />
         </Link>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-4">
+      <div className="bg-gradient-to-br from-rose-500/10 via-[#0D182E] to-[#070D1E] border border-rose-500/30 rounded-2xl p-4 mb-4 backdrop-blur-md">
         <div className="flex items-start justify-between mb-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <CreditCard size={16} className="text-red-600" />
-              <p className="text-sm font-bold text-slate-900">{productName}</p>
+              <CreditCard size={16} className="text-rose-400" />
+              <p className="text-sm font-bold text-white">{productName}</p>
               <Badge variant="disbursed">Active</Badge>
             </div>
-            <p className="text-xs text-slate-500 font-mono font-semibold">{loanRef}</p>
+            <p className="text-xs text-slate-400 font-mono font-semibold">{loanRef}</p>
           </div>
           <div className="text-right">
-            <p className="text-xs text-slate-500 font-medium">Outstanding Balance</p>
-            <p className="text-xl font-black text-slate-900 font-tabular">{fmt(outstanding)}</p>
+            <p className="text-xs text-slate-400 font-medium">Outstanding Balance</p>
+            <p className="text-xl font-black text-white font-tabular">{fmt(outstanding)}</p>
           </div>
         </div>
 
         {/* Repayment progress */}
         <div className="mb-3">
           <div className="flex items-center justify-between mb-1.5">
-            <p className="text-xs font-bold text-slate-500">Repayment Progress</p>
-            <p className="text-xs font-bold text-red-600">{repaymentPct}% paid</p>
+            <p className="text-xs font-bold text-slate-400">Repayment Progress</p>
+            <p className="text-xs font-bold text-rose-400 font-tabular">{repaymentPct}% paid</p>
           </div>
           <div className="progress-bar-bg h-2.5">
             <div
-              className="bg-red-600 h-full rounded-full transition-all duration-700"
+              className="bg-rose-500 h-full rounded-full transition-all duration-700 shadow-sm"
               style={{ width: `${repaymentPct}%` }}
             />
           </div>
-          <div className="flex items-center justify-between mt-1 text-xs text-slate-500 font-medium">
-            <span>{fmt(amountRepaid)} repaid</span>
-            <span>{fmt(totalRepayable)} total</span>
+          <div className="flex items-center justify-between mt-1 text-xs text-slate-400 font-medium">
+            <span className="font-tabular">{fmt(amountRepaid)} repaid</span>
+            <span className="font-tabular">{fmt(totalRepayable)} total</span>
           </div>
         </div>
 
         {/* Key details row */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-slate-200">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-3 border-t border-white/10">
           <div>
-            <p className="text-2xs text-slate-500 font-semibold">Principal Borrowed</p>
-            <p className="text-xs font-bold text-slate-900 mt-0.5 font-tabular">{fmt(principal)}</p>
+            <p className="text-2xs text-slate-400 font-semibold">Principal Borrowed</p>
+            <p className="text-xs font-bold text-white mt-0.5 font-tabular">{fmt(principal)}</p>
           </div>
           <div>
-            <p className="text-2xs text-slate-500 font-semibold">Monthly Instalment</p>
-            <p className="text-xs font-bold text-slate-900 mt-0.5 font-tabular">{fmt(monthlyInstalment)}</p>
+            <p className="text-2xs text-slate-400 font-semibold">Monthly Instalment</p>
+            <p className="text-xs font-bold text-white mt-0.5 font-tabular">{fmt(monthlyInstalment)}</p>
           </div>
           <div>
-            <p className="text-2xs text-slate-500 font-semibold">Next Due Date</p>
-            <p className="text-xs font-bold text-slate-900 mt-0.5">{nextDueDate}</p>
+            <p className="text-2xs text-slate-400 font-semibold">Next Due Date</p>
+            <p className="text-xs font-bold text-white mt-0.5">{nextDueDate}</p>
           </div>
         </div>
       </div>
 
       {/* Next due alert */}
       {monthlyInstalment > 0 && (
-        <div className="flex items-center gap-3 p-3 bg-amber-50 border border-amber-200 rounded-xl mb-4">
-          <div className="p-1.5 bg-amber-100 text-amber-800 rounded-lg shrink-0">
+        <div className="flex items-center gap-3 p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl mb-4">
+          <div className="p-1.5 bg-amber-500/20 text-amber-300 rounded-lg shrink-0">
             <Calendar size={14} />
           </div>
           <div className="flex-1">
-            <p className="text-xs font-bold text-slate-900">Next Repayment Due</p>
-            <p className="text-xs text-slate-600 font-medium">
-              Instalment of <span className="font-bold text-slate-900 font-tabular">{fmt(monthlyInstalment)}</span> due on <span className="font-bold text-slate-900">{nextDueDate}</span>
+            <p className="text-xs font-bold text-white">Next Repayment Due</p>
+            <p className="text-xs text-slate-300 font-medium">
+              Instalment of <span className="font-bold text-white font-tabular">{fmt(monthlyInstalment)}</span> due on <span className="font-bold text-white">{nextDueDate}</span>
             </p>
           </div>
           <Link
             href="/loan-dashboard?tab=repay"
-            className="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
+            className="bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0 transition-colors"
           >
             Pay Now
           </Link>
@@ -254,30 +253,30 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
       {/* Recent repayments */}
       {recentRepayments.length > 0 && (
         <div>
-          <p className="text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Recent Repayments</p>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Recent Repayments</p>
           <div className="space-y-1.5">
             {recentRepayments.map((rep, idx) => (
               <div
                 key={rep.id || idx}
-                className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200"
+                className="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-white/5 transition-colors border border-transparent hover:border-white/10"
               >
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-blue-50 flex items-center justify-center shrink-0 border border-blue-200">
-                    <span className="text-2xs font-bold text-blue-700">
+                  <div className="w-6 h-6 rounded-full bg-blue-500/15 flex items-center justify-center shrink-0 border border-blue-500/30">
+                    <span className="text-2xs font-bold text-blue-400">
                       {rep.instalment_number || idx + 1}
                     </span>
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-slate-900">
+                    <p className="text-xs font-bold text-white">
                       Instalment #{rep.instalment_number || idx + 1}
                     </p>
-                    <p className="text-2xs text-slate-500 font-medium">
+                    <p className="text-2xs text-slate-400 font-medium">
                       {rep.payment_date || rep.created_at ? new Date(rep.payment_date || rep.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—'}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <p className="text-xs font-bold text-slate-900 font-tabular">
+                  <p className="text-xs font-bold text-white font-tabular">
                     {fmt(Number(rep.amount_paid || rep.amount) || 0)}
                   </p>
                   <Badge variant="paid">Paid</Badge>
@@ -287,7 +286,7 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           </div>
           <Link
             href="/loan-dashboard"
-            className="block w-full mt-2 text-xs font-bold text-red-600 hover:text-red-700 transition-colors py-2 text-center"
+            className="block w-full mt-2 text-xs font-bold text-rose-400 hover:text-rose-300 transition-colors py-2 text-center"
           >
             View Full Repayment Schedule →
           </Link>

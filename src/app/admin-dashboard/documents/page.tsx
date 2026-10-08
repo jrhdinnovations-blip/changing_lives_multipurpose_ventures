@@ -75,12 +75,12 @@ const CATEGORY_LABELS: Record<string, string> = {
 };
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-  pending: { label: 'Pending', color: 'bg-amber-100 text-amber-700', icon: Clock },
-  uploaded: { label: 'Uploaded', color: 'bg-blue-100 text-blue-700', icon: FileText },
-  verified: { label: 'Verified', color: 'bg-green-100 text-green-700', icon: CheckCircle },
-  rejected: { label: 'Rejected', color: 'bg-red-100 text-red-700', icon: XCircle },
-  superseded: { label: 'Superseded', color: 'bg-gray-100 text-gray-500', icon: RefreshCw },
-  archived: { label: 'Archived', color: 'bg-gray-100 text-gray-500', icon: Folder },
+  pending: { label: 'Pending', color: 'bg-[#00E599]/15 text-amber-400 border border-amber-500/30', icon: Clock },
+  uploaded: { label: 'Uploaded', color: 'bg-blue-500/15 text-blue-400 border border-blue-500/30', icon: FileText },
+  verified: { label: 'Verified', color: 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30', icon: CheckCircle },
+  rejected: { label: 'Rejected', color: 'bg-rose-500/15 text-rose-400 border border-rose-500/30', icon: XCircle },
+  superseded: { label: 'Superseded', color: 'bg-white/5 text-white/40 border border-white/10', icon: RefreshCw },
+  archived: { label: 'Archived', color: 'bg-white/5 text-white/40 border border-white/10', icon: Folder },
 };
 
 function formatBytes(bytes: number | null): string {
@@ -490,27 +490,27 @@ export default function AdminDocumentsPage() {
 
   return (
     <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
-      <div className="min-h-screen bg-slate-50/50">
+      <div className="min-h-screen bg-[#050B17] text-white/50">
         {/* Header */}
-        <div className="bg-white border-b border-slate-200 px-6 py-5">
-          <div className="flex items-center justify-between">
+        <div className="bg-[#0B1528]/80 backdrop-blur-xl border-b border-white/10 px-6 py-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <h1 className="text-xl font-bold text-slate-900">Document Management</h1>
-              <p className="text-sm text-slate-500 mt-0.5">
+              <h1 className="text-xl font-bold text-white tracking-tight">Document Management</h1>
+              <p className="text-sm text-white/40 mt-0.5">
                 Manage agreements, executed documents, and audit trails for all applications
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2.5">
               <button
                 onClick={fetchDocuments}
-                className="flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-300 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-white/10 text-sm font-medium text-white/50 hover:text-white hover:bg-white/5 transition-all"
               >
-                <RefreshCw size={14} />
+                <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
                 Refresh
               </button>
               <button
                 onClick={() => { setShowUploadModal(true); setUploadError(null); }}
-                className="btn-primary text-sm flex items-center gap-2 px-4 py-2"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#00E599] text-[#050B17] font-semibold text-sm hover:bg-[#00E599]/90 shadow-lg shadow-[#00E599]/20 transition-all"
               >
                 <Upload size={14} />
                 Upload Document
@@ -523,29 +523,29 @@ export default function AdminDocumentsPage() {
           {/* Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: 'Total Documents', value: stats.total, color: 'text-slate-900', bg: 'bg-white' },
-              { label: 'Awaiting Review', value: stats.pending, color: 'text-amber-700', bg: 'bg-amber-50/60' },
-              { label: 'Verified', value: stats.verified, color: 'text-emerald-700', bg: 'bg-emerald-50/60' },
-              { label: 'Rejected', value: stats.rejected, color: 'text-red-700', bg: 'bg-red-50/60' },
+              { label: 'Total Documents', value: stats.total, color: 'text-white' },
+              { label: 'Awaiting Review', value: stats.pending, color: 'text-amber-400' },
+              { label: 'Verified', value: stats.verified, color: 'text-[#00E599]' },
+              { label: 'Rejected', value: stats.rejected, color: 'text-rose-400' },
             ].map(s => (
-              <div key={s.label} className={`${s.bg} border border-slate-200 rounded-xl p-4 shadow-sm`}>
+              <div key={s.label} className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-4 shadow-xl shadow-black/20 backdrop-blur-xl">
                 <p className={`text-2xl font-bold ${s.color}`}>{s.value}</p>
-                <p className="text-xs text-slate-500 mt-0.5">{s.label}</p>
+                <p className="text-xs text-white/40 mt-0.5">{s.label}</p>
               </div>
             ))}
           </div>
 
           {/* Filters */}
-          <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+          <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-4 shadow-xl shadow-black/20 backdrop-blur-xl">
             <div className="flex flex-wrap gap-3">
               <div className="flex-1 min-w-[200px] relative">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input
                   type="text"
                   placeholder="Search documents..."
                   value={search}
                   onChange={e => setSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C] transition-colors"
                 />
               </div>
               {[
@@ -557,41 +557,45 @@ export default function AdminDocumentsPage() {
                   <select
                     value={sel.value}
                     onChange={e => sel.onChange(e.target.value)}
-                    className="appearance-none pl-3 pr-8 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-800 focus:outline-none focus:border-blue-500"
+                    className="appearance-none pl-3 pr-8 py-2 text-sm border border-white/10 rounded-xl bg-[#0B1528] text-white focus:outline-none focus:border-[#00E599]/60 transition-colors"
                   >
-                    {sel.options.map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                    {sel.options.map(([k, v]) => (
+                      <option key={k} value={k} className="bg-[#0B1528] text-white">
+                        {v}
+                      </option>
+                    ))}
                   </select>
-                  <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                  <ChevronDown size={12} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-white/40 pointer-events-none" />
                 </div>
               ))}
             </div>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-center gap-2 text-sm text-red-700">
+            <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-4 flex items-center gap-2 text-sm text-rose-300">
               <AlertCircle size={16} />
               {error}
             </div>
           )}
 
           {/* Main content */}
-          <div className="flex gap-6">
+          <div className="flex flex-col lg:flex-row gap-6">
             {/* Document list */}
-            <div className={`flex-1 space-y-2 ${selectedDoc ? 'hidden lg:block' : ''}`}>
+            <div className={`flex-1 space-y-2.5 ${selectedDoc ? 'hidden lg:block' : ''}`}>
               {loading ? (
-                <div className="space-y-2">
+                <div className="space-y-2.5">
                   {[1, 2, 3, 4].map(i => (
-                    <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 animate-pulse">
-                      <div className="h-4 bg-slate-100 rounded w-1/3 mb-2" />
-                      <div className="h-3 bg-slate-100 rounded w-1/2" />
+                    <div key={i} className="bg-[#0D182E]/90 border border-white/10 rounded-xl p-4 animate-pulse">
+                      <div className="h-4 bg-white/5 rounded w-1/3 mb-2" />
+                      <div className="h-3 bg-white/5 rounded w-1/2" />
                     </div>
                   ))}
                 </div>
               ) : filtered.length === 0 ? (
-                <div className="bg-white border border-slate-200 rounded-xl p-12 text-center shadow-sm">
-                  <FileText size={40} className="text-slate-300 mx-auto mb-3" />
-                  <p className="text-sm font-semibold text-slate-800">No documents found</p>
-                  <p className="text-xs text-slate-500 mt-1">Upload a document to get started</p>
+                <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-12 text-center shadow-xl backdrop-blur-xl">
+                  <FileText size={40} className="text-white/60 mx-auto mb-3" />
+                  <p className="text-sm font-semibold text-white">No documents found</p>
+                  <p className="text-xs text-white/40 mt-1">Upload a document to get started</p>
                 </div>
               ) : (
                 filtered.map(doc => {
@@ -602,37 +606,39 @@ export default function AdminDocumentsPage() {
                     <div
                       key={doc.id}
                       onClick={() => handleSelectDoc(doc)}
-                      className={`bg-white border rounded-xl p-4 cursor-pointer transition-all hover:shadow-sm ${
-                        isSelected ? 'border-blue-500 ring-2 ring-blue-500/20 shadow-sm' : 'border-slate-200 hover:border-slate-300'
+                      className={`bg-[#0D182E]/90 border rounded-xl p-4 cursor-pointer transition-all ${
+                        isSelected
+                          ? 'border-[#00E599] ring-2 ring-[#00E599]/20 shadow-lg shadow-black/30 bg-[#0B1528]'
+                          : 'border-white/10 hover:border-white/20 hover:bg-[#0B1528]/80'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`p-2 rounded-lg shrink-0 ${
-                          doc.application_type === 'loan' ? 'bg-blue-50' : 'bg-purple-50'
+                        <div className={`p-2.5 rounded-xl shrink-0 ${
+                          doc.application_type === 'loan' ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20' : 'bg-purple-500/15 text-purple-400 border border-purple-500/20'
                         }`}>
                           {doc.application_type === 'loan'
-                            ? <CreditCard size={16} className="text-blue-600" />
-                            : <TrendingUp size={16} className="text-purple-600" />
+                            ? <CreditCard size={16} />
+                            : <TrendingUp size={16} />
                           }
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center justify-between gap-2">
-                            <p className="text-sm font-semibold text-slate-900 truncate">{doc.document_name}</p>
-                            <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium shrink-0 ${status.color}`}>
+                            <p className="text-sm font-semibold text-white truncate">{doc.document_name}</p>
+                            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium shrink-0 ${status.color}`}>
                               <StatusIcon size={10} />
                               {status.label}
                             </span>
                           </div>
-                          <div className="flex items-center gap-3 mt-1 flex-wrap">
-                            <span className="text-xs text-slate-500">{CATEGORY_LABELS[doc.document_category]}</span>
-                            <span className="text-xs text-slate-400">·</span>
-                            <span className={`text-xs font-medium ${doc.application_type === 'loan' ? 'text-blue-600' : 'text-purple-600'}`}>
+                          <div className="flex items-center gap-3 mt-1.5 flex-wrap">
+                            <span className="text-xs text-white/40">{CATEGORY_LABELS[doc.document_category]}</span>
+                            <span className="text-xs text-white/60">·</span>
+                            <span className={`text-xs font-medium ${doc.application_type === 'loan' ? 'text-blue-400' : 'text-purple-400'}`}>
                               {doc.application_type === 'loan' ? 'Loan' : 'Investment'}
                             </span>
-                            <span className="text-xs text-slate-400">·</span>
-                            <span className="text-xs text-slate-500">{doc.version_label}</span>
-                            <span className="text-xs text-slate-400">·</span>
-                            <span className="text-xs text-slate-500">{formatDateTime(doc.created_at)}</span>
+                            <span className="text-xs text-white/60">·</span>
+                            <span className="text-xs text-white/40">{doc.version_label}</span>
+                            <span className="text-xs text-white/60">·</span>
+                            <span className="text-xs text-white/50">{formatDateTime(doc.created_at)}</span>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 shrink-0">
@@ -642,7 +648,7 @@ export default function AdminDocumentsPage() {
                               target="_blank"
                               rel="noopener noreferrer"
                               onClick={e => e.stopPropagation()}
-                              className="p-1.5 rounded-lg hover:bg-slate-100 text-slate-600 hover:text-slate-900 transition-colors"
+                              className="p-1.5 rounded-lg hover:bg-white/5 text-white/40 hover:text-white transition-colors"
                               title="Open"
                             >
                               <ExternalLink size={14} />
@@ -659,51 +665,53 @@ export default function AdminDocumentsPage() {
             {/* Detail panel */}
             {selectedDoc && (
               <div className="w-full lg:w-[400px] shrink-0">
-                <div className="bg-white border border-slate-200 rounded-xl overflow-hidden sticky top-6 shadow-sm">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50/80">
-                    <p className="text-sm font-semibold text-slate-900">Document Details</p>
-                    <button onClick={() => setSelectedDoc(null)} className="text-slate-400 hover:text-slate-600 text-lg leading-none">×</button>
+                <div className="bg-[#0D182E]/95 border border-white/10 rounded-2xl overflow-hidden sticky top-6 shadow-2xl backdrop-blur-xl">
+                  <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-[#0B1528]/80">
+                    <p className="text-sm font-semibold text-white">Document Details</p>
+                    <button onClick={() => setSelectedDoc(null)} className="text-white/40 hover:text-white text-lg leading-none">×</button>
                   </div>
 
                   <div className="p-4 space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
                     {/* Info */}
-                    <div className="space-y-2">
-                      <p className="font-semibold text-slate-900 text-sm">{selectedDoc.document_name}</p>
+                    <div className="space-y-2.5">
+                      <p className="font-semibold text-white text-sm">{selectedDoc.document_name}</p>
                       {selectedDoc.document_description && (
-                        <p className="text-xs text-slate-500">{selectedDoc.document_description}</p>
+                        <p className="text-xs text-white/40 leading-relaxed">{selectedDoc.document_description}</p>
                       )}
-                      {[
-                        { label: 'Category', value: CATEGORY_LABELS[selectedDoc.document_category] },
-                        { label: 'Type', value: selectedDoc.application_type === 'loan' ? 'Loan' : 'Investment' },
-                        { label: 'Version', value: selectedDoc.version_label },
-                        { label: 'Status', value: STATUS_CONFIG[selectedDoc.doc_status]?.label || selectedDoc.doc_status },
-                        { label: 'File', value: selectedDoc.file_name || '—' },
-                        { label: 'Size', value: formatBytes(selectedDoc.file_size_bytes) },
-                        { label: 'Downloads', value: String(selectedDoc.download_count) },
-                        { label: 'Uploaded', value: formatDateTime(selectedDoc.created_at) },
-                        { label: 'Verified At', value: formatDateTime(selectedDoc.verified_at) },
-                      ].map(row => (
-                        <div key={row.label} className="flex justify-between text-xs">
-                          <span className="text-slate-500">{row.label}</span>
-                          <span className="font-medium text-slate-800">{row.value}</span>
-                        </div>
-                      ))}
+                      <div className="space-y-1.5 pt-1">
+                        {[
+                          { label: 'Category', value: CATEGORY_LABELS[selectedDoc.document_category] },
+                          { label: 'Type', value: selectedDoc.application_type === 'loan' ? 'Loan' : 'Investment' },
+                          { label: 'Version', value: selectedDoc.version_label },
+                          { label: 'Status', value: STATUS_CONFIG[selectedDoc.doc_status]?.label || selectedDoc.doc_status },
+                          { label: 'File', value: selectedDoc.file_name || '—' },
+                          { label: 'Size', value: formatBytes(selectedDoc.file_size_bytes) },
+                          { label: 'Downloads', value: String(selectedDoc.download_count) },
+                          { label: 'Uploaded', value: formatDateTime(selectedDoc.created_at) },
+                          { label: 'Verified At', value: formatDateTime(selectedDoc.verified_at) },
+                        ].map(row => (
+                          <div key={row.label} className="flex justify-between text-xs py-0.5 border-b border-white/5 last:border-0">
+                            <span className="text-white/40">{row.label}</span>
+                            <span className="font-medium text-white/50">{row.value}</span>
+                          </div>
+                        ))}
+                      </div>
                       {selectedDoc.rejection_reason && (
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-2 text-xs text-red-700">
-                          <strong>Rejection reason:</strong> {selectedDoc.rejection_reason}
+                        <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-xs text-rose-300">
+                          <strong className="text-rose-200">Rejection reason:</strong> {selectedDoc.rejection_reason}
                         </div>
                       )}
                     </div>
 
                     {/* Admin actions */}
-                    <div className="space-y-2 border-t border-slate-200 pt-3">
-                      <p className="text-xs font-semibold text-slate-900">Admin Actions</p>
+                    <div className="space-y-2.5 border-t border-white/10 pt-3">
+                      <p className="text-xs font-semibold text-white">Admin Actions</p>
                       <div className="grid grid-cols-2 gap-2">
                         {selectedDoc.doc_status !== 'verified' && (
                           <button
                             onClick={() => handleStatusChange(selectedDoc.id, 'verified')}
                             disabled={actionLoading === selectedDoc.id + 'verified'}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-emerald-600 text-white rounded-lg text-xs font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-[#00E599] text-[#050B17] font-semibold rounded-xl text-xs hover:bg-[#00E599]/90 transition-all disabled:opacity-50"
                           >
                             <CheckCircle size={12} />
                             Verify
@@ -712,7 +720,7 @@ export default function AdminDocumentsPage() {
                         {selectedDoc.doc_status !== 'rejected' && (
                           <button
                             onClick={() => setShowRejectInput(v => !v)}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-medium hover:bg-red-700 transition-colors"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 bg-rose-600/90 text-white font-medium rounded-xl text-xs hover:bg-rose-600 transition-colors"
                           >
                             <XCircle size={12} />
                             Reject
@@ -721,7 +729,7 @@ export default function AdminDocumentsPage() {
                         {selectedDoc.doc_status !== 'archived' && (
                           <button
                             onClick={() => handleStatusChange(selectedDoc.id, 'archived')}
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-300 rounded-lg text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 border border-white/10 rounded-xl text-xs text-white/50 hover:text-white hover:bg-white/5 transition-colors"
                           >
                             <Folder size={12} />
                             Archive
@@ -732,7 +740,7 @@ export default function AdminDocumentsPage() {
                             href={selectedDoc.public_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-1.5 px-3 py-2 border border-slate-300 rounded-lg text-xs text-slate-700 hover:bg-slate-50 transition-colors"
+                            className="flex items-center justify-center gap-1.5 px-3 py-2 border border-white/10 rounded-xl text-xs text-white/50 hover:text-white hover:bg-white/5 transition-colors"
                           >
                             <Download size={12} />
                             Download
@@ -740,13 +748,13 @@ export default function AdminDocumentsPage() {
                         )}
                       </div>
                       {showRejectInput && (
-                        <div className="space-y-2">
+                        <div className="space-y-2 pt-2">
                           <textarea
                             value={rejectReason}
                             onChange={e => setRejectReason(e.target.value)}
-                            placeholder="Rejection reason (required)"
+                            placeholder="Rejection reason (required)..."
                             rows={2}
-                            className="w-full px-3 py-2 text-xs border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-red-200 resize-none"
+                            className="w-full px-3 py-2 text-xs border border-rose-500/30 rounded-xl bg-[#080E1C] text-white placeholder:text-white/50 focus:outline-none focus:border-rose-500 resize-none"
                           />
                           <button
                             onClick={() => {
@@ -754,7 +762,7 @@ export default function AdminDocumentsPage() {
                               handleStatusChange(selectedDoc.id, 'rejected', { rejection_reason: rejectReason });
                             }}
                             disabled={!rejectReason.trim() || actionLoading === selectedDoc.id + 'rejected'}
-                            className="w-full px-3 py-2 bg-red-600 text-white rounded-lg text-xs font-medium hover:bg-red-700 transition-colors disabled:opacity-50"
+                            className="w-full px-3 py-2 bg-rose-600 text-white rounded-xl text-xs font-semibold hover:bg-rose-500 transition-colors disabled:opacity-50"
                           >
                             Confirm Rejection
                           </button>
@@ -763,26 +771,26 @@ export default function AdminDocumentsPage() {
                     </div>
 
                     {/* Audit trail */}
-                    <div className="border-t border-slate-200 pt-3">
-                      <p className="text-xs font-semibold text-slate-900 mb-2 flex items-center gap-1.5">
-                        <Shield size={12} className="text-emerald-600" />
+                    <div className="border-t border-white/10 pt-3">
+                      <p className="text-xs font-semibold text-white mb-2 flex items-center gap-1.5">
+                        <Shield size={12} className="text-[#00E599]" />
                         Audit Trail
                       </p>
                       {auditLoading ? (
                         <div className="space-y-2">
-                          {[1, 2].map(i => <div key={i} className="h-10 bg-slate-100 rounded animate-pulse" />)}
+                          {[1, 2].map(i => <div key={i} className="h-10 bg-white/5 rounded-xl animate-pulse" />)}
                         </div>
                       ) : auditTrail.length === 0 ? (
-                        <p className="text-xs text-slate-400 text-center py-3">No audit entries</p>
+                        <p className="text-xs text-white/50 text-center py-3">No audit entries</p>
                       ) : (
-                        <div className="space-y-2 max-h-48 overflow-y-auto">
+                        <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
                           {auditTrail.map(entry => (
-                            <div key={entry.id} className="flex gap-2 text-xs">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
-                              <div>
-                                <p className="font-medium text-slate-800 capitalize">{entry.action.replace(/_/g, ' ')}</p>
-                                {entry.action_detail && <p className="text-slate-500">{entry.action_detail}</p>}
-                                <p className="text-slate-400 text-2xs">{formatDateTime(entry.created_at)}</p>
+                            <div key={entry.id} className="flex gap-2 text-xs p-2 rounded-lg bg-white/5 border border-white/5">
+                              <div className="w-1.5 h-1.5 rounded-full bg-[#00E599] mt-1.5 shrink-0" />
+                              <div className="min-w-0 flex-1">
+                                <p className="font-medium text-white/50 capitalize">{entry.action.replace(/_/g, ' ')}</p>
+                                {entry.action_detail && <p className="text-white/40 text-2xs mt-0.5">{entry.action_detail}</p>}
+                                <p className="text-white/50 text-2xs mt-0.5">{formatDateTime(entry.created_at)}</p>
                               </div>
                             </div>
                           ))}
@@ -799,161 +807,161 @@ export default function AdminDocumentsPage() {
 
       {/* Upload Modal */}
       {showUploadModal && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-2xl">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
-              <p className="font-semibold text-slate-900">Upload Document</p>
-              <button onClick={() => setShowUploadModal(false)} className="text-slate-400 hover:text-slate-600 text-xl leading-none">×</button>
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0B1528] border border-white/15 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0D182E]/60">
+              <p className="font-semibold text-white text-base">Upload Document</p>
+              <button onClick={() => setShowUploadModal(false)} className="text-white/40 hover:text-white text-xl leading-none">×</button>
             </div>
             <div className="p-6 space-y-4 max-h-[70vh] overflow-y-auto">
               {uploadError && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-3 text-xs text-red-700 flex items-center gap-2">
+                <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-xs text-rose-300 flex items-center gap-2">
                   <AlertCircle size={14} />
                   {uploadError}
                 </div>
               )}
               <div className="grid grid-cols-2 gap-4">
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Document Name *</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Document Name *</label>
                   <input
                     type="text"
                     value={uploadForm.document_name}
                     onChange={e => setUploadForm(f => ({ ...f, document_name: e.target.value }))}
                     placeholder="e.g. Letter of Agreement — John Doe"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Application Type *</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Application Type *</label>
                   <select
                     value={uploadForm.application_type}
                     onChange={e => setUploadForm(f => ({ ...f, application_type: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-[#0B1528] text-white focus:outline-none focus:border-[#00E599]/60"
                   >
-                    <option value="loan">Loan</option>
-                    <option value="investment">Investment</option>
+                    <option value="loan" className="bg-[#0B1528] text-white">Loan</option>
+                    <option value="investment" className="bg-[#0B1528] text-white">Investment</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Category</label>
                   <select
                     value={uploadForm.document_category}
                     onChange={e => setUploadForm(f => ({ ...f, document_category: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-[#0B1528] text-white focus:outline-none focus:border-[#00E599]/60"
                   >
                     {Object.entries(CATEGORY_LABELS).map(([k, v]) => (
-                      <option key={k} value={k}>{v}</option>
+                      <option key={k} value={k} className="bg-[#0B1528] text-white">{v}</option>
                     ))}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Version Label</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Version Label</label>
                   <input
                     type="text"
                     value={uploadForm.version_label}
                     onChange={e => setUploadForm(f => ({ ...f, version_label: e.target.value }))}
                     placeholder="v1"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Member User ID</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Member User ID</label>
                   <input
                     type="text"
                     value={uploadForm.user_id}
                     onChange={e => setUploadForm(f => ({ ...f, user_id: e.target.value }))}
                     placeholder="UUID of member"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                   />
                 </div>
                 {uploadForm.application_type === 'loan' ? (
                   <div className="col-span-2">
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Loan Application ID</label>
+                    <label className="block text-xs font-semibold text-white/50 mb-1">Loan Application ID</label>
                     <input
                       type="text"
                       value={uploadForm.loan_application_id}
                       onChange={e => setUploadForm(f => ({ ...f, loan_application_id: e.target.value }))}
                       placeholder="UUID of loan application"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                      className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                     />
                   </div>
                 ) : (
                   <div className="col-span-2">
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Investment Application ID</label>
+                    <label className="block text-xs font-semibold text-white/50 mb-1">Investment Application ID</label>
                     <input
                       type="text"
                       value={uploadForm.investment_application_id}
                       onChange={e => setUploadForm(f => ({ ...f, investment_application_id: e.target.value }))}
                       placeholder="UUID of investment application"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                      className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                     />
                   </div>
                 )}
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Document URL (public link)</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Document URL (public link)</label>
                   <input
                     type="url"
                     value={uploadForm.public_url}
                     onChange={e => setUploadForm(f => ({ ...f, public_url: e.target.value }))}
                     placeholder="https://..."
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">File Name</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">File Name</label>
                   <input
                     type="text"
                     value={uploadForm.file_name}
                     onChange={e => setUploadForm(f => ({ ...f, file_name: e.target.value }))}
                     placeholder="agreement.pdf"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                   />
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Description</label>
+                  <label className="block text-xs font-semibold text-white/50 mb-1">Description</label>
                   <textarea
                     value={uploadForm.document_description}
                     onChange={e => setUploadForm(f => ({ ...f, document_description: e.target.value }))}
                     placeholder="Brief description of this document..."
                     rows={2}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 resize-none"
+                    className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C] resize-none"
                   />
                 </div>
-                <div className="col-span-2 flex items-center gap-2">
+                <div className="col-span-2 flex items-center gap-2.5">
                   <input
                     type="checkbox"
                     id="is_terms"
                     checked={uploadForm.is_terms_document}
                     onChange={e => setUploadForm(f => ({ ...f, is_terms_document: e.target.checked }))}
-                    className="rounded text-blue-600 focus:ring-blue-500"
+                    className="rounded accent-[#00E599] border-white/20 bg-white/5 text-[#00E599] focus:ring-[#00E599]"
                   />
-                  <label htmlFor="is_terms" className="text-xs text-slate-700">This is a terms/agreement document</label>
+                  <label htmlFor="is_terms" className="text-xs text-white/50 cursor-pointer">This is a terms/agreement document</label>
                 </div>
                 {uploadForm.is_terms_document && (
                   <div className="col-span-2">
-                    <label className="block text-xs font-semibold text-slate-700 mb-1">Terms Version</label>
+                    <label className="block text-xs font-semibold text-white/50 mb-1">Terms Version</label>
                     <input
                       type="text"
                       value={uploadForm.terms_version}
                       onChange={e => setUploadForm(f => ({ ...f, terms_version: e.target.value }))}
                       placeholder="v1.0"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500"
+                      className="w-full px-3 py-2 text-sm border border-white/10 rounded-xl bg-white/5 text-white placeholder:text-white/50 focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                     />
                   </div>
                 )}
               </div>
             </div>
-            <div className="flex gap-3 px-6 py-4 border-t border-slate-200">
+            <div className="flex gap-3 px-6 py-4 border-t border-white/10 bg-[#0D182E]/60">
               <button
                 onClick={() => setShowUploadModal(false)}
-                className="flex-1 px-4 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition-colors"
+                className="flex-1 px-4 py-2.5 border border-white/10 rounded-xl text-sm font-medium text-white/50 hover:text-white hover:bg-white/5 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleUpload}
                 disabled={uploading}
-                className="flex-1 btn-primary text-sm py-2.5 disabled:opacity-50"
+                className="flex-1 px-4 py-2.5 bg-[#00E599] text-[#050B17] font-semibold rounded-xl text-sm hover:bg-[#00E599]/90 shadow-lg shadow-[#00E599]/20 transition-all disabled:opacity-50"
               >
                 {uploading ? 'Uploading...' : 'Upload Document'}
               </button>

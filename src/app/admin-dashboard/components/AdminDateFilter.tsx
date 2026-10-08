@@ -16,15 +16,15 @@ export default function AdminDateFilter() {
 
   return (
     <div className="flex items-center gap-2 flex-wrap">
-      <div className="flex items-center gap-1.5 bg-slate-100 rounded-xl p-1 border border-slate-200">
+      <div className="flex items-center gap-1.5 bg-white/5 rounded-xl p-1 border border-white/10 backdrop-blur-md">
         {periods?.map(p => (
           <button
             key={p?.id}
             onClick={() => setActive(p?.id)}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
               active === p?.id
-                ? 'bg-white text-blue-700 font-bold border border-blue-200 shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-emerald-500/20 text-[#00E599] font-bold border border-emerald-500/30 shadow-[0_0_12px_rgba(0,229,153,0.15)]'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
             }`}
           >
             {p?.label}
@@ -35,12 +35,12 @@ export default function AdminDateFilter() {
         <div className="flex items-center gap-2">
           <div className="relative">
             <Calendar size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input type="date" className="input-base h-8 text-xs pl-7 w-36" defaultValue="2026-09-01" />
+            <input type="date" className="input-base h-8 text-xs pl-7 w-36 bg-[#0B1528] text-white border-white/10" defaultValue="2026-09-01" />
           </div>
-          <span className="text-xs text-slate-500">to</span>
+          <span className="text-xs text-slate-400">to</span>
           <div className="relative">
             <Calendar size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input type="date" className="input-base h-8 text-xs pl-7 w-36" defaultValue="2026-09-21" />
+            <input type="date" className="input-base h-8 text-xs pl-7 w-36 bg-[#0B1528] text-white border-white/10" defaultValue="2026-09-21" />
           </div>
           <button className="btn-primary text-xs px-3 py-1.5">Apply</button>
         </div>

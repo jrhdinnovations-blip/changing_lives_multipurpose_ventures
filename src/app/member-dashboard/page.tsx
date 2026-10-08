@@ -118,9 +118,9 @@ export default function MemberDashboardPage() {
     return (
       <AppLayout role="member" memberName="Loading…" memberId="—">
         <div className="p-6 xl:p-8 space-y-6">
-          <div className="h-8 w-64 bg-slate-200 rounded-xl animate-pulse" />
+          <div className="h-8 w-64 bg-white/10 rounded-xl animate-pulse" />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {[1,2,3,4,5,6]?.map(i => <div key={i} className="h-32 bg-slate-200 rounded-2xl animate-pulse" />)}
+            {[1, 2, 3, 4, 5, 6]?.map(i => <div key={i} className="h-32 bg-white/10 rounded-2xl animate-pulse" />)}
           </div>
         </div>
       </AppLayout>
@@ -132,50 +132,50 @@ export default function MemberDashboardPage() {
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Header */}
-        <div className="flex items-start justify-between pb-2 border-b border-slate-200/80">
+        <div className="flex items-start justify-between pb-3 border-b border-white/10">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-black text-slate-900">{greeting}, {firstName} 👋</h1>
-              <span className="inline-flex items-center gap-0.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-600" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600" />
-                <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+              <h1 className="text-2xl font-black text-white">{greeting}, {firstName} 👋</h1>
+              <span className="inline-flex items-center gap-1 ml-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00E599] shadow-sm shadow-emerald-500/50" />
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
               </span>
             </div>
-            <p className="text-sm text-slate-500 mt-1 font-medium">
-              {dateStr} · Member ID: <span className="font-bold text-slate-700">{memberId}</span>
+            <p className="text-sm text-slate-400 mt-1 font-medium">
+              {dateStr} · Member ID: <span className="font-bold text-white font-tabular">{memberId}</span>
             </p>
           </div>
-          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-600 bg-white border border-slate-200 rounded-xl px-3 py-1.5 shadow-2xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="hidden sm:flex items-center gap-2 text-xs font-semibold text-slate-300 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 backdrop-blur-md shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
             Live data · Updated just now
           </div>
         </div>
 
         {/* ── Profile Completion Banner ── */}
         {profileIncomplete && (
-          <div className="relative overflow-hidden rounded-2xl border border-amber-300 bg-amber-50/90 p-5 shadow-xs">
+          <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5 backdrop-blur-md shadow-lg">
             <div className="relative">
               <div className="flex items-start justify-between gap-4 flex-wrap">
                 <div className="flex items-start gap-3 min-w-0">
-                  <div className="p-2 rounded-xl bg-amber-100 border border-amber-300 text-amber-800 shrink-0 mt-0.5">
+                  <div className="p-2 rounded-xl bg-amber-500/20 border border-amber-500/30 text-amber-300 shrink-0 mt-0.5">
                     <AlertCircle size={18} />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="font-bold text-slate-900 text-sm">Complete Your Profile to Activate Your Account</h3>
-                    <p className="text-xs text-slate-600 mt-0.5 font-medium">
+                    <h3 className="font-bold text-white text-sm">Complete Your Profile to Activate Your Account</h3>
+                    <p className="text-xs text-slate-300 mt-0.5 font-normal">
                       Your account was created by an admin. Fill in your remaining details to gain full access to all cooperative services.
                     </p>
 
                     {/* Progress bar */}
                     <div className="mt-3 flex items-center gap-2">
-                      <div className="flex-1 h-2 bg-amber-200 rounded-full overflow-hidden max-w-xs border border-amber-300">
+                      <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden max-w-xs border border-white/10">
                         <div
-                          className="h-full bg-amber-600 rounded-full transition-all duration-500"
+                          className="h-full bg-amber-400 rounded-full transition-all duration-500 shadow-sm"
                           style={{ width: `${(completedSteps / profileChecklist.length) * 100}%` }}
                         />
                       </div>
-                      <span className="text-2xs text-amber-900 font-bold whitespace-nowrap">
+                      <span className="text-2xs text-amber-300 font-bold whitespace-nowrap font-tabular">
                         {completedSteps}/{profileChecklist.length} completed
                       </span>
                     </div>
@@ -185,10 +185,10 @@ export default function MemberDashboardPage() {
                       {profileChecklist.map(item => (
                         <div key={item.label} className="flex items-center gap-1.5">
                           {item.done
-                            ? <CheckCircle2 size={13} className="text-emerald-600 shrink-0" />
-                            : <div className="w-3 h-3 rounded-full border border-amber-400 bg-white shrink-0" />
+                            ? <CheckCircle2 size={13} className="text-[#00E599] shrink-0" />
+                            : <div className="w-3 h-3 rounded-full border border-amber-400/60 bg-amber-400/20 shrink-0" />
                           }
-                          <span className={`text-2xs ${item.done ? 'text-slate-400 line-through' : 'text-slate-700 font-medium'}`}>
+                          <span className={`text-2xs ${item.done ? 'text-slate-500 line-through' : 'text-slate-300 font-medium'}`}>
                             {item.label}
                           </span>
                         </div>
@@ -199,7 +199,7 @@ export default function MemberDashboardPage() {
 
                 <button
                   onClick={() => router.push('/member-dashboard/profile')}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition-all shadow-sm active:scale-95 shrink-0 self-start"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition-all shadow-md active:scale-95 shrink-0 self-start"
                 >
                   Complete Profile
                   <ArrowRight size={13} />

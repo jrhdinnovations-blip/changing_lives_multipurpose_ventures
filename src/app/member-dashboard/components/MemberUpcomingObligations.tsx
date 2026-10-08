@@ -20,10 +20,10 @@ interface ObligationItem {
 }
 
 const urgencyConfig = {
-  overdue: { color: 'text-rose-600', bg: 'bg-rose-50', icon: AlertTriangle, border: 'border-rose-200' },
-  soon: { color: 'text-amber-700', bg: 'bg-amber-50', icon: Clock, border: 'border-amber-200' },
-  upcoming: { color: 'text-blue-700', bg: 'bg-blue-50', icon: Calendar, border: 'border-blue-200' },
-  done: { color: 'text-emerald-700', bg: 'bg-emerald-50', icon: CheckCircle2, border: 'border-emerald-200' },
+  overdue: { color: 'text-rose-400', bg: 'bg-rose-500/15', icon: AlertTriangle, border: 'border-rose-500/30' },
+  soon: { color: 'text-amber-400', bg: 'bg-amber-500/15', icon: Clock, border: 'border-amber-500/30' },
+  upcoming: { color: 'text-blue-400', bg: 'bg-blue-500/15', icon: Calendar, border: 'border-blue-500/30' },
+  done: { color: 'text-[#00E599]', bg: 'bg-emerald-500/15', icon: CheckCircle2, border: 'border-emerald-500/30' },
 };
 
 const typeLabel: Record<string, string> = {
@@ -180,24 +180,24 @@ export default function MemberUpcomingObligations({ member: memberProp }: Member
       <div className="flex items-center justify-between mb-4">
         <h2 className="section-header">Upcoming Obligations</h2>
         <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-          <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-          <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+          <span className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></span>
+          <span className="w-2 h-2 rounded-full bg-[#00E599] shadow-[0_0_8px_rgba(0,229,153,0.6)]"></span>
+          <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
         </div>
       </div>
 
       {loading ? (
         <div className="space-y-2.5">
-          <div className="h-16 bg-slate-100 rounded-xl animate-pulse" />
-          <div className="h-16 bg-slate-100 rounded-xl animate-pulse" />
+          <div className="h-16 bg-white/5 border border-white/5 rounded-xl animate-pulse" />
+          <div className="h-16 bg-white/5 border border-white/5 rounded-xl animate-pulse" />
         </div>
       ) : obligations.length === 0 ? (
-        <div className="py-7 text-center flex flex-col items-center justify-center rounded-xl border border-slate-200 bg-slate-50 p-4">
-          <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-2.5">
+        <div className="py-7 text-center flex flex-col items-center justify-center rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-md">
+          <div className="w-10 h-10 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-[#00E599] mb-2.5">
             <CheckCircle2 size={18} />
           </div>
-          <p className="text-sm font-bold text-slate-800">All Caught Up!</p>
-          <p className="text-xs text-slate-500 max-w-xs mt-1">
+          <p className="text-sm font-bold text-white">All Caught Up!</p>
+          <p className="text-xs text-slate-400 max-w-xs mt-1">
             You have no pending dues, overdue amounts, or urgent upcoming obligations.
           </p>
         </div>
@@ -209,18 +209,18 @@ export default function MemberUpcomingObligations({ member: memberProp }: Member
             return (
               <div
                 key={obl.id}
-                className={`flex items-start gap-3 p-3 rounded-xl border ${cfg.border} bg-white shadow-2xs`}
+                className={`flex items-start gap-3 p-3 rounded-xl border ${cfg.border} bg-[#0A1224]/80 backdrop-blur-md transition-all hover:border-white/20`}
               >
                 <div className={`p-1.5 rounded-lg shrink-0 ${cfg.bg}`}>
                   <Icon size={14} className={cfg.color} />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
-                    <p className="text-xs font-semibold text-slate-900 truncate">{obl.title}</p>
-                    <p className="text-xs font-bold text-slate-900 font-tabular shrink-0">{obl.amount}</p>
+                    <p className="text-xs font-semibold text-white truncate">{obl.title}</p>
+                    <p className="text-xs font-bold text-white font-tabular shrink-0">{obl.amount}</p>
                   </div>
                   <div className="flex items-center justify-between mt-0.5">
-                    <p className="text-2xs text-slate-500">{typeLabel[obl.type]} · {obl.dueDate}</p>
+                    <p className="text-2xs text-slate-400">{typeLabel[obl.type]} · {obl.dueDate}</p>
                     <p className={`text-2xs font-semibold ${cfg.color}`}>
                       {obl.daysUntil < 0
                         ? `${Math.abs(obl.daysUntil)}d overdue`

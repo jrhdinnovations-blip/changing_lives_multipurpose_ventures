@@ -11,8 +11,8 @@ export default function AdminRecentActivity() {
       detail: 'Raymond Longdiem authenticated with Super Admin role',
       time: 'Today',
       icon: KeyRound,
-      color: 'text-emerald-600',
-      bg: 'bg-emerald-50 border border-emerald-200',
+      color: 'text-[#00E599]',
+      bg: 'bg-emerald-500/15 border-emerald-500/30',
     },
     {
       id: 'sys-02',
@@ -20,8 +20,8 @@ export default function AdminRecentActivity() {
       detail: 'Live Supabase connection verified · RLS policies active',
       time: 'Today',
       icon: Database,
-      color: 'text-blue-600',
-      bg: 'bg-blue-50 border border-blue-200',
+      color: 'text-blue-400',
+      bg: 'bg-blue-500/15 border-blue-500/30',
     },
     {
       id: 'sys-03',
@@ -29,21 +29,21 @@ export default function AdminRecentActivity() {
       detail: 'Data encryption and auth token verification active',
       time: 'Today',
       icon: Shield,
-      color: 'text-purple-600',
-      bg: 'bg-purple-50 border border-purple-200',
+      color: 'text-purple-400',
+      bg: 'bg-purple-500/15 border-purple-500/30',
     },
   ];
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs">
+    <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h2 className="text-sm font-bold text-slate-900">System Security & Operations</h2>
-          <p className="text-2xs text-slate-500">Recent verified system events</p>
+          <h2 className="text-sm font-bold text-white">System Security & Operations</h2>
+          <p className="text-2xs text-slate-400">Recent verified system events</p>
         </div>
         <Link
           href="/admin-dashboard/audit-logs"
-          className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1"
+          className="text-xs font-bold text-[#00E599] hover:text-emerald-300 flex items-center gap-1 transition-colors"
         >
           Audit Logs <ArrowRight size={12} />
         </Link>
@@ -53,16 +53,16 @@ export default function AdminRecentActivity() {
         {events.map(ev => {
           const Icon = ev.icon;
           return (
-            <div key={ev.id} className="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/80">
-              <div className={`p-2 rounded-lg ${ev.bg} ${ev.color} shrink-0 mt-0.5`}>
+            <div key={ev.id} className="flex items-start gap-3 p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <div className={`p-2 rounded-lg border ${ev.bg} ${ev.color} shrink-0 mt-0.5`}>
                 <Icon size={14} />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-bold text-slate-900 truncate">{ev.title}</p>
-                  <span className="text-2xs text-slate-400 font-medium">{ev.time}</span>
+                  <p className="text-xs font-bold text-white truncate">{ev.title}</p>
+                  <span className="text-2xs text-slate-500 font-medium">{ev.time}</span>
                 </div>
-                <p className="text-2xs text-slate-500 mt-0.5">{ev.detail}</p>
+                <p className="text-2xs text-slate-400 mt-0.5">{ev.detail}</p>
               </div>
             </div>
           );

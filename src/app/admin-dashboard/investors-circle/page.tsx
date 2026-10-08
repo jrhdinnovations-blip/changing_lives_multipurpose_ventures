@@ -24,24 +24,24 @@ function formatDateTime(d: string | null | undefined) {
 }
 
 const STATUS_META: Record<string, { label: string; color: string; bg: string }> = {
-  draft:                        { label: 'Draft',                    color: 'text-gray-600',    bg: 'bg-gray-100' },
-  submitted:                    { label: 'Submitted',                color: 'text-blue-700',    bg: 'bg-blue-100' },
-  under_review:                 { label: 'Under Review',             color: 'text-yellow-700',  bg: 'bg-yellow-100' },
-  awaiting_payment:             { label: 'Awaiting Payment',         color: 'text-orange-700',  bg: 'bg-orange-100' },
-  payment_verification:         { label: 'Payment Verification',     color: 'text-purple-700',  bg: 'bg-purple-100' },
-  approved:                     { label: 'Approved',                 color: 'text-emerald-700', bg: 'bg-emerald-100' },
-  agreement_pending:            { label: 'Agreement Pending',        color: 'text-indigo-700',  bg: 'bg-indigo-100' },
-  active:                       { label: 'Active',                   color: 'text-green-700',   bg: 'bg-green-100' },
-  matured:                      { label: 'Matured',                  color: 'text-teal-700',    bg: 'bg-teal-100' },
-  early_liquidation_requested:  { label: 'Liquidation Requested',    color: 'text-amber-700',   bg: 'bg-amber-100' },
-  early_liquidation_approved:   { label: 'Liquidation Approved',     color: 'text-cyan-700',    bg: 'bg-cyan-100' },
-  early_liquidation_rejected:   { label: 'Liquidation Rejected',     color: 'text-red-700',     bg: 'bg-red-100' },
-  completed:                    { label: 'Completed',                color: 'text-gray-600',    bg: 'bg-gray-100' },
-  cancelled:                    { label: 'Cancelled',                color: 'text-gray-500',    bg: 'bg-gray-100' },
+  draft:                        { label: 'Draft',                    color: 'text-white/40',    bg: 'bg-white/5 border border-white/10' },
+  submitted:                    { label: 'Submitted',                color: 'text-blue-400',    bg: 'bg-blue-500/15 border border-blue-500/30' },
+  under_review:                 { label: 'Under Review',             color: 'text-amber-400',   bg: 'bg-[#00E599]/15 border border-amber-500/30' },
+  awaiting_payment:             { label: 'Awaiting Payment',         color: 'text-orange-400',  bg: 'bg-orange-500/15 border border-orange-500/30' },
+  payment_verification:         { label: 'Payment Verification',     color: 'text-purple-400',  bg: 'bg-purple-500/15 border border-purple-500/30' },
+  approved:                     { label: 'Approved',                 color: 'text-[#00E599]',   bg: 'bg-emerald-500/15 border border-emerald-500/30' },
+  agreement_pending:            { label: 'Agreement Pending',        color: 'text-indigo-400',  bg: 'bg-indigo-500/15 border border-indigo-500/30' },
+  active:                       { label: 'Active',                   color: 'text-[#00E599]',   bg: 'bg-emerald-500/15 border border-emerald-500/30' },
+  matured:                      { label: 'Matured',                  color: 'text-teal-400',    bg: 'bg-teal-500/15 border border-teal-500/30' },
+  early_liquidation_requested:  { label: 'Liquidation Requested',    color: 'text-amber-400',   bg: 'bg-[#00E599]/15 border border-amber-500/30' },
+  early_liquidation_approved:   { label: 'Liquidation Approved',     color: 'text-cyan-400',    bg: 'bg-cyan-500/15 border border-cyan-500/30' },
+  early_liquidation_rejected:   { label: 'Liquidation Rejected',     color: 'text-rose-400',    bg: 'bg-rose-500/15 border border-rose-500/30' },
+  completed:                    { label: 'Completed',                color: 'text-white/50',   bg: 'bg-white/10 border border-white/15' },
+  cancelled:                    { label: 'Cancelled',                color: 'text-white/40',   bg: 'bg-white/5 border border-white/10' },
 };
 
 function StatusBadge({ status }: { status: string }) {
-  const meta = STATUS_META[status] || { label: status, color: 'text-gray-600', bg: 'bg-gray-100' };
+  const meta = STATUS_META[status] || { label: status, color: 'text-white/40', bg: 'bg-white/5 border border-white/10' };
   return (
     <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold ${meta.bg} ${meta.color}`}>
       {meta.label}
@@ -529,17 +529,17 @@ export default function AdminInvestorsCirclePage() {
 
   return (
     <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
-      <div className="flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+      <div className="flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[#050B17]">
         {/* Page Header */}
-        <div className="bg-white border-b border-gray-100 px-6 py-4 shrink-0">
+        <div className="bg-[#0B1528] border-b border-white/10 px-6 py-4 shrink-0">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-gray-900">Investors Circle</h1>
-              <p className="text-sm text-gray-500 mt-0.5">Review, approve, verify, and activate investment applications</p>
+              <h1 className="text-xl font-bold text-white">Investors Circle</h1>
+              <p className="text-sm text-white/40 mt-0.5">Review, approve, verify, and activate investment applications</p>
             </div>
             <button
               onClick={loadApplications}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-white/10 text-sm text-white/50 hover:bg-white/5 transition-colors"
             >
               <RefreshCw size={14} />
               Refresh
@@ -549,15 +549,15 @@ export default function AdminInvestorsCirclePage() {
           {/* KPI Strip */}
           <div className="grid grid-cols-4 gap-3 mt-4">
             {[
-              { label: 'Total Applications', value: kpis.total, icon: FileText, color: 'text-gray-700', bg: 'bg-gray-50' },
-              { label: 'Pending Review', value: kpis.pending, icon: Clock, color: 'text-orange-700', bg: 'bg-orange-50' },
-              { label: 'Active Investments', value: kpis.active, icon: CheckCircle, color: 'text-emerald-700', bg: 'bg-emerald-50' },
-              { label: 'Total Invested', value: formatNGN(kpis.totalInvested), icon: Banknote, color: 'text-blue-700', bg: 'bg-blue-50', isText: true },
+              { label: 'Total Applications', value: kpis.total, icon: FileText, color: 'text-white/50', bg: 'bg-white/5 border border-white/10' },
+              { label: 'Pending Review', value: kpis.pending, icon: Clock, color: 'text-orange-400', bg: 'bg-orange-500/10 border border-orange-500/20' },
+              { label: 'Active Investments', value: kpis.active, icon: CheckCircle, color: 'text-[#00E599]', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
+              { label: 'Total Invested', value: formatNGN(kpis.totalInvested), icon: Banknote, color: 'text-blue-400', bg: 'bg-blue-500/10 border border-blue-500/20', isText: true },
             ].map(k => (
               <div key={k.label} className={`${k.bg} rounded-xl p-3 flex items-center gap-3`}>
                 <k.icon size={18} className={k.color} />
                 <div>
-                  <p className="text-xs text-gray-500">{k.label}</p>
+                  <p className="text-xs text-white/40">{k.label}</p>
                   <p className={`font-bold text-sm ${k.color}`}>{k.value}</p>
                 </div>
               </div>
@@ -568,64 +568,66 @@ export default function AdminInvestorsCirclePage() {
         {/* Main Content */}
         <div className="flex flex-1 overflow-hidden">
           {/* Left Panel — Application List */}
-          <div className="w-80 border-r border-gray-100 bg-white flex flex-col shrink-0">
-            <div className="p-4 border-b border-gray-100 space-y-2">
+          <div className="w-80 border-r border-white/10 bg-[#0B1528] flex flex-col shrink-0">
+            <div className="p-4 border-b border-white/10 space-y-2">
               <div className="relative">
-                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
                 <input
                   type="text"
                   placeholder="Search by name, ref, phone..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full pl-9 pr-3 py-2 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/50 text-sm focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                 />
               </div>
               <select
                 value={filterStatus}
                 onChange={e => setFilterStatus(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none bg-white"
+                className="w-full px-3 py-2 rounded-xl border border-white/10 bg-[#080E1C] text-white text-sm focus:outline-none focus:border-[#00E599]/60"
               >
-                <option value="all">All Statuses</option>
-                <option value="submitted">Submitted</option>
-                <option value="under_review">Under Review</option>
-                <option value="awaiting_payment">Awaiting Payment</option>
-                <option value="payment_verification">Payment Verification</option>
-                <option value="approved">Approved</option>
-                <option value="agreement_pending">Agreement Pending</option>
-                <option value="active">Active</option>
-                <option value="matured">Matured</option>
-                <option value="early_liquidation_requested">Liquidation Requested</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="all" className="bg-[#0B1528] text-white">All Statuses</option>
+                <option value="submitted" className="bg-[#0B1528] text-white">Submitted</option>
+                <option value="under_review" className="bg-[#0B1528] text-white">Under Review</option>
+                <option value="awaiting_payment" className="bg-[#0B1528] text-white">Awaiting Payment</option>
+                <option value="payment_verification" className="bg-[#0B1528] text-white">Payment Verification</option>
+                <option value="approved" className="bg-[#0B1528] text-white">Approved</option>
+                <option value="agreement_pending" className="bg-[#0B1528] text-white">Agreement Pending</option>
+                <option value="active" className="bg-[#0B1528] text-white">Active</option>
+                <option value="matured" className="bg-[#0B1528] text-white">Matured</option>
+                <option value="early_liquidation_requested" className="bg-[#0B1528] text-white">Liquidation Requested</option>
+                <option value="completed" className="bg-[#0B1528] text-white">Completed</option>
+                <option value="cancelled" className="bg-[#0B1528] text-white">Cancelled</option>
               </select>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto divide-y divide-white/5">
               {loading ? (
                 <div className="flex items-center justify-center h-32">
-                  <svg className="w-6 h-6 animate-spin text-emerald-500" fill="none" viewBox="0 0 24 24">
+                  <svg className="w-6 h-6 animate-spin text-[#00E599]" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                   </svg>
                 </div>
               ) : filteredApps.length === 0 ? (
-                <div className="p-6 text-center text-sm text-gray-500">No applications found.</div>
+                <div className="p-6 text-center text-sm text-white/40">No applications found.</div>
               ) : (
                 filteredApps.map(app => (
                   <button
                     key={app.id}
                     onClick={() => loadDetails(app)}
-                    className={`w-full text-left p-4 border-b border-gray-50 hover:bg-gray-50 transition-colors ${
-                      selected?.id === app.id ? 'bg-emerald-50 border-l-2 border-l-emerald-500' : ''
+                    className={`w-full text-left p-4 transition-colors ${
+                      selected?.id === app.id
+                        ? 'bg-blue-600/15 border-l-4 border-l-[#00E599] text-white'
+                        : 'hover:bg-white/5 text-white/50'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-1">
-                      <p className="text-sm font-semibold text-gray-900 truncate pr-2">{app.investor_name || 'Unknown'}</p>
+                      <p className="text-sm font-semibold text-white truncate pr-2">{app.investor_name || 'Unknown'}</p>
                       <StatusBadge status={app.app_status || 'draft'} />
                     </div>
-                    <p className="text-xs text-gray-400">{app.application_number || 'Draft'}</p>
-                    <p className="text-xs font-semibold text-emerald-700 mt-1">{formatNGN(app.investment_amount)}</p>
-                    <p className="text-xs text-gray-400">{app.investment_duration_label} · {formatDate(app.created_at)}</p>
+                    <p className="text-xs text-white/40 font-mono">{app.application_number || 'Draft'}</p>
+                    <p className="text-xs font-semibold text-[#00E599] mt-1">{formatNGN(app.investment_amount)}</p>
+                    <p className="text-xs text-white/50">{app.investment_duration_label} · {formatDate(app.created_at)}</p>
                   </button>
                 ))
               )}
@@ -633,59 +635,59 @@ export default function AdminInvestorsCirclePage() {
           </div>
 
           {/* Right Panel — Detail */}
-          <div className="flex-1 overflow-y-auto bg-gray-50">
+          <div className="flex-1 overflow-y-auto bg-[#050B17]">
             {!selected ? (
               <div className="flex items-center justify-center h-full">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <TrendingUp size={28} className="text-gray-400" />
+                  <div className="w-16 h-16 bg-[#0D182E] border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white/40 shadow-xl shadow-black/20">
+                    <TrendingUp size={28} className="text-white/40" />
                   </div>
-                  <p className="text-gray-500 text-sm">Select an application to review</p>
+                  <p className="text-white/40 text-sm">Select an application to review</p>
                 </div>
               </div>
             ) : (
               <div className="p-6 space-y-5">
                 {/* Application Header */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 shadow-xl shadow-black/20 p-5 backdrop-blur-xl">
                   <div className="flex items-start justify-between mb-4">
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">{selected.investor_name}</h2>
-                      <p className="text-sm text-gray-500">{selected.application_number}</p>
-                      <p className="text-xs text-gray-400 mt-0.5">Submitted: {formatDateTime(selected.created_at)}</p>
+                      <h2 className="text-xl font-bold text-white">{selected.investor_name}</h2>
+                      <p className="text-sm text-white/40 font-mono font-medium">{selected.application_number}</p>
+                      <p className="text-xs text-white/50 mt-0.5">Submitted: {formatDateTime(selected.created_at)}</p>
                     </div>
                     <StatusBadge status={selected.app_status || 'draft'} />
                   </div>
 
                   {/* Quick Stats */}
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div className="bg-gray-50 rounded-xl p-3">
-                      <p className="text-xs text-gray-500">Investment Amount</p>
-                      <p className="font-bold text-gray-900 text-sm">{formatNGN(selected.investment_amount)}</p>
+                    <div className="bg-white/5 border border-white/10 rounded-xl p-3">
+                      <p className="text-xs text-white/40">Investment Amount</p>
+                      <p className="font-bold text-white text-sm">{formatNGN(selected.investment_amount)}</p>
                     </div>
-                    <div className="bg-orange-50 rounded-xl p-3">
-                      <p className="text-xs text-gray-500">Processing Fee</p>
-                      <p className="font-bold text-orange-700 text-sm">{formatNGN(selected.processing_fee_amount)}</p>
+                    <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-3">
+                      <p className="text-xs text-orange-400">Processing Fee</p>
+                      <p className="font-bold text-orange-400 text-sm">{formatNGN(selected.processing_fee_amount)}</p>
                     </div>
-                    <div className="bg-blue-50 rounded-xl p-3">
-                      <p className="text-xs text-gray-500">Duration</p>
-                      <p className="font-bold text-blue-700 text-sm">{selected.investment_duration_label}</p>
+                    <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                      <p className="text-xs text-blue-400">Duration</p>
+                      <p className="font-bold text-blue-400 text-sm">{selected.investment_duration_label}</p>
                     </div>
-                    <div className="bg-emerald-50 rounded-xl p-3">
-                      <p className="text-xs text-gray-500">Projected Maturity</p>
-                      <p className="font-bold text-emerald-700 text-sm">{formatNGN(selected.indicative_maturity_value)}</p>
+                    <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3">
+                      <p className="text-xs text-[#00E599]">Projected Maturity</p>
+                      <p className="font-bold text-[#00E599] text-sm">{formatNGN(selected.indicative_maturity_value)}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Admin Actions */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                  <h3 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                    <Shield size={16} className="text-emerald-600" />
+                <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 shadow-xl shadow-black/20 p-5 backdrop-blur-xl">
+                  <h3 className="font-semibold text-white mb-3 flex items-center gap-2">
+                    <Shield size={16} className="text-[#00E599]" />
                     Admin Actions
                   </h3>
 
                   {actionError && (
-                    <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700 mb-3 flex items-start gap-2">
+                    <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-sm text-rose-300 mb-3 flex items-start gap-2">
                       <AlertCircle size={15} className="shrink-0 mt-0.5" />
                       {actionError}
                     </div>
@@ -696,26 +698,26 @@ export default function AdminInvestorsCirclePage() {
                     onChange={e => setActionNotes(e.target.value)}
                     placeholder="Add notes for this action (optional)..."
                     rows={2}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 resize-none mb-3"
+                    className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white placeholder:text-white/50 text-sm focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C] resize-none mb-3"
                   />
 
                   {/* Workflow Actions */}
                   <div className="space-y-3">
                     {/* Stage 1: Review */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">1 · Review</p>
+                      <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">1 · Review</p>
                       <div className="flex flex-wrap gap-2">
                         <ActionBtn
                           label="Mark Under Review"
                           icon={Eye}
-                          colorClass="bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                          colorClass="bg-[#00E599]/15 text-amber-300 hover:bg-[#00E599]/25 border border-amber-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('under_review')}
                         />
                         <ActionBtn
                           label="Request More Info"
                           icon={AlertCircle}
-                          colorClass="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                          colorClass="bg-white/5 text-white/50 hover:bg-white/10 border border-white/10"
                           loading={actionLoading}
                           onClick={() => performAction('under_review', { review_notes: actionNotes || 'More information requested' })}
                         />
@@ -724,26 +726,26 @@ export default function AdminInvestorsCirclePage() {
 
                     {/* Stage 2: Collateral / Payment */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">2 · Collateral & Payment</p>
+                      <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">2 · Collateral & Payment</p>
                       <div className="flex flex-wrap gap-2">
                         <ActionBtn
                           label="Verify Collateral"
                           icon={CheckCircle}
-                          colorClass="bg-indigo-100 text-indigo-800 hover:bg-indigo-200"
+                          colorClass="bg-indigo-500/15 text-indigo-300 hover:bg-indigo-500/25 border border-indigo-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('awaiting_payment')}
                         />
                         <ActionBtn
                           label="Confirm Payment Received"
                           icon={Banknote}
-                          colorClass="bg-purple-100 text-purple-800 hover:bg-purple-200"
+                          colorClass="bg-purple-500/15 text-purple-300 hover:bg-purple-500/25 border border-purple-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('payment_verification')}
                         />
                         <ActionBtn
                           label="Payment Verified"
                           icon={CheckCircle}
-                          colorClass="bg-teal-100 text-teal-800 hover:bg-teal-200"
+                          colorClass="bg-teal-500/15 text-teal-300 hover:bg-teal-500/25 border border-teal-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('approved')}
                         />
@@ -752,26 +754,26 @@ export default function AdminInvestorsCirclePage() {
 
                     {/* Stage 3: Approve / Agreement */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">3 · Approval & Agreement</p>
+                      <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">3 · Approval & Agreement</p>
                       <div className="flex flex-wrap gap-2">
                         <ActionBtn
                           label="Approve Application"
                           icon={CheckCircle}
-                          colorClass="bg-emerald-100 text-emerald-800 hover:bg-emerald-200"
+                          colorClass="bg-emerald-500/15 text-[#00E599] hover:bg-emerald-500/25 border border-emerald-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('approved')}
                         />
                         <ActionBtn
                           label="Send Agreement"
                           icon={FileText}
-                          colorClass="bg-blue-100 text-blue-800 hover:bg-blue-200"
+                          colorClass="bg-blue-500/15 text-blue-300 hover:bg-blue-500/25 border border-blue-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('agreement_pending')}
                         />
                         <ActionBtn
                           label="Reject Application"
                           icon={XCircle}
-                          colorClass="bg-red-100 text-red-800 hover:bg-red-200"
+                          colorClass="bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 border border-rose-500/30"
                           loading={actionLoading}
                           onClick={() => performAction('cancelled')}
                         />
@@ -780,12 +782,12 @@ export default function AdminInvestorsCirclePage() {
 
                     {/* Stage 4: Activate / Disburse */}
                     <div>
-                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">4 · Activate Investment</p>
+                      <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">4 · Activate Investment</p>
                       <div className="flex flex-wrap gap-2">
                         <ActionBtn
                           label="Activate & Disburse"
                           icon={ArrowUpRight}
-                          colorClass="bg-emerald-600 text-white hover:bg-emerald-700"
+                          colorClass="bg-[#00E599] text-[#050B17] font-black hover:bg-[#00E599]/90 shadow-lg shadow-[#00E599]/20"
                           loading={actionLoading}
                           onClick={() => setShowDisburseModal(true)}
                         />
@@ -793,7 +795,7 @@ export default function AdminInvestorsCirclePage() {
                           <ActionBtn
                             label="Mark Matured"
                             icon={Calendar}
-                            colorClass="bg-teal-100 text-teal-800 hover:bg-teal-200"
+                            colorClass="bg-teal-500/15 text-teal-300 hover:bg-teal-500/25 border border-teal-500/30"
                             loading={actionLoading}
                             onClick={() => performAction('matured')}
                           />
@@ -802,7 +804,7 @@ export default function AdminInvestorsCirclePage() {
                           <ActionBtn
                             label="Mark Completed"
                             icon={CheckCircle}
-                            colorClass="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                            colorClass="bg-white/10 text-white/50 hover:bg-white/15 border border-white/15"
                             loading={actionLoading}
                             onClick={() => performAction('completed')}
                           />
@@ -813,19 +815,19 @@ export default function AdminInvestorsCirclePage() {
                     {/* Liquidation */}
                     {selected.app_status === 'early_liquidation_requested' && (
                       <div>
-                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">5 · Liquidation Request</p>
+                        <p className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">5 · Liquidation Request</p>
                         <div className="flex flex-wrap gap-2">
                           <ActionBtn
                             label="Approve Liquidation"
                             icon={CheckCircle}
-                            colorClass="bg-cyan-100 text-cyan-800 hover:bg-cyan-200"
+                            colorClass="bg-cyan-500/15 text-cyan-300 hover:bg-cyan-500/25 border border-cyan-500/30"
                             loading={actionLoading}
                             onClick={() => performAction('early_liquidation_approved')}
                           />
                           <ActionBtn
                             label="Reject Liquidation"
                             icon={XCircle}
-                            colorClass="bg-red-100 text-red-800 hover:bg-red-200"
+                            colorClass="bg-rose-500/15 text-rose-300 hover:bg-rose-500/25 border border-rose-500/30"
                             loading={actionLoading}
                             onClick={() => performAction('early_liquidation_rejected')}
                           />
@@ -836,15 +838,16 @@ export default function AdminInvestorsCirclePage() {
                 </div>
 
                 {/* Detail Tabs */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                  <div className="flex border-b border-gray-100 overflow-x-auto">
+                <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 shadow-xl shadow-black/20 overflow-hidden backdrop-blur-xl">
+                  <div className="flex border-b border-white/10 overflow-x-auto bg-white/5/[0.02]">
                     {DETAIL_TABS.map(tab => (
                       <button
                         key={tab.id}
                         onClick={() => setDetailTab(tab.id)}
                         className={`flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors ${
                           detailTab === tab.id
-                            ? 'text-emerald-700 border-b-2 border-emerald-600 bg-emerald-50/50' :'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                            ? 'text-[#00E599] border-b-2 border-[#00E599] bg-[#00E599]/10'
+                            : 'text-white/40 hover:text-white hover:bg-white/5'
                         }`}
                       >
                         <tab.icon size={14} />
@@ -865,8 +868,8 @@ export default function AdminInvestorsCirclePage() {
                           { label: 'Address', value: selected.investor_address, full: true },
                         ].map(f => (
                           <div key={f.label} className={f.full ? 'col-span-2' : ''}>
-                            <p className="text-xs text-gray-400 mb-0.5">{f.label}</p>
-                            <p className="text-sm font-medium text-gray-900">{f.value || '—'}</p>
+                            <p className="text-xs text-white/40 mb-0.5">{f.label}</p>
+                            <p className="text-sm font-semibold text-white">{f.value || '—'}</p>
                           </div>
                         ))}
                       </div>
@@ -887,14 +890,14 @@ export default function AdminInvestorsCirclePage() {
                             { label: 'Maturity Date', value: formatDate(selected.investment_maturity_date) },
                           ].map(f => (
                             <div key={f.label}>
-                              <p className="text-xs text-gray-400 mb-0.5">{f.label}</p>
-                              <p className="text-sm font-semibold text-gray-900">{f.value}</p>
+                              <p className="text-xs text-white/40 mb-0.5">{f.label}</p>
+                              <p className="text-sm font-semibold text-white">{f.value}</p>
                             </div>
                           ))}
                         </div>
-                        <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100">
-                          <p className="text-xs text-emerald-700 font-semibold mb-1">Interest Rate</p>
-                          <p className="text-2xl font-bold text-emerald-800">4% <span className="text-sm font-normal text-emerald-600">per month</span></p>
+                        <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20">
+                          <p className="text-xs text-[#00E599] font-semibold mb-1">Interest Rate</p>
+                          <p className="text-2xl font-black text-white">4% <span className="text-sm font-normal text-white/40">per month</span></p>
                         </div>
                       </div>
                     )}
@@ -908,8 +911,8 @@ export default function AdminInvestorsCirclePage() {
                           { label: 'Address', value: selected.nok_address, full: true },
                         ].map(f => (
                           <div key={f.label} className={f.full ? 'col-span-2' : ''}>
-                            <p className="text-xs text-gray-400 mb-0.5">{f.label}</p>
-                            <p className="text-sm font-medium text-gray-900">{f.value || '—'}</p>
+                            <p className="text-xs text-white/40 mb-0.5">{f.label}</p>
+                            <p className="text-sm font-semibold text-white">{f.value || '—'}</p>
                           </div>
                         ))}
                       </div>
@@ -925,12 +928,12 @@ export default function AdminInvestorsCirclePage() {
                             { label: 'Account Number', value: selected.account_number },
                           ].map(f => (
                             <div key={f.label}>
-                              <p className="text-xs text-gray-400 mb-0.5">{f.label}</p>
-                              <p className="text-sm font-semibold text-gray-900">{f.value || '—'}</p>
+                              <p className="text-xs text-white/40 mb-0.5">{f.label}</p>
+                              <p className="text-sm font-semibold text-white">{f.value || '—'}</p>
                             </div>
                           ))}
                         </div>
-                        <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 text-xs text-amber-700">
+                        <div className="bg-[#00E599]/10 border border-amber-500/20 rounded-xl p-3 text-xs text-amber-300">
                           Verify bank details carefully before activating the investment.
                         </div>
                       </div>
@@ -943,30 +946,30 @@ export default function AdminInvestorsCirclePage() {
                           { label: 'Terms & Conditions Agreed', value: selected.terms_agreed, date: selected.terms_agreed_at },
                           { label: 'Processing Fee Agreed', value: selected.processing_fee_agreed, date: null },
                         ].map(t => (
-                          <div key={t.label} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 bg-gray-50">
+                          <div key={t.label} className="flex items-center justify-between p-3 rounded-xl border border-white/10 bg-white/5">
                             <div>
-                              <p className="text-sm font-medium text-gray-900">{t.label}</p>
-                              {t.date && <p className="text-xs text-gray-400 mt-0.5">{formatDateTime(t.date)}</p>}
+                              <p className="text-sm font-medium text-white">{t.label}</p>
+                              {t.date && <p className="text-xs text-white/40 mt-0.5">{formatDateTime(t.date)}</p>}
                             </div>
                             {t.value ? (
-                              <span className="flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full">
+                              <span className="flex items-center gap-1 text-xs font-semibold text-[#00E599] bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-1 rounded-full">
                                 <CheckCircle size={12} /> Agreed
                               </span>
                             ) : (
-                              <span className="flex items-center gap-1 text-xs font-semibold text-red-700 bg-red-100 px-2.5 py-1 rounded-full">
+                              <span className="flex items-center gap-1 text-xs font-semibold text-rose-300 bg-rose-500/15 border border-rose-500/30 px-2.5 py-1 rounded-full">
                                 <XCircle size={12} /> Not Agreed
                               </span>
                             )}
                           </div>
                         ))}
-                        <div className="p-3 rounded-xl border border-gray-100 bg-gray-50">
-                          <p className="text-xs text-gray-400 mb-0.5">Terms Version</p>
-                          <p className="text-sm font-medium text-gray-900">{selected.terms_version || 'v1.0'}</p>
+                        <div className="p-3 rounded-xl border border-white/10 bg-white/5">
+                          <p className="text-xs text-white/40 mb-0.5">Terms Version</p>
+                          <p className="text-sm font-medium text-white">{selected.terms_version || 'v1.0'}</p>
                         </div>
                         {selected.review_notes && (
-                          <div className="p-3 rounded-xl border border-blue-100 bg-blue-50">
-                            <p className="text-xs text-blue-600 font-semibold mb-1">Admin Notes</p>
-                            <p className="text-sm text-blue-800">{selected.review_notes}</p>
+                          <div className="p-3 rounded-xl border border-blue-500/30 bg-blue-500/10">
+                            <p className="text-xs text-blue-400 font-semibold mb-1">Admin Notes</p>
+                            <p className="text-sm text-blue-300">{selected.review_notes}</p>
                           </div>
                         )}
                       </div>
@@ -976,15 +979,15 @@ export default function AdminInvestorsCirclePage() {
                     {detailTab === 'audit' && (
                       <div className="space-y-2">
                         {auditTrail.length === 0 ? (
-                          <p className="text-sm text-gray-500 text-center py-4">No audit entries yet.</p>
+                          <p className="text-sm text-white/40 text-center py-4">No audit entries yet.</p>
                         ) : (
                           auditTrail.map((entry, idx) => (
-                            <div key={idx} className="flex gap-3 p-3 rounded-xl border border-gray-100 bg-gray-50">
-                              <div className="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0" />
+                            <div key={idx} className="flex gap-3 p-3 rounded-xl border border-white/10 bg-white/5">
+                              <div className="w-2 h-2 rounded-full bg-[#00E599] mt-1.5 shrink-0 shadow-[0_0_8px_rgba(0,229,153,0.5)]" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900">{entry.action}</p>
-                                {entry.notes && <p className="text-xs text-gray-500 mt-0.5">{entry.notes}</p>}
-                                <p className="text-xs text-gray-400 mt-0.5">{formatDateTime(entry.created_at)}</p>
+                                <p className="text-sm font-medium text-white">{entry.action}</p>
+                                {entry.notes && <p className="text-xs text-white/50 mt-0.5">{entry.notes}</p>}
+                                <p className="text-xs text-white/50 mt-0.5">{formatDateTime(entry.created_at)}</p>
                               </div>
                             </div>
                           ))
@@ -1001,42 +1004,42 @@ export default function AdminInvestorsCirclePage() {
 
       {/* Activate / Disburse Modal */}
       {showDisburseModal && selected && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6">
-            <h3 className="text-lg font-bold text-gray-900 mb-1">Activate Investment</h3>
-            <p className="text-sm text-gray-500 mb-5">
-              Set the investment start date to activate <strong>{selected.investor_name}</strong>'s investment of{' '}
-              <strong>{formatNGN(selected.investment_amount)}</strong>.
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="bg-[#0B1528] rounded-2xl border border-white/15 shadow-2xl w-full max-w-md p-6">
+            <h3 className="text-lg font-bold text-white mb-1">Activate Investment</h3>
+            <p className="text-sm text-white/40 mb-5">
+              Set the investment start date to activate <strong className="text-white">{selected.investor_name}</strong>'s investment of{' '}
+              <strong className="text-[#00E599]">{formatNGN(selected.investment_amount)}</strong>.
             </p>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1.5">Investment Start Date *</label>
+                <label className="block text-sm font-medium text-white/50 mb-1.5">Investment Start Date *</label>
                 <input
                   type="date"
                   value={disburseStartDate}
                   onChange={e => setDisburseStartDate(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20"
+                  className="w-full px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-white text-sm focus:outline-none focus:border-[#00E599]/60 focus:bg-[#080E1C]"
                 />
               </div>
 
               {disburseStartDate && (
-                <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 space-y-2 text-sm">
+                <div className="bg-emerald-500/10 rounded-xl p-4 border border-emerald-500/20 space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Principal</span>
-                    <span className="font-semibold">{formatNGN(selected.investment_amount)}</span>
+                    <span className="text-white/40">Principal</span>
+                    <span className="font-semibold text-white">{formatNGN(selected.investment_amount)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Monthly Return (4%)</span>
-                    <span className="font-semibold text-emerald-700">{formatNGN((selected.investment_amount * 4) / 100)}</span>
+                    <span className="text-white/40">Monthly Return (4%)</span>
+                    <span className="font-semibold text-[#00E599]">{formatNGN((selected.investment_amount * 4) / 100)}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Duration</span>
-                    <span className="font-semibold">{selected.investment_duration_label}</span>
+                    <span className="text-white/40">Duration</span>
+                    <span className="font-semibold text-white">{selected.investment_duration_label}</span>
                   </div>
-                  <div className="flex justify-between border-t border-emerald-200 pt-2">
-                    <span className="text-gray-600 font-medium">Maturity Date</span>
-                    <span className="font-bold text-emerald-800">
+                  <div className="flex justify-between border-t border-white/10 pt-2">
+                    <span className="text-white/40 font-medium">Maturity Date</span>
+                    <span className="font-bold text-[#00E599]">
                       {(() => {
                         const d = new Date(disburseStartDate);
                         d.setMonth(d.getMonth() + selected.investment_duration_months);
@@ -1048,7 +1051,7 @@ export default function AdminInvestorsCirclePage() {
               )}
 
               {actionError && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">
+                <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-sm text-rose-300">
                   {actionError}
                 </div>
               )}
@@ -1057,14 +1060,14 @@ export default function AdminInvestorsCirclePage() {
             <div className="flex gap-3 mt-6">
               <button
                 onClick={() => { setShowDisburseModal(false); setDisburseStartDate(''); setActionError(''); }}
-                className="flex-1 px-4 py-3 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-3 rounded-xl border border-white/10 bg-white/5 text-sm font-medium text-white/50 hover:bg-white/5 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={activateInvestment}
                 disabled={!disburseStartDate || actionLoading}
-                className="flex-1 px-4 py-3 rounded-xl bg-emerald-600 text-white text-sm font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 rounded-xl bg-[#00E599] text-[#050B17] text-sm font-black hover:bg-[#00E599]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-[#00E599]/20"
               >
                 {actionLoading ? (
                   <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">

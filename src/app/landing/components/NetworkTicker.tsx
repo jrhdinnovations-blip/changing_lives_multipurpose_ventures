@@ -77,27 +77,27 @@ export default function NetworkTicker() {
   const tickerItems = [...allMessages, ...allMessages];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[60] h-8 bg-white border-b border-slate-200/90 shadow-xs flex items-center overflow-hidden">
+    <div className="fixed top-0 left-0 right-0 z-[60] h-8 bg-[#030712]/95 backdrop-blur-md border-b border-white/10 shadow-xs flex items-center overflow-hidden text-slate-300">
       {/* Brand Color Top Stripe: Red, Green, Blue, White */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-red-500 via-emerald-500 via-blue-600 to-red-500" />
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-red-500 via-emerald-400 via-blue-500 to-red-500" />
 
       {/* Logo badge pinned on left */}
-      <div className="flex-shrink-0 flex items-center gap-2 px-3 bg-slate-50 h-full border-r border-slate-200 z-10">
+      <div className="flex-shrink-0 flex items-center gap-2 px-3 bg-[#070E20] h-full border-r border-white/10 z-10">
         <Image
           src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
           alt="CLIMPS Logo"
           width={20}
           height={20}
-          className="rounded-md object-cover ring-1 ring-slate-300"
+          className="rounded-md object-cover ring-1 ring-white/20"
         />
         <div className="hidden sm:flex items-center gap-1.5">
-          <span className="text-[10px] font-extrabold text-slate-800 tracking-wider uppercase whitespace-nowrap">
+          <span className="text-[10px] font-extrabold text-white tracking-wider uppercase whitespace-nowrap">
             CLIMPS Network
           </span>
           <span className="inline-flex items-center gap-0.5">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500" title="Red" />
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" title="Green" />
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600" title="Blue" />
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" title="Green" />
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title="Blue" />
           </span>
         </div>
       </div>
@@ -108,10 +108,10 @@ export default function NetworkTicker() {
           {tickerItems.map((msg, i) => (
             <span
               key={i}
-              className="inline-flex items-center text-[11px] font-semibold text-slate-700 px-6 gap-1.5 whitespace-nowrap"
+              className="inline-flex items-center text-[11px] font-medium text-slate-300 px-6 gap-1.5 whitespace-nowrap"
             >
               {msg}
-              <span className="mx-3 text-slate-300 font-bold">•</span>
+              <span className="mx-3 text-emerald-500/60 font-bold">•</span>
             </span>
           ))}
         </div>

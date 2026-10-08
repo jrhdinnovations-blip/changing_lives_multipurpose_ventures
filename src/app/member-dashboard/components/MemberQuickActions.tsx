@@ -4,18 +4,16 @@ import {
   Plus, Target, CreditCard, TrendingUp, Download, Receipt, Send, HelpCircle
 } from 'lucide-react';
 import { toast } from 'sonner';
-import Icon from '@/components/ui/AppIcon';
-
 
 const actions = [
-  { id: 'qa-add-savings', label: 'Add Savings', icon: Plus, color: 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 shadow-2xs' },
-  { id: 'qa-create-goal', label: 'Create Goal', icon: Target, color: 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 shadow-2xs' },
-  { id: 'qa-apply-loan', label: 'Apply for Loan', icon: CreditCard, color: 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 shadow-2xs' },
-  { id: 'qa-invest', label: 'Wealth Circle', icon: TrendingUp, color: 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 shadow-2xs' },
-  { id: 'qa-transfer', label: 'Transfer Funds', icon: Send, color: 'bg-sky-50 text-sky-700 hover:bg-sky-100 border border-sky-200 shadow-2xs' },
-  { id: 'qa-statement', label: 'Download Statement', icon: Download, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
-  { id: 'qa-receipts', label: 'View Receipts', icon: Receipt, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
-  { id: 'qa-help', label: 'Get Help', icon: HelpCircle, color: 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200 shadow-2xs' },
+  { id: 'qa-add-savings', label: 'Add Savings', icon: Plus, color: 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20' },
+  { id: 'qa-create-goal', label: 'Create Goal', icon: Target, color: 'bg-indigo-500/10 text-indigo-400 hover:bg-indigo-500/20 border border-indigo-500/20' },
+  { id: 'qa-apply-loan', label: 'Apply for Loan', icon: CreditCard, color: 'bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/20' },
+  { id: 'qa-invest', label: 'Wealth Circle', icon: TrendingUp, color: 'bg-emerald-500/10 text-[#00E599] hover:bg-emerald-500/20 border border-emerald-500/20' },
+  { id: 'qa-transfer', label: 'Transfer Funds', icon: Send, color: 'bg-sky-500/10 text-sky-400 hover:bg-sky-500/20 border border-sky-500/20' },
+  { id: 'qa-statement', label: 'Download Statement', icon: Download, color: 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10' },
+  { id: 'qa-receipts', label: 'View Receipts', icon: Receipt, color: 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10' },
+  { id: 'qa-help', label: 'Get Help', icon: HelpCircle, color: 'bg-white/5 text-slate-300 hover:bg-white/10 border border-white/10' },
 ];
 
 export default function MemberQuickActions() {
@@ -29,7 +27,7 @@ export default function MemberQuickActions() {
             <button
               key={action?.id}
               onClick={() => toast?.info(`${action?.label} — coming soon in full release`)}
-              className={`flex flex-col items-center gap-2 p-3 rounded-2xl transition-all duration-150 active:scale-95 group ${action?.color}`}
+              className={`flex flex-col items-center gap-2 p-3.5 rounded-2xl transition-all duration-150 active:scale-95 group backdrop-blur-md ${action?.color}`}
             >
               <Icon size={20} />
               <span className="text-2xs font-semibold text-center leading-tight">{action?.label}</span>
