@@ -160,7 +160,7 @@ export default function HeroSection() {
   return (
     <>
       {/* ── HERO SECTION ── */}
-      <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden bg-[#050B17] text-white pt-24 pb-16 lg:py-28">
+      <section className="relative min-h-[92vh] flex flex-col justify-center overflow-hidden bg-[#050B17] text-white pt-32 pb-16 lg:pt-40 lg:pb-28">
 
         {/* Dynamic mesh grid background */}
         <div

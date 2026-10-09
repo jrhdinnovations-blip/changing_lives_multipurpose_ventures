@@ -35,22 +35,22 @@ export default function LandingNav() {
 
   return (
     <header
-      className={`fixed top-8 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
           ? 'bg-[#060D1E]/95 backdrop-blur-xl shadow-xl border-b border-white/10'
           : 'bg-[#060D1E]/80 backdrop-blur-lg border-b border-white/10 shadow-lg'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+        <div className="flex items-center justify-between h-24 lg:h-32">
           {/* Logo */}
           <Link href="/landing" className="flex items-center gap-3.5 flex-shrink-0 group">
             <Image
               src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
               alt="CLIMPS Logo"
-              width={64}
-              height={64}
-              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover ring-2 ring-emerald-500/30 shadow-xl group-hover:scale-105 transition-transform"
+              width={128}
+              height={128}
+              className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover ring-2 ring-emerald-500/30 shadow-xl group-hover:scale-105 transition-transform"
             />
             <div className="flex flex-col leading-tight">
               <div className="flex items-center gap-1.5">
