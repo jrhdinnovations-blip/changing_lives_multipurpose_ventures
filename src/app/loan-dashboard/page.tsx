@@ -60,64 +60,186 @@ export default function LoanDashboardPage() {
   useEffect(() => {
     if (!user) return;
     loadData();
+
+    function onStorage() {
+      loadData();
+    }
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
   }, [user]);
 
   async function loadData() {
     setLoading(true);
     try {
       // Get member
-      const { data: memberData } = await supabase
-        .from('members')
-        .select('id')
-        .eq('user_id', user?.id)
-        .single();
-      const memberId = memberData?.id;
+      let memberId: string | null = null;
+      try {
+        const { data: memberData } = await supabase
+          .from('members')
+          .select('id')
+          .eq('user_id', user?.id)
+          .maybeSingle();
+        memberId = memberData?.id || null;
+      } catch {}
 
-      if (memberId) {
-        // Load loan applications
-        const { data: apps } = await supabase
-          .from('loan_applications')
-          .select('*')
-          .eq('member_id', memberId)
-          .order('created_at', { ascending: false });
-        setApplications(apps || []);
+      // 1. Load loan applications from Supabase
+      let fetchedApps: any[] = [];
+      try {
+        if (memberId) {
+          const { data: appsByMem } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .eq('member_id', memberId)
+            .order('created_at', { ascending: false });
+          if (appsByMem) fetchedApps.push(...appsByMem);
+        }
+        if (user?.id) {
+          const { data: appsByUsr } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+          if (appsByUsr) fetchedApps.push(...appsByUsr);
+        }
+      } catch (appErr) {
+        console.warn('Error fetching apps:', appErr);
+      }
 
-        // Load active loans
-        const { data: loans } = await supabase
-          .from('loans')
-          .select('*')
-          .eq('member_id', memberId)
-          .in('loan_status', ['active', 'disbursed', 'overdue'])
-          .order('created_at', { ascending: false });
-        setActiveLoans(loans || []);
+      // Merge with localStorage applications
+      let localApps: any[] = [];
+      if (typeof window !== 'undefined') {
+        try {
+          const stored = localStorage.getItem('climps_loan_applications');
+          if (stored) localApps = JSON.parse(stored);
+        } catch {}
+      }
 
-        if (loans && loans.length > 0) {
-          const loan = loans[0];
-          setSelectedLoan(loan);
+      const appMap = new Map<string, any>();
+      fetchedApps.forEach((a: any) => appMap.set(a.id || a.application_number, a));
+      localApps.forEach((a: any) => {
+        if ((user?.id && a.user_id === user.id) || (memberId && a.member_id === memberId)) {
+          const key = a.id || a.application_number;
+          if (!appMap.has(key)) appMap.set(key, a);
+          else {
+            // merge updated status if local is newer
+            const existing = appMap.get(key);
+            if (['disbursed', 'approved', 'rejected'].includes(a.app_status || a.application_status)) {
+              appMap.set(key, { ...existing, ...a });
+            }
+          }
+        }
+      });
 
-          // Load repayment schedule
+      const finalApps = Array.from(appMap.values()).sort(
+        (a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime()
+      );
+      setApplications(finalApps);
+
+      // 2. Load active loans from Supabase
+      let fetchedLoans: any[] = [];
+      try {
+        if (memberId) {
+          const { data: loansByMem } = await supabase
+            .from('loans')
+            .select('*')
+            .eq('member_id', memberId)
+            .in('loan_status', ['active', 'disbursed', 'overdue'])
+            .order('created_at', { ascending: false });
+          if (loansByMem) fetchedLoans.push(...loansByMem);
+        }
+        if (user?.id) {
+          const { data: loansByUsr } = await supabase
+            .from('loans')
+            .select('*')
+            .eq('user_id', user.id)
+            .in('loan_status', ['active', 'disbursed', 'overdue'])
+            .order('created_at', { ascending: false });
+          if (loansByUsr) fetchedLoans.push(...loansByUsr);
+        }
+      } catch (loanErr) {
+        console.warn('Error fetching loans:', loanErr);
+      }
+
+      // Merge with localStorage active loans
+      if (typeof window !== 'undefined') {
+        try {
+          const storedLoans = JSON.parse(localStorage.getItem('climps_active_loans') || '[]');
+          storedLoans.forEach((l: any) => {
+            if ((user?.id && l.user_id === user.id) || (memberId && l.member_id === memberId)) {
+              fetchedLoans.push(l);
+            }
+          });
+        } catch {}
+      }
+
+      // Also check if latest application was disbursed
+      if (fetchedLoans.length === 0 && finalApps.length > 0) {
+        const latest = finalApps[0];
+        if (['disbursed', 'active'].includes(latest.app_status || latest.application_status)) {
+          const principal = Number(latest.requested_amount || latest.loan_amount || 0);
+          const months = Number(latest.loan_duration_months || latest.duration_months || 1);
+          const totalRepayable = Number(latest.total_repayment_amount) || Math.round(principal + principal * 0.1 * months);
+          fetchedLoans.push({
+            id: 'loan_' + latest.id,
+            loan_number: `CLMV/FACILITY/${new Date().getFullYear()}/${latest.application_number?.split('/')?.pop() || '0101'}`,
+            principal,
+            interest_amount: Math.round(principal * 0.1 * months),
+            total_repayable: totalRepayable,
+            amount_repaid: 0,
+            outstanding_balance: totalRepayable,
+            repayment_amount: Math.round(totalRepayable / months),
+            loan_status: 'active',
+            next_repayment_date: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
+            maturity_date: new Date(Date.now() + months * 30 * 86400000).toISOString().split('T')[0],
+          });
+        }
+      }
+
+      setActiveLoans(fetchedLoans);
+
+      if (fetchedLoans.length > 0) {
+        const loan = fetchedLoans[0];
+        setSelectedLoan(loan);
+
+        // Load repayment schedule
+        try {
           const { data: schedule } = await supabase
             .from('loan_repayment_schedules')
             .select('*')
             .eq('loan_id', loan.id)
             .order('instalment_number', { ascending: true });
           setRepaymentSchedule(schedule || []);
+        } catch {
+          setRepaymentSchedule([]);
+        }
 
-          // Load interest records
+        // Load interest records
+        try {
           const { data: interest } = await supabase
             .from('loan_interest_records')
             .select('*')
             .eq('loan_id', loan.id)
             .order('period_number', { ascending: true });
           setInterestRecords(interest || []);
+        } catch {
+          setInterestRecords([]);
+        }
 
-          // Load receipts
+        // Load receipts
+        try {
           const { data: rec } = await supabase
             .from('loan_receipts')
             .select('*')
             .eq('loan_id', loan.id)
             .order('created_at', { ascending: false });
           setReceipts(rec || []);
+        } catch {
+          setReceipts([]);
+        }
+      } else {
+        setSelectedLoan(null);
+        if (finalApps.length > 0) {
+          setActiveTab('applications');
         }
       }
     } catch (err) {
@@ -230,6 +352,47 @@ export default function LoanDashboardPage() {
             >
               Start Loan Application
             </Link>
+          </div>
+        )}
+
+        {/* Pending / Approved Application Hero Banner */}
+        {!loan && applications.length > 0 && (
+          <div className="relative overflow-hidden rounded-2xl p-6 sm:p-7 text-slate-900 bg-white border border-amber-200 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className={`px-2.5 py-0.5 rounded-full text-2xs font-bold tracking-wider uppercase border ${
+                    applications[0].app_status === 'approved'
+                      ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      : 'bg-amber-50 text-amber-700 border-amber-200'
+                  }`}>
+                    {applications[0].app_status === 'approved' ? '✓ Approved — Payout Queued' : '⏳ Application Under Review'}
+                  </span>
+                  <span className="text-xs text-slate-500 font-mono">{applications[0].application_number}</span>
+                </div>
+                <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                  {formatNGN(applications[0].loan_amount || applications[0].requested_amount)}
+                </p>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Fast Express Loan · {applications[0].loan_duration_months || applications[0].duration_months} Months · 10% monthly interest
+                </p>
+              </div>
+              <div>
+                <StatusBadge status={applications[0].app_status || applications[0].application_status || 'pending'} />
+              </div>
+            </div>
+
+            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
+              {applications[0].app_status === 'approved' ? (
+                <p className="text-emerald-800 font-medium">
+                  🎉 <strong>Your loan was approved by Admin!</strong> The CLIMPS Finance Desk (Accountant) has been notified to disburse your funds to <strong>{applications[0].bank_name} ({applications[0].account_number})</strong>. It will show as Active once payment is confirmed.
+                </p>
+              ) : (
+                <p>
+                  Your application is currently <strong>Pending Admin Review</strong>. Once the credit team verifies your collateral, the Accountant will receive an approval notification to release your funds.
+                </p>
+              )}
+            </div>
           </div>
         )}
 
@@ -489,19 +652,33 @@ export default function LoanDashboardPage() {
                     <div className="grid grid-cols-3 gap-3 text-xs p-3 rounded-xl bg-slate-50 border border-slate-200">
                       <div>
                         <p className="text-slate-500">Amount</p>
-                        <p className="font-bold text-slate-900 mt-0.5">{formatNGN(app.requested_amount)}</p>
+                        <p className="font-bold text-slate-900 mt-0.5">{formatNGN(app.requested_amount || app.loan_amount)}</p>
                       </div>
                       <div>
                         <p className="text-slate-500">Tenure</p>
-                        <p className="font-bold text-slate-900 mt-0.5">{app.duration_months} month{app.duration_months > 1 ? 's' : ''}</p>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {app.duration_months || app.loan_duration_months} month{(app.duration_months || app.loan_duration_months) > 1 ? 's' : ''}
+                        </p>
                       </div>
                       <div>
                         <p className="text-slate-500">Purpose</p>
-                        <p className="font-semibold text-slate-800 mt-0.5">{app.loan_purpose || '—'}</p>
+                        <p className="font-semibold text-slate-800 mt-0.5 truncate">{app.loan_purpose || 'Personal Loan'}</p>
                       </div>
                     </div>
+                    {app.collateral_type && (
+                      <div className="mt-2.5 pt-2.5 border-t border-slate-100 flex flex-wrap items-center justify-between text-xs gap-2">
+                        <span className="text-slate-500">
+                          Collateral: <strong className="text-slate-700 capitalize">{(app.collateral_type || 'Cheque / Asset').replace(/_/g, ' ')}</strong>
+                        </span>
+                        {app.disbursement_reference && (
+                          <span className="text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded-lg border border-emerald-200 text-2xs">
+                            ✓ Payout Confirmed: {app.disbursement_reference}
+                          </span>
+                        )}
+                      </div>
+                    )}
                     {app.processing_fee_amount > 0 && (
-                      <div className="mt-3 bg-rose-50 border border-rose-200 rounded-xl px-3 py-2 text-xs text-rose-700 font-medium">
+                      <div className="mt-2 bg-rose-50 border border-rose-200 rounded-xl px-3 py-1.5 text-xs text-rose-700 font-medium">
                         Processing Fee: {formatNGN(app.processing_fee_amount)} (1% mandatory fee)
                       </div>
                     )}

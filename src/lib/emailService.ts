@@ -88,6 +88,7 @@ export async function sendLoanAppliedEmailToAdmin(
     new Set(
       [
         ...(recipients || []),
+        'plangnansamson@gmail.com',
         process.env.ADMIN_NOTIFICATION_EMAIL,
         process.env.ADMIN_EMAIL,
         'Changinglivesmultipurpose@gmail.com',
@@ -241,7 +242,7 @@ export async function sendLoanApprovedEmailToAccountant(
   );
 
   const siteUrl = getSiteUrl();
-  const disbursementLink = `${siteUrl}/admin-dashboard/loans`;
+  const disbursementLink = `${siteUrl}/accountant-dashboard`;
   const formattedAmount = `₦${Number(data.loanAmount || 0).toLocaleString()}`;
   const formattedRepayment = `₦${Number(data.totalRepaymentAmount || 0).toLocaleString()}`;
   const monthlyRepayment = data.monthlyRepaymentAmount
@@ -333,7 +334,7 @@ export async function sendLoanApprovedEmailToAccountant(
 
               <div style="text-align: center; margin: 32px 0 16px 0;">
                 <a href="${disbursementLink}" style="background-color: #00E599; color: #022013; font-weight: 800; font-size: 14px; text-decoration: none; padding: 14px 28px; border-radius: 12px; display: inline-block; box-shadow: 0 4px 14px rgba(0, 229, 153, 0.35);">
-                  Disburse & Reconcile in Admin Portal →
+                  Disburse & Reconcile in Accountant Portal →
                 </a>
               </div>
               <p style="text-align: center; font-size: 11px; color: #64748B; margin: 0;">Approved on: ${dateStr}</p>

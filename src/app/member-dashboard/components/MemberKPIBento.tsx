@@ -113,15 +113,70 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
 
       const totalOutstanding = overdueContribs?.reduce((sum, c) => sum + (c.outstanding_amount || 0), 0) || 0;
 
-      // Get active loan
-      const { data: activeLoan } = await supabase
-        .from('loans')
-        .select('*')
-        .eq('member_id', member.id)
-        .in('loan_status', ['active', 'disbursed', 'overdue'])
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      // Get active loan (check by member_id or user_id)
+      let activeLoan: any = null;
+      if (member?.id) {
+        const { data: loanByMem } = await supabase
+          .from('loans')
+          .select('*')
+          .eq('member_id', member.id)
+          .in('loan_status', ['active', 'disbursed', 'overdue'])
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        activeLoan = loanByMem;
+      }
+
+      if (!activeLoan && user?.id) {
+        const { data: loanByUsr } = await supabase
+          .from('loans')
+          .select('*')
+          .eq('user_id', user.id)
+          .in('loan_status', ['active', 'disbursed', 'overdue'])
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .maybeSingle();
+        activeLoan = loanByUsr;
+      }
+
+      // Check localStorage for active loan
+      if (!activeLoan && typeof window !== 'undefined') {
+        try {
+          const stored = JSON.parse(localStorage.getItem('climps_active_loans') || '[]');
+          if (stored.length > 0) activeLoan = stored[0];
+        } catch {}
+      }
+
+      // Check for pending/approved loan applications
+      let pendingApp: any = null;
+      if (!activeLoan) {
+        if (member?.id) {
+          const { data: appData } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .eq('member_id', member.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (appData) pendingApp = appData;
+        }
+        if (!pendingApp && user?.id) {
+          const { data: appData } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (appData) pendingApp = appData;
+        }
+        if (!pendingApp && typeof window !== 'undefined') {
+          try {
+            const storedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
+            if (storedApps.length > 0) pendingApp = storedApps[0];
+          } catch {}
+        }
+      }
 
       // Get investments
       const { data: investments } = await supabase
@@ -178,16 +233,31 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
         },
         {
           id: 'kpi-loan',
-          label: 'Active Loan Balance',
-          value: fmt(Number(activeLoan?.outstanding_balance ?? member.active_loan_balance) || 0),
+          label: activeLoan ? 'Active Loan Balance' : pendingApp ? 'Pending Loan Request' : 'Active Loan Balance',
+          value: activeLoan
+            ? fmt(Number(activeLoan?.outstanding_balance ?? member.active_loan_balance) || 0)
+            : pendingApp
+            ? fmt(Number(pendingApp.requested_amount || pendingApp.loan_amount) || 0)
+            : fmt(0),
           subValue: activeLoan ? fmt(Number(activeLoan.repayment_amount) || 0) : undefined,
           subLabel: activeLoan?.next_repayment_date
             ? `Next instalment due ${new Date(activeLoan.next_repayment_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}`
+            : pendingApp
+            ? pendingApp.app_status === 'approved'
+              ? 'Approved · Awaiting disbursement'
+              : 'Under review by Admin'
             : 'No active loan',
           icon: CreditCard,
-          variant: 'loan',
-          badge: activeLoan ? { text: 'ACTIVE', type: 'info' } : undefined,
-          tooltip: 'Outstanding principal on your active loan',
+          variant: (activeLoan ? 'loan' : pendingApp ? 'alert' : 'default') as any,
+          badge: activeLoan
+            ? { text: 'ACTIVE', type: 'info' as const }
+            : pendingApp
+            ? {
+                text: pendingApp.app_status === 'approved' ? 'APPROVED' : 'PENDING',
+                type: pendingApp.app_status === 'approved' ? ('success' as const) : ('warning' as const),
+              }
+            : undefined,
+          tooltip: activeLoan ? 'Outstanding principal on your active loan' : 'Loan application status',
         },
         {
           id: 'kpi-investment',

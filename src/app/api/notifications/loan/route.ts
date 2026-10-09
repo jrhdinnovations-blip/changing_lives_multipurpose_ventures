@@ -71,8 +71,10 @@ export async function POST(request: Request) {
           const memberEmails = adminMembers.map((m) => m.email).filter(Boolean);
           adminEmails = Array.from(new Set([...adminEmails, ...memberEmails]));
         }
+      adminEmails = Array.from(new Set([...adminEmails, 'plangnansamson@gmail.com', 'Changinglivesmultipurpose@gmail.com']));
       } catch (dbErr) {
         console.warn('[Loan Notification API] Error querying admin emails:', dbErr);
+        adminEmails = ['plangnansamson@gmail.com', 'Changinglivesmultipurpose@gmail.com'];
       }
 
       // 2. Send email to Admin
@@ -129,8 +131,10 @@ export async function POST(request: Request) {
           const memberEmails = accountantMembers.map((m) => m.email).filter(Boolean);
           accountantEmails = Array.from(new Set([...accountantEmails, ...memberEmails]));
         }
+        accountantEmails = Array.from(new Set([...accountantEmails, 'bimaeteng4@gmail.com', 'Changinglivesmultipurpose@gmail.com']));
       } catch (dbErr) {
         console.warn('[Loan Notification API] Error querying accountant emails:', dbErr);
+        accountantEmails = ['bimaeteng4@gmail.com', 'Changinglivesmultipurpose@gmail.com'];
       }
 
       // 2. Send email to Accountant

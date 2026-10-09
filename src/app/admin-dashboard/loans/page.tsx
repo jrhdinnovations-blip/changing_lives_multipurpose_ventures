@@ -138,17 +138,53 @@ export default function AdminLoansPage() {
         .order('created_at', { ascending: false });
 
       if (filterStatus === 'draft') {
-        // Explicit draft filter
         query = query.eq('app_status', 'draft');
+      } else if (filterStatus === 'pending') {
+        query = query.in('app_status', ['pending', 'submitted']);
       } else if (filterStatus !== 'all') {
         query = query.eq('app_status', filterStatus);
       } else {
-        // Default: exclude drafts — they are incomplete/unsent applications
         query = query.neq('app_status', 'draft');
       }
 
       const { data, error } = await query;
-      const finalApps: LoanApplication[] = (!error && data) ? data : [];
+
+      let localApps: any[] = [];
+      if (typeof window !== 'undefined') {
+        try {
+          const stored = localStorage.getItem('climps_loan_applications');
+          if (stored) localApps = JSON.parse(stored);
+        } catch {}
+      }
+
+      const map = new Map<string, any>();
+      (data || []).forEach((a: any) => map.set(a.id || a.application_number, {
+        ...a,
+        requested_amount: a.requested_amount || a.loan_amount || 0,
+        duration_months: a.duration_months || a.loan_duration_months || 1,
+      }));
+
+      localApps.forEach((a: any) => {
+        const key = a.id || a.application_number;
+        if (!map.has(key)) {
+          map.set(key, {
+            ...a,
+            requested_amount: a.requested_amount || a.loan_amount || 0,
+            duration_months: a.duration_months || a.loan_duration_months || 1,
+          });
+        }
+      });
+
+      let finalApps: LoanApplication[] = Array.from(map.values()) as LoanApplication[];
+
+      if (filterStatus === 'pending') {
+        finalApps = finalApps.filter(a => ['pending', 'submitted'].includes(a.app_status || a.application_status));
+      } else if (filterStatus !== 'all') {
+        finalApps = finalApps.filter(a => (a.app_status === filterStatus || a.application_status === filterStatus));
+      } else {
+        finalApps = finalApps.filter(a => a.app_status !== 'draft');
+      }
+
       setApplications(finalApps);
 
       if (typeof window !== 'undefined') {
@@ -175,27 +211,63 @@ export default function AdminLoansPage() {
   }
 
   async function loadApplicationDetails(app: LoanApplication) {
-    setSelected(app);
+    const normalizedApp = {
+      ...app,
+      requested_amount: app.requested_amount || (app as any).loan_amount || 0,
+      duration_months: app.duration_months || (app as any).loan_duration_months || 1,
+    };
+    setSelected(normalizedApp);
     setDetailTab('details');
     setActionError('');
     setActionNotes('');
 
-    const { data: col } = await supabase.from('loan_collaterals').select('*').eq('application_id', app.id).single();
-    setCollateral(col);
+    try {
+      const { data: col } = await supabase.from('loan_collaterals').select('*').eq('application_id', app.id).maybeSingle();
+      setCollateral(col || ((app as any).collateral_type ? {
+        collateral_type: (app as any).collateral_type,
+        cheque_number: (app as any).cheque_number,
+        cheque_bank: (app as any).cheque_bank,
+        cheque_amount: (app as any).loan_amount || app.requested_amount,
+        asset_description: (app as any).asset_description,
+        asset_value: (app as any).asset_value,
+        asset_ownership: (app as any).asset_ownership,
+        is_verified: (app as any).collateral_verified || false,
+      } : null));
+    } catch {
+      setCollateral(null);
+    }
 
-    const { data: guar } = await supabase.from('loan_guarantors').select('*').eq('application_id', app.id).single();
-    setGuarantor(guar);
+    try {
+      const { data: guar } = await supabase.from('loan_guarantors').select('*').eq('application_id', app.id).maybeSingle();
+      setGuarantor(guar || ((app as any).guarantor_name ? {
+        guarantor_name: (app as any).guarantor_name,
+        guarantor_phone: (app as any).guarantor_phone,
+        guarantor_address: (app as any).guarantor_address,
+        is_verified: (app as any).guarantor_verified || false,
+      } : null));
+    } catch {
+      setGuarantor(null);
+    }
 
-    const { data: audit } = await supabase.from('loan_audit_trail').select('*').eq('application_id', app.id).order('created_at', { ascending: false });
-    setAuditTrail(audit || []);
+    try {
+      const { data: audit } = await supabase.from('loan_audit_trail').select('*').eq('application_id', app.id).order('created_at', { ascending: false });
+      setAuditTrail(audit || []);
+    } catch {
+      setAuditTrail([]);
+    }
 
-    const { data: loans } = await supabase.from('loans').select('id').eq('application_id', app.id).single();
-    if (loans) {
-      const { data: schedule } = await supabase.from('loan_repayment_schedules').select('*').eq('loan_id', loans.id).order('instalment_number');
-      setRepaymentSchedule(schedule || []);
-      const { data: rec } = await supabase.from('loan_receipts').select('*').eq('loan_id', loans.id).order('created_at', { ascending: false });
-      setReceipts(rec || []);
-    } else {
+    try {
+      const { data: loans } = await supabase.from('loans').select('id').eq('application_id', app.id).maybeSingle();
+      if (loans) {
+        const { data: schedule } = await supabase.from('loan_repayment_schedules').select('*').eq('loan_id', loans.id).order('instalment_number');
+        setRepaymentSchedule(schedule || []);
+        const { data: rec } = await supabase.from('loan_receipts').select('*').eq('loan_id', loans.id).order('created_at', { ascending: false });
+        setReceipts(rec || []);
+      } else {
+        setRepaymentSchedule([]);
+        setReceipts([]);
+      }
+    } catch {
       setRepaymentSchedule([]);
       setReceipts([]);
     }
@@ -227,6 +299,21 @@ export default function AdminLoansPage() {
         });
       } catch (dbErr) {
         console.warn('DB write bypassed, updating state locally:', dbErr);
+      }
+
+      // Update localStorage cache so accountant & customer dashboards see updates immediately
+      if (typeof window !== 'undefined') {
+        try {
+          const stored = localStorage.getItem('climps_loan_applications');
+          const list = stored ? JSON.parse(stored) : [];
+          const idx = list.findIndex((x: any) => x.id === selected.id || x.application_number === selected.application_number);
+          if (idx >= 0) {
+            list[idx] = { ...list[idx], ...updatePayload };
+          } else {
+            list.unshift({ ...selected, ...updatePayload });
+          }
+          localStorage.setItem('climps_loan_applications', JSON.stringify(list));
+        } catch {}
       }
 
       const updated = { ...selected, app_status: newStatus, ...updatePayload };
@@ -370,6 +457,7 @@ export default function AdminLoansPage() {
               className="w-full mt-2 px-3 py-2 rounded-xl border border-white/10 bg-[#0B1528] text-white text-sm focus:outline-none focus:border-[#00E599]/60"
             >
               <option value="all" className="bg-[#0B1528] text-white">All Submitted</option>
+              <option value="pending" className="bg-[#0B1528] text-white">Pending Review</option>
               <option value="submitted" className="bg-[#0B1528] text-white">Submitted</option>
               <option value="under_review" className="bg-[#0B1528] text-white">Under Review</option>
               <option value="guarantor_verification" className="bg-[#0B1528] text-white">Guarantor Verification</option>
