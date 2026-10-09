@@ -85,12 +85,6 @@ export default function LandingNav() {
               About CLIMPS
             </Link>
 
-            <Link
-              href="/landing#welcome-vision"
-              className="px-3.5 py-2 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all duration-150"
-            >
-              Vision & Mission
-            </Link>
 
             <Link
               href="/how-it-works"
@@ -391,13 +385,6 @@ export default function LandingNav() {
               className="block px-3 py-2 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10 transition-colors"
             >
               About CLIMPS
-            </Link>
-            <Link
-              href="/landing#welcome-vision"
-              onClick={() => setMenuOpen(false)}
-              className="block px-3 py-2 rounded-xl text-sm font-medium text-slate-200 hover:bg-white/10 transition-colors"
-            >
-              Vision & Mission
             </Link>
             <Link
               href="/how-it-works"
