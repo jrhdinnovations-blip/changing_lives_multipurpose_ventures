@@ -317,7 +317,13 @@ export default function LandingNav() {
             {user ? (
               <div className="flex items-center gap-2">
                 <Link
-                  href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+                  href={
+                    ['super_admin', 'admin', 'manager', 'staff'].includes(userRole)
+                      ? '/admin-dashboard'
+                      : userRole === 'accountant'
+                      ? '/accountant-dashboard'
+                      : '/member-dashboard'
+                  }
                   className="px-5 py-2.5 rounded-xl text-sm font-bold bg-[#00D084] hover:bg-[#00BA76] text-slate-950 transition-all duration-150 shadow-lg shadow-emerald-500/25 active:scale-95 flex items-center gap-1.5"
                 >
                   <span>Dashboard</span>
@@ -492,7 +498,13 @@ export default function LandingNav() {
               {user ? (
                 <>
                   <Link
-                    href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+                    href={
+                      ['super_admin', 'admin', 'manager', 'staff'].includes(userRole)
+                        ? '/admin-dashboard'
+                        : userRole === 'accountant'
+                        ? '/accountant-dashboard'
+                        : '/member-dashboard'
+                    }
                     onClick={() => setMenuOpen(false)}
                     className="w-full text-center py-2.5 px-4 rounded-xl text-sm font-bold bg-[#00D084] hover:bg-[#00BA76] text-slate-950 shadow-md flex items-center justify-center gap-1.5"
                   >

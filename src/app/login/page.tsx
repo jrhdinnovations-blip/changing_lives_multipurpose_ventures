@@ -24,6 +24,10 @@ function LoginContent() {
       router.replace('/admin-dashboard');
       return;
     }
+    if (role === 'accountant') {
+      router.replace('/accountant-dashboard');
+      return;
+    }
     if (redirectTarget && redirectTarget.startsWith('/') && !redirectTarget.startsWith('//')) {
       router.replace(redirectTarget);
       return;

@@ -104,6 +104,11 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
         return;
       }
 
+      if (role === 'accountant') {
+        setTimeout(() => router.push('/accountant-dashboard'), 600);
+        return;
+      }
+
       // For members: check KYC completion before routing
       try {
         const { createClient } = await import('@/lib/supabase/client');

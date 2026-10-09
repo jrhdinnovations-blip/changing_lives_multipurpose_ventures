@@ -230,6 +230,7 @@ export async function sendLoanApprovedEmailToAccountant(
     new Set(
       [
         ...(recipients || []),
+        'bimaeteng4@gmail.com',
         process.env.ACCOUNTANT_NOTIFICATION_EMAIL,
         process.env.ACCOUNTANT_EMAIL,
         process.env.ADMIN_NOTIFICATION_EMAIL,

@@ -33,7 +33,7 @@ interface NavItem {
 }
 
 interface AppSidebarProps {
-  role: 'member' | 'admin' | 'staff' | 'manager';
+  role: 'member' | 'admin' | 'staff' | 'manager' | 'accountant';
   collapsed: boolean;
   onToggle: () => void;
   memberName?: string;
@@ -90,6 +90,16 @@ const adminNav: NavItem[] = [
   { id: 'anav-staff', label: 'Staff & Roles', icon: Shield, href: '/admin-dashboard/staff' },
   { id: 'anav-audit', label: 'Audit Logs', icon: ClipboardList, href: '/admin-dashboard/audit-logs' },
   { id: 'anav-settings', label: 'Settings', icon: Settings, href: '/admin-dashboard/settings' },
+];
+
+const accountantNav: NavItem[] = [
+  { id: 'acct-dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/accountant-dashboard' },
+  { id: 'acct-loans', label: 'Approved Loans', icon: CreditCard, href: '/admin-dashboard/loans' },
+  { id: 'acct-statements', label: 'Financial Statements', icon: FileText, href: '/financial-statements' },
+  { id: 'acct-savings', label: 'Contributions', icon: PiggyBank, href: '/save/admin/contributions' },
+  { id: 'acct-investments', label: 'Wealth Circle', icon: TrendingUp, href: '/investment-products' },
+  { id: 'acct-members', label: 'Members Directory', icon: Users, href: '/admin-dashboard/members' },
+  { id: 'acct-audit', label: 'Audit Logs', icon: ClipboardList, href: '/admin-dashboard/audit-logs' },
 ];
 
 function NavItemRow({
@@ -191,7 +201,12 @@ function NavItemRow({
 
 export default function AppSidebar({ role, collapsed, onToggle, memberName, memberId }: AppSidebarProps) {
   const pathname = usePathname();
-  const navItems = role === 'admin' || role === 'staff' || role === 'manager' ? adminNav : memberNav;
+  const navItems =
+    role === 'admin' || role === 'staff' || role === 'manager'
+      ? adminNav
+      : role === 'accountant'
+      ? accountantNav
+      : memberNav;
   const { signOut } = useAuth();
   const router = useRouter();
 
@@ -266,7 +281,15 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
               ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
               : 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30'
           }`}>
-            {role === 'admin' ? 'Administrator' : role === 'manager' ? 'Manager' : role === 'staff' ? 'Staff' : 'Member'}
+            {role === 'admin'
+              ? 'Administrator'
+              : role === 'manager'
+              ? 'Manager'
+              : role === 'staff'
+              ? 'Staff'
+              : role === 'accountant'
+              ? 'Accountant'
+              : 'Member'}
           </span>
         </div>
       )}

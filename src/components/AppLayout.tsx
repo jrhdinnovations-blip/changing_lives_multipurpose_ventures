@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 
 interface AppLayoutProps {
   children: React.ReactNode;
-  role?: 'member' | 'admin' | 'staff' | 'manager';
+  role?: 'member' | 'admin' | 'staff' | 'manager' | 'accountant';
   memberName?: string;
   memberId?: string;
 }
@@ -24,7 +24,7 @@ export default function AppLayout({
   const { user, profile, loading } = useAuth();
   const [resolvedName, setResolvedName] = useState(memberNameProp || '');
   const [resolvedId, setResolvedId] = useState(memberIdProp || '');
-  const [resolvedRole, setResolvedRole] = useState<'member' | 'admin' | 'staff' | 'manager'>(
+  const [resolvedRole, setResolvedRole] = useState<'member' | 'admin' | 'staff' | 'manager' | 'accountant'>(
     roleProp || (profile?.role === 'super_admin' ? 'admin' : (profile?.role as any) || 'member')
   );
 
@@ -73,8 +73,9 @@ export default function AppLayout({
         setResolvedId(memberIdProp || mId);
 
         if (!roleProp) {
-          const uRole = profile?.role === 'super_admin' ? 'admin' : (profile?.role as any) || 'member';
-          setResolvedRole(uRole);
+          const raw = profile?.role || 'member';
+          const uRole = raw === 'super_admin' ? 'admin' : raw;
+          setResolvedRole(uRole as any);
         }
       } catch (e) {
         console.warn('Error resolving layout user info:', e);

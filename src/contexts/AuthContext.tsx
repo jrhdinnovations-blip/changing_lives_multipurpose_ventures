@@ -145,12 +145,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Determine user role from profile or metadata
+  const ROLE_OVERRIDES: Record<string, string> = {
+    'raymondlongdiem22@gmail.com': 'super_admin',
+    'plangnansamson@gmail.com': 'admin',
+    'bimaeteng4@gmail.com': 'accountant',
+  };
+
+  const userEmail = user?.email?.toLowerCase() || '';
   const userRole =
-    user?.email?.toLowerCase() === 'raymondlongdiem22@gmail.com'
-      ? 'super_admin'
-      : (profile?.role || user?.user_metadata?.role || 'member');
+    ROLE_OVERRIDES[userEmail] ||
+    profile?.role ||
+    user?.user_metadata?.role ||
+    'member';
 
   const isAdmin = ['super_admin', 'admin', 'manager', 'staff'].includes(userRole);
+  const isAccountant = userRole === 'accountant';
   const isMember = userRole === 'member';
 
   const value = {
@@ -160,6 +169,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     loading,
     userRole,
     isAdmin,
+    isAccountant,
     isMember,
     signUp,
     signIn,

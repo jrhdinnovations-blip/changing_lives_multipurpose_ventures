@@ -112,7 +112,13 @@ export default function FinalCTA() {
         >
           {user ? (
             <Link
-              href={['super_admin', 'admin', 'manager', 'staff'].includes(userRole) ? '/admin-dashboard' : '/member-dashboard'}
+              href={
+                ['super_admin', 'admin', 'manager', 'staff'].includes(userRole)
+                  ? '/admin-dashboard'
+                  : userRole === 'accountant'
+                  ? '/accountant-dashboard'
+                  : '/member-dashboard'
+              }
               className="relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black text-base tracking-wide transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/25 group"
             >
               Go to Dashboard
