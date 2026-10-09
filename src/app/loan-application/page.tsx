@@ -30,6 +30,7 @@ interface FormData {
   applicantGender: string;
   applicantState: string;
   loanPurpose: string;
+  loanPurposeCategory: string;
   // Loan
   loanAmount: string;
   loanDurationMonths: number;
@@ -241,6 +242,7 @@ export default function LoanApplicationPage() {
     applicantGender: '',
     applicantState: '',
     loanPurpose: '',
+    loanPurposeCategory: 'personal',
     loanAmount: '',
     loanDurationMonths: 3,
     collateralType: 'undated_cheque',
@@ -399,13 +401,17 @@ export default function LoanApplicationPage() {
     setSubmitError('');
     try {
       let memberId: string | null = null;
-      if (user) {
+      let membershipNo: string | null = null;
+      if (user?.email) {
         const { data: memberData } = await supabase
           .from('members')
-          .select('id')
-          .eq('user_id', user.id)
-          .single();
-        memberId = memberData?.id || null;
+          .select('id, membership_no')
+          .ilike('email', user.email)
+          .maybeSingle();
+        if (memberData) {
+          memberId = memberData.id;
+          membershipNo = memberData.membership_no;
+        }
       }
 
       const resolvedRole = isAdmin ? 'administrator' : 'member';
@@ -413,32 +419,10 @@ export default function LoanApplicationPage() {
       const rand = Math.floor(1000 + Math.random() * 9000);
       const appNum = `CLMV/LOAN/${year}/${rand}`;
 
-      const payload = {
-        application_number: appNum,
-        user_id: user.id,
-        member_id: memberId,
-        terms_agreed: form.termsAgreed === true,
-        terms_agreed_at: new Date().toISOString(),
-        terms_version: settings.termsVersion,
-        interest_acknowledged: form.interestAckAgreed === true,
-        interest_acknowledged_at: new Date().toISOString(),
-        full_terms_agreed: form.fullTermsAgreed === true,
-        full_terms_agreed_at: new Date().toISOString(),
-        collateral_terms_agreed: form.collateralTermsAgreed === true,
-        collateral_terms_agreed_at: new Date().toISOString(),
-        agreement_version: settings.agreementVersion,
-        applicant_name: form.applicantName,
-        applicant_phone: form.applicantPhone,
+      const notesMetadata = {
         applicant_address: form.applicantAddress,
-        applicant_gender: form.applicantGender.toLowerCase().replace(/ /g, '_'),
+        applicant_gender: form.applicantGender,
         applicant_state: form.applicantState,
-        loan_purpose: form.loanPurpose,
-        loan_amount: loanAmount,
-        requested_amount: loanAmount,
-        loan_duration_months: form.loanDurationMonths,
-        duration_months: form.loanDurationMonths,
-        loan_duration_label: `${form.loanDurationMonths} Months`,
-        duration_label: `${form.loanDurationMonths} Months`,
         processing_fee_percent: settings.processingFeePercent,
         processing_fee_amount: processingFee,
         monthly_interest_rate_percent: settings.interestRatePercent,
@@ -448,9 +432,6 @@ export default function LoanApplicationPage() {
         account_name: form.accountName,
         account_number: form.accountNumber,
         bank_name: form.bankName,
-        resolved_role: resolvedRole,
-        app_status: 'pending',
-        application_status: 'pending',
         collateral_type: form.collateralType,
         asset_description: form.assetDescription || null,
         asset_value: form.assetValue ? parseFloat(form.assetValue) : null,
@@ -458,57 +439,69 @@ export default function LoanApplicationPage() {
         cheque_bank: form.chequeBank || null,
         guarantor_name: form.guarantorName,
         guarantor_phone: form.guarantorPhone,
+        guarantor_address: form.guarantorAddress,
+        terms_agreed: form.termsAgreed === true,
+        terms_agreed_at: new Date().toISOString(),
+        terms_version: settings.termsVersion,
+        interest_ack_agreed: form.interestAckAgreed === true,
+        full_terms_agreed: form.fullTermsAgreed === true,
+        collateral_terms_agreed: form.collateralTermsAgreed === true,
+        agreement_version: settings.agreementVersion,
+        resolved_role: resolvedRole,
+      };
+
+      const dbPayload = {
+        applicant_name: form.applicantName,
+        applicant_email: user?.email || '',
+        applicant_phone: form.applicantPhone,
+        membership_no: membershipNo,
+        amount: loanAmount,
+        purpose: form.loanPurpose,
+        purpose_category: (form.loanPurposeCategory || 'personal').toLowerCase(),
+        repayment_period_months: form.loanDurationMonths,
+        app_no: appNum,
+        status: 'pending',
+        member_id: memberId,
+        submitted_by_user_id: user.id,
+        notes: JSON.stringify(notesMetadata),
       };
 
       let appId = 'app_' + Date.now();
-      try {
-        const { data: appData, error: appError } = await supabase
-          .from('loan_applications')
-          .insert(payload)
-          .select('id')
-          .single();
+      const { data: appData, error: appError } = await supabase
+        .from('loan_applications')
+        .insert(dbPayload)
+        .select('id')
+        .single();
 
-        if (!appError && appData?.id) {
-          appId = appData.id;
-        }
-      } catch (insertErr) {
-        console.warn('Supabase loan insert fallback:', insertErr);
+      if (appError) {
+        console.error('Supabase loan insert error:', appError);
+        throw new Error(`Failed to submit loan application: ${appError.message}`);
+      }
+
+      if (appData?.id) {
+        appId = appData.id;
       }
 
       // Cache locally for instant reflection across dashboards
       try {
-        const cachedApp = { ...payload, id: appId, created_at: new Date().toISOString() };
+        const cachedApp = {
+          ...dbPayload,
+          ...notesMetadata,
+          id: appId,
+          application_number: appNum,
+          requested_amount: loanAmount,
+          loan_amount: loanAmount,
+          duration_months: form.loanDurationMonths,
+          loan_duration_months: form.loanDurationMonths,
+          app_status: 'pending',
+          application_status: 'pending',
+          created_at: new Date().toISOString(),
+        };
         const existingApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
         localStorage.setItem(
           'climps_loan_applications',
-          JSON.stringify([cachedApp, ...existingApps.filter((a: any) => a.application_number !== appNum)])
+          JSON.stringify([cachedApp, ...existingApps.filter((a: any) => a.application_number !== appNum && a.app_no !== appNum)])
         );
-      } catch {}
-
-      try {
-        await supabase.from('loan_collaterals').insert({
-          application_id: appId,
-          user_id: user?.id || null,
-          member_id: memberId,
-          collateral_type: form.collateralType,
-          cheque_number: form.chequeNumber || null,
-          cheque_bank: form.chequeBank || null,
-          cheque_amount: loanAmount,
-          asset_description: form.assetDescription || null,
-          asset_value: form.assetValue ? parseFloat(form.assetValue) : null,
-          asset_ownership: form.assetOwnership || null,
-        });
-      } catch {}
-
-      try {
-        await supabase.from('loan_guarantors').insert({
-          application_id: appId,
-          user_id: user?.id || null,
-          member_id: memberId,
-          guarantor_name: form.guarantorName,
-          guarantor_phone: form.guarantorPhone,
-          guarantor_address: form.guarantorAddress,
-        });
       } catch {}
 
       // Dispatch email notification to Admin for new loan application

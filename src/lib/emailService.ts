@@ -40,6 +40,35 @@ export interface LoanApprovedNotificationData {
   approvedAt?: string;
 }
 
+function isPlaceholderValue(val?: string): boolean {
+  if (!val) return true;
+  const trimmed = val.trim().toLowerCase();
+  return (
+    trimmed === 'your-email-app-password' ||
+    trimmed === 'your-smtp-password' ||
+    trimmed === 'your-smtp-user' ||
+    trimmed.startsWith('your-') ||
+    trimmed === 'placeholder' ||
+    trimmed === 'password'
+  );
+}
+
+export function getSmtpStatus() {
+  const host = process.env.SMTP_HOST;
+  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
+  const pass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+
+  const isConfigured = Boolean(host && user && pass && !isPlaceholderValue(pass) && !isPlaceholderValue(user));
+  const hasPlaceholder = Boolean(isPlaceholderValue(pass) || isPlaceholderValue(user));
+
+  return {
+    isConfigured,
+    hasPlaceholder,
+    user: user || '',
+    host: host || '',
+  };
+}
+
 function getMailTransporter() {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT) || 587;
@@ -47,7 +76,7 @@ function getMailTransporter() {
   const pass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
   const secure = process.env.SMTP_SECURE === 'true' || port === 465;
 
-  if (!host || !user || !pass) {
+  if (!host || !user || !pass || isPlaceholderValue(pass) || isPlaceholderValue(user)) {
     return null;
   }
 
@@ -199,6 +228,7 @@ export async function sendLoanAppliedEmailToAdmin(
 
   const transporter = getMailTransporter();
   let delivered = false;
+  let deliveryError: string | undefined;
 
   if (transporter) {
     try {
@@ -210,14 +240,16 @@ export async function sendLoanAppliedEmailToAdmin(
       });
       delivered = true;
       console.log(`[EmailService] Loan application notification successfully sent to admin: ${adminEmails.join(', ')}`);
-    } catch (err) {
-      console.error('[EmailService] Failed to send email via SMTP transporter:', err);
+    } catch (err: any) {
+      deliveryError = err?.message || 'SMTP delivery failed';
+      console.error('[EmailService] Failed to send email via SMTP transporter:', deliveryError);
     }
   } else {
-    console.log(`[EmailService: Notice] SMTP credentials not fully configured in .env. Notification logged for Admin (${adminEmails.join(', ')}): ${subject}`);
+    deliveryError = 'SMTP credentials not configured or contain placeholder in .env (SMTP_PASSWORD=your-email-app-password). Set a valid Gmail 16-character App Password to enable live email delivery.';
+    console.log(`[EmailService: Notice] ${deliveryError} Notification logged for Admin (${adminEmails.join(', ')}): ${subject}`);
   }
 
-  return { delivered, subject, adminEmails };
+  return { delivered, subject, adminEmails, error: deliveryError };
 }
 
 /**
@@ -353,6 +385,7 @@ export async function sendLoanApprovedEmailToAccountant(
 
   const transporter = getMailTransporter();
   let delivered = false;
+  let deliveryError: string | undefined;
 
   if (transporter) {
     try {
@@ -364,12 +397,14 @@ export async function sendLoanApprovedEmailToAccountant(
       });
       delivered = true;
       console.log(`[EmailService] Loan approved notification successfully sent to accountant: ${accountantEmails.join(', ')}`);
-    } catch (err) {
-      console.error('[EmailService] Failed to send email via SMTP transporter:', err);
+    } catch (err: any) {
+      deliveryError = err?.message || 'SMTP delivery failed';
+      console.error('[EmailService] Failed to send email via SMTP transporter:', deliveryError);
     }
   } else {
-    console.log(`[EmailService: Notice] SMTP credentials not fully configured in .env. Notification logged for Accountant (${accountantEmails.join(', ')}): ${subject}`);
+    deliveryError = 'SMTP credentials not configured or contain placeholder in .env (SMTP_PASSWORD=your-email-app-password). Set a valid Gmail 16-character App Password to enable live email delivery.';
+    console.log(`[EmailService: Notice] ${deliveryError} Notification logged for Accountant (${accountantEmails.join(', ')}): ${subject}`);
   }
 
-  return { delivered, subject, accountantEmails };
+  return { delivered, subject, accountantEmails, error: deliveryError };
 }

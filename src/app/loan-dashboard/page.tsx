@@ -73,14 +73,16 @@ export default function LoanDashboardPage() {
     try {
       // Get member
       let memberId: string | null = null;
-      try {
-        const { data: memberData } = await supabase
-          .from('members')
-          .select('id')
-          .eq('user_id', user?.id)
-          .maybeSingle();
-        memberId = memberData?.id || null;
-      } catch {}
+      if (user?.email) {
+        try {
+          const { data: memberData } = await supabase
+            .from('members')
+            .select('id, membership_no, first_name, last_name, email')
+            .ilike('email', user.email)
+            .maybeSingle();
+          memberId = memberData?.id || null;
+        } catch {}
+      }
 
       // 1. Load loan applications from Supabase
       let fetchedApps: any[] = [];
@@ -93,13 +95,23 @@ export default function LoanDashboardPage() {
             .order('created_at', { ascending: false });
           if (appsByMem) fetchedApps.push(...appsByMem);
         }
-        if (user?.id) {
-          const { data: appsByUsr } = await supabase
-            .from('loan_applications')
-            .select('*')
-            .eq('user_id', user.id)
-            .order('created_at', { ascending: false });
-          if (appsByUsr) fetchedApps.push(...appsByUsr);
+        if (user?.id || user?.email) {
+          let q = supabase.from('loan_applications').select('*');
+          if (user?.id && user?.email) {
+            q = q.or(`submitted_by_user_id.eq.${user.id},applicant_email.ilike.${user.email}`);
+          } else if (user?.id) {
+            q = q.eq('submitted_by_user_id', user.id);
+          } else if (user?.email) {
+            q = q.ilike('applicant_email', user.email);
+          }
+          const { data: appsByUsr } = await q.order('created_at', { ascending: false });
+          if (appsByUsr) {
+            appsByUsr.forEach((app: any) => {
+              if (!fetchedApps.some((existing) => existing.id === app.id)) {
+                fetchedApps.push(app);
+              }
+            });
+          }
         }
       } catch (appErr) {
         console.warn('Error fetching apps:', appErr);
@@ -114,17 +126,54 @@ export default function LoanDashboardPage() {
         } catch {}
       }
 
+      function unpackAndNormalize(a: any) {
+        let notesData: any = {};
+        if (a.notes) {
+          try {
+            notesData = typeof a.notes === 'string' ? JSON.parse(a.notes) : a.notes;
+          } catch {
+            notesData = {};
+          }
+        }
+        const st = a.status || a.app_status || a.application_status || 'pending';
+        const amt = Number(a.amount ?? a.requested_amount ?? a.loan_amount ?? notesData.loan_amount ?? 0);
+        const dur = Number(a.repayment_period_months ?? a.loan_duration_months ?? a.duration_months ?? notesData.loan_duration_months ?? 1);
+        const appNo = a.app_no || a.application_number || notesData.application_number || ('APP-' + a.id?.slice(0, 8));
+        return {
+          ...a,
+          ...notesData,
+          status: st,
+          app_status: st,
+          application_status: st,
+          requested_amount: amt,
+          loan_amount: amt,
+          amount: amt,
+          loan_duration_months: dur,
+          duration_months: dur,
+          application_number: appNo,
+          app_no: appNo,
+          applicant_name: a.applicant_name || notesData.applicant_name || 'Member',
+          applicant_phone: a.applicant_phone || notesData.applicant_phone || '',
+          bank_name: notesData.bank_name || a.bank_name || '—',
+          account_number: notesData.account_number || a.account_number || '—',
+          account_name: notesData.account_name || a.account_name || '—',
+        };
+      }
+
       const appMap = new Map<string, any>();
-      fetchedApps.forEach((a: any) => appMap.set(a.id || a.application_number, a));
+      fetchedApps.forEach((a: any) => {
+        const norm = unpackAndNormalize(a);
+        appMap.set(norm.id || norm.application_number, norm);
+      });
       localApps.forEach((a: any) => {
-        if ((user?.id && a.user_id === user.id) || (memberId && a.member_id === memberId)) {
-          const key = a.id || a.application_number;
-          if (!appMap.has(key)) appMap.set(key, a);
+        if ((user?.id && a.user_id === user.id) || (memberId && a.member_id === memberId) || (user?.email && a.applicant_email === user.email)) {
+          const norm = unpackAndNormalize(a);
+          const key = norm.id || norm.application_number;
+          if (!appMap.has(key)) appMap.set(key, norm);
           else {
-            // merge updated status if local is newer
             const existing = appMap.get(key);
-            if (['disbursed', 'approved', 'rejected'].includes(a.app_status || a.application_status)) {
-              appMap.set(key, { ...existing, ...a });
+            if (['disbursed', 'approved', 'rejected'].includes(norm.app_status)) {
+              appMap.set(key, { ...existing, ...norm });
             }
           }
         }
@@ -145,16 +194,24 @@ export default function LoanDashboardPage() {
             .eq('member_id', memberId)
             .in('loan_status', ['active', 'disbursed', 'overdue'])
             .order('created_at', { ascending: false });
-          if (loansByMem) fetchedLoans.push(...loansByMem);
-        }
-        if (user?.id) {
-          const { data: loansByUsr } = await supabase
-            .from('loans')
-            .select('*')
-            .eq('user_id', user.id)
-            .in('loan_status', ['active', 'disbursed', 'overdue'])
-            .order('created_at', { ascending: false });
-          if (loansByUsr) fetchedLoans.push(...loansByUsr);
+          if (loansByMem) {
+            loansByMem.forEach((l: any) => {
+              const princ = Number(l.principal_amount ?? l.principal ?? 0);
+              const dur = Number(l.duration_months ?? 1);
+              const totalRep = Number(l.total_repayable ?? (princ + princ * 0.1 * dur));
+              fetchedLoans.push({
+                ...l,
+                principal: princ,
+                interest_amount: Math.round(princ * 0.1 * dur),
+                total_repayable: totalRep,
+                amount_repaid: 0,
+                outstanding_balance: Number(l.outstanding_balance ?? totalRep),
+                repayment_amount: Number(l.monthly_repayment ?? Math.round(totalRep / dur)),
+                loan_status: l.loan_status || 'active',
+                loan_number: `CLMV/FACILITY/${l.id?.slice(0, 8)}`,
+              });
+            });
+          }
         }
       } catch (loanErr) {
         console.warn('Error fetching loans:', loanErr);

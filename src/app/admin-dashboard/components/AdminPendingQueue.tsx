@@ -21,24 +21,89 @@ export default function AdminPendingQueue() {
     async function loadPending() {
       try {
         const supabase = createClient();
-        const { data: pendingMembers } = await supabase
-          .from('members')
-          .select('id, membership_no, first_name, last_name, created_at, status')
-          .eq('status', 'pending');
-
         const pendingList: PendingItem[] = [];
-        if (pendingMembers && pendingMembers.length > 0) {
-          pendingMembers.forEach(m => {
-            pendingList.push({
-              id: m.id,
-              ref: m.membership_no || 'MEM-NEW',
-              type: 'membership',
-              applicantName: `${m.first_name} ${m.last_name}`,
-              submittedDate: new Date(m.created_at).toLocaleDateString('en-GB'),
-              detail: 'New membership verification',
+
+        // 1. Pending members
+        try {
+          const { data: pendingMembers } = await supabase
+            .from('members')
+            .select('id, membership_no, first_name, last_name, created_at, status')
+            .eq('status', 'pending');
+
+          if (pendingMembers && pendingMembers.length > 0) {
+            pendingMembers.forEach(m => {
+              pendingList.push({
+                id: m.id,
+                ref: m.membership_no || 'MEM-NEW',
+                type: 'membership',
+                applicantName: `${m.first_name} ${m.last_name}`,
+                submittedDate: new Date(m.created_at).toLocaleDateString('en-GB'),
+                detail: 'New membership verification',
+              });
             });
-          });
+          }
+        } catch (memErr) {
+          console.warn('Pending members query fallback:', memErr);
         }
+
+        // 2. Pending loan applications from Supabase
+        const seenLoanIds = new Set<string>();
+        try {
+          const { data: pendingLoans } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .in('status', ['pending', 'submitted', 'review', 'under_review'])
+            .order('created_at', { ascending: false });
+
+          if (pendingLoans && pendingLoans.length > 0) {
+            pendingLoans.forEach(l => {
+              seenLoanIds.add(l.id);
+              let notesData: any = {};
+              if (l.notes) {
+                try { notesData = typeof l.notes === 'string' ? JSON.parse(l.notes) : l.notes; } catch {}
+              }
+              const amt = Number(l.amount || l.requested_amount || notesData.loan_amount || 0);
+              const dur = Number(l.repayment_period_months || l.duration_months || notesData.loan_duration_months || 1);
+              pendingList.push({
+                id: l.id,
+                ref: l.app_no || l.application_number || notesData.application_number || 'LN-APP',
+                type: 'loan',
+                applicantName: l.applicant_name || notesData.applicant_name || 'Member Applicant',
+                submittedDate: l.created_at ? new Date(l.created_at).toLocaleDateString('en-GB') : 'Recent',
+                detail: `₦${amt.toLocaleString('en-NG')} · ${dur} mo`,
+              });
+            });
+          }
+        } catch (loanErr) {
+          console.warn('Pending loans query fallback:', loanErr);
+        }
+
+        // 3. Fallback from localStorage
+        if (typeof window !== 'undefined') {
+          try {
+            const stored = localStorage.getItem('climps_loan_applications');
+            if (stored) {
+              const localApps = JSON.parse(stored);
+              localApps.forEach((l: any) => {
+                const st = l.status || l.app_status || l.application_status || 'pending';
+                if (['pending', 'submitted', 'review', 'under_review'].includes(st) && !seenLoanIds.has(l.id)) {
+                  seenLoanIds.add(l.id);
+                  const amt = Number(l.amount || l.requested_amount || l.loan_amount || 0);
+                  const dur = Number(l.repayment_period_months || l.duration_months || l.loan_duration_months || 1);
+                  pendingList.push({
+                    id: l.id || l.application_number,
+                    ref: l.app_no || l.application_number || 'LN-APP',
+                    type: 'loan',
+                    applicantName: l.applicant_name || 'Member Applicant',
+                    submittedDate: l.created_at ? new Date(l.created_at).toLocaleDateString('en-GB') : 'Recent',
+                    detail: `₦${amt.toLocaleString('en-NG')} · ${dur} mo`,
+                  });
+                }
+              });
+            }
+          } catch {}
+        }
+
         setItems(pendingList);
       } catch {
         setItems([]);
@@ -87,17 +152,26 @@ export default function AdminPendingQueue() {
           {items.map(item => (
             <div key={item.id} className="py-3 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-white/5 text-slate-400 border border-white/10">
+                <div className={`p-2 rounded-lg border ${item.type === 'loan' ? 'bg-rose-500/15 text-rose-400 border-rose-500/30' : 'bg-white/5 text-slate-400 border border-white/10'}`}>
                   {item.type === 'loan' ? <CreditCard size={15} /> : <User size={15} />}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-white">{item.applicantName}</p>
-                  <p className="text-2xs text-slate-400 font-mono">{item.ref} · {item.submittedDate}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-bold text-white">{item.applicantName}</p>
+                    {item.type === 'loan' && (
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        Loan Request
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-2xs text-slate-400 font-mono">
+                    {item.ref} · {item.submittedDate} · <span className="text-slate-300 font-sans">{item.detail}</span>
+                  </p>
                 </div>
               </div>
               <Link
-                href="/admin-dashboard/members"
-                className="text-xs font-bold text-[#00E599] hover:text-emerald-300 flex items-center gap-1 transition-colors"
+                href={item.type === 'loan' ? `/admin-dashboard/loans?appId=${item.id}` : '/admin-dashboard/members'}
+                className="text-xs font-bold text-[#00E599] hover:text-emerald-300 flex items-center gap-1 transition-colors shrink-0"
               >
                 Review <ChevronRight size={13} />
               </Link>

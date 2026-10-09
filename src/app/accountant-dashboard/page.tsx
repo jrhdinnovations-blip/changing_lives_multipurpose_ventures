@@ -37,10 +37,14 @@ function formatDate(d: string | null) {
 interface LoanRow {
   id: string;
   application_number: string;
+  app_no?: string;
   applicant_name: string;
   applicant_phone?: string;
+  applicant_email?: string;
+  applicant_address?: string;
   requested_amount: number;
   loan_amount?: number;
+  amount?: number;
   status: string;
   app_status?: string;
   application_status?: string;
@@ -50,14 +54,18 @@ interface LoanRow {
   bank_name: string;
   loan_duration_months: number;
   duration_months?: number;
+  repayment_period_months?: number;
   monthly_interest_amount?: number;
   total_repayment_amount?: number;
-  user_id?: string;
   member_id?: string;
+  submitted_by_user_id?: string;
   disbursed_at?: string;
   disbursement_reference?: string;
   disbursement_method?: string;
   admin_notes?: string;
+  notes?: string;
+  rejection_reason?: string;
+  [key: string]: any;
 }
 
 const STATUS_COLORS: Record<string, string> = {
@@ -129,23 +137,57 @@ export default function AccountantDashboardPage() {
 
       const map = new Map<string, any>();
       (loanData || []).forEach((a: any) => {
-        const key = a.id || a.application_number;
+        let notesData: any = {};
+        if (a.notes) {
+          try {
+            notesData = typeof a.notes === 'string' ? JSON.parse(a.notes) : a.notes;
+          } catch {
+            notesData = {};
+          }
+        }
+        const key = a.id || a.app_no || a.application_number;
         map.set(key, {
           ...a,
-          status: a.app_status || a.application_status || a.status || 'pending',
-          requested_amount: a.requested_amount || a.loan_amount || 0,
-          loan_duration_months: a.loan_duration_months || a.duration_months || 1,
+          ...notesData,
+          status: a.status || a.app_status || a.application_status || 'pending',
+          requested_amount: Number(a.amount ?? a.requested_amount ?? a.loan_amount ?? notesData.loan_amount ?? 0),
+          loan_duration_months: Number(a.repayment_period_months ?? a.loan_duration_months ?? a.duration_months ?? notesData.loan_duration_months ?? 1),
+          application_number: a.app_no || a.application_number || notesData.application_number || ('APP-' + a.id?.slice(0, 8)),
+          applicant_name: a.applicant_name || notesData.applicant_name || 'Applicant',
+          applicant_phone: a.applicant_phone || notesData.applicant_phone || '',
+          account_name: notesData.account_name || a.account_name || a.applicant_name || '—',
+          account_number: notesData.account_number || a.account_number || '—',
+          bank_name: notesData.bank_name || a.bank_name || '—',
+          created_at: a.created_at,
+          notes: a.notes,
         });
       });
 
       localApps.forEach((a: any) => {
-        const key = a.id || a.application_number;
+        let notesData: any = {};
+        if (a.notes) {
+          try {
+            notesData = typeof a.notes === 'string' ? JSON.parse(a.notes) : a.notes;
+          } catch {
+            notesData = {};
+          }
+        }
+        const key = a.id || a.app_no || a.application_number;
         if (!map.has(key)) {
           map.set(key, {
             ...a,
-            status: a.app_status || a.application_status || a.status || 'pending',
-            requested_amount: a.requested_amount || a.loan_amount || 0,
-            loan_duration_months: a.loan_duration_months || a.duration_months || 1,
+            ...notesData,
+            status: a.status || a.app_status || a.application_status || 'pending',
+            requested_amount: Number(a.amount ?? a.requested_amount ?? a.loan_amount ?? notesData.loan_amount ?? 0),
+            loan_duration_months: Number(a.repayment_period_months ?? a.loan_duration_months ?? a.duration_months ?? notesData.loan_duration_months ?? 1),
+            application_number: a.app_no || a.application_number || notesData.application_number || ('APP-' + a.id?.slice(0, 8)),
+            applicant_name: a.applicant_name || notesData.applicant_name || 'Applicant',
+            applicant_phone: a.applicant_phone || notesData.applicant_phone || '',
+            account_name: notesData.account_name || a.account_name || a.applicant_name || '—',
+            account_number: notesData.account_number || a.account_number || '—',
+            bank_name: notesData.bank_name || a.bank_name || '—',
+            created_at: a.created_at,
+            notes: a.notes,
           });
         }
       });
@@ -196,66 +238,77 @@ export default function AccountantDashboardPage() {
       const totalRepayable = loan.total_repayment_amount ? Number(loan.total_repayment_amount) : (principal + totalInterest);
       const monthlyRepayment = Math.round(totalRepayable / months);
 
-      const disbursePayload = {
-        app_status: 'disbursed',
-        application_status: 'disbursed',
-        disbursed_at: new Date().toISOString(),
-        disbursed_by: user?.id || 'accountant',
-        disbursement_reference: disbursementRef,
-        disbursement_method: disbursementMethod,
-        accountant_notes: disbursementNotes,
-        updated_at: new Date().toISOString(),
+      let existingNotes: any = {};
+      try {
+        existingNotes = typeof loan.notes === 'string' ? JSON.parse(loan.notes) : (loan.notes || {});
+      } catch {
+        existingNotes = {};
+      }
+
+      const updatedNotes = {
+        ...existingNotes,
+        disbursement: {
+          disbursed_at: new Date().toISOString(),
+          disbursed_by: user?.email || user?.id || 'accountant',
+          reference: disbursementRef,
+          method: disbursementMethod,
+          notes: disbursementNotes,
+        },
       };
 
       // 1. Update loan_applications in Supabase
       try {
         await supabase
           .from('loan_applications')
-          .update(disbursePayload)
+          .update({
+            status: 'disbursed',
+            notes: JSON.stringify(updatedNotes),
+            updated_at: new Date().toISOString(),
+          })
           .eq('id', loan.id);
       } catch (e) {
         console.warn('Supabase application update bypassed:', e);
       }
 
       // 2. Create the official loan in loans table
-      const loanNumber = `CLMV/FACILITY/${new Date().getFullYear()}/${Math.floor(1000 + Math.random() * 9000)}`;
-      const maturityDate = new Date();
-      maturityDate.setMonth(maturityDate.getMonth() + months);
-      const nextDueDate = new Date();
-      nextDueDate.setMonth(nextDueDate.getMonth() + 1);
-
-      const loanFacilityPayload = {
-        loan_number: loanNumber,
-        member_id: loan.member_id || null,
-        user_id: loan.user_id || null,
-        application_id: loan.id,
-        principal: principal,
-        interest_amount: totalInterest,
-        total_repayable: totalRepayable,
-        amount_repaid: 0,
-        outstanding_balance: totalRepayable,
-        repayment_amount: monthlyRepayment,
-        repayment_frequency: 'monthly',
-        disbursement_date: disbursementDate,
-        start_date: disbursementDate,
-        maturity_date: maturityDate.toISOString().split('T')[0],
-        next_repayment_date: nextDueDate.toISOString().split('T')[0],
-        loan_status: 'active',
-        disbursed_by: user?.id || null,
-      };
+      let targetMemberId = loan.member_id;
+      if (!targetMemberId && (loan.applicant_email || loan.applicant_name)) {
+        try {
+          if (loan.applicant_email) {
+            const { data: m } = await supabase
+              .from('members')
+              .select('id')
+              .ilike('email', loan.applicant_email)
+              .maybeSingle();
+            if (m?.id) targetMemberId = m.id;
+          }
+        } catch {}
+      }
 
       let newLoanId = 'loan_' + Date.now();
-      try {
-        const { data: createdLoan, error: loanErr } = await supabase
-          .from('loans')
-          .insert(loanFacilityPayload)
-          .select('id')
-          .single();
-        if (!loanErr && createdLoan?.id) {
-          newLoanId = createdLoan.id;
+      if (targetMemberId) {
+        try {
+          const { data: createdLoan, error: loanErr } = await supabase
+            .from('loans')
+            .insert({
+              member_id: targetMemberId,
+              principal_amount: principal,
+              interest_rate: 10,
+              duration_months: months,
+              total_repayable: totalRepayable,
+              monthly_repayment: monthlyRepayment,
+              disbursement_date: disbursementDate,
+              loan_status: 'active',
+              outstanding_balance: totalRepayable,
+            })
+            .select('id')
+            .maybeSingle();
+          if (!loanErr && createdLoan?.id) {
+            newLoanId = createdLoan.id;
+          }
+        } catch (e) {
+          console.warn('Supabase loan facility creation bypassed:', e);
         }
-      } catch (e) {
-        console.warn('Supabase loan facility creation bypassed:', e);
       }
 
       // 3. Create repayment schedule instalments
@@ -268,10 +321,9 @@ export default function AccountantDashboardPage() {
             loan_id: newLoanId,
             instalment_number: i,
             due_date: dueDate.toISOString().split('T')[0],
-            principal_due: Math.round(principal / months),
-            interest_due: monthlyInterest,
-            total_due: monthlyRepayment,
-            schedule_status: 'pending',
+            expected_amount: monthlyRepayment,
+            amount_paid: 0,
+            schedule_status: 'upcoming',
           });
         }
         await supabase.from('loan_repayment_schedules').insert(schedules);
@@ -297,7 +349,7 @@ export default function AccountantDashboardPage() {
           const cachedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
           const updatedApps = cachedApps.map((a: any) =>
             a.id === loan.id || a.application_number === loan.application_number
-              ? { ...a, ...disbursePayload }
+              ? { ...a, status: 'disbursed', app_status: 'disbursed', application_status: 'disbursed', notes: JSON.stringify(updatedNotes) }
               : a
           );
           localStorage.setItem('climps_loan_applications', JSON.stringify(updatedApps));
@@ -305,8 +357,15 @@ export default function AccountantDashboardPage() {
           // Save active loans cache
           const cachedLoans = JSON.parse(localStorage.getItem('climps_active_loans') || '[]');
           cachedLoans.unshift({
-            ...loanFacilityPayload,
             id: newLoanId,
+            member_id: targetMemberId,
+            principal_amount: principal,
+            outstanding_balance: totalRepayable,
+            monthly_repayment: monthlyRepayment,
+            total_repayable: totalRepayable,
+            duration_months: months,
+            loan_status: 'active',
+            disbursement_date: disbursementDate,
             applicant_name: loan.applicant_name,
             application_number: loan.application_number,
           });

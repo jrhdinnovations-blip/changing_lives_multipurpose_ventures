@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, PiggyBank, TrendingUp, Sparkles, Clock, ShieldCheck, Wallet, CheckCircle2 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -281,7 +282,7 @@ export default function HeroSection() {
               </div>
             </div>
 
-            {/* Right Column: Floating Glass Dashboard Preview Card (As seen in Figma) */}
+            {/* Right Column: High Definition Showcase Card */}
             <div
               className="lg:col-span-5 w-full flex justify-center lg:justify-end transition-all duration-700"
               style={{
@@ -290,87 +291,75 @@ export default function HeroSection() {
                 transitionDelay: '300ms',
               }}
             >
-              <div className="relative w-full max-w-lg">
-                {/* Glow aura behind card */}
-                <div className="absolute -inset-2 bg-gradient-to-r from-emerald-500/30 via-blue-500/20 to-emerald-400/30 rounded-3xl blur-2xl opacity-70 pointer-events-none" />
+              <div className="relative w-full max-w-xl group">
+                {/* Multi-layered neon glow behind showcase frame */}
+                <div className="absolute -inset-3 bg-gradient-to-tr from-emerald-500/35 via-blue-600/25 to-[#00E599]/30 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                <div className="absolute -bottom-6 -right-6 w-56 h-56 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
 
-                {/* Main Glass Card */}
-                <div className="relative rounded-3xl bg-[#0D182E]/90 border border-white/15 p-6 sm:p-8 shadow-2xl backdrop-blur-2xl overflow-hidden">
-                  {/* Subtle top reflection line */}
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent" />
+                {/* Outer Glass Card Container */}
+                <div className="relative rounded-3xl bg-[#0D182E]/90 border border-white/20 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl overflow-hidden ring-1 ring-white/10">
+                  {/* Subtle top glare reflection */}
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent z-10" />
 
-                  {/* Card Header: Total Balance */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
-                        Total Portfolio
-                      </span>
-                      <div className="text-3xl sm:text-4xl font-black text-white tracking-tight font-tabular">
-                        ₦14,850,200<span className="text-xl text-slate-400 font-semibold">.00</span>
-                      </div>
+                  {/* High Definition Image Container */}
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-[#060D1A]">
+                    <Image
+                      src="/assets/images/climps_hero_showcase.jpg"
+                      alt="CLIMPS Cooperative Digital Financial Ecosystem - Wealth Building & Savings"
+                      fill
+                      priority
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
+                      className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+
+                    {/* Gradient overlay for contrast */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#060D1A]/90 via-transparent to-black/20 pointer-events-none" />
+
+                    {/* Floating Top Pill Badge */}
+                    <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D182E]/85 border border-white/20 backdrop-blur-md shadow-lg">
+                      <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
+                      <span className="text-xs font-bold text-white tracking-wide">Digital Cooperative Banking</span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+
+                    {/* Floating Growth Badge */}
+                    <div className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 backdrop-blur-md text-[#00E599] text-xs font-black shadow-lg">
                       <TrendingUp className="w-3.5 h-3.5" />
-                      <span>+18.4%</span>
-                    </div>
-                  </div>
-
-                  {/* Inner Split Cards: Thrift Savings + Wealth Circle */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                    {/* Thrift Savings Box */}
-                    <div className="rounded-2xl bg-[#08202E]/90 border border-emerald-500/25 p-4 hover:border-emerald-500/40 transition-colors">
-                      <div className="flex items-center justify-between text-xs text-slate-400 font-semibold mb-2">
-                        <span className="flex items-center gap-1.5 text-emerald-400">
-                          <PiggyBank className="w-3.5 h-3.5" />
-                          Thrift Savings
-                        </span>
-                        <span className="text-[10px] bg-emerald-500/20 text-emerald-300 font-bold px-1.5 py-0.5 rounded">Active</span>
-                      </div>
-                      <div className="text-xl font-black text-white font-tabular mb-2">₦250,000<span className="text-xs text-slate-400 font-medium">/mo</span></div>
-                      {/* Progress indicator */}
-                      <div className="space-y-1">
-                        <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
-                          <div className="h-full bg-gradient-to-r from-emerald-500 to-[#00D084] rounded-full w-[84%]" />
-                        </div>
-                        <div className="flex justify-between text-[10px] text-slate-400 font-medium">
-                          <span>Target Met</span>
-                          <span className="text-emerald-400 font-bold">84%</span>
-                        </div>
-                      </div>
+                      <span>+18.4% APY Yield</span>
                     </div>
 
-                    {/* Wealth Circle Box */}
-                    <div className="rounded-2xl bg-[#131F3B]/90 border border-white/10 p-4 hover:border-white/20 transition-colors">
-                      <div className="flex items-center justify-between text-xs text-slate-400 font-semibold mb-2">
-                        <span className="flex items-center gap-1.5 text-blue-400">
-                          <Sparkles className="w-3.5 h-3.5" />
-                          Wealth Circle
-                        </span>
-                        <span className="text-[10px] bg-blue-500/20 text-blue-300 font-bold px-1.5 py-0.5 rounded">Wealth Circle</span>
+                    {/* Bottom In-Image Info Bar */}
+                    <div className="absolute bottom-3 left-3 right-3 z-10 p-3.5 rounded-xl bg-[#0A1224]/85 border border-white/15 backdrop-blur-xl shadow-xl flex items-center justify-between gap-3">
+                      <div>
+                        <div className="flex items-center gap-1.5 text-xs font-black text-white">
+                          <Sparkles className="w-3.5 h-3.5 text-[#00E599]" />
+                          <span>Smart Cooperative Wealth Ecosystem</span>
+                        </div>
+                        <p className="text-[11px] text-slate-300 mt-0.5 font-medium">
+                          Multi-asset thrift savings, audited circle yield & express credit
+                        </p>
                       </div>
-                      <div className="text-xl font-black text-white font-tabular mb-2">15.5% P.A.</div>
-                      <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
-                        <Clock className="w-3 h-3 text-slate-400" />
-                        <span>Returns in <strong className="text-white">12 days</strong></span>
+                      <div className="shrink-0 flex items-center gap-1 text-[11px] text-emerald-300 font-bold bg-emerald-500/20 px-2.5 py-1 rounded-lg border border-emerald-500/30">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#00E599]" />
+                        <span>Insured & Regulated</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Bottom Strip: Active Savers & Verification */}
-                  <div className="pt-4 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <div className="flex -space-x-2 overflow-hidden">
-                        <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#0D182E] bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center">JL</div>
-                        <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#0D182E] bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">RL</div>
-                        <div className="inline-block h-7 w-7 rounded-full ring-2 ring-[#0D182E] bg-red-600 text-white text-[10px] font-bold flex items-center justify-center">MK</div>
+                  {/* Bottom Footer Trust Row */}
+                  <div className="pt-3 px-2 flex items-center justify-between flex-wrap gap-2 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="flex -space-x-1.5 overflow-hidden">
+                        <div className="inline-block h-6 w-6 rounded-full ring-2 ring-[#0D182E] bg-emerald-600 text-white text-[9px] font-black flex items-center justify-center">JL</div>
+                        <div className="inline-block h-6 w-6 rounded-full ring-2 ring-[#0D182E] bg-blue-600 text-white text-[9px] font-black flex items-center justify-center">RL</div>
+                        <div className="inline-block h-6 w-6 rounded-full ring-2 ring-[#0D182E] bg-purple-600 text-white text-[9px] font-black flex items-center justify-center">MK</div>
                       </div>
-                      <div className="text-xs text-slate-300 font-medium">
-                        <strong className="text-white font-bold">4,200+ members</strong> saving
-                      </div>
+                      <span className="text-slate-300 font-medium">
+                        <strong className="text-white font-bold">4,200+ Active Members</strong>
+                      </span>
                     </div>
-                    <div className="flex items-center gap-1 text-[11px] text-emerald-400 font-semibold bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>Coop Registered</span>
+                    <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00E599]" />
+                      <span>Instant 24/7 Portal Access</span>
                     </div>
                   </div>
                 </div>

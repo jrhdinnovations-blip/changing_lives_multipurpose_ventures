@@ -17,8 +17,10 @@ import {
   CheckCircle2,
   BarChart2,
   TrendingUp,
+  AlertTriangle,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import AdminPendingQueue from './components/AdminPendingQueue';
 
 interface MemberItem {
   id: string;
@@ -35,6 +37,10 @@ export default function AdminDashboardPage() {
   const [members, setMembers] = useState<MemberItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [pendingLoansCount, setPendingLoansCount] = useState(0);
+  const [pendingLoansAmount, setPendingLoansAmount] = useState(0);
+  const [activeLoansCount, setActiveLoansCount] = useState(0);
+  const [activeLoansBalance, setActiveLoansBalance] = useState(0);
 
   const today = new Date().toLocaleDateString('en-GB', {
     weekday: 'long',
@@ -44,16 +50,86 @@ export default function AdminDashboardPage() {
   });
 
   useEffect(() => {
-    async function loadMembers() {
+    async function loadDashboardData() {
       try {
         const supabase = createClient();
-        const { data, error } = await supabase
+
+        // 1. Members
+        const { data: memberData, error } = await supabase
           .from('members')
           .select('id, membership_no, first_name, last_name, email, phone, status, monthly_contribution')
           .order('membership_no', { ascending: true });
 
-        if (!error && data && data.length > 0) {
-          setMembers(data);
+        if (!error && memberData && memberData.length > 0) {
+          setMembers(memberData);
+        }
+
+        // 2. Pending Loans
+        const seenLoanIds = new Set<string>();
+        let pCount = 0;
+        let pSum = 0;
+
+        try {
+          const { data: pendingData } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .in('status', ['pending', 'submitted', 'review', 'under_review']);
+
+          if (pendingData) {
+            pendingData.forEach((la: any) => {
+              seenLoanIds.add(la.id);
+              pCount++;
+              let notesData: any = {};
+              if (la.notes) {
+                try { notesData = typeof la.notes === 'string' ? JSON.parse(la.notes) : la.notes; } catch {}
+              }
+              const amt = Number(la.amount || la.requested_amount || notesData.loan_amount || 0);
+              pSum += amt;
+            });
+          }
+        } catch (loanErr) {
+          console.warn('Pending loans query fallback:', loanErr);
+        }
+
+        // Fallback check from localStorage
+        if (typeof window !== 'undefined') {
+          try {
+            const stored = localStorage.getItem('climps_loan_applications');
+            if (stored) {
+              const localApps = JSON.parse(stored);
+              localApps.forEach((la: any) => {
+                const st = la.status || la.app_status || la.application_status || 'pending';
+                if (['pending', 'submitted', 'review', 'under_review'].includes(st) && !seenLoanIds.has(la.id)) {
+                  seenLoanIds.add(la.id);
+                  pCount++;
+                  const amt = Number(la.amount || la.requested_amount || la.loan_amount || 0);
+                  pSum += amt;
+                }
+              });
+            }
+          } catch {}
+        }
+
+        setPendingLoansCount(pCount);
+        setPendingLoansAmount(pSum);
+
+        // 3. Active Loans
+        try {
+          const { data: activeData } = await supabase
+            .from('loans')
+            .select('id, outstanding_balance, principal_amount, total_repayable')
+            .in('loan_status', ['active', 'disbursed', 'overdue']);
+
+          if (activeData && activeData.length > 0) {
+            setActiveLoansCount(activeData.length);
+            const bal = activeData.reduce(
+              (sum, l) => sum + Number(l.outstanding_balance ?? l.total_repayable ?? l.principal_amount ?? 0),
+              0
+            );
+            setActiveLoansBalance(bal);
+          }
+        } catch (actErr) {
+          console.warn('Active loans query fallback:', actErr);
         }
       } catch (err) {
         console.warn('Admin dashboard load error:', err);
@@ -62,7 +138,7 @@ export default function AdminDashboardPage() {
       }
     }
 
-    loadMembers();
+    loadDashboardData();
   }, []);
 
   const totalMembers = members.length;
@@ -104,28 +180,32 @@ export default function AdminDashboardPage() {
       valueColor: 'text-[#00E599]',
     },
     {
-      label: 'Active Loan Portfolio',
-      value: '₦0.00',
-      sub: '0 active facilities · 0% at risk',
+      label: pendingLoansCount > 0 ? 'Pending Loan Requests' : 'Active Loan Portfolio',
+      value: pendingLoansCount > 0
+        ? `${pendingLoansCount} Application${pendingLoansCount > 1 ? 's' : ''}`
+        : `₦${activeLoansBalance.toLocaleString('en-NG')}`,
+      sub: pendingLoansCount > 0
+        ? `₦${pendingLoansAmount.toLocaleString('en-NG')} awaiting approval`
+        : `${activeLoansCount} active facilities · 0% at risk`,
       icon: <CreditCard size={16} />,
-      color: 'rose',
-      bg: 'bg-rose-500/10',
-      border: 'border-rose-500/20',
-      iconBg: 'bg-rose-500/20',
-      iconColor: 'text-rose-400',
-      valueColor: 'text-white',
+      color: pendingLoansCount > 0 ? 'amber' : 'rose',
+      bg: pendingLoansCount > 0 ? 'bg-amber-500/10' : 'bg-rose-500/10',
+      border: pendingLoansCount > 0 ? 'border-amber-500/30' : 'border-rose-500/20',
+      iconBg: pendingLoansCount > 0 ? 'bg-amber-500/20' : 'bg-rose-500/20',
+      iconColor: pendingLoansCount > 0 ? 'text-amber-400' : 'text-rose-400',
+      valueColor: pendingLoansCount > 0 ? 'text-amber-300' : 'text-white',
     },
     {
-      label: 'Operational Health',
-      value: '100%',
-      sub: 'Zero defaults · Clean standing',
+      label: 'Operational Standing',
+      value: pendingLoansCount > 0 ? 'Review Needed' : '100% In Sync',
+      sub: pendingLoansCount > 0 ? `${pendingLoansCount} pending underwriting` : 'Zero defaults · Clean standing',
       icon: <ShieldCheck size={16} />,
-      color: 'emerald',
-      bg: 'bg-emerald-500/10',
-      border: 'border-emerald-500/20',
-      iconBg: 'bg-emerald-500/20',
-      iconColor: 'text-[#00E599]',
-      valueColor: 'text-[#00E599]',
+      color: pendingLoansCount > 0 ? 'amber' : 'emerald',
+      bg: pendingLoansCount > 0 ? 'bg-amber-500/10' : 'bg-emerald-500/10',
+      border: pendingLoansCount > 0 ? 'border-amber-500/30' : 'border-emerald-500/20',
+      iconBg: pendingLoansCount > 0 ? 'bg-amber-500/20' : 'bg-emerald-500/20',
+      iconColor: pendingLoansCount > 0 ? 'text-amber-400' : 'text-[#00E599]',
+      valueColor: pendingLoansCount > 0 ? 'text-amber-300' : 'text-[#00E599]',
     },
   ];
 
@@ -192,6 +272,36 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
         </div>
+
+        {/* Pending Loan Action Alert */}
+        {pendingLoansCount > 0 && (
+          <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl backdrop-blur-xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2.5 rounded-xl bg-amber-500/20 text-amber-400 border border-amber-500/30 shrink-0 animate-pulse">
+                <AlertTriangle size={20} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm font-bold text-white">
+                    {pendingLoansCount} Loan Application{pendingLoansCount > 1 ? 's' : ''} Awaiting Administrative Review
+                  </p>
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500 text-white animate-pulse">
+                    Action Required
+                  </span>
+                </div>
+                <p className="text-xs text-amber-300/80 mt-0.5 font-medium">
+                  Total requested: ₦{pendingLoansAmount.toLocaleString('en-NG')} · Review underwriting files, collateral, guarantors & approve facilities.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/admin-dashboard/loans?filter=pending"
+              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs transition-all shadow-md shrink-0"
+            >
+              Review Applications <ArrowRight size={14} />
+            </Link>
+          </div>
+        )}
 
         {/* KPI Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -305,7 +415,7 @@ export default function AdminDashboardPage() {
             )}
           </div>
 
-          {/* Quick Actions & System Status (1 Column) */}
+          {/* Quick Actions & Pending Queue (1 Column) */}
           <div className="space-y-4">
             {/* Quick Actions */}
             <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-5 backdrop-blur-xl shadow-xl">
@@ -321,22 +431,21 @@ export default function AdminDashboardPage() {
                       <span className={accentIcon[action.accent]}>{action.icon}</span>
                       <span>{action.label}</span>
                     </div>
-                    <ArrowRight size={13} className="text-slate-500 group-hover:text-slate-300 transition-colors" />
+                    <div className="flex items-center gap-2">
+                      {action.href === '/admin-dashboard/loans' && pendingLoansCount > 0 && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-rose-500 text-white animate-pulse">
+                          {pendingLoansCount} Pending
+                        </span>
+                      )}
+                      <ArrowRight size={13} className="text-slate-500 group-hover:text-slate-300 transition-colors" />
+                    </div>
                   </Link>
                 ))}
               </div>
             </div>
 
-            {/* Verification Status Card */}
-            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-5 backdrop-blur-xl">
-              <div className="flex items-center gap-2 text-[#00E599] font-bold text-xs mb-2">
-                <CheckCircle2 size={16} className="text-[#00E599]" />
-                <span>Operational Queue Clear</span>
-              </div>
-              <p className="text-2xs text-emerald-300/80 leading-relaxed font-medium">
-                All cooperative member files are up to date. No pending approvals, overdue loans, or flagged accounts requiring administrative action.
-              </p>
-            </div>
+            {/* Real-time Pending Queue Component */}
+            <AdminPendingQueue />
 
             {/* Analytics stub card */}
             <div className="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-5 backdrop-blur-xl">

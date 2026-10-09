@@ -113,7 +113,7 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
 
       const totalOutstanding = overdueContribs?.reduce((sum, c) => sum + (c.outstanding_amount || 0), 0) || 0;
 
-      // Get active loan (check by member_id or user_id)
+      // Get active loan (check by member_id only — no user_id column on loans table)
       let activeLoan: any = null;
       if (member?.id) {
         const { data: loanByMem } = await supabase
@@ -124,19 +124,18 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
           .order('created_at', { ascending: false })
           .limit(1)
           .maybeSingle();
-        activeLoan = loanByMem;
-      }
-
-      if (!activeLoan && user?.id) {
-        const { data: loanByUsr } = await supabase
-          .from('loans')
-          .select('*')
-          .eq('user_id', user.id)
-          .in('loan_status', ['active', 'disbursed', 'overdue'])
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle();
-        activeLoan = loanByUsr;
+        if (loanByMem) {
+          const princ = Number(loanByMem.principal_amount ?? loanByMem.principal ?? 0);
+          const dur = Number(loanByMem.duration_months ?? 1);
+          const totalRep = Number(loanByMem.total_repayable ?? (princ + princ * 0.1 * dur));
+          activeLoan = {
+            ...loanByMem,
+            principal: princ,
+            total_repayable: totalRep,
+            outstanding_balance: Number(loanByMem.outstanding_balance ?? totalRep),
+            repayment_amount: Number(loanByMem.monthly_repayment ?? Math.round(totalRep / dur)),
+          };
+        }
       }
 
       // Check localStorage for active loan
@@ -150,6 +149,17 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
       // Check for pending/approved loan applications
       let pendingApp: any = null;
       if (!activeLoan) {
+        function normApp(a: any) {
+          let nd: any = {};
+          try { nd = typeof a.notes === 'string' ? JSON.parse(a.notes) : (a.notes || {}); } catch {}
+          const st = a.status || a.app_status || a.application_status || 'pending';
+          const amt = Number(a.amount ?? a.requested_amount ?? a.loan_amount ?? nd.loan_amount ?? 0);
+          return {
+            ...a, ...nd,
+            app_status: st, status: st, application_status: st,
+            requested_amount: amt, loan_amount: amt, amount: amt,
+          };
+        }
         if (member?.id) {
           const { data: appData } = await supabase
             .from('loan_applications')
@@ -158,22 +168,38 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
             .order('created_at', { ascending: false })
             .limit(1)
             .maybeSingle();
-          if (appData) pendingApp = appData;
+          if (appData) pendingApp = normApp(appData);
+        }
+        if (!pendingApp && user?.email) {
+          const { data: appData } = await supabase
+            .from('loan_applications')
+            .select('*')
+            .ilike('applicant_email', user.email)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (appData) pendingApp = normApp(appData);
         }
         if (!pendingApp && user?.id) {
           const { data: appData } = await supabase
             .from('loan_applications')
             .select('*')
-            .eq('user_id', user.id)
+            .eq('submitted_by_user_id', user.id)
             .order('created_at', { ascending: false })
             .limit(1)
             .maybeSingle();
-          if (appData) pendingApp = appData;
+          if (appData) pendingApp = normApp(appData);
         }
         if (!pendingApp && typeof window !== 'undefined') {
           try {
             const storedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
-            if (storedApps.length > 0) pendingApp = storedApps[0];
+            if (storedApps.length > 0) {
+              const matched = storedApps.find((a: any) =>
+                (user?.email && a.applicant_email === user.email) ||
+                (member?.id && a.member_id === member.id)
+              );
+              if (matched) pendingApp = normApp(matched);
+            }
           } catch {}
         }
       }
@@ -237,14 +263,16 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
           value: activeLoan
             ? fmt(Number(activeLoan?.outstanding_balance ?? member.active_loan_balance) || 0)
             : pendingApp
-            ? fmt(Number(pendingApp.requested_amount || pendingApp.loan_amount) || 0)
+            ? fmt(Number(pendingApp.requested_amount || pendingApp.loan_amount || pendingApp.amount) || 0)
             : fmt(0),
-          subValue: activeLoan ? fmt(Number(activeLoan.repayment_amount) || 0) : undefined,
+          subValue: activeLoan ? fmt(Number(activeLoan.repayment_amount || activeLoan.monthly_repayment) || 0) : undefined,
           subLabel: activeLoan?.next_repayment_date
             ? `Next instalment due ${new Date(activeLoan.next_repayment_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}`
             : pendingApp
             ? pendingApp.app_status === 'approved'
               ? 'Approved · Awaiting disbursement'
+              : pendingApp.app_status === 'rejected'
+              ? 'Application declined'
               : 'Under review by Admin'
             : 'No active loan',
           icon: CreditCard,
@@ -253,8 +281,8 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
             ? { text: 'ACTIVE', type: 'info' as const }
             : pendingApp
             ? {
-                text: pendingApp.app_status === 'approved' ? 'APPROVED' : 'PENDING',
-                type: pendingApp.app_status === 'approved' ? ('success' as const) : ('warning' as const),
+                text: pendingApp.app_status === 'approved' ? 'APPROVED' : pendingApp.app_status === 'rejected' ? 'REJECTED' : 'PENDING',
+                type: pendingApp.app_status === 'approved' ? ('success' as const) : pendingApp.app_status === 'rejected' ? ('danger' as const) : ('warning' as const),
               }
             : undefined,
           tooltip: activeLoan ? 'Outstanding principal on your active loan' : 'Loan application status',

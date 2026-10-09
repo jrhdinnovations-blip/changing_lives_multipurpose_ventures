@@ -442,18 +442,24 @@ export default function FinancialStatementsPage() {
           .order('created_at', { ascending: true });
 
         (loanApps || []).forEach((la: any) => {
+          let laNotes: any = {};
+          try { laNotes = typeof la.notes === 'string' ? JSON.parse(la.notes) : (la.notes || {}); } catch {}
+          const laStatus = la.status || la.app_status || 'submitted';
+          const laAmount = Number(la.amount || la.requested_amount || laNotes.loan_amount || 0);
+          const laDuration = Number(la.repayment_period_months || la.duration_months || laNotes.loan_duration_months || 0);
+          const laAppNo = la.app_no || la.application_number || laNotes.application_number || la.id.slice(0, 8).toUpperCase();
           // Application entry
           allRows.push({
             id: la.id + '_app',
             date: la.created_at,
-            ref: la.loan_reference || la.id.slice(0, 8).toUpperCase(),
+            ref: laAppNo,
             type: 'loan_application',
-            category: la.app_status === 'disbursed' || la.app_status === 'active' ? 'loan_disbursement' : 'charge',
-            description: `Loan Application — ₦${(la.loan_amount || 0).toLocaleString()} (${la.loan_duration_label || la.loan_duration_months + ' months'})`,
+            category: laStatus === 'disbursed' || laStatus === 'active' ? 'loan_disbursement' : 'charge',
+            description: `Loan Application — ₦${laAmount.toLocaleString()} (${laDuration ? laDuration + ' months' : 'duration pending'})`,
             debit: 0,
-            credit: la.app_status === 'disbursed' || la.app_status === 'active' ? (la.loan_amount || 0) : 0,
+            credit: laStatus === 'disbursed' || laStatus === 'active' ? laAmount : 0,
             balance_after: null,
-            status: la.app_status || 'submitted',
+            status: laStatus,
             source: 'loan',
           });
 

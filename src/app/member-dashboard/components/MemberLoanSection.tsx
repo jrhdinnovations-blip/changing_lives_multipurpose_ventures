@@ -60,29 +60,26 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
       if (member?.id) {
         const { data: loans } = await supabase
           .from('loans')
-          .select('*, product:loan_products(*)')
+          .select('*')
           .eq('member_id', member.id)
           .in('loan_status', ['active', 'disbursed', 'overdue'])
           .order('created_at', { ascending: false })
           .limit(1);
 
         if (loans && loans.length > 0) {
-          foundLoan = loans[0];
-        }
-      }
-
-      // Fallback: check active loan by user_id
-      if (!foundLoan && user?.id) {
-        const { data: loansByUserId } = await supabase
-          .from('loans')
-          .select('*')
-          .eq('user_id', user.id)
-          .in('loan_status', ['active', 'disbursed', 'overdue'])
-          .order('created_at', { ascending: false })
-          .limit(1);
-
-        if (loansByUserId && loansByUserId.length > 0) {
-          foundLoan = loansByUserId[0];
+          const raw = loans[0];
+          const princ = Number(raw.principal_amount ?? raw.principal ?? 0);
+          const dur = Number(raw.duration_months ?? 1);
+          const totalRep = Number(raw.total_repayable ?? (princ + princ * 0.1 * dur));
+          foundLoan = {
+            ...raw,
+            principal: princ,
+            total_repayable: totalRep,
+            amount_repaid: Number(raw.amount_repaid ?? 0),
+            outstanding_balance: Number(raw.outstanding_balance ?? totalRep),
+            repayment_amount: Number(raw.monthly_repayment ?? Math.round(totalRep / dur)),
+            loan_number: raw.id ? `CLMV/FACILITY/${raw.id.slice(0, 8)}` : 'LN-REF',
+          };
         }
       }
 
@@ -93,7 +90,6 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           if (storedLoans.length > 0) {
             const match = storedLoans.find((l: any) =>
               (member?.id && l.member_id === member.id) ||
-              (user?.id && l.user_id === user.id) ||
               (user?.email && l.applicant_email === user.email)
             );
             if (match) foundLoan = match;
@@ -105,6 +101,39 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
       let foundApp: any = null;
       const appQueries: any[] = [];
 
+      function normalizeApp(a: any) {
+        let notesData: any = {};
+        if (a.notes) {
+          try {
+            notesData = typeof a.notes === 'string' ? JSON.parse(a.notes) : a.notes;
+          } catch { notesData = {}; }
+        }
+        const st = a.status || a.app_status || a.application_status || 'pending';
+        const amt = Number(a.amount ?? a.requested_amount ?? a.loan_amount ?? notesData.loan_amount ?? 0);
+        const dur = Number(a.repayment_period_months ?? a.loan_duration_months ?? a.duration_months ?? notesData.loan_duration_months ?? 1);
+        const appNo = a.app_no || a.application_number || notesData.application_number || ('APP-' + a.id?.slice(0, 8));
+        return {
+          ...a,
+          ...notesData,
+          status: st,
+          app_status: st,
+          application_status: st,
+          requested_amount: amt,
+          loan_amount: amt,
+          amount: amt,
+          loan_duration_months: dur,
+          duration_months: dur,
+          application_number: appNo,
+          applicant_name: a.applicant_name || notesData.applicant_name || '',
+          bank_name: notesData.bank_name || a.bank_name || '',
+          account_number: notesData.account_number || a.account_number || '',
+          account_name: notesData.account_name || a.account_name || '',
+          guarantor_name: notesData.guarantor_name || a.guarantor_name || '',
+          rejection_reason: a.rejection_reason || notesData.rejection_reason || '',
+          admin_notes: notesData.admin_notes || a.admin_notes || '',
+        };
+      }
+
       if (member?.id) {
         const { data: appsByMember } = await supabase
           .from('loan_applications')
@@ -112,17 +141,33 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           .eq('member_id', member.id)
           .order('created_at', { ascending: false })
           .limit(1);
-        if (appsByMember && appsByMember.length > 0) appQueries.push(appsByMember[0]);
+        if (appsByMember && appsByMember.length > 0) appQueries.push(normalizeApp(appsByMember[0]));
+      }
+
+      if (user?.email) {
+        const { data: appsByEmail } = await supabase
+          .from('loan_applications')
+          .select('*')
+          .ilike('applicant_email', user.email)
+          .order('created_at', { ascending: false })
+          .limit(1);
+        if (appsByEmail && appsByEmail.length > 0) {
+          const norm = normalizeApp(appsByEmail[0]);
+          if (!appQueries.some((q) => q.id === norm.id)) appQueries.push(norm);
+        }
       }
 
       if (user?.id) {
         const { data: appsByUser } = await supabase
           .from('loan_applications')
           .select('*')
-          .eq('user_id', user.id)
+          .eq('submitted_by_user_id', user.id)
           .order('created_at', { ascending: false })
           .limit(1);
-        if (appsByUser && appsByUser.length > 0) appQueries.push(appsByUser[0]);
+        if (appsByUser && appsByUser.length > 0) {
+          const norm = normalizeApp(appsByUser[0]);
+          if (!appQueries.some((q) => q.id === norm.id)) appQueries.push(norm);
+        }
       }
 
       // Also check localStorage applications
@@ -131,16 +176,18 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           const storedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
           if (storedApps.length > 0) {
             const userApps = storedApps.filter((a: any) =>
-              (user?.id && a.user_id === user.id) ||
+              (user?.email && a.applicant_email === user.email) ||
               (member?.id && a.member_id === member.id)
             );
-            if (userApps.length > 0) appQueries.push(userApps[0]);
+            if (userApps.length > 0) {
+              const norm = normalizeApp(userApps[0]);
+              if (!appQueries.some((q) => q.id === norm.id)) appQueries.push(norm);
+            }
           }
         } catch {}
       }
 
       if (appQueries.length > 0) {
-        // Sort by created_at or take the most recent
         appQueries.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
         foundApp = appQueries[0];
         setLatestApplication(foundApp);

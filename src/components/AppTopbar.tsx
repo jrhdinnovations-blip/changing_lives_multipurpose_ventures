@@ -19,7 +19,7 @@ const mockNotifications: Notification[] = [];
 interface AppTopbarProps {
   memberName: string;
   memberId: string;
-  role: 'member' | 'admin' | 'staff' | 'manager';
+  role: 'member' | 'admin' | 'staff' | 'manager' | 'accountant';
   sidebarCollapsed: boolean;
 }
 

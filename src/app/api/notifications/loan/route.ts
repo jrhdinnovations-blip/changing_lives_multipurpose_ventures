@@ -47,9 +47,8 @@ export async function POST(request: Request) {
     const supabase = await getSupabaseServerClient();
 
     if (event === 'loan_applied') {
-      // 1. Query Admin users from user_profiles and members
+      // 1. Query Admin users from user_profiles
       let adminEmails: string[] = [];
-      let adminUserIds: string[] = [];
 
       try {
         const { data: adminProfiles } = await supabase
@@ -58,44 +57,24 @@ export async function POST(request: Request) {
           .in('role', ['admin', 'super_admin']);
 
         if (adminProfiles && adminProfiles.length > 0) {
-          adminUserIds = adminProfiles.map((p) => p.id);
           adminEmails = adminProfiles.map((p) => p.email).filter(Boolean);
         }
-
-        const { data: adminMembers } = await supabase
-          .from('members')
-          .select('id, email, role')
-          .in('role', ['admin', 'super_admin']);
-
-        if (adminMembers && adminMembers.length > 0) {
-          const memberEmails = adminMembers.map((m) => m.email).filter(Boolean);
-          adminEmails = Array.from(new Set([...adminEmails, ...memberEmails]));
-        }
-      adminEmails = Array.from(new Set([...adminEmails, 'plangnansamson@gmail.com', 'Changinglivesmultipurpose@gmail.com']));
       } catch (dbErr) {
-        console.warn('[Loan Notification API] Error querying admin emails:', dbErr);
-        adminEmails = ['plangnansamson@gmail.com', 'Changinglivesmultipurpose@gmail.com'];
+        console.warn('[Loan Notification API] Error querying admin emails from user_profiles:', dbErr);
       }
+
+      adminEmails = Array.from(
+        new Set([
+          ...adminEmails,
+          'plangnansamson@gmail.com',
+          'Changinglivesmultipurpose@gmail.com',
+          'raymondlongdiem22@gmail.com',
+          process.env.ADMIN_NOTIFICATION_EMAIL || '',
+        ].filter(Boolean))
+      );
 
       // 2. Send email to Admin
       const emailResult = await sendLoanAppliedEmailToAdmin(data, adminEmails);
-
-      // 3. Record in-app notification for each Admin user if user IDs found
-      if (adminUserIds.length > 0) {
-        try {
-          const notificationsToInsert = adminUserIds.map((userId) => ({
-            user_id: userId,
-            notification_type: 'loan_submitted' as any,
-            title: `New Loan Application: ₦${Number(data.loanAmount || 0).toLocaleString()}`,
-            message: `${data.applicantName} submitted loan application (${data.applicationNumber}) for ₦${Number(data.loanAmount || 0).toLocaleString()} (10% monthly rate).`,
-            related_id: data.applicationId || null,
-          }));
-
-          await supabase.from('notifications').insert(notificationsToInsert);
-        } catch (notifErr) {
-          console.warn('[Loan Notification API] In-app notification insert skipped:', notifErr);
-        }
-      }
 
       return NextResponse.json({
         success: true,
@@ -103,13 +82,15 @@ export async function POST(request: Request) {
         recipientCount: emailResult.adminEmails.length,
         delivered: emailResult.delivered,
         details: emailResult,
+        notice: emailResult.delivered
+          ? 'Email successfully dispatched to administrator'
+          : emailResult.error || 'SMTP delivery pending configuration',
       });
     }
 
     if (event === 'loan_approved') {
-      // 1. Query Accountant users from user_profiles and members
+      // 1. Query Accountant users from user_profiles
       let accountantEmails: string[] = [];
-      let accountantUserIds: string[] = [];
 
       try {
         const { data: accountantProfiles } = await supabase
@@ -118,44 +99,23 @@ export async function POST(request: Request) {
           .in('role', ['accountant', 'financial_secretary']);
 
         if (accountantProfiles && accountantProfiles.length > 0) {
-          accountantUserIds = accountantProfiles.map((p) => p.id);
           accountantEmails = accountantProfiles.map((p) => p.email).filter(Boolean);
         }
-
-        const { data: accountantMembers } = await supabase
-          .from('members')
-          .select('id, email, role')
-          .in('role', ['accountant', 'financial_secretary']);
-
-        if (accountantMembers && accountantMembers.length > 0) {
-          const memberEmails = accountantMembers.map((m) => m.email).filter(Boolean);
-          accountantEmails = Array.from(new Set([...accountantEmails, ...memberEmails]));
-        }
-        accountantEmails = Array.from(new Set([...accountantEmails, 'bimaeteng4@gmail.com', 'Changinglivesmultipurpose@gmail.com']));
       } catch (dbErr) {
-        console.warn('[Loan Notification API] Error querying accountant emails:', dbErr);
-        accountantEmails = ['bimaeteng4@gmail.com', 'Changinglivesmultipurpose@gmail.com'];
+        console.warn('[Loan Notification API] Error querying accountant emails from user_profiles:', dbErr);
       }
+
+      accountantEmails = Array.from(
+        new Set([
+          ...accountantEmails,
+          'bimaeteng4@gmail.com',
+          'Changinglivesmultipurpose@gmail.com',
+          process.env.ACCOUNTANT_NOTIFICATION_EMAIL || '',
+        ].filter(Boolean))
+      );
 
       // 2. Send email to Accountant
       const emailResult = await sendLoanApprovedEmailToAccountant(data, accountantEmails);
-
-      // 3. Record in-app notification for each Accountant user if user IDs found
-      if (accountantUserIds.length > 0) {
-        try {
-          const notificationsToInsert = accountantUserIds.map((userId) => ({
-            user_id: userId,
-            notification_type: 'loan_approved' as any,
-            title: `Loan Approved for Disbursement: ₦${Number(data.loanAmount || 0).toLocaleString()}`,
-            message: `Loan for ${data.applicantName} (${data.applicationNumber}) approved for ₦${Number(data.loanAmount || 0).toLocaleString()}. Please reconcile & disburse.`,
-            related_id: data.applicationId || null,
-          }));
-
-          await supabase.from('notifications').insert(notificationsToInsert);
-        } catch (notifErr) {
-          console.warn('[Loan Notification API] In-app notification insert skipped:', notifErr);
-        }
-      }
 
       return NextResponse.json({
         success: true,
@@ -163,6 +123,9 @@ export async function POST(request: Request) {
         recipientCount: emailResult.accountantEmails.length,
         delivered: emailResult.delivered,
         details: emailResult,
+        notice: emailResult.delivered
+          ? 'Email successfully dispatched to accountant'
+          : emailResult.error || 'SMTP delivery pending configuration',
       });
     }
 
