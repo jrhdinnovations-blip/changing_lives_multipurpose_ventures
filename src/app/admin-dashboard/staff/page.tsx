@@ -114,9 +114,9 @@ export default function AdminStaffPage() {
     }
   }
 
-  // Filter only staff, managers, and admins
+  // Filter only staff, managers, admins, and accountants
   const staffMembers = members.filter(m =>
-    ['super_admin', 'admin', 'manager', 'staff'].includes(m.role)
+    ['super_admin', 'admin', 'manager', 'staff', 'accountant', 'financial_secretary', 'auditor'].includes(m.role)
   );
 
   const regularMembers = members.filter(m => m.role === 'member');
@@ -285,6 +285,12 @@ export default function AdminStaffPage() {
                       ? 'Administrator'
                       : s.role === 'manager'
                       ? 'Branch Manager'
+                      : s.role === 'accountant'
+                      ? 'Accountant'
+                      : s.role === 'financial_secretary'
+                      ? 'Financial Secretary'
+                      : s.role === 'auditor'
+                      ? 'Internal Auditor'
                       : 'Operations Staff';
 
                   const badgeStyle =
@@ -292,6 +298,8 @@ export default function AdminStaffPage() {
                       ? 'bg-purple-500/15 text-purple-300 border border-purple-500/30'
                       : s.role === 'admin'
                       ? 'bg-indigo-500/15 text-indigo-300 border border-indigo-500/30'
+                      : s.role === 'accountant'
+                      ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
                       : s.role === 'manager'
                       ? 'bg-blue-500/15 text-blue-300 border border-blue-500/30'
                       : 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30';
@@ -464,6 +472,7 @@ export default function AdminStaffPage() {
                     className="w-full p-2.5 rounded-xl border border-white/10 bg-[#080E1C] text-white font-semibold focus:outline-none focus:border-[#00E599]/60"
                   >
                     <option value="staff" className="bg-[#0B1528] text-white">Operations Staff (Document intake & receipts)</option>
+                    <option value="accountant" className="bg-[#0B1528] text-white">Accountant (Disbursements & Financials)</option>
                     <option value="manager" className="bg-[#0B1528] text-white">Branch Manager (Credit committee review)</option>
                     <option value="admin" className="bg-[#0B1528] text-white">Administrator (Full approvals & user creation)</option>
                   </select>

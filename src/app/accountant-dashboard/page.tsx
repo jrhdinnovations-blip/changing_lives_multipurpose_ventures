@@ -95,6 +95,9 @@ export default function AccountantDashboardPage() {
   const [totalContributions, setTotalContributions] = useState(0);
   const [totalInvestments, setTotalInvestments] = useState(0);
 
+  const [accountantName, setAccountantName] = useState('Accountant');
+  const [accountantId, setAccountantId] = useState('ACCT/2026');
+
   // Disbursement Modal State
   const [selectedForDisbursement, setSelectedForDisbursement] = useState<LoanRow | null>(null);
   const [disbursementModalOpen, setDisbursementModalOpen] = useState(false);
@@ -111,6 +114,30 @@ export default function AccountantDashboardPage() {
   });
 
   const supabase = createClient();
+
+  useEffect(() => {
+    if (!user) return;
+    const email = user.email?.toLowerCase();
+    if (email === 'bimaeteng4@gmail.com') {
+      setAccountantName('Bima Josiah Emmanuel');
+      setAccountantId('ACCT/CLM/0013');
+    }
+    async function fetchAccountantProfile() {
+      try {
+        const { data } = await supabase
+          .from('members')
+          .select('first_name, last_name, member_number')
+          .ilike('email', user.email)
+          .maybeSingle();
+        if (data) {
+          const fullName = `${data.first_name || ''} ${data.last_name || ''}`.trim();
+          if (fullName) setAccountantName(fullName);
+          if (data.member_number) setAccountantId(`ACCT/${data.member_number}`);
+        }
+      } catch {}
+    }
+    fetchAccountantProfile();
+  }, [user]);
 
   useEffect(() => {
     loadData();
@@ -490,7 +517,7 @@ export default function AccountantDashboardPage() {
   };
 
   return (
-    <AppLayout role="accountant" memberName="Accountant" memberId="ACCT/2026">
+    <AppLayout role="accountant" memberName={accountantName} memberId={accountantId}>
       <div className="p-6 xl:p-8 max-w-7xl mx-auto space-y-6">
 
         <div className="pointer-events-none fixed inset-0 overflow-hidden">

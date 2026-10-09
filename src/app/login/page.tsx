@@ -3,7 +3,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, resolveUserRole } from '@/contexts/AuthContext';
 import { createClient } from '@/lib/supabase/client';
 
 function LoginContent() {
@@ -20,12 +20,12 @@ function LoginContent() {
   const [successMsg, setSuccessMsg] = useState('');
 
   function routeByRole(role: string) {
-    if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {
-      router.replace('/admin-dashboard');
-      return;
-    }
     if (role === 'accountant') {
       router.replace('/accountant-dashboard');
+      return;
+    }
+    if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {
+      router.replace('/admin-dashboard');
       return;
     }
     if (redirectTarget && redirectTarget.startsWith('/') && !redirectTarget.startsWith('//')) {
@@ -34,6 +34,15 @@ function LoginContent() {
     }
     router.replace('/member-dashboard');
   }
+
+  // Auto-redirect if already logged in
+  useEffect(() => {
+    if (!loading && user) {
+      const emailLower = user.email?.trim().toLowerCase() || '';
+      const role = resolveUserRole(emailLower, user.user_metadata?.role);
+      routeByRole(role);
+    }
+  }, [user, loading]);
 
   // Display sign out confirmation message if coming from logout
   useEffect(() => {
@@ -52,8 +61,9 @@ function LoginContent() {
     setSubmitting(true);
 
     try {
-      const data = await signIn(form.email.trim().toLowerCase(), form.password);
-      const role = data?.user?.user_metadata?.role || 'member';
+      const emailLower = form.email.trim().toLowerCase();
+      const data = await signIn(emailLower, form.password);
+      const role = resolveUserRole(emailLower, data?.user?.user_metadata?.role);
       routeByRole(role);
     } catch (err: any) {
       const msg = err?.message || '';

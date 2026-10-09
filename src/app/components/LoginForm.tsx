@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, resolveUserRole } from '@/contexts/AuthContext';
 
 interface LoginFormData {
   email: string;
@@ -96,7 +96,8 @@ export default function LoginForm({ prefillEmail, prefillPassword }: LoginFormPr
         if (!signedIn) throw firstErr;
       }
 
-      const role = result?.user?.user_metadata?.role || 'member';
+      const effectiveEmail = (loginEmail || result?.user?.email || '').toLowerCase();
+      const role = resolveUserRole(effectiveEmail, result?.user?.user_metadata?.role);
       toast.success('Welcome back! Redirecting…');
 
       if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {

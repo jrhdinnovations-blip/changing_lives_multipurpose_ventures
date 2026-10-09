@@ -21,11 +21,11 @@ export default function AppLayout({
 }: AppLayoutProps) {
   const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const { user, profile, loading } = useAuth();
+  const { user, profile, loading, userRole } = useAuth();
   const [resolvedName, setResolvedName] = useState(memberNameProp || '');
   const [resolvedId, setResolvedId] = useState(memberIdProp || '');
   const [resolvedRole, setResolvedRole] = useState<'member' | 'admin' | 'staff' | 'manager' | 'accountant'>(
-    roleProp || (profile?.role === 'super_admin' ? 'admin' : (profile?.role as any) || 'member')
+    roleProp || (userRole === 'super_admin' ? 'admin' : (userRole as any) || 'member')
   );
 
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function AppLayout({
         setResolvedId(memberIdProp || mId);
 
         if (!roleProp) {
-          const raw = profile?.role || 'member';
+          const raw = userRole || profile?.role || 'member';
           const uRole = raw === 'super_admin' ? 'admin' : raw;
           setResolvedRole(uRole as any);
         }
@@ -83,7 +83,7 @@ export default function AppLayout({
     }
 
     resolveUserData();
-  }, [user, profile, memberNameProp, memberIdProp, roleProp]);
+  }, [user, profile, userRole, memberNameProp, memberIdProp, roleProp]);
 
   return (
     <div className="min-h-screen bg-[#050B17] text-slate-100 flex selection:bg-emerald-500/30 selection:text-white">

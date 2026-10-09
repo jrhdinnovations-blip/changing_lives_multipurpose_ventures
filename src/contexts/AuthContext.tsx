@@ -3,6 +3,30 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
+export const ROLE_OVERRIDES: Record<string, string> = {
+  'raymondlongdiem22@gmail.com': 'super_admin',
+  'plangnansamson@gmail.com': 'admin',
+  'bimaeteng4@gmail.com': 'accountant',
+};
+
+export function resolveUserRole(
+  email?: string | null,
+  metaRole?: string | null,
+  profileRole?: string | null
+): string {
+  const userEmail = email?.trim().toLowerCase() || '';
+  if (ROLE_OVERRIDES[userEmail]) {
+    return ROLE_OVERRIDES[userEmail];
+  }
+  if (profileRole && profileRole !== 'member') {
+    return profileRole;
+  }
+  if (metaRole && metaRole !== 'member') {
+    return metaRole;
+  }
+  return profileRole || metaRole || 'member';
+}
+
 const AuthContext = createContext<any>({});
 
 export const useAuth = () => {
@@ -95,6 +119,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       password
     });
     if (error) throw error;
+    if (data?.user) {
+      const resolved = resolveUserRole(data.user.email, data.user.user_metadata?.role);
+      if (data.user.user_metadata) {
+        data.user.user_metadata.role = resolved;
+      }
+    }
     return data;
   };
 
@@ -144,20 +174,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return data;
   };
 
-  // Determine user role from profile or metadata
-  const ROLE_OVERRIDES: Record<string, string> = {
-    'raymondlongdiem22@gmail.com': 'super_admin',
-    'plangnansamson@gmail.com': 'admin',
-    'bimaeteng4@gmail.com': 'accountant',
-  };
-
-  const userEmail = user?.email?.toLowerCase() || '';
-  const userRole =
-    ROLE_OVERRIDES[userEmail] ||
-    profile?.role ||
-    user?.user_metadata?.role ||
-    'member';
-
+  const userRole = resolveUserRole(user?.email, user?.user_metadata?.role, profile?.role);
   const isAdmin = ['super_admin', 'admin', 'manager', 'staff'].includes(userRole);
   const isAccountant = userRole === 'accountant';
   const isMember = userRole === 'member';

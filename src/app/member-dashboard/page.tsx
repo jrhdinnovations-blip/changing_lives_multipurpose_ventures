@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import { AlertCircle, CheckCircle2, ArrowRight, User, MapPin, Users, FileText, Banknote } from 'lucide-react';
 
 export default function MemberDashboardPage() {
-  const { user, loading } = useAuth();
+  const { user, loading, userRole, isAccountant } = useAuth();
   const [member, setMember] = useState<any>(null);
   const [memberLoading, setMemberLoading] = useState(true);
   const router = useRouter();
@@ -25,8 +25,15 @@ export default function MemberDashboardPage() {
       router?.replace('/');
       return;
     }
-    if (user) loadMember();
-  }, [user, loading]);
+    if (user) {
+      const email = user.email?.toLowerCase();
+      if (email === 'bimaeteng4@gmail.com' || userRole === 'accountant' || isAccountant) {
+        router?.replace('/accountant-dashboard');
+        return;
+      }
+      loadMember();
+    }
+  }, [user, loading, userRole, isAccountant]);
 
   async function loadMember() {
     try {

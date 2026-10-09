@@ -279,6 +279,8 @@ export default function AppSidebar({ role, collapsed, onToggle, memberName, memb
           <span className={`inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-2xs font-bold ${
             role === 'admin'
               ? 'bg-rose-500/15 text-rose-300 border border-rose-500/30'
+              : role === 'accountant'
+              ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
               : 'bg-emerald-500/15 text-[#00E599] border border-emerald-500/30'
           }`}>
             {role === 'admin'

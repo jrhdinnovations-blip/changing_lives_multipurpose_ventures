@@ -140,9 +140,9 @@ export default function AppTopbar({ memberName, memberId, role, sidebarCollapsed
               </div>
               <div className="p-1.5 space-y-0.5">
                 {[
-                  { icon: User, label: 'My Profile', href: role === 'admin' ? '/admin-dashboard' : '/member-dashboard/profile' },
-                  { icon: Settings, label: 'Account Settings', href: role === 'admin' ? '/admin-dashboard' : '/member-dashboard/profile' },
-                  { icon: HelpCircle, label: 'Help & Support', href: role === 'admin' ? '/admin-dashboard' : '/member-dashboard' },
+                  { icon: User, label: 'My Portal', href: role === 'accountant' ? '/accountant-dashboard' : role === 'admin' ? '/admin-dashboard' : '/member-dashboard/profile' },
+                  { icon: Settings, label: 'Account Settings', href: role === 'accountant' ? '/accountant-dashboard' : role === 'admin' ? '/admin-dashboard' : '/member-dashboard/profile' },
+                  { icon: HelpCircle, label: 'Help & Support', href: role === 'accountant' ? '/accountant-dashboard' : role === 'admin' ? '/admin-dashboard' : '/member-dashboard' },
                 ].map(item => (
                   <Link
                     key={`profile-${item.label}`}
