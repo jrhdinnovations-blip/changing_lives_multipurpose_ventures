@@ -78,7 +78,7 @@ export default function InvestorsCirclePage() {
     minAmount: 750000,
     processingFee: 3000,
     interestRate: 3.5,
-    coopAccountName: 'Changing Lives Multipurpose Ventures',
+    coopAccountName: 'Changing Lives Multipurpose Cooperative Society Ltd',
     coopAccountNumber: '2044406437',
     coopBankName: 'First Bank',
   });

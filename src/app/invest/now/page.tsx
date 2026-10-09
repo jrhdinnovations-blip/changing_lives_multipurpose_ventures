@@ -187,9 +187,9 @@ function InvestNowInner() {
                 Please transfer <strong>{formatNaira(amount)}</strong> to the designated CLIMPS Cooperative capital account:
               </p>
               <div className="bg-white/[0.04] rounded-xl p-3.5 border border-white/10 font-mono space-y-1 text-white">
-                <div><strong>Bank Name:</strong> Zenith Bank PLC</div>
-                <div><strong>Account Name:</strong> Changing Lives Multipurpose Ventures</div>
-                <div><strong>Account Number:</strong> 1014882991</div>
+                <div><strong>Bank Name:</strong> First Bank</div>
+                <div><strong>Account Name:</strong> Changing Lives Multipurpose Cooperative Society Ltd</div>
+                <div><strong>Account Number:</strong> 2044406437</div>
                 <div className="text-amber-400 font-bold pt-1">
                   <strong>Narration / Remarks:</strong> {submittedRef}
                 </div>

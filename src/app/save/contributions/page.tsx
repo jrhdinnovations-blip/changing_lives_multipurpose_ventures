@@ -623,15 +623,15 @@ export default function MonthlyContributionsPage() {
                     <span className="font-semibold text-white block">Direct Bank Transfer Details</span>
                     <div className="flex justify-between text-white/50">
                       <span>Bank:</span>
-                      <span className="font-medium text-white">Wema Bank (Moniepoint)</span>
+                      <span className="font-medium text-white">First Bank</span>
                     </div>
                     <div className="flex justify-between text-white/50">
                       <span>Account Number:</span>
-                      <span className="font-mono font-bold text-white">9948201844</span>
+                      <span className="font-mono font-bold text-white">2044406437</span>
                     </div>
                     <div className="flex justify-between text-white/50">
                       <span>Account Name:</span>
-                      <span className="font-medium text-white">CLIMPS - {memberName}</span>
+                      <span className="font-medium text-white">Changing Lives Multipurpose Cooperative Society Ltd</span>
                     </div>
                   </div>
                 )}

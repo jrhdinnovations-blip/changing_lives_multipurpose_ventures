@@ -762,18 +762,18 @@ export default function RegularSavingsPage() {
 
                 {depositChannel === 'transfer' && (
                   <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1.5">
-                    <span className="font-semibold text-slate-900 block">Dedicated Deposit Account (NUBAN)</span>
+                    <span className="font-semibold text-slate-900 block">Bank Transfer Details</span>
                     <div className="flex justify-between text-slate-500">
                       <span>Bank:</span>
-                      <span className="font-medium text-slate-900">Wema Bank / Moniepoint</span>
+                      <span className="font-medium text-slate-900">First Bank</span>
                     </div>
                     <div className="flex justify-between text-slate-500">
                       <span>Account Number:</span>
-                      <span className="font-mono font-bold text-slate-900 tracking-wider">9948201844</span>
+                      <span className="font-mono font-bold text-slate-900 tracking-wider">2044406437</span>
                     </div>
                     <div className="flex justify-between text-slate-500">
                       <span>Account Name:</span>
-                      <span className="font-medium text-slate-900">CLIMPS - {member.name}</span>
+                      <span className="font-medium text-slate-900">Changing Lives Multipurpose Cooperative Society Ltd</span>
                     </div>
                   </div>
                 )}
