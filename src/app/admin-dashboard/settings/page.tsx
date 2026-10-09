@@ -14,6 +14,9 @@ import {
   RotateCcw,
   AlertCircle,
   CheckCircle2,
+  Mail,
+  Send,
+  RefreshCw,
 } from 'lucide-react';
 
 interface SettingItem {
@@ -93,6 +96,17 @@ const SETTING_GROUPS: SettingGroup[] = [
       { key: 'cooperative_email', label: 'Primary Contact Email', type: 'text', hint: 'Main public contact email address' },
     ],
   },
+  {
+    id: 'email',
+    title: 'Email & Notifications',
+    icon: Mail,
+    color: 'text-amber-400',
+    bg: 'bg-amber-500/15 border border-amber-500/30',
+    keys: [
+      { key: 'admin_notification_email', label: 'Admin Notification Recipient', type: 'text', hint: 'Receives alerts when loan applications are submitted (Changinglivesmultipurpose@gmail.com)' },
+      { key: 'accountant_notification_email', label: 'Accountant Notification Recipient', type: 'text', hint: 'Receives alerts when loans are approved for disbursement (bimaeteng4@gmail.com)' },
+    ],
+  },
 ];
 
 const DEFAULT_SETTINGS: Record<string, string> = {
@@ -135,6 +149,45 @@ export default function AdminSettingsPage() {
   const [saved, setSaved] = useState<Record<string, boolean>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [activeGroup, setActiveGroup] = useState('loan');
+  const [testingEmail, setTestingEmail] = useState(false);
+  const [emailStatus, setEmailStatus] = useState<any>(null);
+
+  useEffect(() => {
+    if (activeGroup === 'email') {
+      fetch('/api/notifications/loan')
+        .then(res => res.json())
+        .then(data => setEmailStatus(data))
+        .catch(() => {});
+    }
+  }, [activeGroup]);
+
+  const handleTestEmail = async () => {
+    setTestingEmail(true);
+    try {
+      const res = await fetch('/api/notifications/loan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'test_email',
+          data: {},
+        }),
+      });
+      const data = await res.json();
+      if (data?.success) {
+        toast.success('Test email delivered successfully to Admin and Accountant!');
+      } else {
+        const errorMsg = data?.admin?.error || data?.accountant?.error || 'Email delivery failed. Check SMTP credentials.';
+        toast.error(`Email delivery notice: ${errorMsg}`);
+      }
+      const statusRes = await fetch('/api/notifications/loan');
+      const statusData = await statusRes.json();
+      setEmailStatus(statusData);
+    } catch (e: any) {
+      toast.error(`Failed to execute email test: ${e?.message}`);
+    } finally {
+      setTestingEmail(false);
+    }
+  };
 
   useEffect(() => {
     loadSettings();
@@ -310,6 +363,61 @@ export default function AdminSettingsPage() {
 
                   {/* Settings Items */}
                   <div className="p-6 space-y-5">
+                    {currentGroup.id === 'email' && (
+                      <div className="p-4 rounded-2xl bg-[#080E1C] border border-white/10 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Mail size={16} className="text-amber-400" />
+                            <span className="text-xs font-bold text-white uppercase tracking-wider">
+                              SMTP Delivery Status
+                            </span>
+                          </div>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-xs font-bold border ${
+                              emailStatus?.smtpStatus?.isConfigured
+                                ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                                : 'bg-amber-500/15 text-amber-400 border border-amber-500/30'
+                            }`}
+                          >
+                            {emailStatus?.smtpStatus?.isConfigured ? '● Configured' : '▲ Action Required'}
+                          </span>
+                        </div>
+
+                        <div className="text-xs text-slate-300 space-y-1">
+                          <p>
+                            <strong className="text-slate-400">Host:</strong>{' '}
+                            <code className="text-amber-300 font-mono">smtp.gmail.com:587</code>
+                          </p>
+                          <p>
+                            <strong className="text-slate-400">Sending Account:</strong>{' '}
+                            <code className="text-amber-300 font-mono">Changinglivesmultipurpose@gmail.com</code>
+                          </p>
+                          <p className="text-slate-400 text-2xs mt-1">
+                            {emailStatus?.verification?.message ||
+                              'A 16-character Google App Password in .env is required to send emails via Gmail.'}
+                          </p>
+                        </div>
+
+                        <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                          <span className="text-2xs text-slate-400">
+                            Sends sample notifications to admin & accountant
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handleTestEmail}
+                            disabled={testingEmail}
+                            className="px-3.5 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition-all flex items-center gap-1.5 disabled:opacity-50"
+                          >
+                            {testingEmail ? (
+                              <RefreshCw size={13} className="animate-spin" />
+                            ) : (
+                              <Send size={13} />
+                            )}
+                            {testingEmail ? 'Sending Test…' : 'Send Test Notification'}
+                          </button>
+                        </div>
+                      </div>
+                    )}
                     {currentGroup.keys.map(item => {
                       const currentVal = editValues[item.key] ?? '';
                       const savedVal = settings[item.key] ?? '';

@@ -54,41 +54,161 @@ function isPlaceholderValue(val?: string): boolean {
 }
 
 export function getSmtpStatus() {
-  const host = process.env.SMTP_HOST;
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
-  const pass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
+  const resendKey = process.env.RESEND_API_KEY;
+  const hasResend = Boolean(resendKey && !isPlaceholderValue(resendKey));
 
-  const isConfigured = Boolean(host && user && pass && !isPlaceholderValue(pass) && !isPlaceholderValue(user));
-  const hasPlaceholder = Boolean(isPlaceholderValue(pass) || isPlaceholderValue(user));
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
+  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
+  const rawPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || '';
+  const cleanPass = rawPass.trim().replace(/^["']|["']$/g, '').replace(/\s+/g, '');
+
+  const hasPlaceholder = Boolean(isPlaceholderValue(cleanPass) || isPlaceholderValue(user));
+  const isConfigured = hasResend || Boolean(user && cleanPass && !hasPlaceholder);
 
   return {
     isConfigured,
     hasPlaceholder,
+    hasResend,
     user: user || '',
     host: host || '',
   };
 }
 
 function getMailTransporter() {
-  const host = process.env.SMTP_HOST;
+  const host = process.env.SMTP_HOST || 'smtp.gmail.com';
   const port = Number(process.env.SMTP_PORT) || 587;
-  const user = process.env.SMTP_USER || process.env.EMAIL_USER;
-  const pass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD;
-  const secure = process.env.SMTP_SECURE === 'true' || port === 465;
+  const user = (process.env.SMTP_USER || process.env.EMAIL_USER || '').trim();
+  const rawPass = process.env.SMTP_PASSWORD || process.env.SMTP_PASS || process.env.EMAIL_PASSWORD || '';
+  const pass = rawPass.trim().replace(/^["']|["']$/g, '').replace(/\s+/g, '');
 
-  if (!host || !user || !pass || isPlaceholderValue(pass) || isPlaceholderValue(user)) {
+  if (!user || !pass || isPlaceholderValue(pass) || isPlaceholderValue(user)) {
     return null;
+  }
+
+  // Use Gmail service preset if host is gmail or user is a gmail address
+  if (host.includes('gmail.com') || user.toLowerCase().endsWith('@gmail.com')) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user,
+        pass,
+      },
+    });
   }
 
   return nodemailer.createTransport({
     host,
     port,
-    secure,
+    secure: process.env.SMTP_SECURE === 'true' || port === 465,
     auth: {
       user,
       pass,
     },
+    tls: {
+      rejectUnauthorized: false,
+    },
   });
+}
+
+export async function verifyEmailTransport(): Promise<{ success: boolean; message: string }> {
+  const status = getSmtpStatus();
+  if (status.hasResend) {
+    return { success: true, message: 'Resend API is configured.' };
+  }
+  if (!status.isConfigured || status.hasPlaceholder) {
+    return {
+      success: false,
+      message: 'SMTP credentials contain placeholder or are missing in .env (SMTP_PASSWORD=your-email-app-password). A 16-character Google App Password or RESEND_API_KEY is required.',
+    };
+  }
+
+  const transporter = getMailTransporter();
+  if (!transporter) {
+    return { success: false, message: 'Could not initialize mail transporter.' };
+  }
+
+  try {
+    await transporter.verify();
+    return { success: true, message: 'SMTP connection verified successfully.' };
+  } catch (err: any) {
+    const raw = err?.message || 'SMTP verification failed';
+    if (raw.includes('535') || raw.includes('BadCredentials') || raw.includes('Username and Password not accepted')) {
+      return {
+        success: false,
+        message: 'Gmail authentication failed (535 BadCredentials). Please ensure you are using a 16-character App Password generated from https://myaccount.google.com/apppasswords rather than your main Gmail password.',
+      };
+    }
+    return { success: false, message: `SMTP error: ${raw}` };
+  }
+}
+
+async function dispatchEmail({
+  to,
+  subject,
+  html,
+}: {
+  to: string[];
+  subject: string;
+  html: string;
+}): Promise<{ delivered: boolean; error?: string }> {
+  // 1. Try Resend if configured
+  const resendKey = process.env.RESEND_API_KEY;
+  if (resendKey && !isPlaceholderValue(resendKey)) {
+    try {
+      const fromAddr = process.env.RESEND_FROM || 'Changing Lives <onboarding@resend.dev>';
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${resendKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: fromAddr,
+          to,
+          subject,
+          html,
+        }),
+      });
+      const resData = await res.json();
+      if (res.ok) {
+        console.log(`[EmailService] Email successfully sent via Resend:`, resData?.id);
+        return { delivered: true };
+      } else {
+        console.warn(`[EmailService] Resend returned non-ok:`, resData);
+      }
+    } catch (resendErr: any) {
+      console.warn(`[EmailService] Resend exception:`, resendErr);
+    }
+  }
+
+  // 2. Try SMTP Transporter
+  const transporter = getMailTransporter();
+  if (!transporter) {
+    const status = getSmtpStatus();
+    const errMsg = status.hasPlaceholder
+      ? 'SMTP credentials not configured in .env (SMTP_PASSWORD contains placeholder). Set a valid 16-character Gmail App Password or RESEND_API_KEY to deliver live emails.'
+      : 'SMTP credentials missing in .env.';
+    console.log(`[EmailService: Notice] ${errMsg} Email queued for: ${to.join(', ')} - Subject: "${subject}"`);
+    return { delivered: false, error: errMsg };
+  }
+
+  try {
+    await transporter.sendMail({
+      from: getFromAddress(),
+      to: to.join(', '),
+      subject,
+      html,
+    });
+    console.log(`[EmailService] Email delivered via SMTP to: ${to.join(', ')}`);
+    return { delivered: true };
+  } catch (err: any) {
+    let msg = err?.message || 'SMTP delivery failed';
+    if (msg.includes('535') || msg.includes('BadCredentials') || msg.includes('Username and Password not accepted')) {
+      msg = 'Gmail authentication failed (535 BadCredentials). Please generate and use a 16-character App Password at https://myaccount.google.com/apppasswords.';
+    }
+    console.error(`[EmailService] SMTP send error:`, msg);
+    return { delivered: false, error: msg };
+  }
 }
 
 function getFromAddress(): string {
@@ -226,28 +346,11 @@ export async function sendLoanAppliedEmailToAdmin(
     </html>
   `;
 
-  const transporter = getMailTransporter();
-  let delivered = false;
-  let deliveryError: string | undefined;
-
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from: getFromAddress(),
-        to: adminEmails.join(', '),
-        subject,
-        html,
-      });
-      delivered = true;
-      console.log(`[EmailService] Loan application notification successfully sent to admin: ${adminEmails.join(', ')}`);
-    } catch (err: any) {
-      deliveryError = err?.message || 'SMTP delivery failed';
-      console.error('[EmailService] Failed to send email via SMTP transporter:', deliveryError);
-    }
-  } else {
-    deliveryError = 'SMTP credentials not configured or contain placeholder in .env (SMTP_PASSWORD=your-email-app-password). Set a valid Gmail 16-character App Password to enable live email delivery.';
-    console.log(`[EmailService: Notice] ${deliveryError} Notification logged for Admin (${adminEmails.join(', ')}): ${subject}`);
-  }
+  const { delivered, error: deliveryError } = await dispatchEmail({
+    to: adminEmails,
+    subject,
+    html,
+  });
 
   return { delivered, subject, adminEmails, error: deliveryError };
 }
@@ -383,28 +486,11 @@ export async function sendLoanApprovedEmailToAccountant(
     </html>
   `;
 
-  const transporter = getMailTransporter();
-  let delivered = false;
-  let deliveryError: string | undefined;
-
-  if (transporter) {
-    try {
-      await transporter.sendMail({
-        from: getFromAddress(),
-        to: accountantEmails.join(', '),
-        subject,
-        html,
-      });
-      delivered = true;
-      console.log(`[EmailService] Loan approved notification successfully sent to accountant: ${accountantEmails.join(', ')}`);
-    } catch (err: any) {
-      deliveryError = err?.message || 'SMTP delivery failed';
-      console.error('[EmailService] Failed to send email via SMTP transporter:', deliveryError);
-    }
-  } else {
-    deliveryError = 'SMTP credentials not configured or contain placeholder in .env (SMTP_PASSWORD=your-email-app-password). Set a valid Gmail 16-character App Password to enable live email delivery.';
-    console.log(`[EmailService: Notice] ${deliveryError} Notification logged for Accountant (${accountantEmails.join(', ')}): ${subject}`);
-  }
+  const { delivered, error: deliveryError } = await dispatchEmail({
+    to: accountantEmails,
+    subject,
+    html,
+  });
 
   return { delivered, subject, accountantEmails, error: deliveryError };
 }

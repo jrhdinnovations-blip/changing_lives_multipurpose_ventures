@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import AppLayout from '@/components/AppLayout';
+import { toast } from 'sonner';
 
 function formatNGN(val: number) {
   return '₦' + (val || 0).toLocaleString('en-NG', { minimumFractionDigits: 0 });
@@ -433,7 +434,7 @@ export default function AdminLoansPage() {
       // If loan is approved, dispatch email notification to the Accountant for disbursement
       if (newStatus === 'approved') {
         try {
-          await fetch('/api/notifications/loan', {
+          const notifRes = await fetch('/api/notifications/loan', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -456,6 +457,12 @@ export default function AdminLoansPage() {
               },
             }),
           });
+          const notifData = await notifRes.json();
+          if (notifData?.delivered) {
+            toast.success(`Accountant notified via email (${notifData.recipientCount} recipients)`);
+          } else if (notifData?.notice) {
+            toast.info(`Loan approved! Note: ${notifData.notice}`);
+          }
         } catch (e) {
           console.warn('Loan approved notification dispatch failed:', e);
         }

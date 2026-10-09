@@ -4,7 +4,29 @@ import { cookies } from 'next/headers';
 import {
   sendLoanAppliedEmailToAdmin,
   sendLoanApprovedEmailToAccountant,
+  getSmtpStatus,
+  verifyEmailTransport,
 } from '@/lib/emailService';
+
+export async function GET() {
+  const status = getSmtpStatus();
+  const verification = await verifyEmailTransport();
+  return NextResponse.json({
+    smtpStatus: status,
+    verification,
+    recipients: {
+      admin: [
+        'Changinglivesmultipurpose@gmail.com',
+        'raymondlongdiem22@gmail.com',
+        'plangnansamson@gmail.com',
+      ],
+      accountant: [
+        'bimaeteng4@gmail.com',
+        'Changinglivesmultipurpose@gmail.com',
+      ],
+    },
+  });
+}
 
 async function getSupabaseServerClient() {
   const cookieStore = await cookies();
@@ -126,6 +148,41 @@ export async function POST(request: Request) {
         notice: emailResult.delivered
           ? 'Email successfully dispatched to accountant'
           : emailResult.error || 'SMTP delivery pending configuration',
+      });
+    }
+
+    if (event === 'test_email') {
+      const adminEmails = [
+        'Changinglivesmultipurpose@gmail.com',
+        'raymondlongdiem22@gmail.com',
+        'plangnansamson@gmail.com',
+      ];
+      const accountantEmails = [
+        'bimaeteng4@gmail.com',
+        'Changinglivesmultipurpose@gmail.com',
+      ];
+      const testData = {
+        applicationNumber: 'APP-TEST-001',
+        applicantName: 'Test Applicant (System Verification)',
+        applicantPhone: '08012345678',
+        applicantEmail: 'test@climps.org',
+        loanAmount: 150000,
+        loanDurationMonths: 3,
+        loanPurpose: 'System Email Verification Test',
+        monthlyInterestAmount: 15000,
+        totalRepaymentAmount: 195000,
+        accountName: 'Test Applicant',
+        accountNumber: '1234567890',
+        bankName: 'First Bank of Nigeria',
+      };
+      const adminResult = await sendLoanAppliedEmailToAdmin(testData, adminEmails);
+      const acctResult = await sendLoanApprovedEmailToAccountant(testData, accountantEmails);
+
+      return NextResponse.json({
+        success: adminResult.delivered || acctResult.delivered,
+        event: 'test_email',
+        admin: adminResult,
+        accountant: acctResult,
       });
     }
 
