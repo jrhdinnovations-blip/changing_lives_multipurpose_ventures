@@ -473,13 +473,13 @@ function InvestNowInner() {
               {[
                 {
                   id: 'bank_transfer',
-                  name: 'Cooperative Direct Bank Transfer',
+                  name: 'Direct Bank Transfer',
                   desc: 'Transfer directly to CLIMPS designated Zenith Bank account with generated narration.',
                   icon: Building,
                 },
                 {
                   id: 'savings_wallet',
-                  name: 'Deduct from Cooperative Savings Wallet',
+                  name: 'Deduct from Savings Wallet',
                   desc: 'Instant debit from your active CLIMPS regular savings account balance.',
                   icon: Wallet,
                 },

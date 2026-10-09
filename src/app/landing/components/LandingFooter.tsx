@@ -16,32 +16,32 @@ export default function LandingFooter() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10">
           {/* Brand */}
           <div className="md:col-span-5 space-y-4">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3.5">
               <Image
                 src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
                 alt="CLIMPS Logo"
-                width={44}
-                height={44}
-                className="rounded-xl object-cover ring-2 ring-white/20 shadow-lg"
+                width={64}
+                height={64}
+                className="w-16 h-16 rounded-2xl object-cover ring-2 ring-white/20 shadow-xl"
               />
               <div className="flex flex-col leading-tight">
                 <div className="flex items-center gap-1.5">
-                  <span className="font-black text-white text-xl tracking-tight">CLIMPS</span>
+                  <span className="font-black text-white text-2xl tracking-tight">CLIMPS</span>
                   <span className="inline-flex items-center gap-1 ml-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-sm shadow-rose-500/50" />
                     <span className="w-1.5 h-1.5 rounded-full bg-[#00E599] shadow-sm shadow-emerald-500/50" />
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" />
                   </span>
                 </div>
-                <span className="text-xs text-slate-400 font-medium">Changing Lives Multipurpose Ventures</span>
+                <span className="text-xs text-slate-300 font-semibold">Changing Lives Multipurpose Ventures</span>
               </div>
             </div>
             <p className="text-sm text-slate-400 max-w-sm leading-relaxed">
-              Empowering people and businesses with disciplined thrift savings, high-yield wealth opportunities, cooperative loans, and sustainable economic solutions.
+              Empowering people and businesses with disciplined thrift savings, Wealth Circle opportunities, loans, and sustainable economic solutions.
             </p>
             <div className="inline-flex items-center gap-2 text-xs text-[#00E599] bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20 font-semibold">
               <ShieldCheck size={14} className="text-[#00E599]" />
-              <span>Registered Multipurpose Cooperative Society</span>
+              <span>Registered Multipurpose Ventures</span>
             </div>
           </div>
 
@@ -51,18 +51,13 @@ export default function LandingFooter() {
             <div className="flex items-start gap-2.5 text-sm text-slate-300">
               <MapPin size={16} className="text-rose-400 shrink-0 mt-0.5" />
               <div className="leading-relaxed">
-                <p className="font-bold text-white">Changing Lives Multipurpose Cooperative</p>
+                <p className="font-bold text-white">Changing Lives Multipurpose Ventures</p>
                 <p className="text-slate-400 text-xs mt-0.5">Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State</p>
               </div>
             </div>
 
-            {/* Officer & Phone / WhatsApp / Email */}
+            {/* Phone / WhatsApp / Email (numbers only, no contact name) */}
             <div className="pt-3 border-t border-white/10 space-y-2.5">
-              <div className="flex items-center gap-2 text-sm text-slate-300">
-                <span className="w-2 h-2 rounded-full bg-blue-400" />
-                <span className="text-xs font-medium text-slate-400 uppercase tracking-wide">Contact Person:</span>
-                <span className="font-bold text-white">Jauro Luka</span>
-              </div>
               <div className="flex items-center gap-2.5 text-sm text-slate-300">
                 <Phone size={15} className="text-[#00E599] shrink-0" />
                 <div className="flex flex-wrap items-center gap-2 font-medium">
@@ -119,7 +114,7 @@ export default function LandingFooter() {
 
         {/* Bottom copyright & legal */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-xs text-slate-500">
-          <p>© {year} CLIMPS Cooperative. All rights reserved.</p>
+          <p>© {year} CLIMPS Ventures. All rights reserved.</p>
           <div className="flex items-center gap-5">
             <Link href="/about" className="hover:text-slate-300 transition-colors">
               About Us

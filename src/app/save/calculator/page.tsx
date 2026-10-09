@@ -314,7 +314,7 @@ export default function SavingsCalculatorPage() {
                   : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-200'
               }`}>
                 <div className="flex items-center gap-2 font-bold mb-1">
-                  <span>{result.interestForfeited ? '⚠️ 1-Year Tenure Rule Warning' : 'ℹ️ Cooperative Savings Policy'}</span>
+                  <span>{result.interestForfeited ? '⚠️ 1-Year Tenure Rule Warning' : 'ℹ️ Savings Policy'}</span>
                   <span className="bg-emerald-500/20 text-emerald-300 text-[10px] px-2 py-0.5 rounded-full font-extrabold border border-emerald-500/30">4% Monthly</span>
                 </div>
                 <p className="text-white/80">

@@ -113,13 +113,13 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   investors_circle_min_amount: '750000',
   investors_circle_processing_fee: '3000',
   investors_circle_interest_rate: '3.5',
-  investors_circle_coop_account_name: 'Changing Lives Multipurpose Coop',
+  investors_circle_coop_account_name: 'Changing Lives Multipurpose Ventures',
   investors_circle_coop_account_number: '2044406437',
   investors_circle_coop_bank_name: 'First Bank of Nigeria',
-  cooperative_name: 'Changing Lives Multipurpose Cooperative Society Limited (CLIMPS)',
+  cooperative_name: 'Changing Lives Multipurpose Ventures (CLIMPS)',
   cooperative_address: 'Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State',
-  cooperative_phone: '+234 803 123 4567',
-  cooperative_email: 'admin@climps.org',
+  cooperative_phone: '08144447710',
+  cooperative_email: 'Changinglivesmultipurpose@gmail.com',
 };
 
 const LOCAL_STORAGE_KEY = 'climps_system_settings_v1';

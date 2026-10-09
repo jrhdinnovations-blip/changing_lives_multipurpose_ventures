@@ -18,8 +18,8 @@ const SERVICES = [
   {
     icon: PiggyBank,
     label: 'Savings',
-    badge: 'Thrift & High-Yield',
-    desc: 'Regular cooperative thrift contributions, fixed target goals, and flexible savings products designed to cultivate disciplined wealth creation.',
+    badge: 'Thrift & Savings',
+    desc: 'Regular thrift contributions, fixed target goals, and flexible savings products designed to cultivate disciplined wealth creation.',
     color: 'bg-blue-500/10 text-blue-400 border border-blue-500/20 group-hover:bg-blue-500/20',
     href: '/savings-products',
   },
@@ -35,7 +35,7 @@ const SERVICES = [
     icon: CreditCard,
     label: 'Loans',
     badge: 'Disbursed in 24 Hours',
-    desc: 'Low-interest cooperative loan packages tailored for emergencies, personal milestones, and working capital needs with flexible repayment.',
+    desc: 'Low-interest loan packages tailored for emergencies, personal milestones, and working capital needs with flexible repayment.',
     color: 'bg-amber-500/10 text-amber-400 border border-amber-500/20 group-hover:bg-amber-500/20',
     href: '/loan-products',
   },
@@ -49,8 +49,8 @@ const SERVICES = [
   },
   {
     icon: Users,
-    label: 'Other member-focused services as approved by the Society.',
-    badge: 'Cooperative Welfare',
+    label: 'Other member-focused services as approved by the Ventures.',
+    badge: 'Member Welfare',
     desc: 'Comprehensive member welfare initiatives, dividend distributions, asset acquisition schemes, and empowerment programs authorized by CLIMPS.',
     color: 'bg-rose-500/10 text-rose-400 border border-rose-500/20 group-hover:bg-rose-500/20',
     href: '/about',
@@ -74,12 +74,12 @@ export default function AboutSection() {
           </div>
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-[1.15] tracking-tight mb-6">
-            Changing Lives Multipurpose Cooperative Society{' '}
+            Changing Lives Multipurpose Ventures{' '}
             <span className="text-emerald-400">(CLIMPS)</span>
           </h2>
 
           <p className="text-white/70 text-base sm:text-lg lg:text-xl leading-relaxed">
-            <strong className="text-white font-semibold">Changing Lives Multipurpose Cooperative Society (CLIMPS)</strong> is a cooperative society that provides savings, wealth Circle, loans and business-oriented financial solutions designed to create opportunities, build wealth and change lives.
+            <strong className="text-white font-semibold">Changing Lives Multipurpose Ventures (CLIMPS)</strong> is an enterprise that provides savings, Wealth Circle, loans and business-oriented financial solutions designed to create opportunities, build wealth and change lives.
           </p>
         </div>
 
@@ -283,7 +283,7 @@ export default function AboutSection() {
                 Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State
               </h4>
               <p className="text-xs text-white/70 mt-1">
-                Changing Lives Multipurpose Cooperative Society • Contact: <span className="text-white font-semibold">Jauro Luka</span> (Phone/WhatsApp: <a href="tel:08144447710" className="text-emerald-400 hover:underline">08144447710</a>, <a href="tel:08053331224" className="text-emerald-400 hover:underline">08053331224</a>) • Email: <a href="mailto:Changinglivesmultipurpose@gmail.com" className="text-emerald-400 hover:underline">Changinglivesmultipurpose@gmail.com</a>
+                Changing Lives Multipurpose Ventures • Phone/WhatsApp: <a href="tel:08144447710" className="text-emerald-400 hover:underline">08144447710</a>, <a href="tel:08053331224" className="text-emerald-400 hover:underline">08053331224</a> • Email: <a href="mailto:Changinglivesmultipurpose@gmail.com" className="text-emerald-400 hover:underline">Changinglivesmultipurpose@gmail.com</a>
               </p>
             </div>
           </div>

@@ -73,7 +73,7 @@ export default function FinalCTA() {
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" title="Blue" />
             <span className="w-2.5 h-2.5 rounded-full bg-white shadow-sm shadow-white/50" title="White" />
           </span>
-          <span className="text-slate-200">Changing Lives Multipurpose Cooperative Society</span>
+          <span className="text-slate-200">Changing Lives Multipurpose Ventures</span>
         </div>
 
         <h2
@@ -98,7 +98,7 @@ export default function FinalCTA() {
             transition: 'opacity 0.6s ease 0.35s, transform 0.6s ease 0.35s',
           }}
         >
-          Join thousands of cooperative members building real, sustainable prosperity together across Nigeria.
+          Join thousands of members building real, sustainable prosperity together across Nigeria.
         </p>
 
         {/* Action buttons */}

@@ -71,7 +71,7 @@ const products: Record<ProductCategory, ProductItem[]> = {
       duration: '12+ months',
       durationLabel: 'Min. Tenure',
       description:
-        'Core cooperative thrift contribution. Earns 4% monthly interest when maintained for at least 1 year — early withdrawal forfeits ALL interest.',
+        'Core thrift contribution. Earns 4% monthly interest when maintained for at least 1 year — early withdrawal forfeits ALL interest.',
       features: [
         '4% monthly interest on balance',
         'At least 1-year tenure to retain interest',
@@ -174,8 +174,8 @@ const products: Record<ProductCategory, ProductItem[]> = {
       duration: '3–24 months',
       durationLabel: 'Repayment',
       description:
-        'Flexible personal financing for home improvements, travel, weddings, or any personal project at 10% monthly cooperative interest.',
-      features: ['10% monthly cooperative interest', 'Flexible tenure up to 24 months', 'No early repayment penalty'],
+        'Flexible personal financing for home improvements, travel, weddings, or any personal project at 10% monthly interest.',
+      features: ['10% monthly interest', 'Flexible tenure up to 24 months', 'No early repayment penalty'],
       accentColor: 'border-blue-500/30',
       glowColor: 'rgba(59,130,246,0.12)',
       btnClass: 'bg-blue-600 hover:bg-blue-500',

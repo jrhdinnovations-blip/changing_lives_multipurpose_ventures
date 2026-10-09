@@ -78,7 +78,7 @@ export default function InvestorsCirclePage() {
     minAmount: 750000,
     processingFee: 3000,
     interestRate: 3.5,
-    coopAccountName: 'Changing Lives Multipurpose Cooperative Society',
+    coopAccountName: 'Changing Lives Multipurpose Ventures',
     coopAccountNumber: '2044406437',
     coopBankName: 'First Bank',
   });
@@ -129,7 +129,7 @@ export default function InvestorsCirclePage() {
           minAmount: Number(map['investors_circle_min_amount'] || 750000),
           processingFee: Number(map['investors_circle_processing_fee'] || 3000),
           interestRate: Number(map['investors_circle_interest_rate'] || 3.5),
-          coopAccountName: map['investors_circle_coop_account_name'] || 'Changing Lives Multipurpose Cooperative Society',
+          coopAccountName: map['investors_circle_coop_account_name'] || 'Changing Lives Multipurpose Ventures',
           coopAccountNumber: map['investors_circle_coop_account_number'] || '2044406437',
           coopBankName: map['investors_circle_coop_bank_name'] || 'First Bank',
         });

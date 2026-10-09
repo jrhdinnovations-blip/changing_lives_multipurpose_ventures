@@ -197,7 +197,7 @@ export default function HeroSection() {
                   <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
                 </span>
-                <span>Changing Lives Multipurpose Cooperative</span>
+                <span>Changing Lives Multipurpose Ventures</span>
               </div>
 
               {/* Headline matching Figma */}
@@ -224,7 +224,7 @@ export default function HeroSection() {
                   transitionDelay: '350ms',
                 }}
               >
-                A structured wealth-building cooperative for Nigerians — disciplined thrift savings, high-yield wealth opportunities, and express 24-hour loans.
+                A structured wealth-building platform for Nigerians — disciplined thrift savings, Wealth Circle opportunities, and express 24-hour loans.
               </p>
 
               {/* CTAs */}
@@ -258,7 +258,7 @@ export default function HeroSection() {
                   href="#services"
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-base transition-all duration-200 active:scale-95 backdrop-blur-md"
                 >
-                  Explore Products
+                  What We Offer
                 </Link>
               </div>
 
@@ -297,7 +297,7 @@ export default function HeroSection() {
                   <div className="flex items-start justify-between mb-6">
                     <div>
                       <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-1">
-                        Total Cooperative Portfolio
+                        Total Portfolio
                       </span>
                       <div className="text-3xl sm:text-4xl font-black text-white tracking-tight font-tabular">
                         ₦14,850,200<span className="text-xl text-slate-400 font-semibold">.00</span>
@@ -340,12 +340,12 @@ export default function HeroSection() {
                           <Sparkles className="w-3.5 h-3.5" />
                           Wealth Circle
                         </span>
-                        <span className="text-[10px] bg-blue-500/20 text-blue-300 font-bold px-1.5 py-0.5 rounded">High Yield</span>
+                        <span className="text-[10px] bg-blue-500/20 text-blue-300 font-bold px-1.5 py-0.5 rounded">Wealth Circle</span>
                       </div>
                       <div className="text-xl font-black text-white font-tabular mb-2">15.5% P.A.</div>
                       <div className="text-[11px] text-slate-400 flex items-center gap-1.5">
                         <Clock className="w-3 h-3 text-slate-400" />
-                        <span>Payout in <strong className="text-white">12 days</strong></span>
+                        <span>Returns in <strong className="text-white">12 days</strong></span>
                       </div>
                     </div>
                   </div>

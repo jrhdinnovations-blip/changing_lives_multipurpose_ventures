@@ -42,19 +42,19 @@ export default function LandingNav() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-20 lg:h-24">
           {/* Logo */}
-          <Link href="/landing" className="flex items-center gap-3 flex-shrink-0 group">
+          <Link href="/landing" className="flex items-center gap-3.5 flex-shrink-0 group">
             <Image
               src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
-              alt="CLIMPS Cooperative Logo"
-              width={50}
-              height={50}
-              className="rounded-xl object-cover ring-2 ring-emerald-500/30 shadow-lg group-hover:scale-105 transition-transform"
+              alt="CLIMPS Logo"
+              width={64}
+              height={64}
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl object-cover ring-2 ring-emerald-500/30 shadow-xl group-hover:scale-105 transition-transform"
             />
             <div className="flex flex-col leading-tight">
               <div className="flex items-center gap-1.5">
-                <span className="font-black text-xl tracking-tight text-white">
+                <span className="font-black text-2xl tracking-tight text-white">
                   CLIMPS
                 </span>
                 <span className="inline-flex items-center gap-1">
@@ -63,8 +63,8 @@ export default function LandingNav() {
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500" title="Blue" />
                 </span>
               </div>
-              <span className="text-[11px] font-medium tracking-wide text-slate-400">
-                Changing Lives Multipurpose
+              <span className="text-xs font-semibold tracking-wide text-slate-300">
+                Changing Lives Multipurpose Ventures
               </span>
             </div>
           </Link>
@@ -195,7 +195,7 @@ export default function LandingNav() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">Wealth Circle Products</div>
-                      <div className="text-xs text-slate-400 mt-0.5">Explore high-yield opportunities</div>
+                      <div className="text-xs text-slate-400 mt-0.5">Explore Wealth Circle opportunities</div>
                     </div>
                   </Link>
 
@@ -223,7 +223,7 @@ export default function LandingNav() {
                     </div>
                     <div>
                       <div className="text-sm font-bold text-white group-hover:text-emerald-400 transition-colors">CLIMPS Wealth Circle</div>
-                      <div className="text-xs text-slate-400 mt-0.5">Exclusive cooperative partnership</div>
+                      <div className="text-xs text-slate-400 mt-0.5">Exclusive financial partnership</div>
                     </div>
                   </Link>
 

@@ -337,7 +337,7 @@ function StartSavingInner() {
 
           {/* Retention Policy Banner */}
           <div className="mb-5 p-3.5 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-200 leading-relaxed">
-            <strong className="text-amber-300">Cooperative Savings Rule:</strong> Savings earning 4% monthly shall be maintained for at least 1 full year. Early liquidation or withdrawal before 1 year forfeits all accrued interest.
+            <strong className="text-amber-300">Savings Rule:</strong> Savings earning 4% monthly shall be maintained for at least 1 full year. Early liquidation or withdrawal before 1 year forfeits all accrued interest.
           </div>
 
           {/* Terms */}

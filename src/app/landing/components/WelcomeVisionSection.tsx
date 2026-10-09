@@ -38,19 +38,19 @@ export default function WelcomeVisionSection() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight mb-4">
             Welcome to <span className="text-[#00E599]">CLIMPS</span>
             <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-300 block mt-1">
-              Changing Lives Multipurpose Cooperative Society
+              Changing Lives Multipurpose Ventures
             </span>
           </h2>
 
           <p className="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed font-normal max-w-2xl mx-auto mb-8">
-            An officially registered Nigerian cooperative society empowering individuals, entrepreneurs, and families to build sustainable wealth through structured savings, pooled high-yield investment circles, and express 24-hour loans.
+            An officially registered Nigerian multipurpose enterprise empowering individuals, entrepreneurs, and families to build sustainable wealth through structured savings, pooled Wealth Circle investments, and express 24-hour loans.
           </p>
 
           {/* Trust badges strip */}
           <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs font-bold">
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-emerald-400">
               <ShieldCheck className="w-3.5 h-3.5 text-[#00E599] shrink-0" />
-              <span>Registered Cooperative Society</span>
+              <span>Registered Multipurpose Ventures</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-rose-400">
               <Clock className="w-3.5 h-3.5 text-rose-400 shrink-0" />
@@ -132,9 +132,9 @@ export default function WelcomeVisionSection() {
               <div className="space-y-3 mb-5">
                 {[
                   'Express 24-hour loan turnaround for qualified members',
-                  'High-yield savings earning 4% monthly interest (48% p.a.)',
-                  'Exclusive Wealth Circle investments with 3.5% monthly payouts',
-                  'Annual cooperative surplus profit dividends for all members',
+                  'Savings earning 4% monthly interest (48% p.a.)',
+                  'Exclusive Wealth Circle investments with 3.5% monthly returns',
+                  'Annual surplus profit dividends for all members',
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-200 font-medium">
                     <CheckCircle2 className="w-4 h-4 text-[#00E599] flex-shrink-0" />

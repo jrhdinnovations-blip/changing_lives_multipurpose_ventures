@@ -4,16 +4,16 @@ import Image from 'next/image';
 import { createClient } from '@/lib/supabase/client';
 
 const STATIC_MESSAGES = [
-  '🌟 CLIMPS — Changing Lives Multipurpose Ventures Cooperative Society',
-  '📞 Contact Person: Jauro Luka • Phone/WhatsApp: 08144447710, 08053331224',
+  '🌟 CLIMPS — Changing Lives Multipurpose Ventures',
+  '📞 Phone/WhatsApp: 08144447710, 08053331224',
   '💰 Earn 9–25% returns p.a. on your savings — join the Wealth Circle today',
   '✉️ Email: Changinglivesmultipurpose@gmail.com',
   '⚡ Fast loan approvals within 24 hours for qualified members',
-  '🤝 A registered cooperative empowering communities across Nigeria',
+  '🤝 A registered enterprise empowering communities across Nigeria',
   '📈 Your savings. Your growth. Your future — powered by CLIMPS',
-  '✅ Transparent. Trustworthy. Member-owned cooperative since inception',
+  '✅ Transparent. Trustworthy. Dedicated service since inception',
   '🎯 Fixed & flexible savings plans tailored to your financial goals',
-  '🔒 All funds are securely managed by licensed cooperative officers',
+  '🔒 All funds are securely managed by licensed officers',
 ];
 
 export default function NetworkTicker() {

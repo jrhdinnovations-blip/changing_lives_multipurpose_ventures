@@ -30,7 +30,7 @@ const loanProducts: LoanProduct[] = [
     id: 'personal-loan',
     name: 'Personal Loan',
     tagline: 'Your goals, your terms.',
-    description: 'Flexible personal financing for home improvements, capital projects, or personal goals. Competitive cooperative rate of 10% monthly with structured, transparent repayment schedules.',
+    description: 'Flexible personal financing for home improvements, capital projects, or personal goals. Competitive 10% monthly rate with structured, transparent repayment schedules.',
     minAmount: '₦50,000',
     maxAmount: '₦1,500,000',
     interestRate: '10% monthly',
@@ -48,7 +48,7 @@ const loanProducts: LoanProduct[] = [
       'Flexible repayment tenure from 3 to 24 months',
       'Top-up facility available upon satisfactory repayment track',
     ],
-    badge: 'Cooperative Loan',
+    badge: 'Fast Express Loan',
     badgeColor: 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30',
     accentColor: 'text-emerald-400',
     popular: true,
@@ -201,10 +201,10 @@ export default function LoanProductsPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold mb-5 backdrop-blur-md">
               <ShieldCheck className="w-4 h-4" />
-              <span>CLIMPS Cooperative Loan Products</span>
+              <span>CLIMPS Loan Products</span>
             </div>
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight tracking-tight">
-              Fair, Transparent Financing Built for <span className="text-emerald-400">Cooperative Members</span>
+              Fair, Transparent Financing Built for <span className="text-emerald-400">Members</span>
             </h1>
             <p className="text-white/70 text-base lg:text-lg leading-relaxed mb-8 max-w-2xl">
               Access responsible, structured personal loans with transparent terms, standard 10% monthly interest, and no hidden charges.

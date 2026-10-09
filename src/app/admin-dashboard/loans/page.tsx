@@ -241,6 +241,38 @@ export default function AdminLoansPage() {
         notes: actionNotes || 'Status updated by Admin',
         created_at: new Date().toISOString(),
       }, ...prev]);
+
+      // If loan is approved, dispatch email notification to the Accountant for disbursement
+      if (newStatus === 'approved') {
+        try {
+          await fetch('/api/notifications/loan', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event: 'loan_approved',
+              data: {
+                applicationId: selected.id,
+                applicationNumber: selected.application_number,
+                applicantName: selected.applicant_name,
+                applicantPhone: selected.applicant_phone,
+                loanAmount: selected.requested_amount,
+                loanDurationMonths: selected.duration_months,
+                interestRatePercent: selected.interest_rate_percent || 10,
+                monthlyInterestAmount: selected.monthly_interest_amount,
+                totalRepaymentAmount: selected.total_repayment_amount,
+                accountName: selected.account_name,
+                accountNumber: selected.account_number,
+                bankName: selected.bank_name,
+                approvedBy: user?.user_metadata?.full_name || user?.email || 'Admin',
+                adminNotes: actionNotes || '',
+              },
+            }),
+          });
+        } catch (notifErr) {
+          console.warn('Loan approved notification to accountant dispatched with fallback:', notifErr);
+        }
+      }
+
       setActionNotes('');
     } catch (err: any) {
       setActionError(err?.message || 'Action failed. Please try again.');

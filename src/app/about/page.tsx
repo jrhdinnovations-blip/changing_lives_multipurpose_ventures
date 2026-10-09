@@ -27,7 +27,7 @@ export default function AboutPage() {
 
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-semibold uppercase tracking-widest mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            Changing Lives Multipurpose Cooperative Society
+            Changing Lives Multipurpose Ventures
           </div>
 
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight mb-6 max-w-4xl">

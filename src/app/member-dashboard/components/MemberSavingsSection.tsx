@@ -270,8 +270,8 @@ export default function MemberSavingsSection({ member: memberProp }: MemberSavin
           {/* Combined Total Summary */}
           <div className="pt-3 border-t border-white/10 flex items-center justify-between px-1">
             <div>
-              <p className="text-xs text-slate-400 font-medium">Total Cooperative Savings</p>
-              <p className="text-xs text-[#00E599] font-bold">Insured by Changing Lives Multipurpose</p>
+              <p className="text-xs text-slate-400 font-medium">Total Savings</p>
+              <p className="text-xs text-[#00E599] font-bold">Managed by Changing Lives Multipurpose Ventures</p>
             </div>
             <p className="text-lg font-black text-[#00E599] font-tabular">{fmt(totalCooperativeSavings)}</p>
           </div>

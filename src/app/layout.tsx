@@ -18,9 +18,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: 'CLIMPS — Cooperative Savings, Investment & Loan Platform',
+  title: 'CLIMPS — Savings, Wealth Circle & Loan Platform',
   description:
-    'CLIMPS by Changing Lives Multipurpose Ventures helps cooperative members save, invest, and borrow — all in one secure platform.',
+    'CLIMPS by Changing Lives Multipurpose Ventures helps members save, invest in Wealth Circle, and borrow with transparent rates — all in one secure platform.',
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

@@ -74,7 +74,7 @@ const steps = [
     tag: 'RETURNS',
     tagColor: 'bg-orange-500/20 text-orange-300',
     title: 'Earn & Prosper',
-    subtitle: 'Monthly payouts & dividends',
+    subtitle: 'Monthly returns & dividends',
     desc: 'Watch your wealth compound. Monthly returns credited automatically with complete dashboard visibility.',
     bullets: ['Automated interest credit', 'Annual surplus dividends', 'Real-time statement'],
     emoji: '📈',
@@ -103,7 +103,7 @@ export default function HowItWorks() {
             Start Earning in <span className="text-emerald-400">4 Easy Steps</span>
           </h2>
           <p className="text-white/60 text-sm sm:text-base font-semibold max-w-xl mx-auto">
-            From registration to your first payout — simple, transparent, and fully digital.
+            From registration to your first returns — simple, transparent, and fully digital.
           </p>
         </div>
 

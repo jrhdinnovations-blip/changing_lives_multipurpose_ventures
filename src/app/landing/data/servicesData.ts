@@ -94,10 +94,10 @@ export const SERVICE_PILLARS: ServicePillar[] = [
     verb: 'BORROW',
     noun: 'Loan Products',
     title: 'Access Funds Fast',
-    tagline: '10% monthly cooperative rate',
-    description: 'Cooperative credit at 10% monthly interest with swift approval. Whether for business working capital, education, or emergencies — we have you covered.',
+    tagline: '10% monthly rate',
+    description: 'Fast express credit at 10% monthly interest with swift approval. Whether for business working capital, education, or emergencies — we have you covered.',
     features: [
-      '10% monthly cooperative interest rate',
+      '10% monthly interest rate',
       'Approval within 24 hours',
       'Transparent schedule with no hidden fees',
       'Flexible tenure tailored to repayment capacity',

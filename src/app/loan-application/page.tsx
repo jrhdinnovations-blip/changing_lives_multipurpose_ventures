@@ -481,6 +481,37 @@ export default function LoanApplicationPage() {
         guarantor_address: form.guarantorAddress,
       });
 
+      // Dispatch email notification to Admin for new loan application
+      try {
+        await fetch('/api/notifications/loan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            event: 'loan_applied',
+            data: {
+              applicationId: appId,
+              applicationNumber: appNum,
+              applicantName: form.applicantName,
+              applicantPhone: form.applicantPhone,
+              applicantEmail: user?.email || '',
+              loanAmount: loanAmount,
+              loanDurationMonths: form.loanDurationMonths,
+              loanPurpose: form.loanPurpose,
+              monthlyInterestAmount: monthlyInterest,
+              totalRepaymentAmount: totalRepayment,
+              accountName: form.accountName,
+              accountNumber: form.accountNumber,
+              bankName: form.bankName,
+              collateralType: form.collateralType,
+              guarantorName: form.guarantorName,
+              guarantorPhone: form.guarantorPhone,
+            },
+          }),
+        });
+      } catch (notifyErr) {
+        console.warn('Loan notification to admin dispatched with fallback:', notifyErr);
+      }
+
       setApplicationNumber(appNum);
       setSubmitted(true);
     } catch (err: any) {
@@ -598,7 +629,7 @@ export default function LoanApplicationPage() {
                 Loan Application
               </div>
               <h1 className="text-2xl sm:text-3xl font-bold text-white mb-1 tracking-tight">
-                CHANGING LIVES MULTIPURPOSE COOPERATIVE
+                CHANGING LIVES MULTIPURPOSE VENTURES
               </h1>
               <h2 className="text-base font-semibold text-emerald-400 mb-6">PERSONAL LOAN APPLICATION FORM</h2>
             </div>
@@ -625,7 +656,7 @@ export default function LoanApplicationPage() {
             </div>
             <div className="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-5 text-sm text-amber-200">
               <p className="font-semibold text-amber-300 mb-1">Important Notice</p>
-              <p className="text-xs text-white/70 leading-relaxed">Changing Lives Multipurpose Cooperative lends money to its members and deserving members of the public on recommendation by a member who will serve as a guarantor.</p>
+              <p className="text-xs text-white/70 leading-relaxed">Changing Lives Multipurpose Ventures lends money to its members and deserving members of the public on recommendation by a member who will serve as a guarantor.</p>
             </div>
           </div>
         )}

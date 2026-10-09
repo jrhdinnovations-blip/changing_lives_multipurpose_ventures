@@ -209,7 +209,7 @@ function generatePDFContent(
   <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:20px;border-bottom:3px solid #1e3a5f">
     <div>
       <div style="font-size:22px;font-weight:800;color:#1e3a5f;letter-spacing:-0.5px">CLIMPS</div>
-      <div style="font-size:11px;color:#6b7280;margin-top:2px">Changing Lives Multipurpose Cooperative Society</div>
+      <div style="font-size:11px;color:#6b7280;margin-top:2px">Changing Lives Multipurpose Ventures</div>
       <div style="font-size:11px;color:#6b7280">First Bank · Account: 2044406437</div>
     </div>
     <div style="text-align:right">
@@ -306,8 +306,8 @@ function generatePDFContent(
       <div style="font-size:10px;color:#9ca3af;margin-top:2px">Statement Reference: STMT/${new Date().getFullYear()}/${String(Date.now()).slice(-6)}</div>
     </div>
     <div style="text-align:right">
-      <div style="font-size:10px;color:#9ca3af">Changing Lives Multipurpose Cooperative Society</div>
-      <div style="font-size:10px;color:#9ca3af">Regulated · Trusted · Member-Owned</div>
+      <div style="font-size:10px;color:#9ca3af">Changing Lives Multipurpose Ventures</div>
+      <div style="font-size:10px;color:#9ca3af">Regulated · Trusted · Transparent</div>
     </div>
   </div>
 

@@ -152,11 +152,11 @@ export default function SavingsProductsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-6 backdrop-blur-md">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />
-            <span>Changing Lives Multipurpose Ventures • Cooperative Savings</span>
+            <span>Changing Lives Multipurpose Ventures • Savings</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white max-w-4xl mx-auto leading-tight">
-            Streamlined Savings Built for <span className="text-emerald-400">Cooperative Growth</span>
+            Streamlined Savings Built for <span className="text-emerald-400">Sustainable Growth</span>
           </h1>
 
           <p className="mt-5 text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
