@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { Calendar, CheckCircle2, Clock, ChevronRight } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import AppLayout from '@/components/AppLayout';
@@ -58,6 +59,13 @@ export default function LoanDashboardPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'schedule' | 'receipts' | 'applications'>('overview');
 
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      if (tabParam && ['overview', 'schedule', 'receipts', 'applications'].includes(tabParam)) {
+        setActiveTab(tabParam as any);
+      }
+    }
     if (!user) return;
     loadData();
 
@@ -163,18 +171,43 @@ export default function LoanDashboardPage() {
       const appMap = new Map<string, any>();
       fetchedApps.forEach((a: any) => {
         const norm = unpackAndNormalize(a);
-        appMap.set(norm.id || norm.application_number, norm);
+        const primaryKey = norm.id || norm.application_number || norm.app_no;
+        appMap.set(primaryKey, norm);
       });
       localApps.forEach((a: any) => {
-        if ((user?.id && a.user_id === user.id) || (memberId && a.member_id === memberId) || (user?.email && a.applicant_email === user.email)) {
+        if ((user?.id && a.user_id === user.id) || (memberId && a.member_id === memberId) || (user?.email && a.applicant_email?.toLowerCase() === user.email?.toLowerCase())) {
           const norm = unpackAndNormalize(a);
-          const key = norm.id || norm.application_number;
-          if (!appMap.has(key)) appMap.set(key, norm);
-          else {
-            const existing = appMap.get(key);
-            if (['disbursed', 'approved', 'rejected'].includes(norm.app_status)) {
-              appMap.set(key, { ...existing, ...norm });
+          let foundKey = norm.id || norm.application_number || norm.app_no;
+          for (const [k, v] of appMap.entries()) {
+            if (
+              (norm.id && v.id && norm.id === v.id) ||
+              (norm.application_number && v.application_number && norm.application_number === v.application_number) ||
+              (norm.app_no && v.app_no && norm.app_no === v.app_no)
+            ) {
+              foundKey = k;
+              break;
             }
+          }
+          if (!appMap.has(foundKey)) {
+            appMap.set(foundKey, norm);
+          } else {
+            const existing = appMap.get(foundKey);
+            const resolvedStatus =
+              ['disbursed', 'active'].includes(existing.app_status) || ['disbursed', 'active'].includes(norm.app_status)
+                ? 'disbursed'
+                : existing.app_status === 'approved' || norm.app_status === 'approved'
+                ? 'approved'
+                : existing.app_status === 'rejected' || norm.app_status === 'rejected'
+                ? 'rejected'
+                : existing.app_status || norm.app_status || 'pending';
+
+            appMap.set(foundKey, {
+              ...norm,
+              ...existing,
+              status: resolvedStatus,
+              app_status: resolvedStatus,
+              application_status: resolvedStatus,
+            });
           }
         }
       });
@@ -414,7 +447,9 @@ export default function LoanDashboardPage() {
 
         {/* Pending / Approved Application Hero Banner */}
         {!loan && applications.length > 0 && (
-          <div className="relative overflow-hidden rounded-2xl p-6 sm:p-7 text-slate-900 bg-white border border-amber-200 shadow-xs">
+          <div className={`relative overflow-hidden rounded-2xl p-6 sm:p-7 text-slate-900 bg-white border shadow-xs ${
+            applications[0].app_status === 'approved' ? 'border-emerald-300 ring-1 ring-emerald-400/20' : 'border-amber-200'
+          }`}>
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
               <div>
                 <div className="flex items-center gap-2 mb-1.5">
@@ -441,9 +476,22 @@ export default function LoanDashboardPage() {
 
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 space-y-1.5">
               {applications[0].app_status === 'approved' ? (
-                <p className="text-emerald-800 font-medium">
-                  🎉 <strong>Your loan was approved by Admin!</strong> The CLIMPS Finance Desk (Accountant) has been notified to disburse your funds to <strong>{applications[0].bank_name} ({applications[0].account_number})</strong>. It will show as Active once payment is confirmed.
-                </p>
+                <div className="space-y-3">
+                  <p className="text-emerald-800 font-medium">
+                    🎉 <strong>Your loan was approved by Admin!</strong> The CLIMPS Finance Desk (Accountant) has been notified to disburse your funds to <strong>{applications[0].bank_name} ({applications[0].account_number})</strong>. It will show as Active once payment is confirmed.
+                  </p>
+                  <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-emerald-200/60">
+                    <span className="text-2xs text-emerald-700 font-semibold">10% monthly rate · {applications[0].loan_duration_months || applications[0].duration_months} monthly instalments</span>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab('schedule')}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-all shadow-xs cursor-pointer"
+                    >
+                      <Calendar size={13} />
+                      <span>View Repayment Schedule →</span>
+                    </button>
+                  </div>
+                </div>
               ) : (
                 <p>
                   Your application is currently <strong>Pending Admin Review</strong>. Once the credit team verifies your collateral, the Accountant will receive an approval notification to release your funds.
@@ -607,46 +655,170 @@ export default function LoanDashboardPage() {
             )}
 
             {/* Schedule Tab */}
-            {activeTab === 'schedule' && (
-              <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
-                <div className="px-5 py-4 border-b border-slate-200">
-                  <h3 className="font-bold text-slate-900 text-base">Repayment Schedule</h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Detailed breakdown of expected instalments and payments</p>
-                </div>
-                {repaymentSchedule.length > 0 ? (
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-sm">
-                      <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
-                        <tr>
-                          <th className="text-left px-4 py-3 text-xs font-semibold">#</th>
-                          <th className="text-right px-4 py-3 text-xs font-semibold">Due Date</th>
-                          <th className="text-right px-4 py-3 text-xs font-semibold">Expected</th>
-                          <th className="text-right px-4 py-3 text-xs font-semibold">Paid</th>
-                          <th className="text-right px-4 py-3 text-xs font-semibold">Payment Date</th>
-                          <th className="text-center px-4 py-3 text-xs font-semibold">Status</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {repaymentSchedule.map(row => (
-                          <tr key={row.id} className="hover:bg-slate-50 transition-colors">
-                            <td className="px-4 py-3 font-semibold text-slate-900">{row.instalment_number}</td>
-                            <td className="px-4 py-3 text-right text-slate-600">{formatDate(row.due_date)}</td>
-                            <td className="px-4 py-3 text-right text-slate-900 font-medium">{formatNGN(row.expected_amount)}</td>
-                            <td className="px-4 py-3 text-right text-emerald-600 font-medium">{formatNGN(row.amount_paid)}</td>
-                            <td className="px-4 py-3 text-right text-slate-500">{formatDate(row.payment_date)}</td>
-                            <td className="px-4 py-3 text-center"><StatusBadge status={row.schedule_status} /></td>
+            {activeTab === 'schedule' && (() => {
+              const approvedApp = !loan && applications.find(a => ['approved', 'awaiting_processing_fee', 'ready_for_disbursement'].includes(a.app_status || a.status || a.application_status));
+
+              if (repaymentSchedule.length > 0) {
+                return (
+                  <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                    <div className="px-5 py-4 border-b border-slate-200">
+                      <h3 className="font-bold text-slate-900 text-base">Repayment Schedule</h3>
+                      <p className="text-xs text-slate-500 mt-0.5">Detailed breakdown of expected instalments and payments</p>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+                          <tr>
+                            <th className="text-left px-4 py-3 text-xs font-semibold">#</th>
+                            <th className="text-right px-4 py-3 text-xs font-semibold">Due Date</th>
+                            <th className="text-right px-4 py-3 text-xs font-semibold">Expected</th>
+                            <th className="text-right px-4 py-3 text-xs font-semibold">Paid</th>
+                            <th className="text-right px-4 py-3 text-xs font-semibold">Payment Date</th>
+                            <th className="text-center px-4 py-3 text-xs font-semibold">Status</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {repaymentSchedule.map(row => (
+                            <tr key={row.id} className="hover:bg-slate-50 transition-colors">
+                              <td className="px-4 py-3 font-semibold text-slate-900">{row.instalment_number}</td>
+                              <td className="px-4 py-3 text-right text-slate-600">{formatDate(row.due_date)}</td>
+                              <td className="px-4 py-3 text-right text-slate-900 font-medium">{formatNGN(row.expected_amount)}</td>
+                              <td className="px-4 py-3 text-right text-emerald-600 font-medium">{formatNGN(row.amount_paid)}</td>
+                              <td className="px-4 py-3 text-right text-slate-500">{formatDate(row.payment_date)}</td>
+                              <td className="px-4 py-3 text-center"><StatusBadge status={row.schedule_status} /></td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                ) : (
+                );
+              }
+
+              if (approvedApp) {
+                const appPrinc = Number(approvedApp.loan_amount || approvedApp.requested_amount || approvedApp.amount || 0);
+                const appMonths = Number(approvedApp.loan_duration_months || approvedApp.duration_months || approvedApp.repayment_period_months || 1);
+                const appMonthlyRate = 0.10;
+                const appMonthlyInterest = approvedApp.monthly_interest_amount ? Number(approvedApp.monthly_interest_amount) : Math.round(appPrinc * appMonthlyRate);
+                const appTotalInterest = approvedApp.total_interest_amount ? Number(approvedApp.total_interest_amount) : (appMonthlyInterest * appMonths);
+                const appTotalRepayable = approvedApp.total_repayment_amount ? Number(approvedApp.total_repayment_amount) : (appPrinc + appTotalInterest);
+                const appMonthlyRepayment = Math.round(appTotalRepayable / appMonths);
+                const appMonthlyPrincipal = Math.round(appPrinc / appMonths);
+
+                const projectedRows = Array.from({ length: appMonths }, (_, i) => {
+                  const instalmentNum = i + 1;
+                  const d = new Date();
+                  d.setMonth(d.getMonth() + instalmentNum);
+                  const dueDateStr = d.toISOString().split('T')[0];
+                  const princPortion = instalmentNum === appMonths ? appPrinc - (appMonthlyPrincipal * (appMonths - 1)) : appMonthlyPrincipal;
+                  const remainingBal = Math.max(0, appTotalRepayable - (appMonthlyRepayment * instalmentNum));
+                  return {
+                    id: 'app-proj-' + instalmentNum,
+                    instalment_number: instalmentNum,
+                    due_date: dueDateStr,
+                    principal: princPortion,
+                    interest: appMonthlyInterest,
+                    expected_amount: appMonthlyRepayment,
+                    amount_paid: 0,
+                    balance: remainingBal,
+                    schedule_status: 'approved',
+                  };
+                });
+
+                return (
+                  <div className="space-y-4">
+                    <div className="p-4 sm:p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+                        <div>
+                          <h4 className="text-sm font-bold text-emerald-950">
+                            Approved Repayment Schedule — Facility #{approvedApp.application_number}
+                          </h4>
+                          <p className="text-xs text-emerald-800 mt-1">
+                            Your loan application for <strong>{formatNGN(appPrinc)}</strong> has been approved by the Cooperative. Below is the scheduled monthly breakdown. Instalments will activate upon transfer confirmation by the Finance Desk (Accountant).
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs">
+                        <p className="text-xs text-slate-500 mb-1">Approved Principal</p>
+                        <p className="text-base sm:text-lg font-bold text-slate-900">{formatNGN(appPrinc)}</p>
+                      </div>
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs">
+                        <p className="text-xs text-slate-500 mb-1">Monthly Interest (10%)</p>
+                        <p className="text-base sm:text-lg font-bold text-amber-600">{formatNGN(appMonthlyInterest)}</p>
+                      </div>
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs">
+                        <p className="text-xs text-slate-500 mb-1">Monthly Instalment</p>
+                        <p className="text-base sm:text-lg font-bold text-blue-700">{formatNGN(appMonthlyRepayment)}</p>
+                      </div>
+                      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs">
+                        <p className="text-xs text-slate-500 mb-1">Total Repayable ({appMonths} mo)</p>
+                        <p className="text-base sm:text-lg font-bold text-emerald-700">{formatNGN(appTotalRepayable)}</p>
+                      </div>
+                    </div>
+
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                      <div className="px-5 py-4 border-b border-slate-200 flex items-center justify-between">
+                        <div>
+                          <h3 className="font-bold text-slate-900 text-base">Instalment Schedule</h3>
+                          <p className="text-xs text-slate-500 mt-0.5">{appMonths} monthly payments of {formatNGN(appMonthlyRepayment)}</p>
+                        </div>
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                          Approved
+                        </span>
+                      </div>
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-sm">
+                          <thead className="bg-slate-50 border-b border-slate-200 text-slate-600">
+                            <tr>
+                              <th className="text-left px-4 py-3 text-xs font-semibold">#</th>
+                              <th className="text-left px-4 py-3 text-xs font-semibold">Est. Due Date</th>
+                              <th className="text-right px-4 py-3 text-xs font-semibold">Principal</th>
+                              <th className="text-right px-4 py-3 text-xs font-semibold">Interest (10%)</th>
+                              <th className="text-right px-4 py-3 text-xs font-semibold">Total Monthly Due</th>
+                              <th className="text-right px-4 py-3 text-xs font-semibold">Balance After</th>
+                              <th className="text-center px-4 py-3 text-xs font-semibold">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100">
+                            {projectedRows.map(row => (
+                              <tr key={row.id} className="hover:bg-slate-50 transition-colors">
+                                <td className="px-4 py-3 font-semibold text-slate-900">Instalment {row.instalment_number}</td>
+                                <td className="px-4 py-3 text-slate-600">{formatDate(row.due_date)}</td>
+                                <td className="px-4 py-3 text-right text-slate-700 font-medium">{formatNGN(row.principal)}</td>
+                                <td className="px-4 py-3 text-right text-amber-600 font-medium">{formatNGN(row.interest)}</td>
+                                <td className="px-4 py-3 text-right text-slate-900 font-bold">{formatNGN(row.expected_amount)}</td>
+                                <td className="px-4 py-3 text-right text-slate-500">{formatNGN(row.balance)}</td>
+                                <td className="px-4 py-3 text-center">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded-full text-2xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    Approved
+                                  </span>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-xs">
+                  <div className="px-5 py-4 border-b border-slate-200">
+                    <h3 className="font-bold text-slate-900 text-base">Repayment Schedule</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">Detailed breakdown of expected instalments and payments</p>
+                  </div>
                   <div className="p-8 text-center text-sm text-slate-500">
-                    Repayment schedule will appear once the loan is disbursed.
+                    Repayment schedule will appear once a loan application is submitted and approved.
                   </div>
-                )}
-              </div>
-            )}
+                </div>
+              );
+            })()}
 
             {/* Receipts Tab */}
             {activeTab === 'receipts' && (

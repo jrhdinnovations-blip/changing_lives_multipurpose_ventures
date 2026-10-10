@@ -190,18 +190,48 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
             .maybeSingle();
           if (appData) pendingApp = normApp(appData);
         }
-        if (!pendingApp && typeof window !== 'undefined') {
+        if (typeof window !== 'undefined') {
           try {
             const storedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
             if (storedApps.length > 0) {
               const matched = storedApps.find((a: any) =>
-                (user?.email && a.applicant_email === user.email) ||
+                (pendingApp && (a.id === pendingApp.id || a.app_no === pendingApp.app_no || a.application_number === pendingApp.application_number)) ||
+                (user?.email && a.applicant_email?.toLowerCase() === user.email.toLowerCase()) ||
                 (member?.id && a.member_id === member.id)
               );
-              if (matched) pendingApp = normApp(matched);
+              if (matched) {
+                const normLocal = normApp(matched);
+                if (!pendingApp) {
+                  pendingApp = normLocal;
+                } else if (['approved', 'disbursed', 'active'].includes(normLocal.status) || ['approved', 'disbursed', 'active'].includes(normLocal.app_status)) {
+                  pendingApp = { ...pendingApp, ...normLocal, status: normLocal.status, app_status: normLocal.app_status };
+                }
+              }
             }
           } catch {}
         }
+      }
+
+      // Sync approved status back to localStorage so all dashboards are aligned
+      if (typeof window !== 'undefined' && pendingApp && (pendingApp.status === 'approved' || pendingApp.app_status === 'approved')) {
+        try {
+          const stored = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
+          let changed = false;
+          const updatedList = stored.map((item: any) => {
+            if (
+              (item.id && item.id === pendingApp.id) ||
+              (item.app_no && item.app_no === pendingApp.app_no) ||
+              (item.application_number && item.application_number === pendingApp.application_number)
+            ) {
+              changed = true;
+              return { ...item, status: 'approved', app_status: 'approved', application_status: 'approved' };
+            }
+            return item;
+          });
+          if (changed) {
+            localStorage.setItem('climps_loan_applications', JSON.stringify(updatedList));
+          }
+        } catch {}
       }
 
       // Get investments
@@ -221,6 +251,9 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
         : contribStatus === 'unpaid'
         ? { text: 'UNPAID', type: 'danger' as const }
         : undefined;
+
+      const isApprovedLoan = pendingApp?.app_status === 'approved' || pendingApp?.status === 'approved';
+      const isRejectedLoan = pendingApp?.app_status === 'rejected' || pendingApp?.status === 'rejected';
 
       const cards: KPICard[] = [
         {
@@ -259,7 +292,15 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
         },
         {
           id: 'kpi-loan',
-          label: activeLoan ? 'Active Loan Balance' : pendingApp ? 'Pending Loan Request' : 'Active Loan Balance',
+          label: activeLoan
+            ? 'Active Loan Balance'
+            : isApprovedLoan
+            ? 'Approved Loan Facility'
+            : isRejectedLoan
+            ? 'Declined Loan Request'
+            : pendingApp
+            ? 'Pending Loan Request'
+            : 'Active Loan Balance',
           value: activeLoan
             ? fmt(Number(activeLoan?.outstanding_balance ?? member.active_loan_balance) || 0)
             : pendingApp
@@ -269,23 +310,35 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
           subLabel: activeLoan?.next_repayment_date
             ? `Next instalment due ${new Date(activeLoan.next_repayment_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })}`
             : pendingApp
-            ? pendingApp.app_status === 'approved'
+            ? isApprovedLoan
               ? 'Approved · Awaiting disbursement'
-              : pendingApp.app_status === 'rejected'
+              : isRejectedLoan
               ? 'Application declined'
               : 'Under review by Admin'
             : 'No active loan',
-          icon: CreditCard,
-          variant: (activeLoan ? 'loan' : pendingApp ? 'alert' : 'default') as any,
+          icon: isApprovedLoan ? CheckCircle2 : CreditCard,
+          variant: (activeLoan
+            ? 'loan'
+            : isApprovedLoan
+            ? 'success'
+            : isRejectedLoan
+            ? 'alert'
+            : pendingApp
+            ? 'alert'
+            : 'default') as any,
           badge: activeLoan
             ? { text: 'ACTIVE', type: 'info' as const }
             : pendingApp
             ? {
-                text: pendingApp.app_status === 'approved' ? 'APPROVED' : pendingApp.app_status === 'rejected' ? 'REJECTED' : 'PENDING',
-                type: pendingApp.app_status === 'approved' ? ('success' as const) : pendingApp.app_status === 'rejected' ? ('danger' as const) : ('warning' as const),
+                text: isApprovedLoan ? 'APPROVED' : isRejectedLoan ? 'REJECTED' : 'PENDING',
+                type: isApprovedLoan ? ('success' as const) : isRejectedLoan ? ('danger' as const) : ('warning' as const),
               }
             : undefined,
-          tooltip: activeLoan ? 'Outstanding principal on your active loan' : 'Loan application status',
+          tooltip: activeLoan
+            ? 'Outstanding principal on your active loan'
+            : isApprovedLoan
+            ? 'Approved loan awaiting disbursement by Accountant'
+            : 'Loan application status',
         },
         {
           id: 'kpi-investment',

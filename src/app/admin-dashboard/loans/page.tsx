@@ -370,7 +370,7 @@ export default function AdminLoansPage() {
         status: newStatus,
         updated_at: new Date().toISOString(),
         reviewed_by: user?.id || null,
-        review_date: new Date().toISOString(),
+        review_date: new Date().toISOString().split('T')[0],
         notes: JSON.stringify(updatedNotesObj),
       };
       if (newStatus === 'rejected' && actionNotes) {
@@ -380,7 +380,11 @@ export default function AdminLoansPage() {
       try {
         const { error } = await supabase.from('loan_applications').update(updatePayload).eq('id', selected.id);
         if (error) {
-          console.warn('DB update failed, using local update:', error);
+          console.warn('DB update with full payload failed, retrying minimal status update:', error);
+          await supabase.from('loan_applications').update({
+            status: newStatus,
+            updated_at: new Date().toISOString(),
+          }).eq('id', selected.id);
         }
       } catch (dbErr) {
         console.warn('DB write bypassed, updating state locally:', dbErr);

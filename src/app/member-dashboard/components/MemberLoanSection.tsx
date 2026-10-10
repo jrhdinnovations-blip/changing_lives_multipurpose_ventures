@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Badge from '@/components/ui/Badge';
-import { CreditCard, Calendar, ChevronRight, PlusCircle, Clock, AlertCircle, CheckCircle2, ShieldCheck, Banknote } from 'lucide-react';
+import { CreditCard, Calendar, ChevronRight, ChevronDown, ChevronUp, PlusCircle, Clock, AlertCircle, CheckCircle2, ShieldCheck, Banknote } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -18,6 +18,7 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
   const [activeLoan, setActiveLoan] = useState<any>(null);
   const [latestApplication, setLatestApplication] = useState<any>(null);
   const [recentRepayments, setRecentRepayments] = useState<any[]>([]);
+  const [showApprovedSchedule, setShowApprovedSchedule] = useState<boolean>(true);
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const supabase = createClient();
@@ -176,13 +177,38 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
           const storedApps = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
           if (storedApps.length > 0) {
             const userApps = storedApps.filter((a: any) =>
-              (user?.email && a.applicant_email === user.email) ||
+              (user?.email && a.applicant_email?.toLowerCase() === user.email.toLowerCase()) ||
               (member?.id && a.member_id === member.id)
             );
-            if (userApps.length > 0) {
-              const norm = normalizeApp(userApps[0]);
-              if (!appQueries.some((q) => q.id === norm.id)) appQueries.push(norm);
-            }
+            userApps.forEach((localRaw: any) => {
+              const normLocal = normalizeApp(localRaw);
+              const matchIdx = appQueries.findIndex((q) =>
+                (q.id && normLocal.id && q.id === normLocal.id) ||
+                (q.application_number && normLocal.application_number && q.application_number === normLocal.application_number) ||
+                (q.app_no && normLocal.app_no && q.app_no === normLocal.app_no)
+              );
+              if (matchIdx >= 0) {
+                const existing = appQueries[matchIdx];
+                const resolvedStatus =
+                  ['disbursed', 'active'].includes(existing.status) || ['disbursed', 'active'].includes(normLocal.status)
+                    ? 'disbursed'
+                    : existing.status === 'approved' || normLocal.status === 'approved'
+                    ? 'approved'
+                    : existing.status === 'rejected' || normLocal.status === 'rejected'
+                    ? 'rejected'
+                    : existing.status || normLocal.status || 'pending';
+
+                appQueries[matchIdx] = {
+                  ...normLocal,
+                  ...existing,
+                  status: resolvedStatus,
+                  app_status: resolvedStatus,
+                  application_status: resolvedStatus,
+                };
+              } else {
+                appQueries.push(normLocal);
+              }
+            });
           }
         } catch {}
       }
@@ -191,6 +217,28 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
         appQueries.sort((a, b) => new Date(b.created_at || 0).getTime() - new Date(a.created_at || 0).getTime());
         foundApp = appQueries[0];
         setLatestApplication(foundApp);
+
+        // Sync approved status back to localStorage
+        if (typeof window !== 'undefined' && foundApp && (foundApp.status === 'approved' || foundApp.app_status === 'approved')) {
+          try {
+            const stored = JSON.parse(localStorage.getItem('climps_loan_applications') || '[]');
+            let changed = false;
+            const updatedList = stored.map((item: any) => {
+              if (
+                (item.id && item.id === foundApp.id) ||
+                (item.app_no && item.app_no === foundApp.app_no) ||
+                (item.application_number && item.application_number === foundApp.application_number)
+              ) {
+                changed = true;
+                return { ...item, status: 'approved', app_status: 'approved', application_status: 'approved' };
+              }
+              return item;
+            });
+            if (changed) {
+              localStorage.setItem('climps_loan_applications', JSON.stringify(updatedList));
+            }
+          } catch {}
+        }
       } else {
         setLatestApplication(null);
       }
@@ -364,15 +412,44 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
 
     // 2A. APPROVED (Awaiting Accountant Payout)
     if (appStatus === 'approved') {
+      const monthlyRate = 0.10;
+      const monthlyInterest = latestApplication.monthly_interest_amount ? Number(latestApplication.monthly_interest_amount) : Math.round(amount * monthlyRate);
+      const totalInterest = latestApplication.total_interest_amount ? Number(latestApplication.total_interest_amount) : (monthlyInterest * months);
+      const totalRepayable = latestApplication.total_repayment_amount ? Number(latestApplication.total_repayment_amount) : (amount + totalInterest);
+      const monthlyInstalment = Math.round(totalRepayable / months);
+      const monthlyPrincipal = Math.round(amount / months);
+
+      const approvedSchedule = Array.from({ length: months }, (_, i) => {
+        const instalmentNum = i + 1;
+        const d = new Date();
+        d.setMonth(d.getMonth() + instalmentNum);
+        const dueDate = d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const princ = instalmentNum === months ? amount - (monthlyPrincipal * (months - 1)) : monthlyPrincipal;
+        const balance = Math.max(0, totalRepayable - (monthlyInstalment * instalmentNum));
+        return {
+          num: instalmentNum,
+          dueDate,
+          principal: princ,
+          interest: monthlyInterest,
+          total: monthlyInstalment,
+          balance,
+        };
+      });
+
       return (
         <div className="card-base">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm font-bold text-white">Loan Status</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-bold text-white">Loan Facility</h2>
+              <span className="px-2 py-0.5 rounded-full text-2xs font-extrabold bg-emerald-500/20 text-[#00E599] border border-emerald-500/30">
+                Approved by Admin
+              </span>
+            </div>
             <Link
-              href="/loan-dashboard?tab=applications"
+              href="/loan-dashboard?tab=schedule"
               className="text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors flex items-center gap-1"
             >
-              Track Details <ChevronRight size={13} />
+              Loan Portal <ChevronRight size={13} />
             </Link>
           </div>
 
@@ -384,12 +461,12 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-black text-white">Loan Approved by Admin!</h3>
-                    <span className="px-2 py-0.5 rounded-full text-2xs font-extrabold bg-emerald-500/20 text-[#00E599] border border-emerald-500/30">
-                      Approved
-                    </span>
+                    <h3 className="text-sm font-black text-white">Loan Approved!</h3>
+                    <span className="text-2xs text-slate-400 font-mono">{appNum}</span>
                   </div>
-                  <p className="text-2xs text-slate-400 font-mono">{appNum}</p>
+                  <p className="text-xs text-emerald-300/90 mt-0.5">
+                    10% monthly interest rate · {months} Month{months > 1 ? 's' : ''} Tenor
+                  </p>
                 </div>
               </div>
               <div className="text-right">
@@ -398,7 +475,28 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
               </div>
             </div>
 
-            <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs space-y-2 mb-3">
+            {/* Financial Overview Cards */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3.5">
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-2xs text-slate-400 block">Monthly Instalment</span>
+                <span className="text-sm font-bold text-white font-tabular">{fmt(monthlyInstalment)}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-2xs text-slate-400 block">Monthly Interest</span>
+                <span className="text-sm font-bold text-amber-300 font-tabular">{fmt(monthlyInterest)}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-2xs text-slate-400 block">Total Interest ({months} mo)</span>
+                <span className="text-sm font-bold text-rose-300 font-tabular">{fmt(totalInterest)}</span>
+              </div>
+              <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+                <span className="text-2xs text-slate-400 block">Total Repayable</span>
+                <span className="text-sm font-bold text-[#00E599] font-tabular">{fmt(totalRepayable)}</span>
+              </div>
+            </div>
+
+            {/* Payout Stage Info */}
+            <div className="p-3.5 rounded-xl bg-white/5 border border-white/10 text-xs space-y-1.5 mb-3.5">
               <div className="flex items-center justify-between text-slate-300">
                 <span className="text-slate-400">Current Stage:</span>
                 <span className="font-bold text-amber-300 flex items-center gap-1">
@@ -409,21 +507,82 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
               <div className="flex items-center justify-between text-slate-300">
                 <span className="text-slate-400">Beneficiary Bank:</span>
                 <span className="font-semibold text-white">
-                  {latestApplication.bank_name} • {latestApplication.account_number}
+                  {latestApplication.bank_name || 'Verified Bank'} • {latestApplication.account_number || '••••'}
                 </span>
               </div>
               <p className="text-2xs text-slate-400 pt-1 border-t border-white/5">
-                The CLIMPS Finance Desk has been notified of your approval. Your funds are being processed and will reflect as active immediately upon transfer confirmation.
+                The CLIMPS Finance Desk has been notified of your approval. First instalment will become due 30 days after funds are transferred to your account.
               </p>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-2xs text-slate-400">10% monthly interest rate applies</span>
-              <Link
-                href="/loan-dashboard"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00E599] text-slate-950 font-black text-xs hover:bg-[#00E599]/90 transition-all"
+            {/* Repayment Schedule Expander */}
+            <div className="rounded-xl border border-white/10 bg-black/20 overflow-hidden mb-3.5">
+              <button
+                type="button"
+                onClick={() => setShowApprovedSchedule(!showApprovedSchedule)}
+                className="w-full flex items-center justify-between p-3 text-left hover:bg-white/5 transition-colors"
               >
-                <span>View Loan Portal</span>
+                <div className="flex items-center gap-2">
+                  <Calendar size={15} className="text-[#00E599]" />
+                  <span className="text-xs font-bold text-white">
+                    Approved Repayment Schedule ({months} Monthly Instalments)
+                  </span>
+                </div>
+                <div className="flex items-center gap-1 text-2xs text-slate-400 font-semibold">
+                  <span>{showApprovedSchedule ? 'Collapse' : 'Expand Schedule'}</span>
+                  {showApprovedSchedule ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                </div>
+              </button>
+
+              {showApprovedSchedule && (
+                <div className="border-t border-white/10 p-3 pt-2">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-xs">
+                      <thead>
+                        <tr className="border-b border-white/10 text-slate-400 text-2xs uppercase tracking-wider">
+                          <th className="text-left py-2 px-2 font-semibold">#</th>
+                          <th className="text-left py-2 px-2 font-semibold">Est. Due Date</th>
+                          <th className="text-right py-2 px-2 font-semibold">Principal</th>
+                          <th className="text-right py-2 px-2 font-semibold">Interest (10%)</th>
+                          <th className="text-right py-2 px-2 font-semibold">Total Due</th>
+                          <th className="text-right py-2 px-2 font-semibold">Balance</th>
+                          <th className="text-center py-2 px-2 font-semibold">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {approvedSchedule.map((row) => (
+                          <tr key={row.num} className="hover:bg-white/5 transition-colors">
+                            <td className="py-2 px-2 font-bold text-white">Instalment {row.num}</td>
+                            <td className="py-2 px-2 text-slate-300 font-mono text-2xs">{row.dueDate}</td>
+                            <td className="py-2 px-2 text-right text-slate-300 font-tabular">{fmt(row.principal)}</td>
+                            <td className="py-2 px-2 text-right text-amber-300/90 font-tabular">{fmt(row.interest)}</td>
+                            <td className="py-2 px-2 text-right font-bold text-white font-tabular">{fmt(row.total)}</td>
+                            <td className="py-2 px-2 text-right text-slate-400 font-tabular">{fmt(row.balance)}</td>
+                            <td className="py-2 px-2 text-center">
+                              <span className="inline-block px-2 py-0.5 rounded-full text-3xs font-extrabold bg-emerald-500/20 text-[#00E599] border border-emerald-500/30">
+                                Approved
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-2xs text-slate-400">
+                    <span>Rate: 10% monthly cooperative interest</span>
+                    <span className="text-[#00E599] font-semibold">Total: {fmt(totalRepayable)}</span>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between pt-1">
+              <span className="text-2xs text-slate-400">Official cooperative facility approved</span>
+              <Link
+                href="/loan-dashboard?tab=schedule"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00E599] text-slate-950 font-black text-xs hover:bg-[#00E599]/90 transition-all shadow-sm"
+              >
+                <span>Full Loan Schedule Portal</span>
                 <ChevronRight size={13} />
               </Link>
             </div>
