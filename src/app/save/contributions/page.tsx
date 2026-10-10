@@ -241,7 +241,7 @@ export default function MonthlyContributionsPage() {
   }
 
   return (
-    <AppLayout role="member" memberName={memberName} memberId={memberId}>
+    <AppLayout>
       <div className="space-y-8 max-w-7xl mx-auto pb-16">
         {/* Top Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

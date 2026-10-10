@@ -64,8 +64,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-001',
     timestamp: '2026-09-22T13:42:11Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'LOAN_APPROVED',
     category: 'loan',
@@ -93,8 +93,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-003',
     timestamp: '2026-09-22T13:05:32Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'MEMBER_CREATED',
     category: 'member',
@@ -123,8 +123,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-005',
     timestamp: '2026-09-22T12:44:20Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'LOAN_REJECTED',
     category: 'loan',
@@ -181,8 +181,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-009',
     timestamp: '2026-09-22T11:05:18Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'MEMBER_STATUS_UPDATED',
     category: 'member',
@@ -196,8 +196,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-010',
     timestamp: '2026-09-22T10:48:55Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'LOGIN',
     category: 'auth',
@@ -281,8 +281,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-016',
     timestamp: '2026-09-21T16:44:50Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'MEMBER_CREATED',
     category: 'member',
@@ -309,8 +309,8 @@ const MOCK_LOGS: AuditLog[] = [
   {
     id: 'alog-018',
     timestamp: '2026-09-21T14:05:20Z',
-    actor: 'Raymond Longdiem',
-    actorId: 'ADM/2026/0001',
+    actor: 'Plangnan Samson',
+    actorId: 'ADM/CLM/0001',
     actorRole: 'Administrator',
     action: 'SAVINGS_PRODUCT_UPDATED',
     category: 'savings',
@@ -451,7 +451,7 @@ export default function AdminAuditLogsPage() {
   };
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Header */}

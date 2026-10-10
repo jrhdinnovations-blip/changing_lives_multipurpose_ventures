@@ -165,7 +165,7 @@ export default function AdminInvestmentsPage() {
   const pendingSubs = subscriptions.filter((s) => s.status === 'pending');
 
   return (
-    <AppLayout role="admin" memberName="Operations Administrator" memberId="ADM/2026/0002">
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-7xl mx-auto space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

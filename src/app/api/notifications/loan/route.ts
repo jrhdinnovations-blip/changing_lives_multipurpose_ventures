@@ -17,7 +17,6 @@ export async function GET() {
     recipients: {
       admin: [
         'Changinglivesmultipurpose@gmail.com',
-        'raymondlongdiem22@gmail.com',
         'plangnansamson@gmail.com',
       ],
       accountant: [
@@ -90,7 +89,6 @@ export async function POST(request: Request) {
           ...adminEmails,
           'plangnansamson@gmail.com',
           'Changinglivesmultipurpose@gmail.com',
-          'raymondlongdiem22@gmail.com',
           process.env.ADMIN_NOTIFICATION_EMAIL || '',
         ].filter(Boolean))
       );
@@ -154,7 +152,6 @@ export async function POST(request: Request) {
     if (event === 'test_email') {
       const adminEmails = [
         'Changinglivesmultipurpose@gmail.com',
-        'raymondlongdiem22@gmail.com',
         'plangnansamson@gmail.com',
       ];
       const accountantEmails = [

@@ -20,6 +20,7 @@ import {
   Home,
   User,
   Menu,
+  Wallet,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -84,6 +85,7 @@ const adminNav: NavItem[] = [
   { id: 'anav-dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/admin-dashboard' },
   { id: 'anav-members', label: 'Members Directory', icon: Users, href: '/admin-dashboard/members' },
   { id: 'anav-loans', label: 'Loans & Credit', icon: CreditCard, href: '/admin-dashboard/loans' },
+  { id: 'anav-accountant', label: 'Finance & Disbursements', icon: Wallet, href: '/accountant-dashboard' },
   { id: 'anav-savings', label: 'Contributions', icon: PiggyBank, href: '/save/admin/contributions' },
   { id: 'anav-investments', label: 'Wealth Circle', icon: TrendingUp, href: '/investment-products' },
   { id: 'anav-statements', label: 'Financial Statements', icon: FileText, href: '/financial-statements' },
@@ -93,8 +95,9 @@ const adminNav: NavItem[] = [
 ];
 
 const accountantNav: NavItem[] = [
-  { id: 'acct-dashboard', label: 'Dashboard', icon: LayoutDashboard, href: '/accountant-dashboard' },
-  { id: 'acct-loans', label: 'Approved Loans', icon: CreditCard, href: '/admin-dashboard/loans' },
+  { id: 'acct-dashboard', label: 'Finance Dashboard', icon: LayoutDashboard, href: '/accountant-dashboard' },
+  { id: 'acct-disbursements', label: 'Loan Disbursements', icon: Wallet, href: '/accountant-dashboard' },
+  { id: 'acct-loans', label: 'Loan Underwriting', icon: CreditCard, href: '/admin-dashboard/loans' },
   { id: 'acct-statements', label: 'Financial Statements', icon: FileText, href: '/financial-statements' },
   { id: 'acct-savings', label: 'Contributions', icon: PiggyBank, href: '/save/admin/contributions' },
   { id: 'acct-investments', label: 'Wealth Circle', icon: TrendingUp, href: '/investment-products' },

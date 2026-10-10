@@ -685,7 +685,7 @@ export default function FinancialStatementsPage() {
 
   if (loading) {
     return (
-      <AppLayout role="member" memberName="Loading…" memberId="—">
+      <AppLayout>
         <div className="p-6 xl:p-8 space-y-4">
           {[1, 2, 3].map(i => (
             <div key={i} className="h-24 bg-muted rounded-2xl animate-pulse" />
@@ -696,7 +696,7 @@ export default function FinancialStatementsPage() {
   }
 
   return (
-    <AppLayout role="member" memberName={fullName} memberId={memberId}>
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* ── Page Header ── */}

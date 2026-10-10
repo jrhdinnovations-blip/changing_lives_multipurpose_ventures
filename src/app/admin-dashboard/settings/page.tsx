@@ -276,7 +276,7 @@ export default function AdminSettingsPage() {
   const currentGroup = SETTING_GROUPS.find(g => g.id === activeGroup);
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="min-h-screen bg-[#050B17] text-slate-100 p-6 xl:p-8 2xl:p-10">
         <div className="max-w-5xl mx-auto space-y-6">
           {/* Header */}

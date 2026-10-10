@@ -312,7 +312,7 @@ export default function RegularSavingsPage() {
   }
 
   return (
-    <AppLayout role="member" memberName={member.name} memberId={member.memberNumber}>
+    <AppLayout>
       <div className="space-y-8 max-w-7xl mx-auto pb-16">
         {/* Header Bar */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">

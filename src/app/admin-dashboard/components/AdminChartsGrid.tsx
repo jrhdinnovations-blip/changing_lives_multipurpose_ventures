@@ -72,7 +72,7 @@ export default function AdminChartsGrid() {
           <div className="space-y-3">
             <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
               <span className="text-xs text-slate-400 font-medium">Lead Administrator</span>
-              <span className="text-xs font-bold text-white">Raymond Longdiem</span>
+              <span className="text-xs font-bold text-white">Plangnan Samson</span>
             </div>
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">

@@ -270,7 +270,7 @@ export default function AdminReportsPage() {
   };
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-screen-2xl mx-auto space-y-6">
 
         {/* Header */}

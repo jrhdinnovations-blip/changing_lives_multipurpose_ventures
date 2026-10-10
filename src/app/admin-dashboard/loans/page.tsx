@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -544,7 +545,7 @@ export default function AdminLoansPage() {
   });
 
   return (
-    <AppLayout role="admin" memberName={adminName} memberId={adminId}>
+    <AppLayout>
       <div className="flex h-[calc(100vh-64px)] overflow-hidden bg-[#050B17]">
 
         {/* Left Panel — Application List */}
@@ -666,7 +667,29 @@ export default function AdminLoansPage() {
 
               {/* Admin Actions */}
               <div className="bg-[#0D182E]/90 rounded-2xl border border-white/10 p-5 backdrop-blur-xl shadow-xl shadow-black/20">
-                <h3 className="font-bold text-white mb-3 text-sm">Admin Actions</h3>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-bold text-white text-sm">Admin Underwriting & Actions</h3>
+                  <Link
+                    href="/accountant-dashboard"
+                    className="text-2xs text-[#00E599] hover:underline font-semibold"
+                  >
+                    Accountant Portal →
+                  </Link>
+                </div>
+                {(selected.status === 'approved' || selected.app_status === 'approved') && (
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 mb-3 flex items-center justify-between gap-3 text-xs">
+                    <div>
+                      <p className="font-bold text-amber-300">Loan Approved · Ready for Disbursement</p>
+                      <p className="text-slate-400 text-2xs mt-0.5">The Accountant has received the disbursement notice and can release funds in the Accountant Portal.</p>
+                    </div>
+                    <Link
+                      href="/accountant-dashboard"
+                      className="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 font-bold text-2xs shrink-0"
+                    >
+                      Open Payout Desk →
+                    </Link>
+                  </div>
+                )}
                 {actionError && (
                   <div className="bg-rose-500/15 border border-rose-500/30 rounded-xl p-3 text-sm text-rose-300 font-semibold mb-3">{actionError}</div>
                 )}

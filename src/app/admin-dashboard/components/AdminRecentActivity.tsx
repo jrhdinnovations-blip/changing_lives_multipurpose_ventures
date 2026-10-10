@@ -8,7 +8,7 @@ export default function AdminRecentActivity() {
     {
       id: 'sys-01',
       title: 'Administrator Session Initialized',
-      detail: 'Raymond Longdiem authenticated with Super Admin role',
+      detail: 'Plangnan Samson authenticated with Super Admin role',
       time: 'Today',
       icon: KeyRound,
       color: 'text-[#00E599]',

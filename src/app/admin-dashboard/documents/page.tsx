@@ -489,7 +489,7 @@ export default function AdminDocumentsPage() {
   };
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="min-h-screen bg-[#050B17] text-white/50">
         {/* Header */}
         <div className="bg-[#0B1528]/80 backdrop-blur-xl border-b border-white/10 px-6 py-5">

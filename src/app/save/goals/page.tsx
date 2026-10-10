@@ -381,7 +381,7 @@ export default function SavingsGoalsPage() {
   }
 
   return (
-    <AppLayout role={role} memberName={memberName} memberId={memberId}>
+    <AppLayout>
       {showModal && <NewGoalModal onClose={() => setShowModal(false)} onCreate={(g) => setGoals((prev) => [g, ...prev])} memberId={internalMemberId} />}
 
       <div className="p-6 xl:p-8 2xl:p-10 max-w-6xl mx-auto space-y-6">

@@ -3,29 +3,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { createClient } from '@/lib/supabase/client';
 
-export const ROLE_OVERRIDES: Record<string, string> = {
-  'raymondlongdiem22@gmail.com': 'super_admin',
-  'plangnansamson@gmail.com': 'admin',
-  'bimaeteng4@gmail.com': 'accountant',
-};
-
-export function resolveUserRole(
-  email?: string | null,
-  metaRole?: string | null,
-  profileRole?: string | null
-): string {
-  const userEmail = email?.trim().toLowerCase() || '';
-  if (ROLE_OVERRIDES[userEmail]) {
-    return ROLE_OVERRIDES[userEmail];
-  }
-  if (profileRole && profileRole !== 'member') {
-    return profileRole;
-  }
-  if (metaRole && metaRole !== 'member') {
-    return metaRole;
-  }
-  return profileRole || metaRole || 'member';
-}
+export { ROLE_OVERRIDES, resolveUserRole } from '@/lib/roles';
+import { resolveUserRole } from '@/lib/roles';
 
 const AuthContext = createContext<any>({});
 

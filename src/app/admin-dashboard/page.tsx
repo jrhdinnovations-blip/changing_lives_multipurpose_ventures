@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/AppLayout';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   Users,
   PiggyBank,
@@ -18,6 +20,7 @@ import {
   BarChart2,
   TrendingUp,
   AlertTriangle,
+  Wallet,
 } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import AdminPendingQueue from './components/AdminPendingQueue';
@@ -34,6 +37,9 @@ interface MemberItem {
 }
 
 export default function AdminDashboardPage() {
+  const { user, loading: authLoading, userRole, isAdmin, isAccountant } = useAuth();
+  const router = useRouter();
+
   const [members, setMembers] = useState<MemberItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -48,6 +54,23 @@ export default function AdminDashboardPage() {
     month: 'long',
     year: 'numeric',
   });
+
+  // Guard: Ensure only administrators are on this page, and auto-route accountants to their dashboard
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.replace('/login');
+      return;
+    }
+    if (userRole === 'accountant' || isAccountant) {
+      router.replace('/accountant-dashboard');
+      return;
+    }
+    if (!isAdmin) {
+      router.replace('/member-dashboard');
+      return;
+    }
+  }, [user, authLoading, userRole, isAdmin, isAccountant, router]);
 
   useEffect(() => {
     async function loadDashboardData() {
@@ -212,6 +235,7 @@ export default function AdminDashboardPage() {
   const quickActions = [
     { href: '/admin-dashboard/members', label: 'Create Member Profile', icon: <UserPlus size={15} />, accent: 'blue' },
     { href: '/admin-dashboard/loans', label: 'Loan Facility & Underwriting', icon: <CreditCard size={15} />, accent: 'rose' },
+    { href: '/accountant-dashboard', label: 'Finance & Loan Disbursement Desk', icon: <Wallet size={15} />, accent: 'teal' },
     { href: '/financial-statements', label: 'Financial Statements & Reports', icon: <FileText size={15} />, accent: 'emerald' },
     { href: '/admin-dashboard/staff', label: 'Staff & Role Permissions', icon: <Shield size={15} />, accent: 'purple' },
     { href: '/admin-dashboard/audit-logs', label: 'System Audit Trail', icon: <ClipboardList size={15} />, accent: 'teal' },
@@ -233,8 +257,10 @@ export default function AdminDashboardPage() {
     teal: 'text-teal-400',
   };
 
+  const adminDisplayName = user?.user_metadata?.full_name || 'Plangnan Samson';
+
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-7xl mx-auto space-y-6">
 
         {/* Ambient glows */}
@@ -255,10 +281,17 @@ export default function AdminDashboardPage() {
               </span>
             </div>
             <p className="text-xs text-slate-400 mt-1 font-medium">
-              Welcome, Raymond Longdiem · Lead Administrator · {today}
+              Welcome, {adminDisplayName} · Lead Administrator · {today}
             </p>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              href="/accountant-dashboard"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold text-xs transition-all shadow-sm active:scale-95"
+            >
+              <Wallet size={14} />
+              <span>Accountant Portal</span>
+            </Link>
             <div className="flex items-center gap-2 text-xs font-bold text-[#00E599] bg-emerald-500/10 border border-emerald-500/30 rounded-xl px-3 py-1.5">
               <span className="w-2 h-2 rounded-full bg-[#00D084] animate-pulse" />
               <span>Live System Connected</span>

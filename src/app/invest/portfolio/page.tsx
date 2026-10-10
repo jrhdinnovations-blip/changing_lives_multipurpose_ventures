@@ -204,7 +204,7 @@ export default function MemberInvestmentPortfolioPage() {
   }
 
   return (
-    <AppLayout role={role} memberName={memberName} memberId={memberId}>
+    <AppLayout>
       <div className="p-6 xl:p-8 2xl:p-10 max-w-7xl mx-auto space-y-6">
         {/* Page Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

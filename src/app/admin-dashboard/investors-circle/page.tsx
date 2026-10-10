@@ -528,7 +528,7 @@ export default function AdminInvestorsCirclePage() {
   ];
 
   return (
-    <AppLayout role="admin" memberName="Raymond Longdiem" memberId="ADM/2026/0001">
+    <AppLayout>
       <div className="flex flex-col h-[calc(100vh-64px)] overflow-hidden bg-[#050B17]">
         {/* Page Header */}
         <div className="bg-[#0B1528] border-b border-white/10 px-6 py-4 shrink-0">

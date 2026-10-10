@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 import { type NextRequest } from 'next/server';
 
+import { resolveUserRole } from '@/lib/roles';
+
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
@@ -17,7 +19,11 @@ export async function GET(request: NextRequest) {
 
       // Check user role and membership status
       const { data: { user } } = await supabase.auth.getUser();
-      const role = user?.user_metadata?.role || 'member';
+      const role = resolveUserRole(user?.email, user?.user_metadata?.role);
+
+      if (role === 'accountant') {
+        return NextResponse.redirect(`${origin}/accountant-dashboard`);
+      }
 
       if (['super_admin', 'admin', 'manager', 'staff'].includes(role)) {
         return NextResponse.redirect(`${origin}/admin-dashboard`);

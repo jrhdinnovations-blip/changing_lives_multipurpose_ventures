@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import AppLayout from '@/components/AppLayout';
 import { createClient } from '@/lib/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -88,7 +89,8 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function AccountantDashboardPage() {
-  const { user } = useAuth();
+  const { user, loading: authLoading, userRole, isAdmin, isAccountant } = useAuth();
+  const router = useRouter();
   const [loans, setLoans] = useState<LoanRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [memberCount, setMemberCount] = useState(0);
@@ -97,6 +99,19 @@ export default function AccountantDashboardPage() {
 
   const [accountantName, setAccountantName] = useState('Accountant');
   const [accountantId, setAccountantId] = useState('ACCT/2026');
+
+  // Guard: Ensure only accountants or admins can view
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) {
+      router.replace('/login');
+      return;
+    }
+    if (!isAdmin && !isAccountant && userRole !== 'accountant') {
+      router.replace('/member-dashboard');
+      return;
+    }
+  }, [user, authLoading, userRole, isAdmin, isAccountant, router]);
 
   // Disbursement Modal State
   const [selectedForDisbursement, setSelectedForDisbursement] = useState<LoanRow | null>(null);
@@ -517,13 +532,37 @@ export default function AccountantDashboardPage() {
   };
 
   return (
-    <AppLayout role="accountant" memberName={accountantName} memberId={accountantId}>
+    <AppLayout>
       <div className="p-6 xl:p-8 max-w-7xl mx-auto space-y-6">
 
         <div className="pointer-events-none fixed inset-0 overflow-hidden">
           <div className="absolute top-0 left-1/4 w-[500px] h-[300px] bg-amber-500/5 rounded-full blur-[120px]" />
           <div className="absolute bottom-0 right-1/4 w-[400px] h-[300px] bg-teal-600/5 rounded-full blur-[120px]" />
         </div>
+
+        {/* Admin Supervision Banner (Visible when an Administrator inspects the Finance Desk) */}
+        {isAdmin && !isAccountant && (
+          <div className="bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-transparent border border-blue-500/30 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-blue-200 backdrop-blur-xl shadow-lg">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-blue-500/20 text-blue-400">
+                <ShieldCheck size={18} />
+              </div>
+              <div>
+                <p className="font-bold text-white text-sm">Administrator Super-Vision Active</p>
+                <p className="text-2xs text-blue-300/80 mt-0.5">
+                  You are reviewing live disbursements & financial ledgers managed by the Accountant.
+                </p>
+              </div>
+            </div>
+            <Link
+              href="/admin-dashboard"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-2xs transition-all shrink-0 active:scale-95 shadow-md shadow-blue-600/20"
+            >
+              <span>Back to Admin Dashboard</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
+        )}
 
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">

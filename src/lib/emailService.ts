@@ -174,6 +174,35 @@ async function dispatchEmail({
         console.log(`[EmailService] Email successfully sent via Resend:`, resData?.id);
         return { delivered: true };
       } else {
+        const errorMsg = resData?.message || '';
+        // If Resend is in testing sandbox mode and restricts to account owner
+        if (resData?.statusCode === 403 && errorMsg.includes('only send testing emails to your own email address')) {
+          const match = errorMsg.match(/\(([^)]+)\)/);
+          const allowedEmail = match ? match[1] : 'plangnansamson@gmail.com';
+
+          console.warn(`[EmailService] Resend test domain active: Delivering to verified account (${allowedEmail})`);
+          const fallbackRes = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${resendKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              from: fromAddr,
+              to: [allowedEmail],
+              subject: `[Notification for ${to.join(', ')}] ${subject}`,
+              html,
+            }),
+          });
+          const fallbackData = await fallbackRes.json();
+          if (fallbackRes.ok) {
+            console.log(`[EmailService] Delivered via Resend to verified owner: ${allowedEmail} (ID: ${fallbackData?.id})`);
+            return {
+              delivered: true,
+              error: `Delivered to verified admin (${allowedEmail}). To deliver to other recipients (${to.join(', ')}), add your domain at resend.com/domains.`,
+            };
+          }
+        }
         console.warn(`[EmailService] Resend returned non-ok:`, resData);
       }
     } catch (resendErr: any) {
@@ -241,7 +270,6 @@ export async function sendLoanAppliedEmailToAdmin(
         process.env.ADMIN_NOTIFICATION_EMAIL,
         process.env.ADMIN_EMAIL,
         'Changinglivesmultipurpose@gmail.com',
-        'raymondlongdiem22@gmail.com',
       ].filter(Boolean) as string[]
     )
   );
@@ -371,7 +399,6 @@ export async function sendLoanApprovedEmailToAccountant(
         process.env.ACCOUNTANT_EMAIL,
         process.env.ADMIN_NOTIFICATION_EMAIL,
         'Changinglivesmultipurpose@gmail.com',
-        'raymondlongdiem22@gmail.com',
       ].filter(Boolean) as string[]
     )
   );

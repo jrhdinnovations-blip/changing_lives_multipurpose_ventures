@@ -157,7 +157,7 @@ export default function AdminContributionsPage() {
   const months = Array.from({ length: 12 }, (_, i) => ({ month: i + 1, label: MONTH_NAMES[i] }));
 
   return (
-    <AppLayout role="admin" memberName={memberName} memberId={memberId}>
+    <AppLayout>
       {/* Record Payment Modal */}
       {recordModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-xs p-4">
