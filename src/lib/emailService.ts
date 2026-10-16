@@ -110,15 +110,30 @@ function getMailTransporter() {
   });
 }
 
-export async function verifyEmailTransport(): Promise<{ success: boolean; message: string }> {
+export async function verifyEmailTransport(): Promise<{ success: boolean; message: string; isSandbox?: boolean }> {
   const status = getSmtpStatus();
-  if (status.hasResend) {
-    return { success: true, message: 'Resend API is configured.' };
+  const fromAddr = (process.env.RESEND_FROM || '').toLowerCase();
+  const isResendSandbox = status.hasResend && (fromAddr.includes('resend.dev') || fromAddr.includes('onboarding'));
+
+  if (status.hasResend && isResendSandbox) {
+    const smtpTransporter = getMailTransporter();
+    if (!smtpTransporter) {
+      return {
+        success: false,
+        isSandbox: true,
+        message: 'Resend API is active in Sandbox mode (onboarding@resend.dev). Emails can ONLY be delivered to the account owner (raymondlongdiem22@gmail.com). To send to accountant (bimaeteng4@gmail.com) and admin (Changinglivesmultipurpose@gmail.com), please add a 16-character Google App Password in .env (SMTP_PASSWORD) or verify your domain at resend.com/domains.',
+      };
+    }
   }
+
+  if (status.hasResend && !isResendSandbox) {
+    return { success: true, message: 'Resend API is configured with custom verified domain.' };
+  }
+
   if (!status.isConfigured || status.hasPlaceholder) {
     return {
       success: false,
-      message: 'SMTP credentials contain placeholder or are missing in .env (SMTP_PASSWORD=your-email-app-password). A 16-character Google App Password or RESEND_API_KEY is required.',
+      message: 'SMTP credentials contain placeholder or are missing in .env (SMTP_PASSWORD=your-email-app-password). A 16-character Google App Password or verified custom domain in RESEND_FROM is required.',
     };
   }
 
@@ -177,10 +192,31 @@ async function dispatchEmail({
         const errorMsg = resData?.message || '';
         // If Resend is in testing sandbox mode and restricts to account owner
         if (resData?.statusCode === 403 && errorMsg.includes('only send testing emails to your own email address')) {
-          const match = errorMsg.match(/\(([^)]+)\)/);
-          const allowedEmail = match ? match[1] : 'plangnansamson@gmail.com';
+          console.warn(`[EmailService] Resend test domain active: External delivery restricted.`);
+          
+          // Check if SMTP Transporter is configured and can send to all recipients
+          const smtpTransporter = getMailTransporter();
+          if (smtpTransporter) {
+            try {
+              console.log(`[EmailService] Attempting SMTP fallback for recipients: ${to.join(', ')}`);
+              await smtpTransporter.sendMail({
+                from: getFromAddress(),
+                to: to.join(', '),
+                subject,
+                html,
+              });
+              console.log(`[EmailService] Successfully sent via SMTP fallback to: ${to.join(', ')}`);
+              return { delivered: true };
+            } catch (smtpErr: any) {
+              console.warn(`[EmailService] SMTP fallback failed:`, smtpErr?.message);
+            }
+          }
 
-          console.warn(`[EmailService] Resend test domain active: Delivering to verified account (${allowedEmail})`);
+          // If SMTP is not available or failed, deliver to verified Resend account owner
+          const match = errorMsg.match(/\(([^)]+)\)/);
+          const allowedEmail = match ? match[1] : 'raymondlongdiem22@gmail.com';
+
+          console.warn(`[EmailService] Resend delivering redirect to verified account (${allowedEmail})`);
           const fallbackRes = await fetch('https://api.resend.com/emails', {
             method: 'POST',
             headers: {
@@ -199,7 +235,7 @@ async function dispatchEmail({
             console.log(`[EmailService] Delivered via Resend to verified owner: ${allowedEmail} (ID: ${fallbackData?.id})`);
             return {
               delivered: true,
-              error: `Delivered to verified admin (${allowedEmail}). To deliver to other recipients (${to.join(', ')}), add your domain at resend.com/domains.`,
+              error: `Notice: Resend is in testing sandbox mode. Email was delivered only to ${allowedEmail}. To reach actual recipients (${to.join(', ')}), configure a 16-character Google App Password in .env (SMTP_PASSWORD) or verify your domain at resend.com/domains.`,
             };
           }
         }
