@@ -60,7 +60,7 @@ export default function FinalCTA() {
       <div className="relative z-10 max-w-5xl mx-auto px-6 sm:px-8 lg:px-12 text-center">
         {/* Badge */}
         <div
-          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/15 text-slate-200 text-xs sm:text-sm font-bold tracking-wide mb-6 backdrop-blur-md shadow-lg shadow-black/20"
+          className="shimmer-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/15 text-slate-200 text-xs sm:text-sm font-bold tracking-wide mb-6 backdrop-blur-md shadow-lg shadow-black/20"
           style={{
             opacity: visible ? 1 : 0,
             transform: visible ? 'translateY(0)' : 'translateY(20px)',
@@ -73,7 +73,7 @@ export default function FinalCTA() {
             <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-sm shadow-blue-500/50" title="Blue" />
             <span className="w-2.5 h-2.5 rounded-full bg-white shadow-sm shadow-white/50" title="White" />
           </span>
-          <span className="text-slate-200">Changing Lives Multipurpose Ventures</span>
+          <span className="text-slate-200 font-extrabold">Changing Lives Multipurpose Ventures</span>
         </div>
 
         <h2
@@ -85,7 +85,7 @@ export default function FinalCTA() {
           }}
         >
           One step.{' '}
-          <span className="bg-gradient-to-r from-[#00E599] via-emerald-400 to-[#00D084] bg-clip-text text-transparent">
+          <span className="shimmer-text drop-shadow-[0_0_35px_rgba(0,229,153,0.35)]">
             Infinite growth.
           </span>
         </h2>

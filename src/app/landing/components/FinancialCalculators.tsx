@@ -37,7 +37,7 @@ function formatNaira(val: number): string {
 }
 
 function SavingsCalc() {
-  const [monthly, setMonthly] = useState(20000);
+  const [monthly, setMonthly] = useState(25000);
   const [years, setYears] = useState(3);
 
   const months = years * 12;
@@ -49,13 +49,18 @@ function SavingsCalc() {
     : totalContributed;
   const interest = futureValue - totalContributed;
 
+  const percentPrincipal = Math.max(15, Math.min(85, Math.round((totalContributed / futureValue) * 100)));
+  const percentInterest = 100 - percentPrincipal;
+
+  const PRESETS = [10000, 25000, 50000, 100000, 200000];
+
   return (
     <div className="space-y-7">
       {/* Monthly contribution slider */}
       <div>
-        <div className="flex justify-between items-center mb-3">
-          <label className="text-sm sm:text-base text-slate-300 font-medium">Monthly contribution</label>
-          <span className="text-base sm:text-lg font-black text-white font-tabular">{formatNaira(monthly)}</span>
+        <div className="flex justify-between items-center mb-2.5">
+          <label className="text-sm sm:text-base text-slate-300 font-medium">Monthly Contribution</label>
+          <span className="text-lg sm:text-xl font-black text-white font-tabular drop-shadow-sm">{formatNaira(monthly)}</span>
         </div>
         <input
           type="range"
@@ -64,19 +69,34 @@ function SavingsCalc() {
           step={5000}
           value={monthly}
           onChange={(e) => setMonthly(+e.target.value)}
-          className="w-full h-2 accent-blue-500 bg-white/10 rounded-full cursor-pointer"
+          className="w-full h-2.5 accent-blue-500 bg-white/10 rounded-full cursor-pointer transition-all"
         />
-        <div className="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-          <span>₦5,000</span>
-          <span>₦200,000</span>
+        
+        {/* Quick preset chips */}
+        <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
+          <span className="text-[11px] font-bold text-slate-400 mr-1 uppercase tracking-wider">Quick:</span>
+          {PRESETS.map((amt) => (
+            <button
+              key={amt}
+              type="button"
+              onClick={() => setMonthly(amt)}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                monthly === amt
+                  ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/30'
+                  : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
+              }`}
+            >
+              ₦{amt >= 1000 ? `${amt / 1000}k` : amt}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Duration slider */}
       <div>
-        <div className="flex justify-between items-center mb-3">
-          <label className="text-sm sm:text-base text-slate-300 font-medium">Duration — {years} years</label>
-          <span className="text-base sm:text-lg font-black text-blue-400 font-tabular">{years}y</span>
+        <div className="flex justify-between items-center mb-2.5">
+          <label className="text-sm sm:text-base text-slate-300 font-medium">Duration</label>
+          <span className="text-lg sm:text-xl font-black text-blue-400 font-tabular">{years} {years === 1 ? 'Year' : 'Years'} ({months} months)</span>
         </div>
         <input
           type="range"
@@ -85,35 +105,64 @@ function SavingsCalc() {
           step={1}
           value={years}
           onChange={(e) => setYears(+e.target.value)}
-          className="w-full h-2 accent-blue-500 bg-white/10 rounded-full cursor-pointer"
+          className="w-full h-2.5 accent-blue-500 bg-white/10 rounded-full cursor-pointer transition-all"
         />
-        <div className="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-          <span>1 year</span>
-          <span>10 years</span>
+        <div className="flex justify-between text-[11px] text-slate-500 mt-1 font-medium">
+          <span>1 Year (Annual thrift)</span>
+          <span>5 Years</span>
+          <span>10 Years</span>
         </div>
       </div>
 
-      {/* Results */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-        {[
-          { label: 'Contributed', value: formatNaira(totalContributed) },
-          { label: 'Interest', value: formatNaira(interest) },
-          { label: 'Total Value', value: formatNaira(futureValue) },
-        ].map((r) => (
-          <div key={r.label} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
-            <div className="text-xs text-slate-400 font-medium mb-1.5">{r.label}</div>
-            <div className="text-lg font-black text-white font-tabular">{r.value}</div>
-          </div>
-        ))}
+      {/* Dynamic Visual Growth Bar */}
+      <div className="p-4 rounded-2xl bg-[#070D1E]/90 border border-white/10">
+        <div className="flex justify-between items-center text-xs font-bold mb-2">
+          <span className="text-blue-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-blue-500" />
+            Your Deposits ({percentPrincipal}%)
+          </span>
+          <span className="text-[#00E599] flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
+            Compound Interest ({percentInterest}%)
+          </span>
+        </div>
+        
+        {/* Dual dynamic bar */}
+        <div className="h-3.5 w-full bg-white/10 rounded-full overflow-hidden flex shadow-inner">
+          <div
+            className="h-full bg-gradient-to-r from-blue-600 to-blue-400 transition-all duration-300 ease-out"
+            style={{ width: `${percentPrincipal}%` }}
+          />
+          <div
+            className="h-full bg-gradient-to-r from-emerald-500 to-[#00E599] transition-all duration-300 ease-out"
+            style={{ width: `${percentInterest}%` }}
+          />
+        </div>
+      </div>
+
+      {/* Results Bento */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm transition-all hover:border-white/20">
+          <div className="text-xs text-slate-400 font-medium mb-1">Total Saved</div>
+          <div className="text-lg font-black text-white font-tabular">{formatNaira(totalContributed)}</div>
+        </div>
+        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center backdrop-blur-sm transition-all hover:border-emerald-500/50">
+          <div className="text-xs text-emerald-300 font-medium mb-1">Growth Earned</div>
+          <div className="text-lg font-black text-[#00E599] font-tabular">+{formatNaira(interest)}</div>
+        </div>
+        <div className="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 text-center backdrop-blur-sm transition-all hover:border-blue-500/50">
+          <div className="text-xs text-blue-300 font-medium mb-1">Total Maturity Value</div>
+          <div className="text-lg font-black text-white font-tabular">{formatNaira(futureValue)}</div>
+        </div>
       </div>
 
       {/* CTA */}
       <Link
         href="/save/start"
-        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base transition-all duration-150 active:scale-95 shadow-lg shadow-blue-600/30 group"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-base transition-all duration-200 active:scale-95 shadow-lg shadow-blue-600/30 group hover:shadow-blue-500/40"
       >
         Start Saving
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
       </Link>
     </div>
   );
@@ -128,12 +177,14 @@ function InvestmentCalc() {
   const totalReturn = monthlyReturn * months;
   const futureValue = principal + totalReturn;
 
+  const PRESETS = [250000, 500000, 1000000, 2500000, 5000000];
+
   return (
     <div className="space-y-7">
       <div>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-2.5">
           <label className="text-sm sm:text-base text-slate-300 font-medium">Subscribed Capital</label>
-          <span className="text-base sm:text-lg font-black text-white font-tabular">{formatNaira(principal)}</span>
+          <span className="text-lg sm:text-xl font-black text-white font-tabular">{formatNaira(principal)}</span>
         </div>
         <input
           type="range"
@@ -142,18 +193,33 @@ function InvestmentCalc() {
           step={50000}
           value={principal}
           onChange={(e) => setPrincipal(+e.target.value)}
-          className="w-full h-2 accent-[#00D084] bg-white/10 rounded-full cursor-pointer"
+          className="w-full h-2.5 accent-[#00D084] bg-white/10 rounded-full cursor-pointer transition-all"
         />
-        <div className="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-          <span>₦50,000</span>
-          <span>₦10,000,000</span>
+
+        {/* Quick preset chips */}
+        <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
+          <span className="text-[11px] font-bold text-slate-400 mr-1 uppercase tracking-wider">Quick:</span>
+          {PRESETS.map((amt) => (
+            <button
+              key={amt}
+              type="button"
+              onClick={() => setPrincipal(amt)}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                principal === amt
+                  ? 'bg-[#00D084] text-slate-950 shadow-sm shadow-emerald-500/30'
+                  : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
+              }`}
+            >
+              ₦{amt >= 1000000 ? `${(amt / 1000000).toFixed(1).replace('.0', '')}M` : `${amt / 1000}k`}
+            </button>
+          ))}
         </div>
       </div>
 
       <div>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-2.5">
           <label className="text-sm sm:text-base text-slate-300 font-medium">Tenure</label>
-          <span className="text-base sm:text-lg font-black text-[#00E599] font-tabular">{months} months</span>
+          <span className="text-lg sm:text-xl font-black text-[#00E599] font-tabular">{months} months (3.5%/mo agreed return)</span>
         </div>
         <div className="grid grid-cols-4 gap-2">
           {[3, 6, 12, 24].map((m) => (
@@ -161,9 +227,9 @@ function InvestmentCalc() {
               key={m}
               type="button"
               onClick={() => setMonths(m)}
-              className={`py-2.5 rounded-xl text-sm font-bold border transition-all ${
+              className={`py-2.5 rounded-xl text-sm font-bold border transition-all duration-200 ${
                 months === m
-                  ? 'bg-[#00D084] text-slate-950 border-[#00D084] shadow-md shadow-emerald-500/20'
+                  ? 'bg-[#00D084] text-slate-950 border-[#00D084] shadow-md shadow-emerald-500/20 scale-[1.02]'
                   : 'bg-white/5 text-slate-300 border-white/10 hover:border-[#00D084]/50 hover:text-white'
               }`}
             >
@@ -173,32 +239,58 @@ function InvestmentCalc() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-        {[
-          { label: 'Principal', value: formatNaira(principal) },
-          { label: 'Total Return', value: formatNaira(totalReturn) },
-          { label: 'Maturity Value', value: formatNaira(futureValue) },
-        ].map((r) => (
-          <div key={r.label} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
-            <div className="text-xs text-slate-400 font-medium mb-1.5">{r.label}</div>
-            <div className="text-lg font-black text-white font-tabular">{r.value}</div>
-          </div>
-        ))}
+      {/* Dynamic Visual Growth Bar */}
+      <div className="p-4 rounded-2xl bg-[#070D1E]/90 border border-white/10">
+        <div className="flex justify-between items-center text-xs font-bold mb-2">
+          <span className="text-slate-300 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            Capital ({formatNaira(principal)})
+          </span>
+          <span className="text-[#00E599] flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
+            Total Return (+{formatNaira(totalReturn)})
+          </span>
+        </div>
+        <div className="h-3.5 w-full bg-white/10 rounded-full overflow-hidden flex shadow-inner">
+          <div
+            className="h-full bg-gradient-to-r from-emerald-600 to-emerald-400 transition-all duration-300 ease-out"
+            style={{ width: `${Math.round((principal / futureValue) * 100)}%` }}
+          />
+          <div
+            className="h-full bg-gradient-to-r from-teal-400 to-[#00E599] transition-all duration-300 ease-out"
+            style={{ width: `${Math.round((totalReturn / futureValue) * 100)}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-slate-400 font-medium mb-1">Monthly Payout</div>
+          <div className="text-lg font-black text-emerald-400 font-tabular">{formatNaira(monthlyReturn)}/mo</div>
+        </div>
+        <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-emerald-300 font-medium mb-1">Total Agreed Return</div>
+          <div className="text-lg font-black text-[#00E599] font-tabular">+{formatNaira(totalReturn)}</div>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-slate-400 font-medium mb-1">Total Maturity Payout</div>
+          <div className="text-lg font-black text-white font-tabular">{formatNaira(futureValue)}</div>
+        </div>
       </div>
 
       <Link
         href="/investors-circle"
-        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black text-base transition-all duration-150 active:scale-95 shadow-lg shadow-emerald-500/25 group"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-[#00D084] hover:bg-[#00E599] text-slate-950 font-black text-base transition-all duration-200 active:scale-95 shadow-lg shadow-emerald-500/25 group hover:shadow-emerald-500/40"
       >
         Join Wealth Circle
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
       </Link>
     </div>
   );
 }
 
 function LoanCalc() {
-  const [amount, setAmount] = useState(500000);
+  const [amount, setAmount] = useState(250000);
   const [months, setMonths] = useState(6);
 
   const monthlyRate = 0.10;
@@ -208,12 +300,14 @@ function LoanCalc() {
   const monthlyPayment = principalPerMonth + monthlyInterest;
   const totalRepayment = amount + totalInterest;
 
+  const PRESETS = [50000, 100000, 250000, 500000, 1000000];
+
   return (
     <div className="space-y-7">
       <div>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-2.5">
           <label className="text-sm sm:text-base text-slate-300 font-medium">Loan Amount</label>
-          <span className="text-base sm:text-lg font-black text-white font-tabular">{formatNaira(amount)}</span>
+          <span className="text-lg sm:text-xl font-black text-white font-tabular">{formatNaira(amount)}</span>
         </div>
         <input
           type="range"
@@ -222,18 +316,33 @@ function LoanCalc() {
           step={50000}
           value={amount}
           onChange={(e) => setAmount(+e.target.value)}
-          className="w-full h-2 accent-rose-500 bg-white/10 rounded-full cursor-pointer"
+          className="w-full h-2.5 accent-rose-500 bg-white/10 rounded-full cursor-pointer transition-all"
         />
-        <div className="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-          <span>₦50,000</span>
-          <span>₦5,000,000</span>
+
+        {/* Quick preset chips */}
+        <div className="flex flex-wrap items-center gap-1.5 mt-2.5">
+          <span className="text-[11px] font-bold text-slate-400 mr-1 uppercase tracking-wider">Quick:</span>
+          {PRESETS.map((amt) => (
+            <button
+              key={amt}
+              type="button"
+              onClick={() => setAmount(amt)}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                amount === amt
+                  ? 'bg-rose-600 text-white shadow-sm shadow-rose-500/30'
+                  : 'bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white border border-white/5'
+              }`}
+            >
+              ₦{amt >= 1000000 ? `${(amt / 1000000).toFixed(1).replace('.0', '')}M` : `${amt / 1000}k`}
+            </button>
+          ))}
         </div>
       </div>
 
       <div>
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex justify-between items-center mb-2.5">
           <label className="text-sm sm:text-base text-slate-300 font-medium">Repayment Tenure</label>
-          <span className="text-base sm:text-lg font-black text-rose-400 font-tabular">{months} months</span>
+          <span className="text-lg sm:text-xl font-black text-rose-400 font-tabular">{months} months</span>
         </div>
         <input
           type="range"
@@ -242,33 +351,60 @@ function LoanCalc() {
           step={1}
           value={months}
           onChange={(e) => setMonths(+e.target.value)}
-          className="w-full h-2 accent-rose-500 bg-white/10 rounded-full cursor-pointer"
+          className="w-full h-2.5 accent-rose-500 bg-white/10 rounded-full cursor-pointer transition-all"
         />
-        <div className="flex justify-between text-[11px] text-slate-500 mt-1.5 font-medium">
-          <span>1 month</span>
+        <div className="flex justify-between text-[11px] text-slate-500 mt-1 font-medium">
+          <span>1 month (Express emergency)</span>
+          <span>12 months</span>
           <span>24 months</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
-        {[
-          { label: 'Monthly Payment', value: formatNaira(monthlyPayment) },
-          { label: 'Total Interest', value: formatNaira(totalInterest) },
-          { label: 'Total Repayment', value: formatNaira(totalRepayment) },
-        ].map((r) => (
-          <div key={r.label} className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
-            <div className="text-xs text-slate-400 font-medium mb-1.5">{r.label}</div>
-            <div className="text-lg font-black text-white font-tabular">{r.value}</div>
-          </div>
-        ))}
+      {/* Dynamic Visual Breakdown Bar */}
+      <div className="p-4 rounded-2xl bg-[#070D1E]/90 border border-white/10">
+        <div className="flex justify-between items-center text-xs font-bold mb-2">
+          <span className="text-rose-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-rose-500" />
+            Principal Amount ({formatNaira(amount)})
+          </span>
+          <span className="text-amber-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-amber-400" />
+            Total Interest ({formatNaira(totalInterest)})
+          </span>
+        </div>
+        <div className="h-3.5 w-full bg-white/10 rounded-full overflow-hidden flex shadow-inner">
+          <div
+            className="h-full bg-gradient-to-r from-rose-600 to-rose-400 transition-all duration-300 ease-out"
+            style={{ width: `${Math.round((amount / totalRepayment) * 100)}%` }}
+          />
+          <div
+            className="h-full bg-gradient-to-r from-amber-500 to-amber-300 transition-all duration-300 ease-out"
+            style={{ width: `${Math.round((totalInterest / totalRepayment) * 100)}%` }}
+          />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="bg-rose-500/10 border border-rose-500/30 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-rose-300 font-medium mb-1">Monthly Repayment</div>
+          <div className="text-lg font-black text-white font-tabular">{formatNaira(monthlyPayment)}/mo</div>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-slate-400 font-medium mb-1">Total Interest</div>
+          <div className="text-lg font-black text-amber-300 font-tabular">{formatNaira(totalInterest)}</div>
+        </div>
+        <div className="bg-white/5 border border-white/10 rounded-xl p-4 text-center backdrop-blur-sm">
+          <div className="text-xs text-slate-400 font-medium mb-1">Total Repayment</div>
+          <div className="text-lg font-black text-white font-tabular">{formatNaira(totalRepayment)}</div>
+        </div>
       </div>
 
       <Link
         href="/loan-application"
-        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-base transition-all duration-150 active:scale-95 shadow-lg shadow-rose-600/30 group"
+        className="w-full flex items-center justify-center gap-2 py-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold text-base transition-all duration-200 active:scale-95 shadow-lg shadow-rose-600/30 group hover:shadow-rose-500/40"
       >
         Apply for 24h Loan
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+        <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" />
       </Link>
     </div>
   );

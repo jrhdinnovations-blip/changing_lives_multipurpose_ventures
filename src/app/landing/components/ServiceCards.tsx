@@ -112,51 +112,68 @@ export default function ServiceCards() {
         </div>
 
         {/* 3 Unified Dark Glass Cards */}
+        {/* 3 Unified Dark Glass Cards with Motion & Spotlight */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           {pillars.map((pillar, i) => {
             const Icon = pillar.icon;
             return (
               <div
                 key={pillar.category}
-                className="relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-[#0D182E]/90 border border-white/15 hover:border-emerald-500/40 overflow-hidden group transition-all duration-300 hover:scale-[1.01] shadow-2xl backdrop-blur-xl"
+                onMouseMove={(e) => {
+                  const rect = e.currentTarget.getBoundingClientRect();
+                  e.currentTarget.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                  e.currentTarget.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                }}
+                className="relative rounded-3xl p-6 sm:p-7 flex flex-col justify-between bg-[#0D182E]/90 border border-white/15 hover:border-emerald-500/50 overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_50px_rgba(0,0,0,0.6)] backdrop-blur-xl"
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? 'translateY(0)' : 'translateY(32px)',
                   transitionDelay: `${150 + i * 100}ms`,
                 }}
               >
+                {/* Interactive cursor spotlight */}
+                <div
+                  className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: 'radial-gradient(450px circle at var(--mouse-x, 150px) var(--mouse-y, 150px), rgba(0, 229, 153, 0.1), transparent 70%)',
+                  }}
+                />
+
+                {/* Top edge subtle glare */}
+                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:via-emerald-400/50 transition-colors" />
+
                 {/* Image Banner */}
-                <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-6 border border-white/10">
+                <div className="relative w-full h-44 sm:h-48 rounded-2xl overflow-hidden mb-6 border border-white/10 shadow-inner bg-[#060D1A]">
                   <Image
                     src={pillar.image}
                     alt={pillar.headline}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D182E] via-black/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D182E] via-black/40 to-transparent pointer-events-none" />
                   
                   {/* Badge on photo */}
-                  <div className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${pillar.badgeBg} text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg`}>
+                  <div className={`absolute top-3 left-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${pillar.badgeBg} text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-lg transition-transform duration-300 group-hover:scale-105`}>
                     <Icon className="w-3.5 h-3.5 text-white" />
                     <span>{pillar.badge}</span>
                   </div>
 
                   {/* Rate on photo */}
-                  <div className="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+                  <div className="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white z-10">
                     <div>
-                      <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">{pillar.rate}</div>
+                      <div className="text-2xl sm:text-3xl font-black text-white tracking-tight group-hover:text-[#00E599] transition-colors">{pillar.rate}</div>
                       <div className="text-[11px] sm:text-xs text-slate-300 font-bold">{pillar.rateSub}</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 mb-6">
+                <div className="flex-1 mb-6 relative z-10">
                   <div className={`text-xs font-extrabold uppercase tracking-widest mb-2 ${pillar.categoryColor}`}>
                     {pillar.category}
                   </div>
-                  <h3 className="text-xl sm:text-2xl font-black text-white mb-2.5">
+                  <h3 className="text-xl sm:text-2xl font-black text-white mb-2.5 group-hover:text-emerald-100 transition-colors">
                     {pillar.headline}
                   </h3>
                   <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
@@ -165,22 +182,23 @@ export default function ServiceCards() {
                 </div>
 
                 {/* CTA buttons */}
-                <div className="space-y-2.5 pt-4 border-t border-white/10">
+                <div className="space-y-2.5 pt-4 border-t border-white/10 relative z-10">
                   {user ? (
                     <Link
                       href={pillar.href}
-                      className={`inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
+                      className={`group/btn inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass} hover:shadow-lg`}
                     >
                       <span>{pillar.cta}</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
                     </Link>
                   ) : (
                     <Link
                       href={`/login?redirect=${encodeURIComponent(pillar.href)}`}
-                      className={`inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass}`}
+                      className={`group/btn inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl text-sm font-bold transition-all duration-200 active:scale-95 w-full ${pillar.btnClass} hover:shadow-lg`}
                     >
                       <LogIn className="w-4 h-4" />
                       <span>{pillar.guestCta}</span>
+                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover/btn:translate-x-1" />
                     </Link>
                   )}
                   <Link

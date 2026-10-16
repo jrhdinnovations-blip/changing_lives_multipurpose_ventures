@@ -66,14 +66,19 @@ function StatCard({ value, label, delay, colorClass }: { value: string; label: s
     <div
       ref={ref}
       style={{ transitionDelay: `${delay}ms` }}
-      className={`flex flex-col items-center justify-center py-6 sm:py-8 px-4 text-center transition-all duration-700 ${
+      className={`group relative flex flex-col items-center justify-center py-6 sm:py-8 px-4 text-center transition-all duration-700 hover:bg-white/[0.03] cursor-default ${
         triggered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       }`}
     >
-      <div className={`text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-none mb-1.5 font-tabular ${colorClass || 'text-[#00E599]'}`}>
+      {/* Subtle hover glow behind stat */}
+      <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/0 via-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+      
+      <div className={`text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-none mb-1.5 font-tabular transition-transform duration-300 group-hover:scale-105 ${colorClass || 'text-[#00E599]'}`}>
         {count}
       </div>
-      <div className="text-[11px] sm:text-xs font-bold tracking-[0.15em] text-slate-400 uppercase mt-1">{label}</div>
+      <div className="text-[11px] sm:text-xs font-bold tracking-[0.15em] text-slate-400 uppercase mt-1 group-hover:text-slate-200 transition-colors">
+        {label}
+      </div>
     </div>
   );
 }
@@ -89,6 +94,21 @@ export default function HeroSection() {
   const { user, userRole } = useAuth();
   const [stats, setStats] = useState(DEFAULT_STATS);
   const [mounted, setMounted] = useState(false);
+  const [cardTilt, setCardTilt] = useState({ rotateX: 0, rotateY: 0 });
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setCardTilt({
+      rotateX: -(y * 10),
+      rotateY: x * 10,
+    });
+  };
+
+  const handleCardMouseLeave = () => {
+    setCardTilt({ rotateX: 0, rotateY: 0 });
+  };
 
   useEffect(() => {
     setMounted(true);
@@ -172,10 +192,10 @@ export default function HeroSection() {
           }}
         />
 
-        {/* Rich Ambient Lighting & Glowing Orbs matching Figma */}
-        <div className="absolute top-10 right-[-100px] w-[650px] h-[650px] rounded-full bg-emerald-500/15 blur-[140px] pointer-events-none" />
-        <div className="absolute top-1/2 left-[-150px] w-[550px] h-[550px] rounded-full bg-blue-600/15 blur-[130px] pointer-events-none" />
-        <div className="absolute bottom-[-100px] right-1/3 w-[500px] h-[500px] rounded-full bg-emerald-400/10 blur-[120px] pointer-events-none" />
+        {/* Rich Ambient Lighting & Glowing Orbs with Motion */}
+        <div className="absolute top-10 right-[-100px] w-[650px] h-[650px] rounded-full bg-emerald-500/15 blur-[140px] pointer-events-none animate-pulse-glow" />
+        <div className="absolute top-1/2 left-[-150px] w-[550px] h-[550px] rounded-full bg-blue-600/15 blur-[130px] pointer-events-none animate-float" />
+        <div className="absolute bottom-[-100px] right-1/3 w-[500px] h-[500px] rounded-full bg-emerald-400/10 blur-[120px] pointer-events-none animate-float-delayed" />
 
         {/* Content: 2-Column Hero */}
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -186,7 +206,7 @@ export default function HeroSection() {
 
               {/* Pill Badge */}
               <div
-                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs sm:text-sm font-bold uppercase tracking-wider mb-6 transition-all duration-700 shadow-lg shadow-emerald-500/5"
+                className="shimmer-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 text-emerald-400 text-xs sm:text-sm font-bold uppercase tracking-wider mb-6 transition-all duration-700 shadow-lg shadow-emerald-500/10 hover:border-emerald-400 cursor-default"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(16px)',
@@ -198,10 +218,10 @@ export default function HeroSection() {
                   <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
                   <span className="w-2 h-2 rounded-full bg-blue-500" />
                 </span>
-                <span>Changing Lives Multipurpose Ventures</span>
+                <span className="font-extrabold tracking-wide">Changing Lives Multipurpose Ventures</span>
               </div>
 
-              {/* Headline matching Figma */}
+              {/* Headline with dynamic iridescent shimmer */}
               <h1
                 className="text-5xl sm:text-6xl lg:text-7xl xl:text-[80px] font-black text-white tracking-tight leading-[1.04] mb-6 transition-all duration-700"
                 style={{
@@ -211,7 +231,7 @@ export default function HeroSection() {
                 }}
               >
                 Save. Grow.<br />
-                <span className="text-[#00E599] drop-shadow-[0_0_35px_rgba(0,229,153,0.3)]">
+                <span className="shimmer-text drop-shadow-[0_0_35px_rgba(0,229,153,0.35)]">
                   Prosper together.
                 </span>
               </h1>
@@ -239,31 +259,31 @@ export default function HeroSection() {
               >
                 {user ? (
                   <Link
-                  href={
-                    ['super_admin', 'admin', 'manager', 'staff'].includes(userRole)
-                      ? '/admin-dashboard'
-                      : userRole === 'accountant'
-                      ? '/accountant-dashboard'
-                      : '/member-dashboard'
-                  }
-                    className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00BA76] text-slate-950 font-black text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/25"
+                    href={
+                      ['super_admin', 'admin', 'manager', 'staff'].includes(userRole)
+                        ? '/admin-dashboard'
+                        : userRole === 'accountant'
+                        ? '/accountant-dashboard'
+                        : '/member-dashboard'
+                    }
+                    className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00BA76] text-slate-950 font-black text-base tracking-wide transition-all duration-300 active:scale-95 shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5 overflow-hidden"
                   >
-                    <span>Go to Dashboard</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    <span className="relative z-10">Go to Dashboard</span>
+                    <ArrowRight className="w-4 h-4 stroke-[2.5] relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 ) : (
                   <Link
                     href="/register"
-                    className="inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00BA76] text-slate-950 font-black text-base tracking-wide transition-all duration-200 active:scale-95 shadow-xl shadow-emerald-500/25"
+                    className="group relative inline-flex items-center gap-2.5 px-8 py-4 rounded-xl bg-[#00D084] hover:bg-[#00BA76] text-slate-950 font-black text-base tracking-wide transition-all duration-300 active:scale-95 shadow-xl shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5 overflow-hidden"
                   >
-                    <span>Start Saving Now</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    <span className="relative z-10">Start Saving Now</span>
+                    <ArrowRight className="w-4 h-4 stroke-[2.5] relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 )}
 
                 <Link
                   href="#services"
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-white font-bold text-base transition-all duration-200 active:scale-95 backdrop-blur-md"
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 hover:border-emerald-500/40 text-white font-bold text-base transition-all duration-300 active:scale-95 backdrop-blur-md hover:-translate-y-0.5 hover:shadow-lg hover:shadow-white/5"
                 >
                   What We Offer
                 </Link>
@@ -275,14 +295,14 @@ export default function HeroSection() {
                 <span>Need quick credit?</span>
                 <Link
                   href="/loan-application"
-                  className="text-rose-400 hover:text-rose-300 font-bold underline underline-offset-4 decoration-rose-500/50"
+                  className="text-rose-400 hover:text-rose-300 font-bold underline underline-offset-4 decoration-rose-500/50 hover:decoration-rose-400 transition-colors"
                 >
                   Apply for 24h Express Loan →
                 </Link>
               </div>
             </div>
 
-            {/* Right Column: High Definition Showcase Card */}
+            {/* Right Column: High Definition Interactive 3D Showcase Card */}
             <div
               className="lg:col-span-5 w-full flex justify-center lg:justify-end transition-all duration-700"
               style={{
@@ -291,15 +311,51 @@ export default function HeroSection() {
                 transitionDelay: '300ms',
               }}
             >
-              <div className="relative w-full max-w-xl group">
+              <div 
+                className="relative w-full max-w-xl group select-none"
+                onMouseMove={handleCardMouseMove}
+                onMouseLeave={handleCardMouseLeave}
+              >
+                {/* Floating Micro-Widget 1: Top-Left Loan Verification */}
+                <div className="absolute -top-6 -left-6 z-30 hidden sm:flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-[#091224]/95 border border-emerald-500/40 shadow-2xl backdrop-blur-xl animate-float pointer-events-none">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[#00E599] shrink-0">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-black text-white">₦250,000 Loan Approved</div>
+                    <div className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      Disbursed in 1.4 hrs
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Micro-Widget 2: Bottom-Right Compound Growth */}
+                <div className="absolute -bottom-6 -right-4 z-30 hidden sm:flex items-center gap-3 px-4 py-2.5 rounded-2xl bg-[#091224]/95 border border-blue-500/40 shadow-2xl backdrop-blur-xl animate-float-delayed pointer-events-none">
+                  <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                    <TrendingUp className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-black text-white">Thrift Wealth Yield</div>
+                    <div className="text-[10px] text-slate-300 font-medium">
+                      <strong className="text-[#00E599] font-bold">48% P.A.</strong> compound return
+                    </div>
+                  </div>
+                </div>
+
                 {/* Multi-layered neon glow behind showcase frame */}
                 <div className="absolute -inset-3 bg-gradient-to-tr from-emerald-500/35 via-blue-600/25 to-[#00E599]/30 rounded-3xl blur-2xl opacity-75 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                <div className="absolute -bottom-6 -right-6 w-56 h-56 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -bottom-6 -right-6 w-56 h-56 bg-emerald-400/20 rounded-full blur-3xl pointer-events-none animate-pulse-glow" />
 
-                {/* Outer Glass Card Container */}
-                <div className="relative rounded-3xl bg-[#0D182E]/90 border border-white/20 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl overflow-hidden ring-1 ring-white/10">
+                {/* Outer Glass Card Container with 3D tilt */}
+                <div 
+                  className="relative rounded-3xl bg-[#0D182E]/90 border border-white/20 p-3 sm:p-4 shadow-2xl backdrop-blur-2xl overflow-hidden ring-1 ring-white/10 transition-transform duration-200 ease-out"
+                  style={{
+                    transform: `perspective(1000px) rotateX(${cardTilt.rotateX}deg) rotateY(${cardTilt.rotateY}deg)`,
+                  }}
+                >
                   {/* Subtle top glare reflection */}
-                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent z-10" />
+                  <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent z-10" />
 
                   {/* High Definition Image Container */}
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-[#060D1A]">
@@ -358,7 +414,7 @@ export default function HeroSection() {
                       </span>
                     </div>
                     <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-medium">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00E599]" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00E599] animate-pulse" />
                       <span>Instant 24/7 Portal Access</span>
                     </div>
                   </div>
