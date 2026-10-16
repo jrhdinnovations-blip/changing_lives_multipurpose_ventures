@@ -92,7 +92,7 @@ export default function MemberInvestmentSection({ member: memberProp }: MemberIn
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-sm font-bold text-white">Investment Portfolio</h2>
-          <p className="text-2xs text-slate-400 font-medium">Your active cooperative investments</p>
+          <p className="text-2xs text-slate-400 font-medium">Your active investments</p>
         </div>
         <Link
           href="/investors-circle"
@@ -134,7 +134,7 @@ export default function MemberInvestmentSection({ member: memberProp }: MemberIn
           </div>
           <p className="text-sm font-bold text-white">No Active Investments</p>
           <p className="text-xs text-slate-400 max-w-xs mt-1 mb-3.5 font-normal">
-            Grow your cooperative wealth with structured returns from the CLIMPS Investors Circle.
+            Grow your wealth with structured returns from the CLIMPS Investors Circle.
           </p>
           <Link
             href="/investors-circle"
@@ -148,7 +148,7 @@ export default function MemberInvestmentSection({ member: memberProp }: MemberIn
         <div className="space-y-2 mt-4">
           {investments.map(inv => {
             const productName = inv.product?.name || 'Investment Portfolio';
-            const category = inv.product?.category || 'Cooperative Investment';
+            const category = inv.product?.category || 'Ventures Investment';
             const returnRate = inv.product?.projected_return_rate
               ? `${inv.product.projected_return_rate}% p.a.`
               : 'Competitive return';
@@ -202,7 +202,7 @@ export default function MemberInvestmentSection({ member: memberProp }: MemberIn
       )}
 
       <p className="text-2xs text-slate-500 text-center mt-3 px-2 font-medium">
-        Returns are based on product terms and cooperative surplus distributions.
+        Returns are based on product terms and surplus distributions.
       </p>
     </div>
   );

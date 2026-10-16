@@ -7,7 +7,7 @@ UPDATE savings_products
 SET is_active = false
 WHERE category NOT IN ('monthly_contribution', 'regular_savings');
 
--- Ensure Monthly Contribution exists with correct cooperative parameters
+-- Ensure Monthly Contribution exists with correct parameters
 INSERT INTO savings_products (
   name,
   category,
@@ -24,18 +24,18 @@ INSERT INTO savings_products (
   is_mandatory,
   sort_order
 ) VALUES (
-  'Monthly Cooperative Contribution',
+  'Monthly Contribution',
   'monthly_contribution',
-  'Core mandatory monthly thrift contribution for all verified cooperative members. Builds equity, determines loan eligibility multiples, and accrues annual dividends.',
+  'Core mandatory monthly thrift contribution for all verified members. Builds equity, determines loan eligibility multiples, and accrues annual dividends.',
   5000,
   'monthly',
   9.0,
   '12 – 60 months',
-  'Withdrawal upon membership tenure completion (min 12 months); early voluntary exit subject to cooperative by-law notice and 2% administrative charge.',
-  'All verified cooperative members',
+  'Withdrawal upon membership tenure completion (min 12 months); early voluntary exit subject to CLIMPS rules notice and 2% administrative charge.',
+  'All verified members',
   ARRAY[
     'Determines 200%–300% credit and loan multiplier',
-    'Earns annual cooperative dividend share',
+    'Earns annual dividend share',
     'Automated monthly deductions & reminders',
     'Official monthly statements and financial certificates'
   ],

@@ -174,7 +174,7 @@ const MOCK_LOGS: AuditLog[] = [
     severity: 'critical',
     target: 'Emeka Eze',
     targetId: 'STF/2026/0009',
-    details: 'Promoted Emeka Eze from Cooperative Member to Operations Staff. Reason: Administrative appointment.',
+    details: 'Promoted Emeka Eze from Member to Operations Staff. Reason: Administrative appointment.',
     ipAddress: '41.58.114.9',
     outcome: 'success',
   },
@@ -767,7 +767,7 @@ export default function AdminAuditLogsPage() {
             <span className="font-semibold block mb-0.5">Tamper-Evident Audit Trail</span>
             All records in this log are cryptographically signed and stored in a write-once format.
             Modifications are not permitted. Export records are watermarked with admin ID and timestamp for forensic traceability.
-            Audit logs are retained for a minimum of 7 years per cooperative regulatory requirements.
+            Audit logs are retained for a minimum of 7 years per statutory regulatory requirements.
           </div>
         </div>
 

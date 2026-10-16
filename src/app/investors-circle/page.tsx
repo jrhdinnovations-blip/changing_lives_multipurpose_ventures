@@ -78,7 +78,7 @@ export default function InvestorsCirclePage() {
     minAmount: 750000,
     processingFee: 3000,
     interestRate: 3.5,
-    coopAccountName: 'Changing Lives Multipurpose Cooperative Society Ltd',
+    coopAccountName: 'Changing Lives Multipurpose Ventures',
     coopAccountNumber: '2044406437',
     coopBankName: 'First Bank',
   });
@@ -297,7 +297,7 @@ export default function InvestorsCirclePage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account before submitting a Wealth Circle application.
+            You must be signed in with your member account before submitting a Wealth Circle application.
           </p>
           <div className="space-y-3">
             <Link
@@ -434,12 +434,12 @@ export default function InvestorsCirclePage() {
               <p>
                 Provides members with structured wealth-building opportunities under clearly defined terms and conditions, featuring an <strong className="text-white">Agreed Return of 3.5% monthly</strong>.
               </p>
-              <p>Please fill out the following information completely and accurately. By submitting this form, you agree to the cooperative terms and conditions governing the Wealth Circle Agreement.</p>
+              <p>Please fill out the following information completely and accurately. By submitting this form, you agree to the terms and conditions governing the Wealth Circle Agreement.</p>
               <p>Both parties retain the option to renegotiate the terms and conditions of your investment at the end of a maturity tenure.</p>
             </div>
             <div className="grid grid-cols-3 gap-3 mb-8">
               {[
-                { icon: '🔒', label: 'Secure', desc: 'Cooperative asset-backed' },
+                { icon: '🔒', label: 'Secure', desc: 'Enterprise asset-backed' },
                 { icon: '📈', label: '3.5% Monthly', desc: 'Agreed monthly return' },
                 { icon: '💼', label: 'Structured', desc: 'Clearly defined agreement' },
               ].map(item => (
@@ -485,8 +485,8 @@ export default function InvestorsCirclePage() {
                   Requests for partial or full liquidation shall be subject to the applicable notice period and the terms contained in the Wealth Circle Agreement. Early liquidation may affect the return applicable and may attract an administrative charge where expressly provided for in the Agreement.
                 </p>
               </div>
-              <p>The Investor shall give the Cooperative not less than one (1) month's written notice of any intention to withdraw or liquidate, whether in part or in full, the invested sum.</p>
-              <p>Where the Investor fails to provide the required notice and requests an early liquidation, the Cooperative may, at its sole discretion and subject to liquidity availability, approve the request.</p>
+              <p>The Investor shall give the Company not less than one (1) month's written notice of any intention to withdraw or liquidate, whether in part or in full, the invested sum.</p>
+              <p>Where the Investor fails to provide the required notice and requests an early liquidation, the Company may, at its sole discretion and subject to liquidity availability, approve the request.</p>
               <p>In such circumstances, the Investor shall forfeit any accrued but unpaid returns applicable to the notice period, and an early liquidation administrative charge of 1% of the amount withdrawn may be deducted to cover processing and associated costs.</p>
               <p>The principal investment shall, however, remain payable in accordance with the terms of this Agreement.</p>
             </div>
@@ -871,9 +871,9 @@ export default function InvestorsCirclePage() {
               </div>
             </div>
 
-            {/* Cooperative account */}
+            {/* Company account */}
             <div className="mt-6 bg-white/[0.03] border border-white/10 rounded-2xl p-5">
-              <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Our Official Cooperative Account</p>
+              <p className="text-xs font-bold text-white/50 uppercase tracking-wider mb-2">Our Official Bank Account</p>
               <p className="text-sm font-bold text-white">{settings.coopAccountName}</p>
               <p className="text-sm text-white/80 mt-1">Account Number: <span className="font-mono font-bold text-emerald-400">{settings.coopAccountNumber}</span></p>
               <p className="text-sm text-white/80">Bank: {settings.coopBankName}</p>

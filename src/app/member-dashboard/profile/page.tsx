@@ -313,7 +313,7 @@ export default function MemberProfileCompletionPage() {
         return false;
       }
       if (!form.agreeByeLaws || !form.confirmTruth) {
-        setErrorMessage('You must confirm the truth of your details and agree to the cooperative bye-laws.');
+        setErrorMessage('You must confirm the truth of your details and agree to the CLIMPS bye-laws.');
         return false;
       }
       return true;
@@ -544,7 +544,7 @@ export default function MemberProfileCompletionPage() {
               Complete Your Profile
             </h1>
             <p className="text-sm text-white/50 mt-1 max-w-xl">
-              Fill in your remaining details, next-of-kin, and monthly savings plan to complete your cooperative registration.
+              Fill in your remaining details, next-of-kin, and monthly savings plan to complete your registration.
             </p>
           </div>
 
@@ -951,7 +951,7 @@ export default function MemberProfileCompletionPage() {
                   Next of Kin & Beneficiary Information
                 </h2>
                 <p className="text-xs text-white/40 mt-0.5">
-                  Required by cooperative law as designated primary beneficiary and emergency contact.
+                  Required by statutory regulations as designated primary beneficiary and emergency contact.
                 </p>
               </div>
 
@@ -1203,7 +1203,7 @@ export default function MemberProfileCompletionPage() {
                   Monthly Contribution & Membership Agreement
                 </h2>
                 <p className="text-xs text-white/40 mt-0.5">
-                  Select your monthly cooperative thrift contribution and sign your membership consent.
+                  Select your monthly thrift contribution and sign your membership consent.
                 </p>
               </div>
 
@@ -1280,7 +1280,7 @@ export default function MemberProfileCompletionPage() {
                     onChange={e => handleChange('paymentMethod', e.target.value)}
                     className="w-full px-3 py-2.5 bg-white/5 border border-white/15 rounded-xl text-xs text-white focus:outline-none focus:ring-2 focus:ring-[#00E599]/20 focus:border-[#00E599]/50"
                   >
-                    <option value="bank_transfer">Direct Bank Transfer to Cooperative</option>
+                    <option value="bank_transfer">Direct Bank Transfer</option>
                     <option value="auto_debit">Automated Monthly Direct Debit</option>
                     <option value="salary_deduction">Salary Deduction (Check-off System)</option>
                   </select>

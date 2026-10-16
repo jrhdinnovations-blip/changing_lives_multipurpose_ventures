@@ -41,11 +41,11 @@ interface SavingsProduct {
 const savingsProducts: SavingsProduct[] = [
   {
     id: 'monthly-contribution',
-    name: 'Monthly Cooperative Contribution',
+    name: 'Monthly Contribution',
     category: 'monthly_contribution',
-    tagline: 'Disciplined. Rewarding. Core Cooperative Thrift.',
+    tagline: 'Disciplined. Rewarding. Core Thrift Savings.',
     description:
-      'The foundation of your cooperative membership. Regular monthly dues build your personal cooperative equity, establish your creditworthiness, and unlock loan multiplier privileges of up to 300% with annual dividend profit shares.',
+      'The foundation of your CLIMPS membership. Regular monthly dues build your personal financial equity, establish your creditworthiness, and unlock loan multiplier privileges of up to 300% with annual dividend profit shares.',
     minAmount: '₦5,000 / month (Max: ₦200,000 / month)',
     interestRate: '4.0% monthly (48% p.a.)',
     duration: 'At least 1 year (12 – 60 months)',
@@ -55,7 +55,7 @@ const savingsProducts: SavingsProduct[] = [
       'Must be maintained for at least 1 year or interest is forfeited',
       'Monthly savings commitment between ₦5,000 and ₦200,000',
       'Qualifies you for up to 3× loan multiplier credit',
-      'Earns annual cooperative dividend profit-sharing',
+      'Earns annual dividend profit-sharing',
       'Automatic salary or wallet auto-deduction option',
       'Official monthly statements and audit receipts',
     ],
@@ -98,11 +98,11 @@ const savingsProducts: SavingsProduct[] = [
 const faqs = [
   {
     q: 'What is the difference between Monthly Contribution and Lock Your Funds?',
-    a: 'Monthly Contribution is the mandatory core cooperative thrift (minimum ₦5,000/mo, maximum ₦200,000/mo) that earns 4.0% monthly interest provided it is held for at least 1 year — early withdrawal forfeits all interest. "Lock Your Funds" is a voluntary fixed-term savings plan with a minimum 6-month lock-up. It earns 7.0% p.a. interest credited in full at maturity; withdrawing before maturity forfeits ALL accrued interest.',
+    a: 'Monthly Contribution is the mandatory core thrift savings (minimum ₦5,000/mo, maximum ₦200,000/mo) that earns 4.0% monthly interest provided it is held for at least 1 year — early withdrawal forfeits all interest. "Lock Your Funds" is a voluntary fixed-term savings plan with a minimum 6-month lock-up. It earns 7.0% p.a. interest credited in full at maturity; withdrawing before maturity forfeits ALL accrued interest.',
   },
   {
     q: 'What happens if I withdraw my Monthly Contribution before 1 year?',
-    a: 'As stipulated in the CLIMPS cooperative rules, savings must be maintained for at least 1 year. Early withdrawal prior to 1 year results in forfeiture of ALL accrued interest to ensure cooperative fund stability.',
+    a: 'As stipulated in the CLIMPS rules, savings must be maintained for at least 1 year. Early withdrawal prior to 1 year results in forfeiture of ALL accrued interest to ensure fund stability.',
   },
   {
     q: 'What happens if I withdraw from Lock Your Funds before the maturity date?',
@@ -114,7 +114,7 @@ const faqs = [
   },
   {
     q: 'Can I use my locked savings as collateral for a loan?',
-    a: 'Yes! Your locked savings balance can serve as collateral backing for a loan application, strengthening your creditworthiness within the cooperative system without breaking the lock-up.',
+    a: 'Yes! Your locked savings balance can serve as collateral backing for a loan application, strengthening your creditworthiness within the CLIMPS system without breaking the lock-up.',
   },
 ];
 
@@ -160,7 +160,7 @@ export default function SavingsProductsPage() {
           </h1>
 
           <p className="mt-5 text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
-            Two powerful pillars: <strong className="text-white">Monthly Contribution (4% monthly)</strong> to build your cooperative equity and credit, and <strong className="text-white">Lock Your Funds</strong> — a fixed-term plan with premium returns and zero early-withdrawal interest.
+            Two powerful pillars: <strong className="text-white">Monthly Contribution (4% monthly)</strong> to build your equity and credit, and <strong className="text-white">Lock Your Funds</strong> — a fixed-term plan with premium returns and zero early-withdrawal interest.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -197,7 +197,7 @@ export default function SavingsProductsPage() {
         <div className="text-center mb-12">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Our Two Savings Products</h2>
           <p className="text-sm text-white/60 mt-2 max-w-xl mx-auto">
-            Transparent terms, competitive returns, and member-first cooperative governance.
+            Transparent terms, competitive returns, and member-first governance.
           </p>
         </div>
 
@@ -279,7 +279,7 @@ export default function SavingsProductsPage() {
                 <thead>
                   <tr className="border-b border-white/10 bg-white/[0.03] text-white/60 font-semibold">
                     <th className="py-4 px-6 w-1/3">Feature / Parameter</th>
-                    <th className="py-4 px-6 w-1/3 text-emerald-400 font-bold">Monthly Cooperative Contribution</th>
+                    <th className="py-4 px-6 w-1/3 text-emerald-400 font-bold">Monthly Contribution</th>
                     <th className="py-4 px-6 w-1/3 text-amber-400 font-bold">Lock Your Funds (Fixed Term)</th>
                   </tr>
                 </thead>
@@ -362,7 +362,7 @@ export default function SavingsProductsPage() {
         <div className="max-w-4xl mx-auto px-4 relative z-10">
           <h3 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">Ready to Start Building Your Financial Freedom?</h3>
           <p className="text-white/75 text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
-            Start your Monthly Contribution (4% monthly) to build cooperative equity, or lock your funds for 6+ months to earn premium interest at maturity.
+            Start your Monthly Contribution (4% monthly) to build your equity, or lock your funds for 6+ months to earn premium interest at maturity.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             {user ? (

@@ -265,7 +265,7 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
           icon: PiggyBank,
           variant: 'savings',
           span: 'wide',
-          tooltip: 'Sum of all savings accounts and cooperative contributions',
+          tooltip: 'Sum of all savings accounts and monthly contributions',
         },
         {
           id: 'kpi-contribution',
@@ -279,7 +279,7 @@ export default function MemberKPIBento({ member: memberProp }: MemberKPIBentoPro
             : 'No monthly contribution set',
           icon: CheckCircle2,
           variant: contribStatus === 'paid' ? 'success' : 'alert',
-          tooltip: 'Your monthly cooperative contribution status',
+          tooltip: 'Your monthly contribution status',
         },
         {
           id: 'kpi-outstanding',

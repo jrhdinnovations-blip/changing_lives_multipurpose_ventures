@@ -129,7 +129,7 @@ export default function MemberSavingsSection({ member: memberProp }: MemberSavin
 
   const regularSavingsBalance = Number(savingsAccount?.balance) || 0;
   const accruedInterest = Number(savingsAccount?.accrued_interest) || 0;
-  const totalCooperativeSavings = Number(memberProp?.total_savings) || (monthlyContribBalance + regularSavingsBalance);
+  const totalSavingsAll = Number(memberProp?.total_savings) || (monthlyContribBalance + regularSavingsBalance);
   const loanCreditLimit = monthlyContribBalance * 2.5;
 
   const now = new Date();
@@ -181,7 +181,7 @@ export default function MemberSavingsSection({ member: memberProp }: MemberSavin
 
       {activeTab === 'accounts' && (
         <div className="space-y-3">
-          {/* Account 1: Monthly Cooperative Contribution */}
+          {/* Account 1: Monthly Contribution */}
           <Link
             href="/save/contributions"
             className="block p-4 rounded-2xl border border-blue-500/30 bg-gradient-to-br from-blue-500/10 via-[#0D182E] to-[#070D1E] hover:border-blue-400/60 transition-all shadow-md group backdrop-blur-md"
@@ -194,7 +194,7 @@ export default function MemberSavingsSection({ member: memberProp }: MemberSavin
                 <div>
                   <div className="flex items-center gap-2">
                     <p className="text-sm font-bold text-white group-hover:text-blue-300 transition-colors">
-                      Monthly Cooperative Contribution
+                      Monthly Contribution
                     </p>
                     <span className="text-[10px] px-2 py-0.5 font-bold rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30">
                       Mandatory
@@ -273,7 +273,7 @@ export default function MemberSavingsSection({ member: memberProp }: MemberSavin
               <p className="text-xs text-slate-400 font-medium">Total Savings</p>
               <p className="text-xs text-[#00E599] font-bold">Managed by Changing Lives Multipurpose Ventures</p>
             </div>
-            <p className="text-lg font-black text-[#00E599] font-tabular">{fmt(totalCooperativeSavings)}</p>
+            <p className="text-lg font-black text-[#00E599] font-tabular">{fmt(totalSavingsAll)}</p>
           </div>
         </div>
       )}

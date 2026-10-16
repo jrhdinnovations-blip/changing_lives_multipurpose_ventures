@@ -51,7 +51,7 @@ export default function RegisterPage() {
 
             <p className="text-slate-400 text-base leading-relaxed mb-8">
               New member accounts are created exclusively by CLIMPS administrators. 
-              If you've been invited to join, please contact your cooperative office or the administrator who reached out to you.
+              If you've been invited to join, please contact your CLIMPS office or the administrator who reached out to you.
             </p>
 
             {/* Info cards */}
@@ -136,7 +136,7 @@ export default function RegisterPage() {
       {/* Footer */}
       <footer className="relative z-10 text-center py-4 px-6">
         <p className="text-xs text-slate-600">
-          © {new Date().getFullYear()} CLIMPS Cooperative. All rights reserved. · Member accounts managed by administrators only.
+          © {new Date().getFullYear()} CLIMPS. All rights reserved. · Member accounts managed by administrators only.
         </p>
       </footer>
     </div>

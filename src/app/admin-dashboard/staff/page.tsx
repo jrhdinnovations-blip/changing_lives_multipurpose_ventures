@@ -181,7 +181,7 @@ export default function AdminStaffPage() {
               </h1>
             </div>
             <p className="text-sm text-white/40 mt-1">
-              Cooperative personnel governance: assign administrative roles, monitor access rights, and delegate operational responsibilities.
+              Personnel governance: assign administrative roles, monitor access rights, and delegate operational responsibilities.
             </p>
           </div>
 
@@ -368,7 +368,7 @@ export default function AdminStaffPage() {
           <div>
             <h3 className="text-base font-bold text-white">System Privilege Matrix</h3>
             <p className="text-xs text-white/40">
-              Security reference indicating functional boundaries and approval rights across each cooperative role tier.
+              Security reference indicating functional boundaries and approval rights across each role tier.
             </p>
           </div>
 
@@ -430,7 +430,7 @@ export default function AdminStaffPage() {
                   <div>
                     <h3 className="font-bold text-white">Promote Member to Staff</h3>
                     <p className="text-2xs text-white/40">
-                      Grant operational privileges to an existing cooperative member
+                      Grant operational privileges to an existing member
                     </p>
                   </div>
                 </div>
@@ -445,7 +445,7 @@ export default function AdminStaffPage() {
               <form onSubmit={handlePromoteSubmit} className="space-y-4 text-xs">
                 <div>
                   <label className="font-semibold text-white/50 block mb-1">
-                    Select Cooperative Member
+                    Select Member
                   </label>
                   <select
                     value={selectedMemberId}

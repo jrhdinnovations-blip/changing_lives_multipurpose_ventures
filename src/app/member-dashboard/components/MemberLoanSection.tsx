@@ -569,7 +569,7 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
                     </table>
                   </div>
                   <div className="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between text-2xs text-slate-400">
-                    <span>Rate: 10% monthly cooperative interest</span>
+                    <span>Rate: 10% monthly interest</span>
                     <span className="text-[#00E599] font-semibold">Total: {fmt(totalRepayable)}</span>
                   </div>
                 </div>
@@ -577,7 +577,7 @@ export default function MemberLoanSection({ member: memberProp }: MemberLoanSect
             </div>
 
             <div className="flex items-center justify-between pt-1">
-              <span className="text-2xs text-slate-400">Official cooperative facility approved</span>
+              <span className="text-2xs text-slate-400">Official credit facility approved</span>
               <Link
                 href="/loan-dashboard?tab=schedule"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00E599] text-slate-950 font-black text-xs hover:bg-[#00E599]/90 transition-all shadow-sm"

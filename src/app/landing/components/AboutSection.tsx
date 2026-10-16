@@ -139,7 +139,7 @@ export default function AboutSection() {
 
             <div className="mt-6 pt-5 border-t border-white/10 flex items-center justify-between flex-wrap gap-3">
               <span className="text-xs text-white/50">
-                Explore all active cooperative programs and member benefits.
+                Explore all active financial programs and member benefits.
               </span>
               <Link
                 href="/savings-products"
@@ -169,7 +169,7 @@ export default function AboutSection() {
 
               <div className="p-4 rounded-2xl bg-white/[0.06] border border-white/10 backdrop-blur-sm mb-6">
                 <p className="text-white/95 text-sm sm:text-base leading-relaxed">
-                  Individuals who meet CLIMPS membership requirements may apply to become members, subject to the Society&apos;s rules and applicable requirements.
+                  Individuals who meet CLIMPS membership requirements may apply to become members, subject to the enterprise rules and applicable requirements.
                 </p>
               </div>
 
@@ -178,8 +178,8 @@ export default function AboutSection() {
                   Membership Requirements & Standards
                 </div>
                 {[
-                  "Meet CLIMPS cooperative membership requirements",
-                  "Subject to the Society's rules and applicable requirements",
+                  "Meet CLIMPS membership requirements",
+                  "Subject to CLIMPS rules and applicable requirements",
                   "Identity verification & KYC (BVN, NIN, and valid government ID)",
                   "Dedicated to saving, financial responsibility, and ethical wealth building",
                 ].map((item, idx) => (

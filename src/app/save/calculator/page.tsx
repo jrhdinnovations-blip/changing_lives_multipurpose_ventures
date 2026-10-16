@@ -306,7 +306,7 @@ export default function SavingsCalculatorPage() {
           {/* — Results panel */}
           <div className="lg:col-span-3 space-y-6">
 
-            {/* Cooperative Policy Banner */}
+            {/* Policy Banner */}
             {isMonthly && (
               <div className={`rounded-2xl border p-4 text-xs leading-relaxed ${
                 result.interestForfeited

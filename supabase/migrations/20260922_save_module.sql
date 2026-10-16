@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS savings_products (
 
 -- Seed default products
 INSERT INTO savings_products (name, category, description, min_contribution, contribution_frequency, interest_rate, duration, withdrawal_rules, is_mandatory, sort_order) VALUES
-  ('Monthly Cooperative Contribution', 'monthly_contribution', 'Core mandatory contribution for all active members.', 5000, 'monthly', 9.0, '12 – 60 months', 'Withdraw after 12 months; early exit incurs 2% penalty', true, 1),
+  ('Monthly Contribution', 'monthly_contribution', 'Core mandatory contribution for all active members.', 5000, 'monthly', 9.0, '12 – 60 months', 'Withdraw after 12 months; early exit incurs 2% penalty', true, 1),
   ('Regular Savings', 'regular_savings', 'Flexible voluntary savings with no lock-in period.', 1000, 'monthly', 7.0, 'No fixed term', 'Withdraw up to 2× per month; minimum balance ₦500', false, 2),
   ('Goal Savings', 'target_savings', 'Save toward a specific personal financial target.', 2000, 'monthly', 10.0, '3 – 36 months', 'Full withdrawal on goal date; partial after 50% reached', false, 3),
   ('Emergency Savings', 'emergency_savings', 'A dedicated safety net with instant, penalty-free access.', 3000, 'monthly', 8.0, 'Ongoing', 'Unlimited withdrawals; no penalty', false, 4),

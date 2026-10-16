@@ -157,7 +157,7 @@ export default function RegularSavingsPage() {
           }
         } else {
           setMember({
-            name: meta?.full_name || 'Cooperative Member',
+            name: meta?.full_name || 'Member',
             memberNumber: meta?.member_number || 'CLM-0000',
             email: user.email || '',
           });
@@ -216,7 +216,7 @@ export default function RegularSavingsPage() {
       return;
     }
     if (withdrawalsThisMonth >= 2) {
-      setWithdrawError('Monthly withdrawal limit reached (maximum 2 withdrawals per calendar month as per cooperative by-laws).');
+      setWithdrawError('Monthly withdrawal limit reached (maximum 2 withdrawals per calendar month as per CLIMPS rules).');
       return;
     }
     if (parsed > balance - 500) {
@@ -290,7 +290,7 @@ export default function RegularSavingsPage() {
           </div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In Required</h2>
           <p className="text-slate-500 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account before accessing or subscribing to the Lock Your Funds fixed-term savings plan.
+            You must be signed in with your member account before accessing or subscribing to the Lock Your Funds fixed-term savings plan.
           </p>
           <div className="space-y-3">
             <Link
@@ -428,7 +428,7 @@ export default function RegularSavingsPage() {
           </div>
         </div>
 
-        {/* Cooperative Rules & Interactive Growth Simulator */}
+        {/* Savings Rules & Interactive Growth Simulator */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Rules Banner */}
           <div className="lg:col-span-1 rounded-2xl border border-slate-200 bg-white p-6 flex flex-col justify-between space-y-6">
@@ -440,7 +440,7 @@ export default function RegularSavingsPage() {
                 <h3 className="font-semibold text-slate-900 text-base">Account Operating Rules</h3>
               </div>
               <p className="text-xs text-slate-500 mb-4 leading-relaxed">
-                Lock Your Funds is governed by the CLIMPS cooperative fixed-term savings rules. Withdrawing before maturity forfeits ALL interest.
+                Lock Your Funds is governed by the CLIMPS fixed-term savings rules. Withdrawing before maturity forfeits ALL interest.
               </p>
 
               <ul className="space-y-3 text-xs text-slate-700">
@@ -773,7 +773,7 @@ export default function RegularSavingsPage() {
                     </div>
                     <div className="flex justify-between text-slate-500">
                       <span>Account Name:</span>
-                      <span className="font-medium text-slate-900">Changing Lives Multipurpose Cooperative Society Ltd</span>
+                      <span className="font-medium text-slate-900">Changing Lives Multipurpose Ventures</span>
                     </div>
                   </div>
                 )}

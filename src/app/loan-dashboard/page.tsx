@@ -358,7 +358,7 @@ export default function LoanDashboardPage() {
           </div>
           <h2 className="text-2xl font-bold text-slate-900 mb-2">Sign In Required</h2>
           <p className="text-slate-500 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account to view your loans and repayment schedule.
+            You must be signed in with your member account to view your loans and repayment schedule.
           </p>
           <div className="space-y-3">
             <Link
@@ -735,7 +735,7 @@ export default function LoanDashboardPage() {
                             Approved Repayment Schedule — Facility #{approvedApp.application_number}
                           </h4>
                           <p className="text-xs text-emerald-800 mt-1">
-                            Your loan application for <strong>{formatNGN(appPrinc)}</strong> has been approved by the Cooperative. Below is the scheduled monthly breakdown. Instalments will activate upon transfer confirmation by the Finance Desk (Accountant).
+                            Your loan application for <strong>{formatNGN(appPrinc)}</strong> has been approved. Below is the scheduled monthly breakdown. Instalments will activate upon transfer confirmation by the Finance Desk (Accountant).
                           </p>
                         </div>
                       </div>

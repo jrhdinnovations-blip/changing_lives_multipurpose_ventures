@@ -1,4 +1,4 @@
--- Update registered cooperative office address in system_settings
+-- Update registered office address in system_settings
 INSERT INTO public.system_settings (id, setting_key, setting_value, description)
 VALUES (
   gen_random_uuid(),

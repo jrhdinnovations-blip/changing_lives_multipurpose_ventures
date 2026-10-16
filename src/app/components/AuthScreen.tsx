@@ -31,7 +31,7 @@ export default function AuthScreen() {
             </div>
             <div>
               <span className="font-extrabold text-lg text-emerald-400">CLIMPS</span>
-              <p className="text-2xs text-white/50 leading-none">Cooperative Platform</p>
+              <p className="text-2xs text-white/50 leading-none">Financial Platform</p>
             </div>
           </div>
 

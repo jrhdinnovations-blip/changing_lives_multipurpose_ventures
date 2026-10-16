@@ -11,7 +11,7 @@ const STAGES = [
   { key: 'pending', title: 'Pending Review', desc: 'Application received and queued for initial verification' },
   { key: 'under_review', title: 'Under Review', desc: 'Documents and identity verification in progress by admissions committee' },
   { key: 'approved', title: 'Approved', desc: 'Membership approved; account ready for initial activation' },
-  { key: 'active', title: 'Active Member', desc: 'Full cooperative access granted with savings and loan facilities' },
+  { key: 'active', title: 'Active Member', desc: 'Full member access granted with savings and loan facilities' },
 ];
 
 export default function OnboardingPendingPage() {
@@ -149,7 +149,7 @@ export default function OnboardingPendingPage() {
               </h1>
               <p className="text-sm text-slate-400 max-w-md mx-auto">
                 {currentStatus === 'active'
-                  ? 'Your membership is active and all cooperative features are now available.'
+                  ? 'Your membership is active and all member features are now available.'
                   : currentStatus === 'approved'
                   ? 'Your application has been approved by the administrators. Click below to enter your dashboard.'
                   : 'Thank you for submitting your KYC registration. Our admissions committee is verifying your documents.'}
@@ -275,7 +275,7 @@ export default function OnboardingPendingPage() {
                 <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 text-xs text-slate-300">
                   <p className="font-semibold text-primary mb-1">What happens next?</p>
                   <p>
-                    Cooperative administrators will review your credentials within 24 hours. Once approved, you will receive an email confirmation and can immediately access member savings, contributions, and loan applications.
+                    CLIMPS administrators will review your credentials within 24 hours. Once approved, you will receive an email confirmation and can immediately access member savings, contributions, and loan applications.
                   </p>
                 </div>
                 <div className="flex items-center justify-center gap-4 text-xs text-slate-400 pt-2">

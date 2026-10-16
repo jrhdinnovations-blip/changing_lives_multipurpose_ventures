@@ -370,7 +370,7 @@ export default function OnboardingPage() {
         <div className="flex items-center gap-2.5">
           <Image
             src="/assets/images/WhatsApp_Image_2026-09-19_at_12.24.54-1789999920386.jpeg"
-            alt="CLIMPS Cooperative Logo"
+            alt="CLIMPS Logo"
             width={34}
             height={34}
             className="rounded-xl object-cover"
@@ -635,7 +635,7 @@ export default function OnboardingPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    This phone number and email will receive transaction receipts, loan alerts, and cooperative governance ballots.
+                    This phone number and email will receive transaction receipts, loan alerts, and governance announcements.
                   </p>
                 </div>
               </div>
@@ -728,7 +728,7 @@ export default function OnboardingPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                   <p className="text-xs text-slate-300">
-                    A Next of Kin is required by statutory cooperative regulations for emergency contact and estate beneficiary records.
+                    A Next of Kin is required by statutory regulations for emergency contact and estate beneficiary records.
                   </p>
                 </div>
 

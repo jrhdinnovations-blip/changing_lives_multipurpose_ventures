@@ -181,7 +181,7 @@ export default function AdminDashboardPage() {
     {
       label: 'Registered Members',
       value: totalMembers.toString(),
-      sub: 'Active cooperative accounts',
+      sub: 'Active member accounts',
       icon: <Users size={16} />,
       color: 'blue',
       bg: 'bg-blue-500/10',
@@ -363,7 +363,7 @@ export default function AdminDashboardPage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3 border-b border-white/10">
               <div>
                 <h2 className="text-sm font-bold text-white">Registered Members Directory</h2>
-                <p className="text-2xs text-slate-400 font-medium">Real-time cooperative member records</p>
+                <p className="text-2xs text-slate-400 font-medium">Real-time member records</p>
               </div>
 
               <div className="flex items-center gap-2">

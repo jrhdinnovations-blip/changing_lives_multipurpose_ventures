@@ -161,7 +161,7 @@ export default function SignupForm({ onSwitchToLogin }: SignupFormProps) {
     <div className="slide-up">
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-white">Create Account</h2>
-        <p className="text-sm text-white/50 mt-1">Join CLIMPS cooperative today</p>
+        <p className="text-sm text-white/50 mt-1">Join CLIMPS today</p>
       </div>
 
       {/* Step indicator */}

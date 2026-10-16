@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS investment_products (
   maturity_date         date,
   risk_level            text NOT NULL DEFAULT 'Low' CHECK (risk_level IN ('Low', 'Low–Medium', 'Medium', 'Medium–High', 'High')),
   risk_information      text,
-  eligibility           text DEFAULT 'All active cooperative members',
+  eligibility           text DEFAULT 'All active members',
   total_capacity        numeric NOT NULL DEFAULT 0,
   total_subscribed      numeric NOT NULL DEFAULT 0 CHECK (total_subscribed >= 0),
   product_status        text NOT NULL DEFAULT 'open' CHECK (product_status IN ('draft', 'open', 'fully_subscribed', 'closed', 'matured', 'suspended')),
@@ -40,8 +40,8 @@ INSERT INTO investment_products (
   risk_level, total_capacity, total_subscribed, product_status, is_guaranteed
 ) VALUES
   (
-    'Cooperative Equity Shares', 'INV-SHR-2026', 'Equity & Shares', 'Own a piece. Earn annual dividends.',
-    'Purchase shares in CLIMPS Cooperative and earn annual dividends from the society net trading surplus.',
+    'Equity Shares', 'INV-SHR-2026', 'Equity & Shares', 'Own a piece. Earn annual dividends.',
+    'Purchase shares in CLIMPS and earn annual dividends from net trading surplus.',
     25000, 5000000, 12, 16.5, 'Annual AGM Surplus Dividend', '2026-01-15', '2026-11-30', '2026-12-31',
     'Low', 50000000, 36500000, 'open', false
   ),
@@ -53,19 +53,19 @@ INSERT INTO investment_products (
   ),
   (
     'Real Estate Growth Fund', 'INV-REF-2026', 'Real Estate', 'Commercial property wealth. Shared rental yield.',
-    'Pool capital with cooperative investors into titled residential estates, shopping plazas, and land banking.',
+    'Pool capital with private investors into titled residential estates, shopping plazas, and land banking.',
     100000, 25000000, 24, 20.0, 'Semi-annual Rental Yield + Exit Gain', '2026-02-01', '2026-10-31', '2028-02-01',
     'Medium', 75000000, 54000000, 'open', false
   ),
   (
     'Agro-Ventures Cycle Note', 'INV-AGR-2026', 'Agriculture', 'Farm the future. Harvest predictable yields.',
-    'Finance cooperative agro-processing, poultry, and grain farming cycles with NAIC comprehensive agricultural insurance.',
+    'Finance commercial agro-processing, poultry, and grain farming cycles with NAIC comprehensive agricultural insurance.',
     50000, 5000000, 9, 22.0, 'Harvest Cycle Surplus', '2026-03-01', '2026-08-31', '2026-12-15',
     'Medium–High', 40000000, 38000000, 'open', false
   ),
   (
     'SME Commercial Credit Fund', 'INV-SME-2026', 'SME Lending', 'Fuel local enterprise. Share in cashflow profits.',
-    'Co-fund short-term working capital loans to verified cooperative merchant traders and supply chain vendors.',
+    'Co-fund short-term working capital loans to verified merchant traders and supply chain vendors.',
     75000, 15000000, 12, 18.0, 'Quarterly Profit Sharing', '2026-01-01', '2026-11-15', '2027-01-15',
     'Medium', 60000000, 60000000, 'fully_subscribed', false
   ),

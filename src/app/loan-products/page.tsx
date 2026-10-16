@@ -243,7 +243,7 @@ export default function LoanProductsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
             {[
               { value: '₦50,000', label: 'Minimum Loan', sub: 'Personal Loan' },
-              { value: '10% monthly', label: 'Cooperative Rate', sub: 'Transparent terms' },
+              { value: '10% monthly', label: 'Standard Rate', sub: 'Transparent terms' },
               { value: '3 – 24 mo', label: 'Flexible Tenure', sub: 'Structured repayment' },
               { value: '24 hrs', label: 'Fast Review', sub: 'For verified members' },
             ].map((stat) => (

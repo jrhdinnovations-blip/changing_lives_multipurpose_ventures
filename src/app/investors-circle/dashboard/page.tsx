@@ -216,7 +216,7 @@ export default function InvestorsDashboardPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account to view your Wealth Circle dashboard.
+            You must be signed in with your member account to view your Wealth Circle dashboard.
           </p>
           <div className="space-y-3">
             <Link
@@ -496,7 +496,7 @@ export default function InvestorsDashboardPage() {
                   <CheckCircle2 className="w-7 h-7" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">Request Submitted</h3>
-                <p className="text-white/60 text-sm mb-6">Your liquidation request has been submitted for cooperative administration review.</p>
+                <p className="text-white/60 text-sm mb-6">Your liquidation request has been submitted for administrative review.</p>
                 <button
                   onClick={() => setShowLiqModal(false)}
                   className="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-2.5 rounded-xl font-semibold text-sm transition-all"

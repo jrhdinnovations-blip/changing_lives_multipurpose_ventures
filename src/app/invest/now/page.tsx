@@ -127,7 +127,7 @@ function InvestNowInner() {
           </div>
           <h2 className="text-2xl font-extrabold text-white mb-2">Member Authentication Required</h2>
           <p className="text-sm text-white/50 mb-6 leading-relaxed">
-            Investments are issued to verified cooperative members. Please sign in to your member account to access the investment portal.
+            Investments are issued to verified members. Please sign in to your member account to access the investment portal.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href={`/login?redirect=${encodeURIComponent(`/invest/now?product=${selectedProductId}`)}`} className="btn-primary flex-1 py-3 text-sm font-semibold text-center">
@@ -184,11 +184,11 @@ function InvestNowInner() {
                 Payment Transfer Details
               </h4>
               <p className="text-white/80 leading-relaxed">
-                Please transfer <strong>{formatNaira(amount)}</strong> to the designated CLIMPS Cooperative capital account:
+                Please transfer <strong>{formatNaira(amount)}</strong> to the designated CLIMPS capital account:
               </p>
               <div className="bg-white/[0.04] rounded-xl p-3.5 border border-white/10 font-mono space-y-1 text-white">
                 <div><strong>Bank Name:</strong> First Bank</div>
-                <div><strong>Account Name:</strong> Changing Lives Multipurpose Cooperative Society Ltd</div>
+                <div><strong>Account Name:</strong> Changing Lives Multipurpose Ventures</div>
                 <div><strong>Account Number:</strong> 2044406437</div>
                 <div className="text-amber-400 font-bold pt-1">
                   <strong>Narration / Remarks:</strong> {submittedRef}
@@ -392,7 +392,7 @@ function InvestNowInner() {
                 Review Terms & Disclosures
               </h1>
               <p className="text-xs text-white/50">
-                Please acknowledge the investment disclosures and cooperative bye-laws before proceeding.
+                Please acknowledge the investment disclosures and CLIMPS bye-laws before proceeding.
               </p>
             </div>
 
@@ -429,7 +429,7 @@ function InvestNowInner() {
                   className="mt-1 w-4 h-4 text-emerald-400 rounded border-input focus:ring-primary"
                 />
                 <span>
-                  I have read, understood, and agreed to the CLIMPS Cooperative Investment Terms, tenure lock-in of <strong>{selectedProduct.durationMonths} months</strong>, and relevant statutory bye-laws.
+                  I have read, understood, and agreed to the CLIMPS Investment Terms, tenure lock-in of <strong>{selectedProduct.durationMonths} months</strong>, and relevant statutory bye-laws.
                 </span>
               </label>
             </div>

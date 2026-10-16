@@ -223,7 +223,7 @@ export default function AdminContributionsPage() {
             <span className="text-slate-900 font-medium">Contributions Management</span>
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900">Member Contributions</h1>
-          <p className="text-slate-500 text-sm mt-1">Track, record, and manage monthly cooperative contributions for all members.</p>
+          <p className="text-slate-500 text-sm mt-1">Track, record, and manage monthly contributions for all members.</p>
         </div>
 
         {/* Period selector */}

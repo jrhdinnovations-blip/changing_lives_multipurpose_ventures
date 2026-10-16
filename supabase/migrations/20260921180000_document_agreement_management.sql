@@ -309,7 +309,7 @@ BEGIN
     'investment'::public.climps_app_type,
     'v1.0',
     'CLIMPS Investors Circle — Terms & Conditions v1.0',
-    'The Investor shall give the Cooperative not less than one (1) month''s written notice of any intention to withdraw or liquidate, whether in part or in full, the invested sum. Where the Investor fails to provide the required notice and requests an early liquidation, the Cooperative may, at its sole discretion and subject to liquidity availability, approve the request. In such circumstances, the Investor shall forfeit any accrued but unpaid returns applicable to the notice period, and an early liquidation administrative charge of 1% of the amount withdrawn may be deducted to cover processing and associated costs. The principal investment shall, however, remain payable in accordance with the terms of this Agreement.',
+    'The Investor shall give the Company not less than one (1) month''s written notice of any intention to withdraw or liquidate, whether in part or in full, the invested sum. Where the Investor fails to provide the required notice and requests an early liquidation, the Company may, at its sole discretion and subject to liquidity availability, approve the request. In such circumstances, the Investor shall forfeit any accrued but unpaid returns applicable to the notice period, and an early liquidation administrative charge of 1% of the amount withdrawn may be deducted to cover processing and associated costs. The principal investment shall, however, remain payable in accordance with the terms of this Agreement.',
     CURRENT_DATE,
     true
   ) ON CONFLICT DO NOTHING;
@@ -320,7 +320,7 @@ BEGIN
     'loan'::public.climps_app_type,
     'v1.0',
     'CLIMPS Loan Application — Terms & Conditions v1.0',
-    'WE CHARGE ONE PERCENT (1%) OF THE LOAN SUM UPFRONT AS PROCESSING AND ADMINISTRATIVE FEE RESPECTIVELY. INTEREST MUST BE PAID MONTHLY. DEFAULT IN REPAYMENT OF THE INTEREST WILL ATTRACT THE DEFAULTING FEE OF ONE PERCENT (1%) OF INTEREST DAILY. ANY INTEREST REMAINING UNPAID ON OR BEYOND FIFTEEN (15) DAYS SHALL BE CONSIDERED OVERDUE AND SHALL ATTRACT CHARGES APPLICABLE FOR THE FULL MONTH. INTEREST PAYMENT MADE WITHIN THE FIRST 14 DAYS SHALL BE CALCULATED ON A PRO-RATA BASIS. THE COOPERATIVE WILL SELL THE COLLATERAL OFFERED TO RECOVER ITS LOAN IF YOU DEFAULT IN PAYING YOUR LOAN AFTER 3 MONTHS.',
+    'WE CHARGE ONE PERCENT (1%) OF THE LOAN SUM UPFRONT AS PROCESSING AND ADMINISTRATIVE FEE RESPECTIVELY. INTEREST MUST BE PAID MONTHLY. DEFAULT IN REPAYMENT OF THE INTEREST WILL ATTRACT THE DEFAULTING FEE OF ONE PERCENT (1%) OF INTEREST DAILY. ANY INTEREST REMAINING UNPAID ON OR BEYOND FIFTEEN (15) DAYS SHALL BE CONSIDERED OVERDUE AND SHALL ATTRACT CHARGES APPLICABLE FOR THE FULL MONTH. INTEREST PAYMENT MADE WITHIN THE FIRST 14 DAYS SHALL BE CALCULATED ON A PRO-RATA BASIS. CHANGING LIVES MULTIPURPOSE VENTURES WILL SELL THE COLLATERAL OFFERED TO RECOVER ITS LOAN IF YOU DEFAULT IN PAYING YOUR LOAN AFTER 3 MONTHS.',
     CURRENT_DATE,
     true
   ) ON CONFLICT DO NOTHING;

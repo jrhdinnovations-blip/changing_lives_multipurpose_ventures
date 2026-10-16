@@ -60,7 +60,7 @@ export default function AdminMembersRoster() {
             <Users size={16} />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Registered Cooperative Members</h2>
+            <h2 className="text-sm font-bold text-white">Registered Members</h2>
             <p className="text-2xs text-slate-400">Active member files synced with database</p>
           </div>
         </div>

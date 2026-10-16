@@ -285,7 +285,7 @@ export default function AdminReportsPage() {
               </h1>
             </div>
             <p className="text-sm text-white/40 mt-1 font-medium">
-              Cooperative performance metrics, portfolio health, and financial position summaries.
+              Enterprise performance metrics, portfolio health, and financial position summaries.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -473,7 +473,7 @@ export default function AdminReportsPage() {
           <div className="bg-[#0D182E]/90 border border-white/10 rounded-2xl p-5 shadow-xl shadow-black/20 backdrop-blur-xl space-y-4">
             <div>
               <h3 className="text-sm font-bold text-white">Financial Position</h3>
-              <p className="text-xs text-white/40 font-medium">Cooperative balance sheet snapshot</p>
+              <p className="text-xs text-white/40 font-medium">Balance sheet snapshot</p>
             </div>
             <div className="space-y-3 text-sm">
               {[
@@ -540,8 +540,8 @@ export default function AdminReportsPage() {
         <div className="text-xs text-white/40 bg-white/5 border border-white/10 rounded-xl px-4 py-3 flex items-center gap-2">
           <BarChart3 size={14} className="shrink-0 text-[#00E599]" />
           <span>
-            Reports are generated from live cooperative data. All financial figures are in Nigerian Naira (₦).
-            For audited financial statements, contact your cooperative accountant or use the Audit Logs page.
+            Reports are generated from live system data. All financial figures are in Nigerian Naira (₦).
+            For audited financial statements, contact your accountant or use the Audit Logs page.
           </span>
         </div>
 

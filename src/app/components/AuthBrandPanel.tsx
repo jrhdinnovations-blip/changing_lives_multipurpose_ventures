@@ -12,7 +12,7 @@ const stats = [
 const features = [
   { id: 'feat-save', icon: PiggyBank, text: 'Flexible savings with competitive returns' },
   { id: 'feat-invest', icon: TrendingUp, text: 'Curated investment products for every goal' },
-  { id: 'feat-borrow', icon: Award, text: 'Fast, affordable cooperative loans' },
+  { id: 'feat-borrow', icon: Award, text: 'Fast, affordable member loans' },
   { id: 'feat-secure', icon: Lock, text: 'Bank-grade security & full transparency' },
 ];
 
@@ -50,7 +50,7 @@ export default function AuthBrandPanel() {
             Save. Invest.<br />Borrow. Grow.
           </h2>
           <p className="text-white/70 text-base leading-relaxed">
-            Build your financial future with Nigeria&apos;s most trusted cooperative platform.
+            Build your financial future with Nigeria&apos;s most trusted financial enterprise.
             Manage savings, investments, and loans — all in one place.
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function AuthBrandPanel() {
         <div className="flex items-center gap-2">
           <ShieldCheck size={15} className="text-green-400" />
           <p className="text-white/60 text-xs">
-            Licensed cooperative • CBN compliant • Member funds secured
+            Registered enterprise • Fully compliant • Member funds secured
           </p>
         </div>
       </div>

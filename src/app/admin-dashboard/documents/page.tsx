@@ -256,7 +256,7 @@ const SEED_CLIMPS_DOCUMENTS: ClimpsDocument[] = [
   },
   {
     id: 'doc-006',
-    document_name: 'Cooperative Membership Constitution & Bye-Laws Acceptance',
+    document_name: 'Membership Constitution & Bye-Laws Acceptance',
     document_category: 'terms_acknowledgement',
     document_description: 'Signed acknowledgement of CLIMPS membership rights, duties, and monthly contribution commitment.',
     file_name: 'CLIMPS_Membership_ByeLaws_Acceptance.pdf',

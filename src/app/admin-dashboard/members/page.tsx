@@ -70,7 +70,7 @@ const ROLE_CONFIG: Record<UserRole, { label: string; badge: string; desc: string
   accountant: {
     label: 'Accountant',
     badge: 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
-    desc: 'Manages cooperative finances, bookkeeping, monthly contribution tracking, and financial reports.',
+    desc: 'Manages finances, bookkeeping, monthly contribution tracking, and financial reports.',
   },
   financial_secretary: {
     label: 'Financial Secretary',
@@ -93,7 +93,7 @@ const ROLE_CONFIG: Record<UserRole, { label: string; badge: string; desc: string
     desc: 'Application intake, document receipt verification, customer service, and inquiry support.',
   },
   member: {
-    label: 'Cooperative Member',
+    label: 'Member',
     badge: 'bg-white/10 text-white/50 border-white/15',
     desc: 'Standard member eligible for monthly thrift, regular savings, loans, and investments.',
   },
@@ -329,7 +329,7 @@ export default function AdminMembersPage() {
               </h1>
             </div>
             <p className="text-sm text-white/40 mt-1 font-medium">
-              Authoritative administration portal: provision new user profiles, assign operational roles, and manage cooperative thrift accounts.
+              Authoritative administration portal: provision new user profiles, assign operational roles, and manage member thrift accounts.
             </p>
           </div>
 
@@ -948,7 +948,7 @@ export default function AdminMembersPage() {
               {/* Printable Card */}
               <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3 font-sans text-xs">
                 <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                  <span className="font-bold text-white">CLIMPS Cooperative Society</span>
+                  <span className="font-bold text-white">Changing Lives Multipurpose Ventures</span>
                   <span className="text-2xs font-mono font-bold text-[#00E599] bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-md">
                     {showCredentialsSlip.member.member_number}
                   </span>

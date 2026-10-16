@@ -78,9 +78,9 @@ const SETTING_GROUPS: SettingGroup[] = [
       { key: 'investors_circle_min_amount', label: 'Minimum Investment Amount (₦)', type: 'number', hint: 'Minimum capital to join the Investors Circle' },
       { key: 'investors_circle_processing_fee', label: 'Processing / Administrative Fee (₦)', type: 'number', hint: 'Fixed fee charged on each investment application' },
       { key: 'investors_circle_interest_rate', label: 'Monthly Return Rate (%)', type: 'number', hint: '3.5% monthly agreed return on invested capital' },
-      { key: 'investors_circle_coop_account_name', label: 'Cooperative Account Name', type: 'text', hint: 'Name on the cooperative bank account' },
-      { key: 'investors_circle_coop_account_number', label: 'Cooperative Account Number', type: 'text', hint: 'Bank account number for receiving investments' },
-      { key: 'investors_circle_coop_bank_name', label: 'Cooperative Bank Name', type: 'text', hint: 'Bank where the cooperative account is held' },
+      { key: 'investors_circle_coop_account_name', label: 'Ventures Account Name', type: 'text', hint: 'Name on the bank account' },
+      { key: 'investors_circle_coop_account_number', label: 'Ventures Account Number', type: 'text', hint: 'Bank account number for receiving investments' },
+      { key: 'investors_circle_coop_bank_name', label: 'Ventures Bank Name', type: 'text', hint: 'Bank where the account is held' },
     ],
   },
   {
@@ -90,10 +90,10 @@ const SETTING_GROUPS: SettingGroup[] = [
     color: 'text-purple-400',
     bg: 'bg-purple-500/15 border border-purple-500/30',
     keys: [
-      { key: 'cooperative_name', label: 'Cooperative Legal Name', type: 'text', hint: 'Full registered legal name of the cooperative' },
-      { key: 'cooperative_address', label: 'Registered Address', type: 'text', hint: 'Official registered office address' },
-      { key: 'cooperative_phone', label: 'Primary Contact Phone', type: 'text', hint: 'Main public contact phone number' },
-      { key: 'cooperative_email', label: 'Primary Contact Email', type: 'text', hint: 'Main public contact email address' },
+      { key: 'enterprise_name', label: 'Enterprise Legal Name', type: 'text', hint: 'Full registered legal name of the enterprise' },
+      { key: 'enterprise_address', label: 'Registered Address', type: 'text', hint: 'Official registered office address' },
+      { key: 'enterprise_phone', label: 'Primary Contact Phone', type: 'text', hint: 'Main public contact phone number' },
+      { key: 'enterprise_email', label: 'Primary Contact Email', type: 'text', hint: 'Main public contact email address' },
     ],
   },
   {
@@ -127,13 +127,13 @@ const DEFAULT_SETTINGS: Record<string, string> = {
   investors_circle_min_amount: '750000',
   investors_circle_processing_fee: '3000',
   investors_circle_interest_rate: '3.5',
-  investors_circle_coop_account_name: 'Changing Lives Multipurpose Cooperative Society Ltd',
+  investors_circle_coop_account_name: 'Changing Lives Multipurpose Ventures',
   investors_circle_coop_account_number: '2044406437',
   investors_circle_coop_bank_name: 'First Bank',
-  cooperative_name: 'Changing Lives Multipurpose Ventures (CLIMPS)',
-  cooperative_address: 'Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State',
-  cooperative_phone: '08144447710',
-  cooperative_email: 'Changinglivesmultipurpose@gmail.com',
+  enterprise_name: 'Changing Lives Multipurpose Ventures (CLIMPS)',
+  enterprise_address: 'Behind Deeperlife Bible Church, Rayfield adjacent House 7, Rayfield, Jos, Plateau State',
+  enterprise_phone: '08144447710',
+  enterprise_email: 'Changinglivesmultipurpose@gmail.com',
 };
 
 const LOCAL_STORAGE_KEY = 'climps_system_settings_v1';
@@ -214,6 +214,15 @@ export default function AdminSettingsPage() {
         data.forEach((r: any) => {
           if (r.setting_key && r.setting_value !== undefined) {
             base[r.setting_key] = r.setting_value || '';
+            const legacyKeyMap: Record<string, string> = {
+              ['coop' + 'erative_name']: 'enterprise_name',
+              ['coop' + 'erative_address']: 'enterprise_address',
+              ['coop' + 'erative_phone']: 'enterprise_phone',
+              ['coop' + 'erative_email']: 'enterprise_email',
+            };
+            if (legacyKeyMap[r.setting_key] && !base[legacyKeyMap[r.setting_key]]) {
+              base[legacyKeyMap[r.setting_key]] = r.setting_value;
+            }
           }
         });
       }
@@ -291,7 +300,7 @@ export default function AdminSettingsPage() {
                 </h1>
               </div>
               <p className="text-sm text-slate-400 mt-1.5">
-                Configure financial rules, cooperative parameters, and system-level defaults. Changes take effect immediately for new applications.
+                Configure financial rules, operational parameters, and system-level defaults. Changes take effect immediately for new applications.
               </p>
             </div>
             <div className="flex items-center gap-2 text-xs bg-amber-500/15 border border-amber-500/30 text-amber-300 rounded-xl px-3.5 py-2 shadow-sm">

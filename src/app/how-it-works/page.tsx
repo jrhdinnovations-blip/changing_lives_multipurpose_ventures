@@ -36,7 +36,7 @@ export default function HowItWorksPage() {
           </h1>
 
           <p className="text-white/65 text-base sm:text-lg lg:text-xl max-w-3xl leading-relaxed mb-8">
-            From registration and onboarding to disciplined savings, lucrative Wealth Circle investments, and low-interest cooperative loans — here is how our ecosystem works for you.
+            From registration and onboarding to disciplined savings, lucrative Wealth Circle investments, and low-interest loans — here is how our ecosystem works for you.
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -73,7 +73,7 @@ export default function HowItWorksPage() {
               Three Pillars of Member Success
             </h2>
             <p className="text-white/60 text-sm sm:text-base mt-4">
-              Once provisioned, members unlock access to all cooperative financial vehicles from a single dashboard.
+              Once provisioned, members unlock access to all financial vehicles from a single dashboard.
             </p>
           </div>
 
@@ -105,7 +105,7 @@ export default function HowItWorksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">2. Grow with Wealth Circle</h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  Participate in CLIMPS Wealth Circle (CWC) earning 3.5% monthly agreed returns. Backed by structured cooperative liquidation protocols and written agreements.
+                  Participate in CLIMPS Wealth Circle (CWC) earning 3.5% monthly agreed returns. Backed by structured liquidation protocols and written agreements.
                 </p>
               </div>
               <Link
@@ -124,7 +124,7 @@ export default function HowItWorksPage() {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">3. Borrow Responsibly</h3>
                 <p className="text-white/60 text-sm leading-relaxed mb-6">
-                  Access cooperative personal loans at competitive rates. Fast review within 24 hours for active members, with no early repayment penalties.
+                  Access personal loans at competitive rates. Fast review within 24 hours for active members, with no early repayment penalties.
                 </p>
               </div>
               <Link

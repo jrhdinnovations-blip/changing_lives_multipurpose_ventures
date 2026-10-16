@@ -328,8 +328,8 @@ VALUES
   ('investors_circle_min_amount', '750000', 'Minimum investment amount for CLIMPS Investors Circle (NGN)'),
   ('investors_circle_processing_fee', '3000', 'Processing/administrative fee for Investors Circle applications (NGN)'),
   ('investors_circle_interest_rate', '4', 'Monthly interest rate percentage for Investors Circle investments'),
-  ('investors_circle_coop_account_name', 'Changing Lives Multipurpose Cooperative Society', 'Cooperative receiving account name'),
-  ('investors_circle_coop_account_number', '2044406437', 'Cooperative receiving account number'),
-  ('investors_circle_coop_bank_name', 'First Bank', 'Cooperative receiving bank name'),
+  ('investors_circle_coop_account_name', 'Changing Lives Multipurpose Ventures', 'Receiving account name'),
+  ('investors_circle_coop_account_number', '2044406437', 'Receiving account number'),
+  ('investors_circle_coop_bank_name', 'First Bank', 'Receiving bank name'),
   ('investors_circle_terms_version', 'v1.0', 'Current version of Investors Circle terms and conditions')
 ON CONFLICT (setting_key) DO NOTHING;

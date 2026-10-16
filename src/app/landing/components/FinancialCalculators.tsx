@@ -362,7 +362,7 @@ export default function FinancialCalculators() {
               {/* Disclaimer */}
               <div className="px-6 sm:px-8 pb-5">
                 <p className="text-xs text-slate-500 text-center font-medium">
-                  * Estimates for planning purposes only. Actual returns subject to cooperative bye-laws and product terms.
+                  * Estimates for planning purposes only. Actual returns subject to CLIMPS terms and product agreements.
                 </p>
               </div>
             </div>

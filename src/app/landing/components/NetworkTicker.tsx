@@ -69,7 +69,7 @@ export default function NetworkTicker() {
   };
 
   const dynamicMessages = [
-    `\ud83d\udc65 ${memberCount.toLocaleString()}+ members and growing — join a thriving cooperative community`,
+    `\ud83d\udc65 ${memberCount.toLocaleString()}+ members and growing — join a thriving financial community`,
     `\ud83d\udcbc ${formatFund(fundAmount)} in funds managed by CLIMPS — growing every day`,
   ];
 

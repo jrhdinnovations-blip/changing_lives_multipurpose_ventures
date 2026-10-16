@@ -9,14 +9,14 @@ import LandingFooter from '@/app/landing/components/LandingFooter';
 const PRODUCTS = [
   {
     id: 'monthly-contribution',
-    name: 'Monthly Cooperative Contribution',
+    name: 'Monthly Contribution',
     badge: 'Regular Savings',
     badgeColor: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
     rate: '4% monthly (48% p.a.)',
     min: 5000,
     max: 200000,
     isMandatory: true,
-    description: 'Core cooperative thrift contribution. Must be saved for at least 1 year or interest is forfeited. Min ₦5,000, Max ₦200,000 monthly.',
+    description: 'Core thrift contribution. Must be saved for at least 1 year or interest is forfeited. Min ₦5,000, Max ₦200,000 monthly.',
   },
   {
     id: 'lock-your-funds',

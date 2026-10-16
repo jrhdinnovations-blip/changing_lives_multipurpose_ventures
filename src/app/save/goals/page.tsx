@@ -359,7 +359,7 @@ export default function SavingsGoalsPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account to create and manage personal savings goals.
+            You must be signed in with your member account to create and manage personal savings goals.
           </p>
           <div className="space-y-3">
             <Link

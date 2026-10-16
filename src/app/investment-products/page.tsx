@@ -287,7 +287,7 @@ export default function InvestmentProductsPage() {
             </p>
             <p className="text-white/40 text-xs mt-4 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
-              Statutory notice: All transactions governed by CLIMPS cooperative by-laws and applicable Wealth Circle agreement.
+              Statutory notice: All transactions governed by CLIMPS by-laws and applicable Wealth Circle agreement.
             </p>
           </div>
 
@@ -379,10 +379,10 @@ export default function InvestmentProductsPage() {
             </div>
             <div>
               <h3 className="text-base font-bold text-white mb-1">
-                Cooperative Investor Protection & Disclosures
+                Investor Protection & Disclosures
               </h3>
               <p className="text-xs text-white/60 leading-relaxed mb-3">
-                All investment activities are conducted in accordance with the Bye-Laws of Changing Lives Multipurpose Ventures (CLIMPS) and relevant cooperative statutes. 
+                All investment activities are conducted in accordance with the Bye-Laws of Changing Lives Multipurpose Ventures (CLIMPS) and relevant statutory guidelines. 
                 CLIMPS Wealth Circle (CWC) features an agreed return of 3.5% monthly. Partial or full liquidation shall be subject to the applicable notice period and terms contained in the Wealth Circle Agreement.
               </p>
               <div className="flex flex-wrap gap-4 text-xs font-semibold text-emerald-400">

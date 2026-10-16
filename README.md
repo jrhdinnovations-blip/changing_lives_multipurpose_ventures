@@ -1,10 +1,10 @@
-# CLIMPS — Cooperative Savings, Investment & Loan Platform
+# CLIMPS — Savings, Investment & Loan Platform
 
-A modern, full-featured web application for cooperative savings, investment tracking, and loan management built with Next.js 15, React 19, TypeScript, Tailwind CSS, and Supabase.
+A modern, full-featured web application for multi-purpose savings, investment tracking, and loan management built with Next.js 15, React 19, TypeScript, Tailwind CSS, and Supabase.
 
 ## 🚀 Features
 
-- **Cooperative Savings**: Track member savings accounts, monthly deposits, and interest yields.
+- **Thrift & Savings**: Track member savings accounts, monthly deposits, and interest yields.
 - **Investment Management**: Portfolio monitoring, fixed-term investments, and returns calculation.
 - **Loan Applications & Processing**: Multi-step loan requests, guarantor verification, and repayment schedules.
 - **KYC & Onboarding**: Comprehensive member verification, document uploads, and identity confirmation.

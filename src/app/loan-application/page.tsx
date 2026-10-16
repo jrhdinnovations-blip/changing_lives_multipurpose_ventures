@@ -561,7 +561,7 @@ export default function LoanApplicationPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in to submit a loan application. If you don't have an account, contact the cooperative administrator to get provisioned.
+            You must be signed in to submit a loan application. If you don't have an account, contact the CLIMPS administrator to get provisioned.
           </p>
           <div className="space-y-3">
             <Link
@@ -956,7 +956,7 @@ export default function LoanApplicationPage() {
             <div className="bg-red-500/10 border-l-4 border-red-500 rounded-r-2xl p-4">
               <p className="text-xs font-bold text-red-300 uppercase tracking-wider mb-1">28. DEFAULT/COLLATERAL TERMS</p>
               <p className="text-sm text-red-200 font-medium leading-relaxed">
-                "THE COOPERATIVE WILL SELL THE COLLATERAL OFFERED TO RECOVER ITS LOAN IF YOU DEFAULT IN PAYING YOUR LOAN AFTER 3 MONTHS."
+                "CHANGING LIVES MULTIPURPOSE VENTURES WILL SELL THE COLLATERAL OFFERED TO RECOVER ITS LOAN IF YOU DEFAULT IN PAYING YOUR LOAN AFTER 3 MONTHS."
               </p>
             </div>
             <div className="bg-[#0d1527] rounded-3xl border border-white/10 p-6 shadow-xl">

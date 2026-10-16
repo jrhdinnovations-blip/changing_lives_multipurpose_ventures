@@ -216,7 +216,7 @@ const SEED_INVESTMENT_APPLICATIONS: Application[] = [
     terms_agreed_at: '2026-09-20T16:45:00Z',
     terms_version: 'v2.1',
     app_status: 'under_review',
-    review_notes: 'KYC identity verified. Awaiting admin approval to issue cooperative payment account instructions.',
+    review_notes: 'KYC identity verified. Awaiting admin approval to issue payment account instructions.',
     reviewed_by: null,
     reviewed_at: null,
     created_at: '2026-09-20T16:30:00Z',

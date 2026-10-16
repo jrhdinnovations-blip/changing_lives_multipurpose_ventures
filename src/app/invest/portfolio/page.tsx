@@ -41,7 +41,7 @@ const DEMO_HOLDINGS: PortfolioHolding[] = [
   {
     id: 'inv-1',
     investmentNumber: 'INV/2026/00012',
-    name: 'Cooperative Equity Shares',
+    name: 'Ventures Equity Shares',
     category: 'Equity & Shares',
     amountInvested: 250000,
     projectedReturnRate: 16.5,
@@ -182,7 +182,7 @@ export default function MemberInvestmentPortfolioPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative account to view your active investment portfolio and certificates.
+            You must be signed in with your member account to view your active investment portfolio and certificates.
           </p>
           <div className="space-y-3">
             <Link

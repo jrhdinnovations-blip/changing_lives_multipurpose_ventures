@@ -305,7 +305,7 @@ export default function HeroSection() {
                   <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 shadow-inner bg-[#060D1A]">
                     <Image
                       src="/assets/images/climps_hero_showcase.jpg"
-                      alt="CLIMPS Cooperative Digital Financial Ecosystem - Wealth Building & Savings"
+                      alt="CLIMPS Digital Financial Ecosystem - Wealth Building & Savings"
                       fill
                       priority
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 600px"
@@ -318,7 +318,7 @@ export default function HeroSection() {
                     {/* Floating Top Pill Badge */}
                     <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0D182E]/85 border border-white/20 backdrop-blur-md shadow-lg">
                       <span className="w-2 h-2 rounded-full bg-[#00E599] animate-pulse" />
-                      <span className="text-xs font-bold text-white tracking-wide">Digital Cooperative Banking</span>
+                      <span className="text-xs font-bold text-white tracking-wide">Digital Multi-Purpose Banking</span>
                     </div>
 
                     {/* Floating Growth Badge */}
@@ -332,7 +332,7 @@ export default function HeroSection() {
                       <div>
                         <div className="flex items-center gap-1.5 text-xs font-black text-white">
                           <Sparkles className="w-3.5 h-3.5 text-[#00E599]" />
-                          <span>Smart Cooperative Wealth Ecosystem</span>
+                          <span>Smart Wealth Ecosystem</span>
                         </div>
                         <p className="text-[11px] text-slate-300 mt-0.5 font-medium">
                           Multi-asset thrift savings, audited circle yield & express credit

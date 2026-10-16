@@ -520,7 +520,7 @@ export default function ApplyPage() {
             Application Desk
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">Product Application</h1>
-          <p className="text-white/60 text-sm">Select your cooperative product, configure your parameters, and check eligibility in real time.</p>
+          <p className="text-white/60 text-sm">Select your product, configure your parameters, and check eligibility in real time.</p>
         </div>
 
         {/* Step Indicator */}
@@ -957,7 +957,7 @@ export default function ApplyPage() {
                 )}
 
                 <div className="p-4 rounded-xl bg-white/[0.03] border border-white/10 text-xs text-white/60 leading-relaxed">
-                  By submitting this application, you confirm that you agree to CLIMPS Cooperative&apos;s rules and policies.
+                  By submitting this application, you confirm that you agree to CLIMPS rules and policies.
                 </div>
 
                 <div className="space-y-3">

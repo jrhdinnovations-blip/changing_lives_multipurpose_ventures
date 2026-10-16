@@ -21,7 +21,7 @@ const testimonials = [
     quote: 'The investment portfolio gave me 19% returns last year. My salary alone couldn\'t do that. CLIMPS has genuinely changed how I think about money.',
     rating: 5,
     highlight: '19% returns',
-    product: 'Cooperative Shares',
+    product: 'Equity Shares',
     featured: false,
   },
   {

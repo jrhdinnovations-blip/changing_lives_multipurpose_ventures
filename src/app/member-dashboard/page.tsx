@@ -171,7 +171,7 @@ export default function MemberDashboardPage() {
                   <div className="min-w-0">
                     <h3 className="font-bold text-white text-sm">Complete Your Profile to Activate Your Account</h3>
                     <p className="text-xs text-slate-300 mt-0.5 font-normal">
-                      Your account was created by an admin. Fill in your remaining details to gain full access to all cooperative services.
+                      Your account was created by an admin. Fill in your remaining details to gain full access to all CLIMPS services.
                     </p>
 
                     {/* Progress bar */}

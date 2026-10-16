@@ -347,7 +347,7 @@ function LoginContent() {
       {/* Footer */}
       <footer className="relative z-10 text-center py-4 px-6">
         <p className="text-xs text-slate-600">
-          © {new Date().getFullYear()} CLIMPS Cooperative. All rights reserved. · Your data is encrypted and secure.
+          © {new Date().getFullYear()} CLIMPS. All rights reserved. · Your data is encrypted and secure.
         </p>
       </footer>
     </div>

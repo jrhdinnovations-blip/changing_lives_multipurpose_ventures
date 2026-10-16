@@ -110,7 +110,7 @@ export default function MonthlyContributionsPage() {
           resolvedMemberId = m.id;
           if (m.monthly_contribution) commitment = Number(m.monthly_contribution);
         } else {
-          setMemberName(meta?.full_name || 'Cooperative Member');
+          setMemberName(meta?.full_name || 'Member');
           setMemberId(meta?.member_number || 'CLM-0000');
         }
         setMonthlyCommitment(commitment);
@@ -219,7 +219,7 @@ export default function MonthlyContributionsPage() {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2">Sign In Required</h2>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
-            You must be signed in with your cooperative member account to view and pay your monthly savings contributions.
+            You must be signed in with your member account to view and pay your monthly savings contributions.
           </p>
           <div className="space-y-3">
             <Link
@@ -254,13 +254,13 @@ export default function MonthlyContributionsPage() {
               <span className="text-white font-medium">Monthly Contribution</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-              <span>Monthly Cooperative Contribution</span>
+              <span>Monthly Contribution</span>
               <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-blue-100 text-blue-800 border border-blue-200">
                 Mandatory • 9.0% p.a.
               </span>
             </h1>
             <p className="text-sm text-white/50 mt-1">
-              Core cooperative thrift. Due by the 5th of every month. Unlocks loan multiplier and annual dividends.
+              Core monthly thrift. Due by the 5th of every month. Unlocks loan multiplier and annual dividends.
             </p>
           </div>
 
@@ -535,7 +535,7 @@ export default function MonthlyContributionsPage() {
               <span>Pay Monthly Contribution</span>
             </h3>
             <p className="text-xs text-white/50 mb-4">
-              Clear your cooperative dues for {MONTH_NAMES[payMonth - 1]} {CURRENT_YEAR}.
+              Clear your monthly dues for {MONTH_NAMES[payMonth - 1]} {CURRENT_YEAR}.
             </p>
 
             {paySuccess ? (
@@ -631,7 +631,7 @@ export default function MonthlyContributionsPage() {
                     </div>
                     <div className="flex justify-between text-white/50">
                       <span>Account Name:</span>
-                      <span className="font-medium text-white">Changing Lives Multipurpose Cooperative Society Ltd</span>
+                      <span className="font-medium text-white">Changing Lives Multipurpose Ventures</span>
                     </div>
                   </div>
                 )}

@@ -22,7 +22,7 @@ export default function AdminOverdueAlerts() {
           <span>Zero Delinquent Facilities</span>
         </div>
         <p className="text-2xs text-emerald-300/80 font-medium">
-          All cooperative accounts are in good standing. No loans are currently overdue or flagged for recovery.
+          All member accounts are in good standing. No loans are currently overdue or flagged for recovery.
         </p>
       </div>
 

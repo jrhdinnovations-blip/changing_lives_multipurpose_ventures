@@ -1,6 +1,6 @@
 -- ============================================================
 -- CLIMPS Core Schema Migration
--- Changing Lives Multipurpose Ventures Cooperative Platform
+-- Changing Lives Multipurpose Ventures Financial Platform
 -- ============================================================
 
 -- ============================================================
@@ -774,7 +774,7 @@ BEGIN
   savings_product_id := gen_random_uuid();
   INSERT INTO public.savings_products (id, name, description, minimum_amount, interest_rate, frequency, duration_months, withdrawal_rules, eligibility, is_active)
   VALUES
-    (savings_product_id, 'Monthly Cooperative Contribution', 'Mandatory monthly contribution for all cooperative members', 5000, 0, 'monthly', NULL, 'Withdrawal subject to board approval', 'Active cooperative members only', true),
+    (savings_product_id, 'Monthly Contribution', 'Mandatory monthly contribution for all members', 5000, 0, 'monthly', NULL, 'Withdrawal subject to board approval', 'Active members only', true),
     (gen_random_uuid(), 'Regular Savings', 'Flexible voluntary savings with competitive returns', 1000, 5.5, 'monthly', NULL, 'Withdrawal after 30 days notice', 'All members', true),
     (gen_random_uuid(), 'Target Savings', 'Goal-based savings for specific financial objectives', 2000, 6.0, 'monthly', 12, 'Withdrawal at target date or goal completion', 'All members', true),
     (gen_random_uuid(), 'Emergency Savings', 'Quick-access savings for unexpected needs', 500, 3.5, 'monthly', NULL, 'Withdrawal within 48 hours', 'All members', true),
@@ -796,9 +796,9 @@ BEGIN
   inv_product2_id := gen_random_uuid();
   INSERT INTO public.investment_products (id, name, product_code, category, description, minimum_investment, maximum_investment, duration_months, projected_return_rate, return_method, opening_date, closing_date, maturity_date, risk_information, total_capacity, total_subscribed, product_status)
   VALUES
-    (inv_product1_id, 'Agro Fund I', 'INV/AGRO/001', 'Agriculture', 'Investment in cooperative agricultural ventures with projected returns', 50000, 5000000, 12, 11.5, 'simple', '2026-01-01', '2026-03-31', '2027-01-01', 'Medium risk. Returns are projected and not guaranteed.', 50000000, 32000000, 'open'::public.investment_product_status),
-    (inv_product2_id, 'Fixed Income Bond II', 'INV/BOND/002', 'Fixed Income', 'Cooperative fixed income bond with stable projected returns', 100000, 10000000, 18, 13.0, 'simple', '2026-02-01', '2026-04-30', '2027-08-01', 'Low-medium risk. Returns are projected and not guaranteed.', 100000000, 48000000, 'open'::public.investment_product_status),
-    (gen_random_uuid(), 'Real Estate Fund I', 'INV/REALTY/001', 'Real Estate', 'Cooperative real estate investment fund', 200000, NULL, 24, 15.0, 'compound', '2026-06-01', '2026-08-31', '2028-06-01', 'Medium-high risk. Returns are projected and not guaranteed.', 200000000, 0, 'draft'::public.investment_product_status)
+    (inv_product1_id, 'Agro Fund I', 'INV/AGRO/001', 'Agriculture', 'Investment in agricultural ventures with projected returns', 50000, 5000000, 12, 11.5, 'simple', '2026-01-01', '2026-03-31', '2027-01-01', 'Medium risk. Returns are projected and not guaranteed.', 50000000, 32000000, 'open'::public.investment_product_status),
+    (inv_product2_id, 'Fixed Income Bond II', 'INV/BOND/002', 'Fixed Income', 'Fixed income bond with stable projected returns', 100000, 10000000, 18, 13.0, 'simple', '2026-02-01', '2026-04-30', '2027-08-01', 'Low-medium risk. Returns are projected and not guaranteed.', 100000000, 48000000, 'open'::public.investment_product_status),
+    (gen_random_uuid(), 'Real Estate Fund I', 'INV/REALTY/001', 'Real Estate', 'Real estate investment fund', 200000, NULL, 24, 15.0, 'compound', '2026-06-01', '2026-08-31', '2028-06-01', 'Medium-high risk. Returns are projected and not guaranteed.', 200000000, 0, 'draft'::public.investment_product_status)
   ON CONFLICT (id) DO NOTHING;
 
   -- ---- Contributions for member 1 ----
@@ -851,11 +851,11 @@ BEGIN
   -- ---- Transactions for member 1 ----
   INSERT INTO public.transactions (id, transaction_ref, member_id, transaction_type, amount, is_debit, description, payment_method, related_loan_id, related_investment_id, tx_status, created_at)
   VALUES
-    (gen_random_uuid(), 'TXN/2026/004821', member_row_id, 'contribution'::public.transaction_type, 10000, true, 'Sep 2026 Cooperative Contribution', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-09-04 10:30:00+01'),
+    (gen_random_uuid(), 'TXN/2026/004821', member_row_id, 'contribution'::public.transaction_type, 10000, true, 'Sep 2026 Monthly Contribution', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-09-04 10:30:00+01'),
     (gen_random_uuid(), 'TXN/2026/004690', member_row_id, 'savings_deposit'::public.transaction_type, 15000, true, 'Regular Savings Deposit', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-09-18 14:00:00+01'),
     (gen_random_uuid(), 'TXN/2026/004512', member_row_id, 'loan_repayment'::public.transaction_type, 57291.67, true, 'Personal Loan Repayment - Instalment #5', 'bank_transfer', loan1_id, NULL, 'completed'::public.transaction_status, '2026-08-25 09:00:00+01'),
     (gen_random_uuid(), 'TXN/2026/004201', member_row_id, 'investment_return'::public.transaction_type, 24000, false, 'Agro Fund I - Investment Return', 'bank_transfer', NULL, inv1_id, 'completed'::public.transaction_status, '2026-08-15 11:00:00+01'),
-    (gen_random_uuid(), 'TXN/2026/004088', member_row_id, 'contribution'::public.transaction_type, 10000, true, 'Aug 2026 Cooperative Contribution', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-08-02 09:15:00+01'),
+    (gen_random_uuid(), 'TXN/2026/004088', member_row_id, 'contribution'::public.transaction_type, 10000, true, 'Aug 2026 Monthly Contribution', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-08-02 09:15:00+01'),
     (gen_random_uuid(), 'TXN/2026/003950', member_row_id, 'savings_deposit'::public.transaction_type, 20000, true, 'Target Savings Deposit - Education', 'bank_transfer', NULL, NULL, 'completed'::public.transaction_status, '2026-07-20 10:00:00+01'),
     (gen_random_uuid(), 'TXN/2026/003812', member_row_id, 'loan_repayment'::public.transaction_type, 57291.67, true, 'Personal Loan Repayment - Instalment #4', 'bank_transfer', loan1_id, NULL, 'completed'::public.transaction_status, '2026-07-24 09:00:00+01'),
     (gen_random_uuid(), 'TXN/2026/003650', member_row_id, 'investment_subscription'::public.transaction_type, 450000, true, 'Fixed Income Bond II - Subscription', 'bank_transfer', NULL, inv2_id, 'completed'::public.transaction_status, '2026-07-10 14:00:00+01')
@@ -865,7 +865,7 @@ BEGIN
   INSERT INTO public.notifications (id, user_id, notification_type, title, message, is_read, created_at)
   VALUES
     (gen_random_uuid(), member_uuid, 'loan_repayment_due'::public.notification_type, 'Loan Repayment Due', 'Your loan repayment of ₦57,291.67 is due on 25 Sep 2026. Please ensure funds are available.', false, '2026-09-18 08:00:00+01'),
-    (gen_random_uuid(), member_uuid, 'contribution_due'::public.notification_type, 'October Contribution Reminder', 'Your October 2026 cooperative contribution of ₦10,000 will be due on 1 Oct 2026.', false, '2026-09-20 08:00:00+01'),
+    (gen_random_uuid(), member_uuid, 'contribution_due'::public.notification_type, 'October Contribution Reminder', 'Your October 2026 monthly contribution of ₦10,000 will be due on 1 Oct 2026.', false, '2026-09-20 08:00:00+01'),
     (gen_random_uuid(), member_uuid, 'new_investment'::public.notification_type, 'New Investment Opportunity', 'Real Estate Fund I is now open for subscription. Minimum investment: ₦200,000. Projected return: 15%.', false, '2026-09-15 10:00:00+01'),
     (gen_random_uuid(), member_uuid, 'payment_received'::public.notification_type, 'Payment Confirmed', 'Your September 2026 contribution of ₦10,000 has been received and confirmed.', true, '2026-09-04 11:00:00+01')
   ON CONFLICT (id) DO NOTHING;
@@ -879,7 +879,7 @@ BEGIN
     (gen_random_uuid(), 'late_payment_penalty_percent', '2', 'Late payment penalty as percentage of outstanding amount'),
     (gen_random_uuid(), 'currency', 'NGN', 'Platform currency'),
     (gen_random_uuid(), 'currency_symbol', '₦', 'Currency display symbol'),
-    (gen_random_uuid(), 'cooperative_name', 'Changing Lives Multipurpose Ventures', 'Full cooperative name'),
+    (gen_random_uuid(), 'enterprise_name', 'Changing Lives Multipurpose Ventures', 'Full enterprise name'),
     (gen_random_uuid(), 'platform_name', 'CLIMPS', 'Platform short name')
   ON CONFLICT (setting_key) DO NOTHING;
 

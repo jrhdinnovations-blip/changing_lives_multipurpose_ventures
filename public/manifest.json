@@ -1,7 +1,7 @@
 {
-  "name": "CLIMPS Cooperative",
+  "name": "CLIMPS - Changing Lives Multipurpose Ventures",
   "short_name": "CLIMPS",
-  "description": "Changing Lives Multipurpose Ventures cooperative savings, investments and loans platform",
+  "description": "Changing Lives Multipurpose Ventures savings, investments and loans platform",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0f1e",

@@ -6,7 +6,7 @@ import { TrendingUp, Users, PiggyBank, ArrowRight, ShieldCheck } from 'lucide-re
 export default function AdminChartsGrid() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-      {/* Cooperative Capital Health Card */}
+      {/* Capital Health Card */}
       <div className="lg:col-span-2 bg-[#0D182E]/90 border border-white/10 rounded-2xl p-6 backdrop-blur-xl shadow-xl shadow-black/20">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
@@ -14,7 +14,7 @@ export default function AdminChartsGrid() {
               <div className="p-1.5 rounded-lg bg-emerald-500/15 text-[#00E599] border border-emerald-500/30">
                 <PiggyBank size={16} />
               </div>
-              <h3 className="text-sm font-bold text-white">Cooperative Capital Allocation & Pool</h3>
+              <h3 className="text-sm font-bold text-white">Capital Allocation & Pool</h3>
             </div>
             <p className="text-xs text-slate-400 mt-1">Live summary of members savings and scheduled monthly cashflow</p>
           </div>
@@ -49,7 +49,7 @@ export default function AdminChartsGrid() {
         {/* Progress Bar of Capital Health */}
         <div className="space-y-2">
           <div className="flex justify-between text-2xs text-slate-300 font-semibold">
-            <span>Cooperative Solvency Index</span>
+            <span>Ventures Solvency Index</span>
             <span className="font-bold text-[#00E599]">Optimal (100%)</span>
           </div>
           <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden border border-white/10">
@@ -81,7 +81,7 @@ export default function AdminChartsGrid() {
             </div>
 
             <div className="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10">
-              <span className="text-xs text-slate-400 font-medium">Cooperative ID</span>
+              <span className="text-xs text-slate-400 font-medium">Enterprise ID</span>
               <span className="text-xs font-mono font-bold text-slate-300">ADM/2026/0001</span>
             </div>
           </div>
