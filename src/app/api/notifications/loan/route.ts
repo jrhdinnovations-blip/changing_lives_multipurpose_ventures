@@ -18,6 +18,7 @@ export async function GET() {
       admin: [
         'Changinglivesmultipurpose@gmail.com',
         'plangnansamson@gmail.com',
+        'raymondlongdiem22@gmail.com',
       ],
       accountant: [
         'bimaeteng4@gmail.com',
@@ -88,6 +89,7 @@ export async function POST(request: Request) {
         new Set([
           ...adminEmails,
           'plangnansamson@gmail.com',
+          'raymondlongdiem22@gmail.com',
           'Changinglivesmultipurpose@gmail.com',
           process.env.ADMIN_NOTIFICATION_EMAIL || '',
         ].filter(Boolean))

@@ -8,7 +8,8 @@ interface DemoCredentialsProps {
 }
 
 const demoAccounts = [
-  { id: 'demo-admin', role: 'Super Admin', email: 'plangnansamson@gmail.com', password: 'Samson@2026!', description: 'Full Super Admin access' },
+  { id: 'demo-admin-raymond', role: 'Admin (Raymond)', email: 'raymondlongdiem22@gmail.com', password: 'R@ymond22', description: 'Admin access (Raymond Longdiem)' },
+  { id: 'demo-admin', role: 'Super Admin (Samson)', email: 'plangnansamson@gmail.com', password: 'Samson@2026!', description: 'Full Super Admin access' },
   { id: 'demo-member', role: 'Member', email: 'adaeze.okonkwo@climps.ng', password: 'Member@2026!', description: 'Regular member' },
   { id: 'demo-manager', role: 'Manager', email: 'manager.ibrahim@climps.ng', password: 'Manager@2026!', description: 'Review & reporting access' },
   { id: 'demo-staff', role: 'Staff', email: 'staff.ngozi@climps.ng', password: 'Staff@2026!', description: 'Operational data entry' },

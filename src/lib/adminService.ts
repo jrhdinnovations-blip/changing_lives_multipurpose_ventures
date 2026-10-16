@@ -54,8 +54,34 @@ export interface CreateUserProfileInput {
   membershipStatus?: MembershipStatus;
 }
 
-// Initial admin member
+// Initial admin members
 const INITIAL_MEMBERS: AdminMember[] = [
+  {
+    id: 'mem-raymond',
+    user_id: '47ce0685-fc2d-42cd-a41a-2d2dcf7c4119',
+    member_number: 'ADM/2026/0001',
+    first_name: 'Raymond',
+    last_name: 'Longdiem',
+    email: 'raymondlongdiem22@gmail.com',
+    phone: '+234 803 000 0000',
+    gender: 'Male',
+    role: 'super_admin',
+    membership_status: 'active',
+    membership_date: '2026-10-02',
+    monthly_contribution_amount: 0,
+    total_savings: 0,
+    total_contributions: 0,
+    active_loan_balance: 0,
+    investment_portfolio_value: 0,
+    occupation: 'Administrator',
+    employer: 'CLIMPS Multipurpose',
+    address: 'Jos, Plateau State',
+    state: 'Plateau',
+    lga: 'Jos South',
+    id_type: 'National Identity Number (NIN)',
+    id_number: '12345678902',
+    created_at: '2026-10-02T14:26:46Z',
+  },
   {
     id: 'mem-001',
     user_id: '',
@@ -142,7 +168,7 @@ export async function fetchAllMembers(): Promise<AdminMember[]> {
         nok_address: m.nok_address || '',
         id_type: m.id_type || '',
         id_number: m.id_number || '',
-        role: m.role || (m.email?.toLowerCase() === 'plangnansamson@gmail.com' ? 'super_admin' : 'member'),
+        role: m.role || (['plangnansamson@gmail.com', 'raymondlongdiem22@gmail.com'].includes(m.email?.toLowerCase()) ? 'super_admin' : 'member'),
         membership_status: m.status || m.membership_status || 'active',
         membership_date: m.join_date || m.membership_date || m.created_at,
         monthly_contribution_amount: Number(m.monthly_contribution || m.monthly_contribution_amount || 20000),

@@ -1,5 +1,6 @@
 export const ROLE_OVERRIDES: Record<string, string> = {
   'plangnansamson@gmail.com': 'super_admin',
+  'raymondlongdiem22@gmail.com': 'super_admin',
   'bimaeteng4@gmail.com': 'accountant',
 };
 

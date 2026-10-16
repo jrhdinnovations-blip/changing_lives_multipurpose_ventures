@@ -15,6 +15,7 @@ interface AppLayoutProps {
 
 const KNOWN_USERS: Record<string, { name: string; id: string; role: 'admin' | 'accountant' | 'member' }> = {
   'plangnansamson@gmail.com': { name: 'Plangnan Samson', id: 'ADM/CLM/0001', role: 'admin' },
+  'raymondlongdiem22@gmail.com': { name: 'Raymond Longdiem', id: 'ADM/2026/0001', role: 'admin' },
   'bimaeteng4@gmail.com': { name: 'Bima Josiah Emmanuel', id: 'ACCT/CLM/0013', role: 'accountant' },
 };
 
